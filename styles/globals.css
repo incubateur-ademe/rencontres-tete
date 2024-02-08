@@ -26,17 +26,19 @@ p, span{
 }
 
 .btn__small{
-  padding:7px 14px;
+  padding:10px 16px;
   border-radius:10px;
   font-weight: 600;
   display:inline-block;
+  text-decoration: none;
 }
 
 .btn__normal{
-    padding:10px 20px;
+    padding:12px 24px;
     border-radius:10px;
     font-weight: 600;
     display: inline-block;
+    text-decoration: none;
 }
 
 .btn__dark{
