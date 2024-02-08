@@ -4,7 +4,9 @@
     left:0;
     width: 100%;
     padding:10px 0;
-    border-bottom:1px solid var(--primaryBack)
+    border-bottom:1px solid var(--primaryBack);
+    background-color: #FFF;
+    z-index: 99;
 }
 
 .Menu ul{

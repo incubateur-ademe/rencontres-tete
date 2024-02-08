@@ -24,6 +24,34 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <div className="section border-top">
+        <div className="boxed">
+          <div className="flex gap50 aligncenter">
+            <div className="w50">
+
+            </div>
+            <div className="w50">
+              <h2>Découvrez les rencontres à venir dans votre région</h2>
+              <ul className={styles.Regions}>
+                <li><Link href="/"><span className="material-icons">room</span>Auvergne-Rhône-Alpes</Link></li>
+                <li><Link href="/"><span className="material-icons">room</span>Bourgogne-Franche-Comté</Link></li>
+                <li><Link href="/"><span className="material-icons">room</span>Bretagne</Link></li>
+                <li><Link href="/"><span className="material-icons">room</span>Centre-Val de Loire</Link></li>
+                <li><Link href="/"><span className="material-icons">room</span>Corse</Link></li>
+                <li><Link href="/"><span className="material-icons">room</span>Normandie</Link></li>
+                <li><Link href="/"><span className="material-icons">room</span>Nouvelle-Aquitaine</Link></li>
+                <li><Link href="/"><span className="material-icons">room</span>Occitanie</Link></li>
+                <li><Link href="/"><span className="material-icons">room</span>Grand-Est</Link></li>
+                <li><Link href="/"><span className="material-icons">room</span>Hauts-de-France</Link></li>
+                <li><Link href="/"><span className="material-icons">room</span>Île-de-France</Link></li>
+                <li><Link href="/"><span className="material-icons">room</span>Pays de la Loire</Link></li>
+                <li><Link href="/"><span className="material-icons">room</span>Provence-Alpes-Côte d'Azur</Link></li>
+              </ul>
+              <Link href="/" className="btn__normal btn__dark">Voir toutes les rencontres</Link>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

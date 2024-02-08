@@ -19,8 +19,14 @@ body{
 }
 
 h1, h2, h3, h4, h5{
-  text-wrap:pretty;
+  text-wrap:balance;
   letter-spacing: .5px;
+}
+
+h2{
+  color:var(--primary);
+  font-weight: 600;
+  font-size: 2rem;
 }
 
 span, a{
@@ -45,6 +51,10 @@ p{
 
 .page{
   min-height:50vh;
+}
+
+.border-top{
+  border-top:1px solid var(--primaryBack)
 }
 
 .link{
