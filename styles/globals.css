@@ -7,10 +7,11 @@
 }
 
 :root{
-  --primary: #6A6AF4;
+  --primary: #5555C3;
   --primaryBack: #F4F5FD;
   --secondary: #2C2944;
   --orange: #F28E40;
+  --mentions: #707070;
 }
 
 body{
@@ -19,10 +20,40 @@ body{
 
 h1, h2, h3, h4, h5{
   text-wrap:pretty;
+  letter-spacing: .5px;
 }
 
-p, span{
-  text-wrap:balance;
+span, a{
+  letter-spacing: .5px;
+}
+
+p{
+  line-height: 1.75em;
+  color:var(--secondary);
+  letter-spacing: .5px;
+  margin:20px 0;
+}
+
+.boxed{
+  max-width:1280px;
+  margin-inline:auto;
+}
+
+.section{
+  padding:100px 0;
+}
+
+.page{
+  min-height:50vh;
+}
+
+.link{
+  color:var(--primary);
+  display: inline-block;
+}
+
+.media{
+  object-fit: contain;
 }
 
 .btn__small{
@@ -49,4 +80,20 @@ p, span{
 .btn__light{
   color:var(--primary);
   background: var(--primaryBack);
+}
+
+/* INPUTS */
+
+.input-text{
+  height:45px;
+  display: block;
+  width:100%;
+  text-indent: 10px;
+  border:0px;
+  background:#F2F2F2;
+  border-bottom:2px solid var(--primary);
+}
+
+.input-text:focus{
+  outline: none;
 }

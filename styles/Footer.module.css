@@ -1,0 +1,60 @@
+.Footer{
+    border-top:1px solid var(--primaryBack);
+    padding:50px 0;
+}
+
+.Link{
+    display: inline-flex;
+    text-decoration: none;
+    align-items: center;
+    gap:4px;
+    color:var(--secondary);
+}
+
+.Link span{
+    font-size:1rem;
+}
+
+.MentionText{
+    color:var(--mentions);
+    font-weight: 200;
+}
+
+.Subfooter{
+    border-top:1px solid var(--primaryBack);
+    padding:10px 0;
+    margin-top:60px;
+}
+
+.Subfooter ul{
+    display: flex;
+    list-style: none;
+}
+
+.Subfooter ul li a{
+    text-decoration: none;
+    color:var(--mentions);
+    font-weight: 200;
+    letter-spacing: .5px;
+    font-size:0.80rem;
+    display: inline-block;
+    padding-right:30px;
+    border-right:1px solid var(--primaryBack);
+    margin-right:30px;
+}
+
+.Subfooter ul li:last-child a{
+    padding-right: 0px;
+    margin-right: 0px;
+    border-right:0px;
+}
+
+.Subfooter ul li a:hover{
+    text-decoration: underline;
+}
+
+.Logo{
+    width:120px;
+    height:auto;
+    display: inline-block;
+}

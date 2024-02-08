@@ -1,0 +1,32 @@
+.Header{
+    position: sticky;
+    top:0;
+    left:0;
+    width: 100%;
+    padding:10px 0;
+    border-bottom:1px solid var(--primaryBack)
+}
+
+.Menu ul{
+    display:flex;
+    align-items: center;
+    list-style: none;
+}
+
+.Menu ul li a{
+    text-decoration: none;
+    color:var(--secondary);
+    display: inline-block;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.Menu ul li a:hover{
+    text-decoration: underline;
+}
+
+.Logo{
+    width:65px;
+    height:auto;
+    display: inline-block;
+}
