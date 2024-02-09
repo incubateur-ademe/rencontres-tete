@@ -36,19 +36,19 @@ export default function Home() {
             <div className="w50">
               <div className="map__image">
                 <img src="/medias/map/france.png" className="france" />
-                <img src="/medias/map/FR-COR.png" className={`map corse ${region == "COR" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-HDF.png" className={`map haut-de-france ${region == "HDF" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-GES.png" className={`map grand-est ${region == "GES" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-NOR.png" className={`map normandie ${region == "NOR" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-IDF.png" className={`map ile-de-france ${region == "IDF" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-BFC.png" className={`map bourgogne ${region == "BFC" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-ARA.png" className={`map auvergne ${region == "ARA" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-PAC.png" className={`map provence ${region == "PAC" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-OCC.png" className={`map occitanie ${region == "OCC" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-NAQ.png" className={`map nouvelle-aquitaine ${region == "NAQ" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-CVL.png" className={`map centre ${region == "CVL" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-PDL.png" className={`map loire ${region == "PDL" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-BRE.png" className={`map bretagne ${region == "BRE" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-COR.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('COR')} onMouseOut={() => setRegion('')} className={`map corse ${region == "COR" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-HDF.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('HDF')} onMouseOut={() => setRegion('')} className={`map haut-de-france ${region == "HDF" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-GES.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('GES')} onMouseOut={() => setRegion('')} className={`map grand-est ${region == "GES" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-NOR.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('NOR')} onMouseOut={() => setRegion('')} className={`map normandie ${region == "NOR" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-IDF.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('IDF')} onMouseOut={() => setRegion('')} className={`map ile-de-france ${region == "IDF" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-BFC.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('BFC')} onMouseOut={() => setRegion('')} className={`map bourgogne ${region == "BFC" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-ARA.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('ARA')} onMouseOut={() => setRegion('')} className={`map auvergne ${region == "ARA" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-PAC.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('PAC')} onMouseOut={() => setRegion('')} className={`map provence ${region == "PAC" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-OCC.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('OCC')} onMouseOut={() => setRegion('')} className={`map occitanie ${region == "OCC" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-NAQ.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('NAQ')} onMouseOut={() => setRegion('')} className={`map nouvelle-aquitaine ${region == "NAQ" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-CVL.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('CVL')} onMouseOut={() => setRegion('')} className={`map centre ${region == "CVL" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-PDL.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('PDL')} onMouseOut={() => setRegion('')} className={`map loire ${region == "PDL" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-BRE.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('BRE')} onMouseOut={() => setRegion('')} className={`map bretagne ${region == "BRE" && styles.RegionLight}`} />
               </div>
             </div>
             <div className="w50">

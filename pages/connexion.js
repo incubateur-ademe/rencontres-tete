@@ -25,7 +25,7 @@ export default function Login(){
                                     </button>
                                 </div>
                                 <div className="alignright">
-                                    <Link className="link mTop15" href="/">Mot de passe oublié ?</Link>
+                                    <button className="link mTop15">Mot de passe oublié ?</button>
                                 </div>
                                 
                             </div>
