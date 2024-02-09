@@ -17,9 +17,9 @@ export default function Login(){
                                     <input type="password" className="input-text" placeholder="Mot de passe" />
                                 </div>
                                 <div className="flex flex-end gap10">
-                                    <button className="btn__normal btn__light">
+                                    <Link href="/inscription" className="btn__normal btn__light">
                                         Créer un compte
-                                    </button>
+                                    </Link>
                                     <button className="btn__normal btn__dark">
                                         Se connecter
                                     </button>

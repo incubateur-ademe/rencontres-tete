@@ -140,8 +140,8 @@ export default function Rencontres(){
                             <div className="w60">
                             <h2><span className="orange">Créez un compte</span> ou connectez-vous pour vous inscrire aux rencontres dans votre région.</h2>
                             <div className="flex aligncenter gap20 mTop30">
-                                <Link href="/" className="btn__normal btn__dark">S'inscrire à la plateforme</Link>
-                                <Link href="/" className="btn__normal btn__light">Se connecter</Link>
+                                <Link href="/inscription" className="btn__normal btn__dark">S'inscrire à la plateforme</Link>
+                                <Link href="/connexion" className="btn__normal btn__light">Se connecter</Link>
                             </div>
                             </div>
                             <div className="w40">

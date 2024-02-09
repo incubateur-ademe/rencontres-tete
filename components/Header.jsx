@@ -21,7 +21,7 @@ export default function Header(){
                                 <li><Link href="/">Accueil</Link></li>
                                 <li><Link href="/rencontres">Toutes les rencontres</Link></li>
                                 <li><Link href="/connexion">Se connecter</Link></li>
-                                <li><Link href="/">Créer un compte</Link></li>
+                                <li><Link href="/inscription">Créer un compte</Link></li>
                             </ul>
                         </div>
                     </div>

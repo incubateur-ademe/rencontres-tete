@@ -22,7 +22,7 @@ export default function Home() {
               <h1>Les Rencontres des Territoires Engagés</h1>
               <p>Participez aux Rencontres Territoire Engagé de l'ADEME organisées partout en France et montez en compétence sur les thématiques Climat Air Energie et Economie Circulaire, pour mettre en œuvre la transition écologique sur votre territoire.</p>
               <input className="input-text mTop30" type="text" placeholder="Rechercher une rencontre par nom, par date..." />
-              <Link className="link mTop30" href="/">Voir toutes les rencontres à venir →</Link>
+              <Link className="link mTop30" href="/rencontres">Voir toutes les rencontres à venir →</Link>
             </div>
             <div className="w50">
               <img src="/medias/Meeting.png" alt="les rencontres des territoires engagés" className="w100" />
@@ -54,21 +54,21 @@ export default function Home() {
             <div className="w50">
               <h2>Découvrez les rencontres à venir dans votre région</h2>
               <ul className={styles.Regions}>
-                <li><Link href="/" onMouseOver={() => setRegion('ARA')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Auvergne-Rhône-Alpes</Link></li>
-                <li><Link href="/" onMouseOver={() => setRegion('BFC')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Bourgogne-Franche-Comté</Link></li>
-                <li><Link href="/" onMouseOver={() => setRegion('BRE')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Bretagne</Link></li>
-                <li><Link href="/" onMouseOver={() => setRegion('CVL')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Centre-Val de Loire</Link></li>
-                <li><Link href="/" onMouseOver={() => setRegion('COR')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Corse</Link></li>
-                <li><Link href="/" onMouseOver={() => setRegion('NOR')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Normandie</Link></li>
-                <li><Link href="/" onMouseOver={() => setRegion('NAQ')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Nouvelle-Aquitaine</Link></li>
-                <li><Link href="/" onMouseOver={() => setRegion('OCC')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Occitanie</Link></li>
-                <li><Link href="/" onMouseOver={() => setRegion('GES')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Grand-Est</Link></li>
-                <li><Link href="/" onMouseOver={() => setRegion('HDF')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Hauts-de-France</Link></li>
-                <li><Link href="/" onMouseOver={() => setRegion('IDF')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Île-de-France</Link></li>
-                <li><Link href="/" onMouseOver={() => setRegion('PDL')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Pays de la Loire</Link></li>
-                <li><Link href="/" onMouseOver={() => setRegion('PAC')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Provence-Alpes-Côte d'Azur</Link></li>
+                <li><Link href="/rencontres" onMouseOver={() => setRegion('ARA')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Auvergne-Rhône-Alpes</Link></li>
+                <li><Link href="/rencontres" onMouseOver={() => setRegion('BFC')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Bourgogne-Franche-Comté</Link></li>
+                <li><Link href="/rencontres" onMouseOver={() => setRegion('BRE')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Bretagne</Link></li>
+                <li><Link href="/rencontres" onMouseOver={() => setRegion('CVL')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Centre-Val de Loire</Link></li>
+                <li><Link href="/rencontres" onMouseOver={() => setRegion('COR')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Corse</Link></li>
+                <li><Link href="/rencontres" onMouseOver={() => setRegion('NOR')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Normandie</Link></li>
+                <li><Link href="/rencontres" onMouseOver={() => setRegion('NAQ')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Nouvelle-Aquitaine</Link></li>
+                <li><Link href="/rencontres" onMouseOver={() => setRegion('OCC')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Occitanie</Link></li>
+                <li><Link href="/rencontres" onMouseOver={() => setRegion('GES')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Grand-Est</Link></li>
+                <li><Link href="/rencontres" onMouseOver={() => setRegion('HDF')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Hauts-de-France</Link></li>
+                <li><Link href="/rencontres" onMouseOver={() => setRegion('IDF')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Île-de-France</Link></li>
+                <li><Link href="/rencontres" onMouseOver={() => setRegion('PDL')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Pays de la Loire</Link></li>
+                <li><Link href="/rencontres" onMouseOver={() => setRegion('PAC')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Provence-Alpes-Côte d'Azur</Link></li>
               </ul>
-              <Link href="/" className="btn__normal btn__dark">Voir toutes les rencontres</Link>
+              <Link href="/rencontres" className="btn__normal btn__dark">Voir toutes les rencontres</Link>
             </div>
           </div>
         </div>
@@ -82,7 +82,7 @@ export default function Home() {
                 pic="climat-air-energie.png"
                 title="Climat Air Energie" 
                 description="Découvrez l’ensemble des rencontres disponibles pour le pilier Climat Air Energie" 
-                link="/"
+                link="/rencontres"
               />
             </div>
             <div className="w32">
@@ -90,7 +90,7 @@ export default function Home() {
                 pic="economie-circulaire.png"
                 title="Economie circulaire" 
                 description="Découvrez l’ensemble des rencontres disponibles pour le pilier Economie circulaire" 
-                link="/"
+                link="/rencontres"
               />
             </div>
             <div className="w32">
@@ -98,7 +98,7 @@ export default function Home() {
                 pic="economie-circulaire.png"
                 title="Climat Air Energie" 
                 description="Découvrez l’ensemble des rencontres disponibles pour le pilier Climat Air Energie" 
-                link="/"
+                link="/rencontres"
               />
             </div>
           </div>
@@ -141,8 +141,8 @@ export default function Home() {
             <div className="w60">
               <h2><span className="orange">Créez un compte</span> ou connectez-vous pour vous inscrire aux rencontres dans votre région.</h2>
               <div className="flex aligncenter gap20 mTop30">
-                <Link href="/" className="btn__normal btn__dark">S'inscrire à la plateforme</Link>
-                <Link href="/" className="btn__normal btn__light">Se connecter</Link>
+                <Link href="/inscription" className="btn__normal btn__dark">S'inscrire à la plateforme</Link>
+                <Link href="/connexion" className="btn__normal btn__light">Se connecter</Link>
               </div>
             </div>
             <div className="w40">

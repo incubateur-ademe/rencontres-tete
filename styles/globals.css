@@ -184,6 +184,18 @@ p{
   padding-right: 8px;
 }
 
+.checkbox{
+  display: flex;
+  align-items: flex-start;
+  gap:15px;
+}
+
+.checkbox span{
+  transform: translateY(-6px);
+  display: block;
+  line-height: 1.5em;;
+}
+
 .section-top{
   padding-top:60px;
   padding-bottom:0px;
