@@ -1,8 +1,16 @@
-.Home h1{
-    font-size:3.5rem;
+.Rencontres h1{
     color:var(--primary);
     font-weight: 600;
-    line-height: 1.25em;
+    font-size: 3rem;
+}
+
+.Label{
+    font-weight: 500;
+    color:var(--primary);
+    display: block;
+    font-weight: 500;
+    font-size: 1.05rem;
+    margin-bottom:15px;
 }
 
 .Regions{
@@ -13,7 +21,7 @@
     margin:30px 0 30px;
 }
 
-.Regions li a{
+.Regions li{
     text-decoration: none;
     color:var(--primary);
     background-color: var(--primaryBack);
@@ -22,17 +30,14 @@
     gap:4px;
     padding:12px 20px;
     border-radius: 8px;
+    cursor:pointer;
 }
 
-.Regions li a span{
+.Regions li span{
     font-size: 1rem;
 }
 
-.Regions li a:hover{
+.Regions li:hover{
     color:#FFF;
     background:var(--primary)
-}
-
-.RegionLight{
-    opacity: 1;
 }

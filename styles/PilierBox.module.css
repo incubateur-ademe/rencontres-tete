@@ -1,0 +1,20 @@
+.Pilier{
+    background:#FFF;
+    padding:30px;
+    border-radius: 18px;
+    text-align: center;
+}
+
+.Pilier img{
+    width:50%;
+}
+
+.Pilier h3{
+    color:var(--orange);
+    font-weight: 500;
+    font-size: 1.25rem;
+}
+
+.Pilier p{
+    margin-inline: auto;
+}
