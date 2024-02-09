@@ -1,0 +1,21 @@
+.Login{
+    background:var(--primaryBack);
+    padding:100px 0;
+}
+
+.Login h1{
+    font-size: 3rem;
+    font-weight: 600;
+    color:var(--primary);
+}
+
+.Logbox{
+    width:650px;
+}
+
+.Box{
+    padding:10%;
+    background-color: #FFF;
+    border-radius: 18px;
+    margin:30px 0;
+}
