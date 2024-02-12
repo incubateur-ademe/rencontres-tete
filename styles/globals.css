@@ -154,7 +154,8 @@ p{
   border:0px;
   background:#F2F2F2;
   border-bottom:2px solid var(--primary);
-  color:var(--secondary)
+  color:var(--secondary);
+  font-weight: 300;
 }
 
 .input-text:focus, .input-mail:focus{
@@ -178,10 +179,12 @@ p{
   font-size: 1rem;
   color:var(--secondary);
   position: relative;
+  font-weight: 300;
 }
 
 .select{
   position: relative;
+  font-weight: 300;
 }
 
 .select > span{
@@ -203,6 +206,7 @@ p{
   background:#F2F2F2;
   color:var(--secondary);
   padding-right: 8px;
+  font-weight: 300;
 }
 
 .checkbox{
@@ -218,18 +222,19 @@ p{
 }
 
 .textarea{
-  background:var(--primaryBack);
+  background:#F2F2F2;
   border:0px;
   width:100%;
   min-height:150px;
-  border-radius: 10px;
-  padding:20px;
+  padding:10px;
   font-size: 1rem;
   color:var(--secondary);
   appearance: none;
   -webkit-appearance: none;
   font-family: 'Outfit', sans-serif;
   outline:none;
+  font-weight: 300;
+  border-bottom:2px solid var(--primary)
 }
 
 .section-top{
@@ -333,4 +338,17 @@ p{
 
 .alignend{
   align-items: flex-end;
+}
+
+.ql-container{
+  height:300px !important;
+  background:#F2F2F2;
+  border:0px !important;
+  border-bottom:2px solid var(--primary) !important;
+  font-family: 'Outfit', sans-serif !important;
+  color:var(--secondary);
+}
+
+.ql-container p{
+  font-size:1rem !important;
 }

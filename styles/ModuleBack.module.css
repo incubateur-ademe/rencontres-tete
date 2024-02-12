@@ -1,0 +1,78 @@
+.SessionBox{
+    padding:20px;
+    border-radius: 10px;
+    background:var(--primaryBack);
+    cursor:pointer;
+}
+
+.Date{
+    color:var(--secondary);
+    display: inline-flex;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.Region{
+    color:#FFF;
+    background:var(--orange);
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding:5px 10px;
+    border-radius: 5px;
+}
+
+.Title{
+    font-size: 1.15rem;
+    color:var(--primary);
+    font-weight: 500;
+}
+
+.Title span{
+    font-size:0.9rem;
+    display: block;
+    margin-bottom:2px;
+}
+
+.Register{
+    color:var(--primary);
+    border:2px solid var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    border-radius:5px;
+    padding:4px 15px;
+    display: inline-block;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.Register:hover{
+    opacity: 0.65;
+}
+
+.Corb{
+    background:var(--primary);
+    color:#FFF;
+    border:0px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:32px;
+    height:32px;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.Corb span{
+    font-size: 1rem;
+}
+
+.Corb:hover{
+    opacity:0.65;
+}
+
+.LastMaj{
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--secondary);
+}

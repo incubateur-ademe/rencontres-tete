@@ -1,0 +1,173 @@
+.Account h1{
+    font-size: 3rem;
+    font-weight: 600;
+    color:var(--primary);
+}
+
+.Box{
+    padding:60px;
+    background-color: #FFF;
+    border-radius: 18px;
+    margin:30px 0;
+}
+
+.Sidebar{
+    border-right:1px solid var(--primaryBack)
+}
+
+.Sidebar ul{
+    list-style: none;
+}
+
+.Sidebar ul li span{
+    display: block;
+    font-weight: 500;
+    margin-bottom:20px;
+    font-size: 1.15rem;
+    cursor:pointer;
+    color:var(--secondary);
+}
+
+.Sidebar ul li span:hover{
+    color:var(--primary)
+}
+
+.Sidebar ul li span.active{
+    color:var(--primary)
+}
+
+.Menu{
+    display: flex;
+    border-bottom:1px solid var(--primaryBack)
+}
+
+.Menu button{
+    border:0px;
+    font-weight: 500;
+    display: inline-block;
+    padding:15px 30px;
+    padding-top:0px;
+    padding-left:0px;
+    font-size: 1.15rem;
+    cursor:pointer;
+    color:var(--secondary);
+}
+
+.Menu button.active{
+    color:var(--primary);
+}
+
+.Title{
+    font-size: 1.15rem;
+    font-weight: 500;
+    color:var(--primary);
+    display: block;
+    border-bottom:1px solid var(--primaryBack);
+    padding-bottom:15px;
+}
+
+.Subtitle{
+    display: block;
+    margin-top:30px;
+    font-weight: 500;
+    font-size:1.15rem;
+}
+
+.DeleteAccount{
+    border-top:1px solid var(--primaryBack);
+    margin-top:40px;
+}
+
+.Back{
+    text-decoration: underline;
+    font-weight: 500;
+    cursor:pointer;
+}
+
+.dLabel{
+    display: block;
+    font-weight: 500;
+    color:var(--secondary);
+    font-size: 1rem;
+    margin-top:-3px;
+}
+
+.dValue{
+    display: block;
+    color:var(--secondary);
+    line-height: 1.5em;
+    margin-top:5px
+}
+
+.Ressources{
+    list-style: none;
+    margin:20px 0;
+}
+
+.Ressources li a{
+    color:var(--primary);
+    font-weight: 500;
+    line-height: 1.5em;
+    margin-bottom:10px;
+    display: block;
+    width: fit-content;
+}
+
+.AddTranche{
+    background:var(--primaryBack);
+    border:0px;
+    width: 100%;
+    height:50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color:var(--primary);
+    gap:5px;
+    font-size: 1rem;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.AddTranche span{
+    font-size: 1.1rem;
+}
+
+.AddTranche:hover{
+    opacity: 0.65;
+}
+
+.DeleteT{
+    font-size: 1rem !important;
+    background:var(--primary);
+    color:#FFF;
+    width:27px;
+    height: 27px;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.NavT{
+    font-size: 1rem !important;
+    background:var(--primaryBack);
+    color:var(--primary);
+    width:27px;
+    height: 27px;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.DeleteT:hover, .NavT:hover{
+    opacity: 0.65;
+}
+
+.Quill{
+    min-height:150px;
+}

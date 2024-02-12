@@ -1,0 +1,26 @@
+.Notif{
+    position: fixed;
+    bottom:20px;
+    right:20px;
+    background:#FFF;
+    color:var(--primary);
+    display: inline-flex;
+    align-items: center;
+    gap:5px;
+    padding:14px 24px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 10px;
+    box-shadow: 1px 1px 25px rgba(0,0,0,0.1);
+    pointer-events: none;
+    animation:pop .2s ease forwards;
+}
+
+.Notif span{
+    font-size: 1rem;
+}
+
+@keyframes pop{
+    0%{transform:rotate(-5deg) translateY(100%)}
+    100%{transform:rotate(0deg) translateY(0);}
+}
