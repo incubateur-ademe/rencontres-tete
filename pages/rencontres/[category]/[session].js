@@ -1,10 +1,14 @@
 import Link from 'next/link'
+import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import styles from '@/styles/Session.module.css'
 
 export default function Session(){
     return (
         <>
+            <Head>
+                <title>ADEME | Session du 21/02/2024</title>
+            </Head>
             <div className={styles.Session}>
                 <div className="section">
                     <div className="boxed">
@@ -179,9 +183,9 @@ export default function Session(){
                                 <div className={`${styles.Box} mTop40`}>
                                     <span className={styles.Title}>Accès rapide</span>
                                     <div className="mTop20">
-                                        <Link href="/" className="btn__normal btn__dark w100 text-center">Se connecter</Link>
-                                        <Link href="/" className="btn__normal btn__orange w100 text-center mTop10">Créer un compte</Link>
-                                        <Link href="/" className="btn__normal btn__light w100 text-center mTop10">Retourner au module</Link>
+                                        <Link href="/connexion" className="btn__normal btn__dark w100 text-center">Se connecter</Link>
+                                        <Link href="/inscription" className="btn__normal btn__orange w100 text-center mTop10">Créer un compte</Link>
+                                        <Link href="/rencontres/energie-eau-assainissement" className="btn__normal btn__light w100 text-center mTop10">Retourner au module</Link>
                                     </div>
                                 </div>
                             </div>

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import styles from '@/styles/Login.module.css'
 
@@ -8,6 +9,9 @@ export default function Login(){
 
     return (
         <>
+            <Head>
+                <title>ADEME | Connexion</title>
+            </Head>
             <div className={styles.Login}>
                 <div className="boxed">
                     <div className="flex justicenter">

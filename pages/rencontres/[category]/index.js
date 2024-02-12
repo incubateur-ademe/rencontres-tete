@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router';
 import Team from '@/components/Team'
@@ -13,6 +14,9 @@ export default function Module(){
   
     return (
         <>
+            <Head>
+                <title>ADEME | Energie, eau et assainissement</title>
+            </Head>
             <div className={styles.Module}>
                 <div className="section">
                     <div className="boxed">

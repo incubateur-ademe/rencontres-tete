@@ -1,9 +1,13 @@
 import Link from 'next/link'
+import Head from 'next/head'
 import styles from '@/styles/Login.module.css'
 
 export default function Register(){
     return (
         <>
+            <Head>
+                <title>ADEME | Créer un compte</title>
+            </Head>
             <div className={styles.Login}>
                 <div className="boxed">
                     <div className="flex justicenter">

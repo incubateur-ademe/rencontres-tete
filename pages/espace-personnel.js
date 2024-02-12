@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import Rencontres from '/components/Rencontres'
 import Profil from '@/components/Profil'
@@ -10,6 +11,9 @@ export default function Account(){
 
     return (
         <div className={styles.Account}>
+            <Head>
+                <title>ADEME | Espace personnel</title>
+            </Head>
             <div className="section blued">
                 <div className="boxed">
                     <h1>Votre espace personnel</h1>

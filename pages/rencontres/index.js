@@ -9,6 +9,9 @@ import styles from '@/styles/Rencontres.module.css'
 export default function Rencontres(){
     return (
         <>
+            <Head>
+                <title>ADEME | Toutes les rencontres</title>
+            </Head>
             <div className={styles.Rencontres}>
                 <div className="section blued">
                     <div className="boxed">
