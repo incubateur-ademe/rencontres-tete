@@ -108,30 +108,54 @@ export default function Home() {
         <div className="boxed">
           <h2>Découvrez toutes les thématiques abordées</h2>
           <div className="flex wrap gap15 mTop40">
-            <div className="w24">
-              <ModuleBox title="Planification territoriale" />
-            </div>
-            <div className="w24">
-              <ModuleBox title="Energie, eau et assainissement" />
-            </div>
-            <div className="w24">
-              <ModuleBox title="Mobilité et qualité de l'air" />
-            </div>
-            <div className="w24">
-              <ModuleBox title="Transition bas carbone" />
-            </div>
-            <div className="w24">
-              <ModuleBox title="Prévention et gestion des déchêts" />
-            </div>
-            <div className="w24">
-              <ModuleBox title="Consommation responsable" />
-            </div>
-            <div className="w24">
-              <ModuleBox title="Autres piliers de l'économie circulaire" />
-            </div>
-            <div className="w24">
-              <ModuleBox title="Gouvernance et pilotage" />
-            </div>
+          <div className="w24">
+          <ModuleBox 
+              title="Planification territoriale" 
+              link="/rencontres/planification-territoriale"
+          />
+          </div>
+          <div className="w24">
+          <ModuleBox 
+              title="Energie, eau et assainissement" 
+              link="/rencontres/energie-eau-assainissement"
+          />
+          </div>
+          <div className="w24">
+          <ModuleBox 
+              title="Mobilité et qualité de l'air"
+              link="/rencontres/mobilite-qualite-de-lair"    
+          />
+          </div>
+          <div className="w24">
+          <ModuleBox 
+              title="Transition bas carbone" 
+              link="/rencontres/transition-bas-carbone"    
+          />
+          </div>
+          <div className="w24">
+          <ModuleBox 
+              title="Prévention et gestion des déchêts" 
+              link="/rencontres/prevention-gestion-des-dechets"
+          />
+          </div>
+          <div className="w24">
+          <ModuleBox 
+              title="Consommation responsable" 
+              link="/rencontres/consommation-responsable"    
+          />
+          </div>
+          <div className="w24">
+          <ModuleBox 
+              title="Autres piliers de l'économie circulaire" 
+              link="/rencontres/autres-piliers-economie-circulaire"    
+          />
+          </div>
+          <div className="w24">
+          <ModuleBox 
+              title="Gouvernance et pilotage" 
+              link="/rencontres/gouvernance-pilotage"    
+          />
+          </div>
           </div>
         </div>
       </div>
@@ -146,7 +170,7 @@ export default function Home() {
               </div>
             </div>
             <div className="w40">
-              <img src="medias/inscription.png" class="w100" />
+              <img src="medias/inscription.png" className="w100" />
             </div>
           </div>
         </div>

@@ -1,0 +1,143 @@
+.Header{
+    background:var(--primaryBack);
+    padding:40px;
+    border-radius: 18px;
+    color:var(--primary)
+}
+
+.Header h1{
+    font-weight: 600;
+    font-size: 3rem;
+}
+
+.Header p{
+    color:var(--primary)
+}
+
+.Tag{
+    background:var(--primary);
+    color:#FFF;
+    text-transform: uppercase;
+    font-weight: 600;
+    display: inline-block;
+    padding:6px 12px;
+    border-radius: 5px;
+}
+
+.Breadcrump{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap:5px;
+}
+
+.Breadcrump a{
+    text-decoration: none;
+    color: var(--primary);
+}
+
+.Breadcrump span{
+    font-weight: 500;
+}
+
+.Content h3{
+    font-weight: 600;
+    color:var(--primary);
+}
+
+.Content p strong{
+    font-weight: 600;
+}
+
+.Infos{
+    border:1px solid var(--primary);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.Infos > span{
+    background-color: var(--primary);
+    color: #FFF;
+    display: block;
+    font-size: 1.15rem;
+    padding:15px 50px;
+    font-weight: 500;
+}
+
+.InfosContent{
+    padding:30px 50px;
+}
+
+.InfosLabel{
+    display: block;
+    font-weight: 500;
+    color:var(--primary);
+}
+
+.InfosValue{
+    display: block;
+    margin:10px 0;
+    line-height:1.5em;
+    color:var(--secondary)
+}
+
+.TeamPic{
+    width:30%;
+    aspect-ratio:1/1;
+    position: relative;
+}
+
+.TeamPic img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.25;
+}
+
+.TeamName{
+    display: block;
+    width: fit-content;
+    color:#FFF;
+    background:var(--primary);
+    padding:5px 10px;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.TeamDesc{
+    display: block;
+    margin-top:10px;
+    font-weight: 500;
+    line-height: 1.5em;
+    max-width: 80%;
+    color:var(--secondary)
+}
+
+.ProgItem{
+    background-color: #FFF;
+    padding:30px;
+    border-radius: 15px;
+}
+
+.piType{
+    color:#FFF;
+    font-weight:500;
+    background:var(--primary);
+    padding:5px 10px;
+    display: block;
+    width: fit-content;
+    border-radius: 5px;
+}
+
+.piTitle{
+    display: block;
+    margin:15px 0 10px;
+    font-weight: 500;
+    line-height: 1.5em;
+    color:var(--secondary)
+}
+
+.piDescription{
+    line-height: 1.5em;
+    color:var(--secondary)
+}

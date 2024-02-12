@@ -48,28 +48,52 @@ export default function Rencontres(){
                                 <h2>Tous les modules disponibles :</h2>
                                 <div className="flex wrap gap15 mTop40">
                                     <div className="w32">
-                                    <ModuleBox title="Planification territoriale" />
+                                    <ModuleBox 
+                                        title="Planification territoriale" 
+                                        link="/rencontres/planification-territoriale"
+                                    />
                                     </div>
                                     <div className="w32">
-                                    <ModuleBox title="Energie, eau et assainissement" />
+                                    <ModuleBox 
+                                        title="Energie, eau et assainissement" 
+                                        link="/rencontres/energie-eau-assainissement"
+                                    />
                                     </div>
                                     <div className="w32">
-                                    <ModuleBox title="Mobilité et qualité de l'air" />
+                                    <ModuleBox 
+                                        title="Mobilité et qualité de l'air"
+                                        link="/rencontres/mobilite-qualite-de-lair"    
+                                    />
                                     </div>
                                     <div className="w32">
-                                    <ModuleBox title="Transition bas carbone" />
+                                    <ModuleBox 
+                                        title="Transition bas carbone" 
+                                        link="/rencontres/transition-bas-carbone"    
+                                    />
                                     </div>
                                     <div className="w32">
-                                    <ModuleBox title="Prévention et gestion des déchêts" />
+                                    <ModuleBox 
+                                        title="Prévention et gestion des déchêts" 
+                                        link="/rencontres/prevention-gestion-des-dechets"
+                                    />
                                     </div>
                                     <div className="w32">
-                                    <ModuleBox title="Consommation responsable" />
+                                    <ModuleBox 
+                                        title="Consommation responsable" 
+                                        link="/rencontres/consommation-responsable"    
+                                    />
                                     </div>
                                     <div className="w32">
-                                    <ModuleBox title="Autres piliers de l'économie circulaire" />
+                                    <ModuleBox 
+                                        title="Autres piliers de l'économie circulaire" 
+                                        link="/rencontres/autres-piliers-economie-circulaire"    
+                                    />
                                     </div>
                                     <div className="w32">
-                                    <ModuleBox title="Gouvernance et pilotage" />
+                                    <ModuleBox 
+                                        title="Gouvernance et pilotage" 
+                                        link="/rencontres/gouvernance-pilotage"    
+                                    />
                                     </div>
                                 </div>
                             </div>          
@@ -145,7 +169,7 @@ export default function Rencontres(){
                             </div>
                             </div>
                             <div className="w40">
-                            <img src="medias/inscription.png" class="w100" />
+                            <img src="medias/inscription.png" className="w100" />
                             </div>
                         </div>
                     </div>

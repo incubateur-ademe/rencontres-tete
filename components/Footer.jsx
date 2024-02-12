@@ -31,6 +31,7 @@ export default function Footer(){
                             <li><Link href="/">Gestion des cookies</Link></li>
                             <li><Link href="/">Code source</Link></li>
                             <li><Link href="/">Conditions générales d'utilisation</Link></li>
+                            <li><Link href="/espace-personnel">Espace personnel</Link></li>
                         </ul>
                     </div>
                 </div>

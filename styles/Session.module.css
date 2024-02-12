@@ -1,0 +1,82 @@
+.Session{
+    background-color: var(--primaryBack);
+}
+
+.Header{
+    background:#FFF;
+    padding:40px;
+    border-radius: 18px;
+    color:var(--primary)
+}
+
+.Header h1{
+    font-weight: 600;
+    font-size: 3rem;
+}
+
+.Header p{
+    color:var(--secondary)
+}
+
+.Tag{
+    background:var(--primary);
+    color:#FFF;
+    text-transform: uppercase;
+    font-weight: 600;
+    display: inline-block;
+    padding:6px 12px;
+    border-radius: 5px;
+}
+
+.Region{
+    background:var(--orange);
+    color:#FFF;
+    text-transform: uppercase;
+    font-weight: 600;
+    display: inline-block;
+    padding:6px 12px;
+    border-radius: 5px;
+}
+
+.Breadcrump{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap:5px;
+}
+
+.Breadcrump a{
+    text-decoration: none;
+    color: var(--secondary);
+}
+
+.Breadcrump span{
+    font-weight: 500;
+}
+
+.Box{
+    background-color: #FFF;
+    padding:40px;
+    border-radius: 18px;
+}
+
+.Title{
+    font-weight: 500;
+    font-size: 1.15rem;
+    color:var(--secondary);
+}
+
+.dLabel{
+    display: block;
+    font-weight: 500;
+    color:var(--secondary);
+    font-size: 1rem;
+    margin-top:-3px;
+}
+
+.dValue{
+    display: block;
+    color:var(--secondary);
+    line-height: 1.5em;
+    margin-top:5px
+}

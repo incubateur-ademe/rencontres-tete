@@ -84,6 +84,7 @@ p{
 
 .alignright{
   text-align: right;
+  justify-content: flex-end;
 }
 
 .btn__small{
@@ -120,6 +121,16 @@ p{
   opacity: 0.65;
 }
 
+.btn__orange{
+  color:#FFF;
+  background: var(--orange);
+  transition:.2s ease;
+}
+
+.btn__orange:hover{
+  opacity: 0.65;
+}
+
 .btn__light{
   color:var(--primary);
   background: var(--primaryBack);
@@ -145,6 +156,10 @@ p{
 
 .input-text:focus, .input-mail:focus{
   outline: none;
+}
+
+.input-text.w50, .input-mail.w50{
+  width:50%;
 }
 
 .input-select{
@@ -197,6 +212,21 @@ p{
   transform: translateY(-6px);
   display: block;
   line-height: 1.5em;;
+}
+
+.textarea{
+  background:var(--primaryBack);
+  border:0px;
+  width:100%;
+  min-height:150px;
+  border-radius: 10px;
+  padding:20px;
+  font-size: 1rem;
+  color:var(--secondary);
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: 'Outfit', sans-serif;
+  outline:none;
 }
 
 .section-top{
@@ -296,4 +326,8 @@ p{
   position: absolute;
   top:28%;
   left:16.7%;
+}
+
+.alignend{
+  align-items: flex-end;
 }
