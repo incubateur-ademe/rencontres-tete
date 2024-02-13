@@ -1,8 +1,29 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { useState, useEffect } from 'react'
+import Cookies from 'js-cookie';
+import { decodeJWT } from '@/utils/jwt';
+import { useRouter } from 'next/router'
 import styles from '@/styles/Header.module.css'
 
 export default function Header(){
+
+    const [user, setUser] = useState(null);
+    const router = useRouter()
+
+    useEffect(() => {
+        fetch('/api/auth')
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data)
+            if (data.isAuthenticated) {
+              setUser(data.user);
+            } else {
+              setUser(null);
+            }
+          });
+    }, [router.asPath]);
+
     return (
         <>
             <div className={styles.Header}>
@@ -20,8 +41,15 @@ export default function Header(){
                             <ul>
                                 <li><Link href="/">Accueil</Link></li>
                                 <li><Link href="/rencontres">Toutes les rencontres</Link></li>
-                                <li><Link href="/connexion">Se connecter</Link></li>
-                                <li><Link href="/inscription">Créer un compte</Link></li>
+                                {user?.id ? (
+                                    <li><Link href="/espace-personnel">Espace personnel</Link></li>
+                                ) : (
+                                    <>
+                                        <li><Link href="/connexion">Se connecter</Link></li>
+                                        <li><Link href="/inscription">Créer un compte</Link></li>
+                                    </>
+                                )}
+
                             </ul>
                         </div>
                     </div>

@@ -34,17 +34,30 @@ model MetasModule {
   module           Module   @relation(fields: [moduleId], references: [id])
 }
 
+model User {
+  id         Int       @id @default(autoincrement())
+  nom        String
+  prenom     String
+  mail       String    @unique
+  telephone  String?
+  motDePasse String
+  fonction   String
+  newsletter Boolean
+  sessions   Session[] @relation("UserSessions")
+}
+
 model Session {
-  id           Int      @id @default(autoincrement())
+  id             Int          @id @default(autoincrement())
   datePublication DateTime?
   lastUpdate      DateTime?
-  region       String
-  departement  String
-  dateDebut    DateTime
-  moduleId     Int      
-  module       Module   @relation(fields: [moduleId], references: [id])
-  metasSession MetasSession?
-  status  String
+  region          String
+  departement     String
+  dateDebut       DateTime
+  moduleId        Int
+  module          Module       @relation(fields: [moduleId], references: [id])
+  metasSession    MetasSession?
+  status          String
+  users           User[]       @relation("UserSessions")
 }
 
 model MetasSession {
@@ -61,3 +74,5 @@ model MetasSession {
   sessionId             Int      @unique
   session               Session  @relation(fields: [sessionId], references: [id])
 }
+
+

@@ -324,9 +324,9 @@ export default function AddSession({setOpen, id, nom}){
                 <span onClick={() => setOpen({ id:id, type:'sessions', nom: nom })} className={styles.Back}>Retour aux sessions</span>
             </div>
             <div className="flex aligncenter space-between w100">
-                <span className={`${styles.Title} w60`}>Ajouter une session pour le module :<br />{nom}</span>
+                <span className={`${styles.Title} w70`}>Ajouter une session pour le module :<br />{nom}</span>
                 <button onClick={saveModifs} className="btn__normal btn__dark w23">Enregistrer la session</button>
-                <button className="btn__normal btn__dark w15">Publier</button>
+                {/* <button className="btn__normal btn__dark w15">Publier</button> */}
             </div>
             <div>
                 <span className={styles.Subtitle}>Informations principales</span>

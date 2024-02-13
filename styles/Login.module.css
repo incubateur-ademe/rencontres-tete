@@ -23,3 +23,24 @@
     border-radius: 18px;
     margin:30px 0;
 }
+
+.Success{
+    line-height: 1.5em;
+}
+
+.Success strong{
+    font-weight: 500;
+}
+
+.SuccessIcon{
+    display: flex !important;
+    margin-inline:auto;
+    margin-bottom:20px;
+    justify-content: center;
+    align-items: center;
+    width:50px;
+    height: 50px;
+    color:var(--primary);
+    background-color: var(--primaryBack);
+    border-radius: 50%;
+}

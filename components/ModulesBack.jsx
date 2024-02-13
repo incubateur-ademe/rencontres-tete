@@ -41,7 +41,7 @@ export default function ModulesBack({date, lastUpdate, category, title, id, setO
                             <span className="material-icons">delete</span>
                         </button>
                         <button onClick={() => setOpen({ id: id, type: 'edit', model: 'module' })} className={styles.Register}>Modifier</button>
-                        <button onClick={() => setOpen({ id: id, type: 'sessions', model: 'session', nom: title })} className={styles.Register}>Sessions</button>
+                        <button onClick={() => setOpen({ id: id, type: 'sessions', model: 'session', nom: title })} className={styles.Register}>Voir les sessions</button>
                     </div>
                 </div>
             </div>

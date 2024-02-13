@@ -1,13 +1,37 @@
 import Link from 'next/link'
 import Head from 'next/head'
+import nextCookies from 'next-cookies';
+import Cookies from 'js-cookie';
+import { verifyToken } from '@/utils/auth';
 import { useState, useEffect } from 'react'
 import Rencontres from '/components/Rencontres'
 import Profil from '@/components/Profil'
 import styles from '@/styles/Account.module.css'
 
-export default function Account(){
+export async function getServerSideProps(context) {
+    const { auth: token } = nextCookies(context);
+    const user = verifyToken(token);
+  
+    if (!user) {
+      return {
+        redirect: {
+          destination: '/connexion',
+          permanent: false,
+        },
+      };
+    }
+  
+    return { props: { user } };
+}
+
+export default function Account({ user }){
 
     const [page, setPage] = useState(0)
+
+    const logout = async () => {
+        const unlog = await fetch('/api/logout')
+        window.location.href = "/"
+    }
 
     return (
         <div className={styles.Account}>
@@ -23,7 +47,7 @@ export default function Account(){
                                 <ul>
                                     <li onClick={() => {setPage(0)}}><span className={page == 0 ? styles.active : undefined}>Mes rencontres</span></li>
                                     <li onClick={() => {setPage(1)}}><span className={page == 1 ? styles.active : undefined}>Mon profil</span></li>
-                                    <li onClick={() => window.location.href = '/'}><span className={page == 2 ? styles.active : undefined}>Déconnexion</span></li>
+                                    <li onClick={logout}><span className={page == 2 ? styles.active : undefined}>Déconnexion</span></li>
                                 </ul>
                             </div>
                             <div className="w80">
