@@ -1,17 +1,16 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import styles from '@/styles/ModuleBack.module.css'
+import styles from '@/styles/SessionsBack.module.css'
 
-export default function ModulesBack({date, category, title, id, setOpen, setAlert, action}){
+export default function SessionsBack({date, region, title, id, setOpen, setAlert, action}){
     return (
         <>
             <div className={styles.SessionBox}>
                 <div className="flex aligncenter space-between">
                     <div className="flex aligncenter gap15">
-                        <span className={styles.Date}>Publié le {date}</span>
-                        <span className={styles.Region}>{category}</span>
+                        <span className={styles.Date}>{date}</span>
                     </div>
-                    <span className={styles.LastMaj}>Date de dernière mise à jour : 21/10/2023</span>
+                    <span className={styles.Region}>{region}</span>
                 </div>
                 <div className="flex alignend space-between gap40 mTop20 w100">
                     <div className="w50">
@@ -21,15 +20,24 @@ export default function ModulesBack({date, category, title, id, setOpen, setAler
                         <button 
                             onClick={() => setAlert({
                                 icon: 'warning',
-                                text: 'Êtes-vous sûr de vouloir supprimer ce module ?',
+                                text: 'Êtes-vous sûr de vouloir supprimer cette session ?',
                                 action: action,
                                 setAlert: setAlert
                             })}
                             className={styles.Corb}>
                             <span className="material-icons">delete</span>
                         </button>
-                        <button onClick={() => setOpen({ id: id, type: 'edit', model: 'module' })} className={styles.Register}>Modifier</button>
-                        <button onClick={() => setOpen({ id: id, type: 'sessions', model: 'session' })} className={styles.Register}>Sessions</button>
+                        <button onClick={() => setOpen({ id: id, type: 'edit', model: 'session' })} className={styles.Register}>Modifier la session</button>
+                        <button  
+                            onClick={() => setAlert({
+                                icon: 'warning',
+                                text: 'Êtes-vous sûr de vouloir publier cette session ?',
+                                action: action,
+                                setAlert: setAlert
+                            })}
+                            className={styles.Register}>
+                            Publier
+                        </button>
                     </div>
                 </div>
             </div>

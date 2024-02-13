@@ -352,3 +352,7 @@ p{
 .ql-container p{
   font-size:1rem !important;
 }
+
+.text-left{
+  text-align: left;
+}

@@ -1,16 +1,13 @@
 import { useState, useEffect } from 'react'
 import Alert from '@/components/Alert'
-import ModulesBack from '@/components/ModulesBack'
+import SessionsBack from '@/components/SessionsBack'
 import EditModule from '@/components/EditModule'
-import EditSession from '@/components/EditSession'
 import AddModule from '@/components/AddModule'
-import AddSession from '@/components/AddSession'
-import SessionsModule from '@/components/SessionsModule'
 import styles from '@/styles/Admin.module.css'
 
-export default function Modules(){
+export default function SessionsModule({ id, setOpen, open }){
 
-    const [open, setOpen] = useState(null)
+    const [nav, setNav] = useState(0)
     const [alert, setAlert] = useState(null)
     const [notif, setNotif] = useState(null)
 
@@ -19,35 +16,23 @@ export default function Modules(){
         setAlert(null)
     }
 
-    console.log(open)
-
     return (
         <>
             {open == null ? (
                 <>
-                    <div className="flex aligncenter space-between w100 gap40">
-                        <span className={`${styles.Title} w65`}>Tous les modules</span>
-                        <button onClick={() => setOpen({ type: 'add' })} className="btn__normal btn__dark">Ajouter un nouveau module</button>
+                    <div className="flex aligncenter space-between w100 gap40 mBot15">
+                        <span className={`${styles.Title} w65`}>Toutes les sessions pour le module :<br />Énergie, eau et assainissement</span>
+                        <button onClick={() => setOpen({ type: 'add' })} className="btn__normal btn__dark">Ajouter une session</button>
                     </div>
-                    <div className="flex gap20 mTop30">
-                        <div className="select w50">
-                            <select className="input-select">
-                                <option>Filtrer par pilier</option>
-                            </select>
-                            <span className="material-icons">expand_more</span>
-                        </div>
-                        <div className="select w50">
-                            <select className="input-select">
-                                <option>Trier par date de publication</option>
-                            </select>
-                            <span className="material-icons">expand_more</span>
-                        </div>
+                    <div className={styles.Menu}>
+                        <button onClick={() => {setNav(0)}} className={nav == 0 ? styles.active : undefined}>Sessions programmées</button>
+                        <button onClick={() => {setNav(1)}} className={nav == 1 ? styles.active : undefined}>Sessions passées</button>
                     </div>
                     <div className="mTop30">
                         <div className="w100 mBot10">
-                            <ModulesBack 
+                            <SessionsBack 
                                 date="21/02/2024"
-                                category="Climat Air Énergie"
+                                region="Grand Est"
                                 title="Énergie, eau et assainissement"
                                 id="123"
                                 setOpen={setOpen}
@@ -56,9 +41,9 @@ export default function Modules(){
                             />
                         </div>  
                         <div className="w100 mBot10">
-                            <ModulesBack 
+                            <SessionsBack 
                                 date="21/02/2024"
-                                category="Climat Air Énergie"
+                                region="Grand Est"
                                 title="Énergie, eau et assainissement"
                                 id="123"
                                 setOpen={setOpen}
@@ -67,9 +52,9 @@ export default function Modules(){
                             />
                         </div>  
                         <div className="w100 mBot10">
-                            <ModulesBack 
+                            <SessionsBack 
                                 date="21/02/2024"
-                                category="Climat Air Énergie"
+                                region="Grand Est"
                                 title="Énergie, eau et assainissement"
                                 id="123"
                                 setOpen={setOpen}
@@ -78,9 +63,9 @@ export default function Modules(){
                             />
                         </div>  
                         <div className="w100 mBot10">
-                            <ModulesBack 
+                            <SessionsBack 
                                 date="21/02/2024"
-                                category="Climat Air Énergie"
+                                region="Grand Est"
                                 title="Énergie, eau et assainissement"
                                 id="123"
                                 setOpen={setOpen}
@@ -93,31 +78,18 @@ export default function Modules(){
             ) : (
                 <>  
                     {open.type == 'edit' && (
-                        <>
-                            {open.model == 'module' ? (
-                                <EditModule setOpen={setOpen} id={open.id} />
-                            ) : (
-                                <EditSession setOpen={setOpen} id={open.id} />
-                            )}
-                            
+                        <>  
+                            <EditModule setOpen={setOpen} />
                         </>
                     )}
                     {open.type == 'add' && (
-                        <>
-                            {open.model == 'module' ? (
-                                <AddModule setOpen={setOpen} id={open.id} />
-                            ) : (
-                                <AddSession setOpen={setOpen} id={open.id} />
-                            )}  
-                            
+                        <>  
+                            <AddModule setOpen={setOpen} />
                         </>
                     )}
                     {open.type == 'sessions' && (
                         <>  
-                            <div className="mBot30">
-                                <span onClick={() => setOpen(null)} className={styles.Back}>Retour aux modules</span>
-                            </div>
-                            <SessionsModule setOpen={setOpen} id={open.id} />
+                            Toutes les sessions
                         </>
                     )}
                 </>

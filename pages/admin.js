@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { useState, uesEffect } from 'react'
 import Modules from '@/components/Modules'
+import Sessions from '@/components/Sessions'
 import styles from '@/styles/Admin.module.css'
 
 export default function Admin(){
@@ -21,7 +22,7 @@ export default function Admin(){
                                 <div className={`w20 ${styles.Sidebar}`}>
                                     <ul>
                                         <li onClick={() => {setPage(0)}}><span className={page == 0 ? styles.active : undefined}>Modules</span></li>
-                                        <li onClick={() => {setPage(1)}}><span className={page == 1 ? styles.active : undefined}>Sessions</span></li>
+                                        {/* <li onClick={() => {setPage(1)}}><span className={page == 1 ? styles.active : undefined}>Sessions</span></li> */}
                                         <li onClick={() => window.location.href = '/'}><span className={page == 2 ? styles.active : undefined}>Déconnexion</span></li>
                                     </ul>
                                 </div>
@@ -29,6 +30,9 @@ export default function Admin(){
                                     <div className={styles.Dash}>
                                         {page == 0 && (
                                             <Modules />
+                                        )}
+                                        {page == 1 && (
+                                            <Sessions />
                                         )}
                                     </div>
                                 </div>

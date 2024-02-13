@@ -2,13 +2,10 @@ import { useState, useEffect } from 'react'
 import Alert from '@/components/Alert'
 import ModulesBack from '@/components/ModulesBack'
 import EditModule from '@/components/EditModule'
-import EditSession from '@/components/EditSession'
 import AddModule from '@/components/AddModule'
-import AddSession from '@/components/AddSession'
-import SessionsModule from '@/components/SessionsModule'
 import styles from '@/styles/Admin.module.css'
 
-export default function Modules(){
+export default function Sessions(){
 
     const [open, setOpen] = useState(null)
     const [alert, setAlert] = useState(null)
@@ -19,15 +16,12 @@ export default function Modules(){
         setAlert(null)
     }
 
-    console.log(open)
-
     return (
         <>
             {open == null ? (
                 <>
                     <div className="flex aligncenter space-between w100 gap40">
-                        <span className={`${styles.Title} w65`}>Tous les modules</span>
-                        <button onClick={() => setOpen({ type: 'add' })} className="btn__normal btn__dark">Ajouter un nouveau module</button>
+                        <span className={`${styles.Title} w100`}>Toutes les sessions</span>
                     </div>
                     <div className="flex gap20 mTop30">
                         <div className="select w50">
@@ -93,31 +87,18 @@ export default function Modules(){
             ) : (
                 <>  
                     {open.type == 'edit' && (
-                        <>
-                            {open.model == 'module' ? (
-                                <EditModule setOpen={setOpen} id={open.id} />
-                            ) : (
-                                <EditSession setOpen={setOpen} id={open.id} />
-                            )}
-                            
+                        <>  
+                            <EditModule setOpen={setOpen} />
                         </>
                     )}
                     {open.type == 'add' && (
-                        <>
-                            {open.model == 'module' ? (
-                                <AddModule setOpen={setOpen} id={open.id} />
-                            ) : (
-                                <AddSession setOpen={setOpen} id={open.id} />
-                            )}  
-                            
+                        <>  
+                            <AddModule setOpen={setOpen} />
                         </>
                     )}
                     {open.type == 'sessions' && (
                         <>  
-                            <div className="mBot30">
-                                <span onClick={() => setOpen(null)} className={styles.Back}>Retour aux modules</span>
-                            </div>
-                            <SessionsModule setOpen={setOpen} id={open.id} />
+                            Toutes les sessions
                         </>
                     )}
                 </>
