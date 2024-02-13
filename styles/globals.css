@@ -146,6 +146,16 @@ p{
 
 /* INPUTS */
 
+.input-file{
+  display: none;
+}
+
+.input-file + label{
+  color:var(--primary);
+  text-decoration: underline;
+  cursor:pointer;
+}
+
 .input-text, .input-mail{
   height:45px;
   display: block;
@@ -351,6 +361,20 @@ p{
 
 .ql-container p{
   font-size:1rem !important;
+}
+
+.ql-container h2{
+  color:var(--primary);
+  font-weight: 500;
+  font-size: 1.75rem !important;
+  line-height: 2.5em !important;
+}
+
+.ql-container h3{
+  color:var(--primary);
+  font-weight: 500;
+  font-size: 1.25rem !important;
+  line-height: 3em !important;
 }
 
 .text-left{

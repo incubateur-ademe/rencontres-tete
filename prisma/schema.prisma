@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Module {
+  id              Int           @id @default(autoincrement())
+  datePublication DateTime?
+  lastUpdate      DateTime?
+  nom             String
+  pilier          String
+  thematique      String
+  description     String?
+  sessions        Session[]
+  metasModule     MetasModule?
+}
+
+model MetasModule {
+  id               Int      @id @default(autoincrement())
+  resumeProgramme  String   
+  objectifs        String   
+  duree            String  
+  publicCible      String   
+  tarif            String    
+  programmeModule  Json     
+  moduleId         Int      @unique
+  module           Module   @relation(fields: [moduleId], references: [id])
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  datePublication DateTime?
+  lastUpdate      DateTime?
+  region       String
+  departement  String
+  dateDebut    DateTime
+  moduleId     Int      
+  module       Module   @relation(fields: [moduleId], references: [id])
+  metasSession MetasSession?
+  status  String
+}
+
+model MetasSession {
+  id                    Int      @id @default(autoincrement())
+  dateHoraires          String  
+  lieuRencontre         String
+  nombrePlaces          String
+  infosTransport        String
+  dateLimiteInscription String
+  infosComplementaires  String  
+  intervenants          Json     
+  programmeSession      Json     
+  urlsPDF               Json     
+  sessionId             Int      @unique
+  session               Session  @relation(fields: [sessionId], references: [id])
+}

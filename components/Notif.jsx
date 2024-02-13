@@ -12,7 +12,7 @@ export function Notif({ datas, setNotif }){
     return (
         <>
             <div className={styles.Notif}>
-                <span className="material-icons">done</span>
+                <span className="material-icons">{datas.icon ? datas.icon : 'done'}</span>
                 {datas.text}
             </div>
         </>

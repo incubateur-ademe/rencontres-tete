@@ -2,13 +2,28 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import styles from '@/styles/SessionsBack.module.css'
 
-export default function SessionsBack({date, region, title, id, setOpen, setAlert, action}){
+export default function SessionsBack({date, region, title, id, setOpen, setAlert, action, status}){
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+
+    const startDate = formatDate(date);
+
+    const publish = async () => {
+
+    }
+
     return (
         <>
             <div className={styles.SessionBox}>
                 <div className="flex aligncenter space-between">
                     <div className="flex aligncenter gap15">
-                        <span className={styles.Date}>{date}</span>
+                        <span className={styles.Date}>{startDate}</span>
                     </div>
                     <span className={styles.Region}>{region}</span>
                 </div>
@@ -28,16 +43,18 @@ export default function SessionsBack({date, region, title, id, setOpen, setAlert
                             <span className="material-icons">delete</span>
                         </button>
                         <button onClick={() => setOpen({ id: id, type: 'edit', model: 'session' })} className={styles.Register}>Modifier la session</button>
-                        <button  
-                            onClick={() => setAlert({
-                                icon: 'warning',
-                                text: 'Êtes-vous sûr de vouloir publier cette session ?',
-                                action: action,
-                                setAlert: setAlert
-                            })}
-                            className={styles.Register}>
-                            Publier
-                        </button>
+                        {status == 'brouillon' && (
+                            <button  
+                                onClick={() => setAlert({
+                                    icon: 'warning',
+                                    text: 'Êtes-vous sûr de vouloir publier cette session ?',
+                                    action: publish,
+                                    setAlert: setAlert
+                                })}
+                                className={styles.Register}>
+                                Publier
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
