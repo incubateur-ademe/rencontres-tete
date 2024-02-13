@@ -79,7 +79,6 @@ export default function Modules(){
         getModules(currentPilier, currentTri)
     }, [open, actions])
 
-    console.log(open)
 
     return (
         <>
@@ -139,7 +138,7 @@ export default function Modules(){
                             {open.model == 'module' ? (
                                 <EditModule setOpen={setOpen} id={open.id} />
                             ) : (
-                                <EditSession setOpen={setOpen} id={open.id} />
+                                <EditSession setOpen={setOpen} id={open.id} nom={open.nom} />
                             )}
                             
                         </>
@@ -149,7 +148,7 @@ export default function Modules(){
                             {open.model == 'module' ? (
                                 <AddModule setOpen={setOpen} id={open.id} />
                             ) : (
-                                <AddSession setOpen={setOpen} id={open.id} name={open.nom} />
+                                <AddSession setOpen={setOpen} id={open.id} nom={open.nom} />
                             )}  
                             
                         </>
@@ -159,7 +158,7 @@ export default function Modules(){
                             <div className="mBot30">
                                 <span onClick={() => setOpen(null)} className={styles.Back}>Retour aux modules</span>
                             </div>
-                            <SessionsModule setOpen={setOpen} id={open.id} name={open.nom} />
+                            <SessionsModule setOpen={setOpen} id={open.id} nom={open.nom} />
                         </>
                     )}
                 </>

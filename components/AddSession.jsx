@@ -306,7 +306,7 @@ export default function AddSession({setOpen, id, nom}){
                 text: 'Session ajoutée !',
                 icon: 'done'
             })
-            setOpen({ type: 'sessions', id: id, name: nom })
+            setOpen({ type: 'sessions', id: id, nom: nom })
         }
         else{
             setNotif({
@@ -316,13 +316,15 @@ export default function AddSession({setOpen, id, nom}){
         }
     }
 
+    
+
     return (
         <>
             <div className="mBot30">
-                <span onClick={() => setOpen({ id:id, type:'sessions', name: name })} className={styles.Back}>Retour aux sessions</span>
+                <span onClick={() => setOpen({ id:id, type:'sessions', nom: nom })} className={styles.Back}>Retour aux sessions</span>
             </div>
             <div className="flex aligncenter space-between w100">
-                <span className={`${styles.Title} w60`}>Ajouter une session pour le module :<br />{name}</span>
+                <span className={`${styles.Title} w60`}>Ajouter une session pour le module :<br />{nom}</span>
                 <button onClick={saveModifs} className="btn__normal btn__dark w23">Enregistrer la session</button>
                 <button className="btn__normal btn__dark w15">Publier</button>
             </div>

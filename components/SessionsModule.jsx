@@ -5,20 +5,21 @@ import EditModule from '@/components/EditModule'
 import AddModule from '@/components/AddModule'
 import styles from '@/styles/Admin.module.css'
 
-export default function SessionsModule({ id, setOpen, open, name }){
+export default function SessionsModule({ id, setOpen, open, nom }){
 
     const [nav, setNav] = useState(0)
     const [alert, setAlert] = useState(null)
     const [notif, setNotif] = useState(null)
     const [sessions, setSessions] = useState([])
     const [passed, setPassed] = useState('upcoming')
+    const [actions, setActions] = useState(0)
     const moduleId = id
 
     const getSessions = async (passed) => {
         let url = '/api/sessions/?id='+moduleId;
 
         if (passed) {
-            url += `passed=${encodeURIComponent(passed)}`;
+            url += `&passed=${encodeURIComponent(passed)}`;
         }
         
         const fetcher = await fetch(url)
@@ -27,22 +28,38 @@ export default function SessionsModule({ id, setOpen, open, name }){
     }
     
 
-    const deleteSession = () => {
-        console.log('deleted')
-        setAlert(null)
+    const deleteSession = async (sessionId) => {
+        try {
+            const response = await fetch(`/api/sessions/delete/?id=${sessionId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
+            }
+    
+            const result = await response.json();
+            setAlert(null)
+            setActions(prev => prev+1)
+        } catch (error) {
+            console.error('Erreur lors de la suppression de la session:', error.message);
+        }
+        
     }
-
     useEffect(() => {
         getSessions(passed)
-    }, [passed])
+    }, [passed, actions])
 
     return (
         <>
             {open == null ? (
                 <>
                     <div className="flex aligncenter space-between w100 gap40 mBot15">
-                        <span className={`${styles.Title} w65`}>Toutes les sessions pour le module :<br />{name}</span>
-                        <button onClick={() => setOpen({ type: 'add', model: 'session', nom: name, id: id })} className="btn__normal btn__dark">Ajouter une session</button>
+                        <span className={`${styles.Title} w65`}>Toutes les sessions pour le module :<br />{nom}</span>
+                        <button onClick={() => setOpen({ type: 'add', model: 'session', nom: nom, id: id })} className="btn__normal btn__dark">Ajouter une session</button>
                     </div>
                     <div className={styles.Menu}>
                         <button onClick={() => {setNav(0);setPassed('upcoming')}} className={nav == 0 ? styles.active : undefined}>Sessions programmées</button>
@@ -56,12 +73,13 @@ export default function SessionsModule({ id, setOpen, open, name }){
                                         <SessionsBack 
                                             date={session.dateDebut}
                                             region={session.region}
-                                            title={name}
+                                            title={nom}
                                             id={session.id}
                                             setOpen={setOpen}
                                             setAlert={setAlert}
                                             action={() => deleteSession(session.id)}
                                             status={session.status}
+                                            setActions={setActions}
                                         />
                                     </div>                                     
                                 )

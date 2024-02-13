@@ -16,11 +16,11 @@ export default async function handle(req, res) {
 
   // Ajoute une condition basée sur si la session est passée ou à venir
   if (passed === 'old') {
-    queryOptions.where.date = {
+    queryOptions.where.dateDebut = {
       lt: new Date(), // 'lt' signifie 'less than' (inférieur à)
     };
   } else if (passed === 'upcoming') {
-    queryOptions.where.date = {
+    queryOptions.where.dateDebut = {
       gte: new Date(), // 'gte' signifie 'greater than or equal' (supérieur ou égal à)
     };
   }
