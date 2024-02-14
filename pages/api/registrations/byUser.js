@@ -1,13 +1,39 @@
 import prisma from '@/prisma';
 
 export default async function handle(req, res) {
-  const { userId } = req.query;
+  const { userId, status } = req.query;
+
+  let dateCondition = {};
+  let now = new Date()
+
+//   if(status){
+//     // ajouter conditions si session.dateDebut < now ou non
+//     if(status == 'upcoming'){
+//         dateCondition = {
+//             dateDebut: {
+//                 gt: now,
+//             },
+//         };
+//     }
+//     if(status == 'old'){
+//         dateCondition = {
+//             dateDebut: {
+//                 lt: now,
+//             },
+//         };
+//     }
+//   }
 
   let queryOptions = {
     where: {
-        userId: parseInt(userId)
+        userId: parseInt(userId),
     },
-    // orderBy: tri ? [{ id: tri }] : [],
+    include: {
+        // user: true,
+        session: {
+            where: true
+        }
+    },
   };
 
 

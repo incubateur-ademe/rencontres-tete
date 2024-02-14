@@ -12,7 +12,7 @@ export default function Rencontres({ user }){
     const [status, setStatus] = useState('upcoming')
 
     const getUserSessions = async () => {
-        const fetcher = await fetch(`/api/userSessions/?userId=${user.id}&status=${status}`)
+        const fetcher = await fetch(`/api/registrations/byUser/?userId=${user.id}&status=${status}`)
         const json = await fetcher.json()
         setRencontres(json)
     }
