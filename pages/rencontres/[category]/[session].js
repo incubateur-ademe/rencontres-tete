@@ -1,31 +1,226 @@
 import Link from 'next/link'
 import Head from 'next/head'
+import Team from '@/components/Team'
+import ProgItem from '@/components/ProgItem'
+import Alert from '@/components/Alert'
+import { Notif } from '@/components/Notif'
 import { useState, useEffect } from 'react'
+import nextCookies from 'next-cookies';
+import { verifyToken } from '@/utils/auth';
 import styles from '@/styles/Session.module.css'
 
-export default function Session(){
+export async function getServerSideProps(context) {
+    const { category, session } = context.query;
+
+    const { auth: token } = nextCookies(context);
+    const user = verifyToken(token);
+  
+    if (!user) {
+      return {
+        redirect: {
+          destination: '/connexion',
+          permanent: false,
+        },
+      };
+    }
+
+    const getData = await fetch(`http://localhost:3000/api/sessions/slug?module_slug=${category}&session=${session}`)
+    const json = await getData.json()
+
+    if(json.length > 0){
+        let data = json[0]
+        return {
+            props: { data, user }
+        }
+    }
+    else{
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            }
+        }
+    }
+}
+
+export default function Session({ data, user }){
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+
+    const [alert, setAlert] = useState(null)
+    const [notif, setNotif] = useState(null)
+
+    const [inscription, setInscription] = useState({
+        userId: '',
+        civilite: '',
+        nom: '',
+        prenom: '',
+        mail: '',
+        structure: '',
+        fonction: '',
+        type_fonction: '',
+        ville: '',
+        pays: '',
+        telephone: '',
+        transport: '',
+        besoins: '',
+        hebergement: '',
+        repas: false,
+        covoit: false,
+        rgpd: false
+    })
+
+    const handleChange = (event) => {
+        const { name, type, value, checked } = event.target
+        setInscription(prev => {
+            return {
+                ...prev,
+                [name]: type == 'checkbox' ? checked : (value == 'false' ? false : value == 'true' ? true : value)
+            }
+        })
+    }
+
+    const registerUser = async () => {
+        let inscriptionData = {
+            civilite: inscription.civilite,
+            mail: inscription.mail,
+            nom: inscription.nom,
+            prenom: inscription.prenom,
+            structure: inscription.structure,
+            fonction: inscription.fonction,
+            typeFonction: inscription.type_fonction,
+            ville: inscription.ville,
+            pays: inscription.pays,
+            telephone: inscription.telephone,
+            transport: inscription.transport,
+            repas: inscription.repas,
+            covoit: inscription.covoit
+        }
+
+        const registering = await fetch('/api/registrations/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                inscriptionData: inscriptionData,
+                userId: inscription.userId,
+                sessionId: data.id
+            })
+        })
+
+        const json = await registering.json()
+        console.log(json)
+
+        setAlert(null)
+        setNotif({
+            text: 'Votre inscription a bien été prise en compte !',
+            icon: 'done'
+        }) 
+        setInscription({
+            userId: '',
+            civilite: '',
+            nom: '',
+            prenom: '',
+            mail: '',
+            structure: '',
+            fonction: '',
+            type_fonction: '',
+            ville: '',
+            pays: '',
+            telephone: '',
+            transport: '',
+            besoins: '',
+            hebergement: '',
+            repas: false,
+            covoit: false,
+            rgpd: false
+        })
+    }
+
+    const register = async () => {
+        const { civilite, nom, prenom, mail, structure, fonction, type_fonction, ville, pays, telephone, transport, besoins, hebergement, repas, covoit, rgpd } = inscription
+        if(civilite && nom && prenom && mail && structure && fonction && type_fonction && pays && transport && hebergement){
+            if(rgpd){
+                if(mail.includes('@') && mail.includes('.')){
+                    setAlert({
+                        icon: 'warning',
+                        text: 'Êtes-vous sûr de vouloir participer à cette session ?',
+                        // Supposons que `action` sera appelé si l'utilisateur confirme
+                        action: () => registerUser()
+                    })
+                }
+                else{
+                    setNotif({
+                        text: 'Verifiez votre adresse e-mail',
+                        icon: 'close'
+                    })                        
+                }
+            }
+            else{
+                setNotif({
+                    text: 'Veuillez accepter les conditions d\'utilisation',
+                    icon: 'close'
+                })                
+            }
+        }
+        else{
+            setNotif({
+                text: 'Veuillez remplir tous les champs',
+                icon: 'close'
+            })
+        }
+    }
+
+    useEffect(() => {
+        const getUserInfo = async () => {
+            const fetcher = await fetch(`/api/users/${user.id}`)
+            const json = await fetcher.json()
+            let userDetail = await json[0]
+            setInscription(prev => {
+                return {
+                    ...prev,
+                    userId: userDetail.id,
+                    nom: userDetail.nom,
+                    prenom: userDetail.prenom,
+                    mail: userDetail.mail,
+                    telephone: userDetail.telephone,
+                    fonction:userDetail.fonction
+                }
+            })
+        }
+        getUserInfo()
+
+    }, [])
+
     return (
         <>
             <Head>
-                <title>ADEME | Session du 21/02/2024</title>
+                <title>{data.module.nom} | Session du {formatDate(data.dateDebut)} - {data.region}</title>
             </Head>
             <div className={styles.Session}>
                 <div className="section">
                     <div className="boxed">
                         <div className={styles.Header}>
-                            <h1>21/02/2024 : Énergie, eau et assainissement</h1>
+                            <h1>{formatDate(data.dateDebut)} : {data.module.nom}</h1>
                             <p className={styles.Breadcrump}>
                                 <Link href="/">Accueil</Link> /
                                 <Link href="/rencontres">Toutes les rencontres</Link> /
-                                <Link href="/rencontres/energie-eau-assainissement">Énergie, eau et assainissement</Link> /
-                                <span>Rencontre du 21/02/2024</span>
+                                <Link href={`/rencontres/${data.module.slug}`}>Énergie, eau et assainissement</Link> /
+                                <span>Rencontre du {formatDate(data.dateDebut)}</span>
                             </p>
                             <div className="flex aligncenter gap10">
-                                <span className={styles.Region}>Grand Est</span>
-                                <span className={styles.Tag}>Énergie, eau et assainissement</span>
+                                <span className={styles.Region}>{data.region}</span>
+                                <span className={styles.Tag}>{data.module.nom}</span>
                             </div>                            
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vel mauris eget risus laoreet maximus. Nulla facilisi. Nulla suscipit iaculis diam, ac ultricies mauris fringilla at. Pellentesque neque nunc, dapibus in mollis in, vulputate dictum dolor. Pellentesque augue orci, volutpat eget suscipit ac, interdum eu libero. Vestibulum arcu lectus, rutrum sit amet vestibulum quis, ornare id nibh. Aenean vehicula, nulla eget malesuada laoreet, tellus lacus blandit lectus, nec tincidunt quam mi eu felis nec tincidunt quam mi eu felis nec tincidunt quam mi eu felis nec tincidunt quam mi eu felis.</p>
-                            <p>Code module : #123456 - Dernière mise à jour : 06/02/2024</p>
+                            <p>{data.module.description}</p>
+                            <p>Code module : #{data.moduleId} - Dernière mise à jour : {formatDate(data.lastUpdate)}</p>
                         </div>
                         <div className="flex alignstart gap40 mTop40">
                             <div className={`w70 ${styles.Box}`}>
@@ -33,18 +228,21 @@ export default function Session(){
                                 <div className={styles.Form}>
                                     <div className="flex gap15 mTop20">
                                         <div className="select w20">
-                                            <select className="input-select">
+                                            <select name="civilite" onChange={handleChange} value={inscription.civilite} className="input-select">
                                                 <option>Civilité</option>
+                                                <option>Monsieur</option>
+                                                <option>Madame</option>
+                                                <option>Ne se prononce pas</option>
                                             </select>
                                             <span className="material-icons">expand_more</span>
                                         </div>
-                                        <input type="text" className="input-text w50" placeholder="Nom*" />
-                                        <input type="text" className="input-text w50" placeholder="Prénom*" />
+                                        <input name="nom" onChange={handleChange} value={inscription.nom} type="text" className="input-text w50" placeholder="Nom*" />
+                                        <input name="prenom" onChange={handleChange} value={inscription.prenom} type="text" className="input-text w50" placeholder="Prénom*" />
                                     </div>
                                     <div className="flex gap15 mTop20">
-                                        <input type="text" className="input-mail w50" placeholder="Adresse email professionnelle*" />
+                                        <input type="mail" name="mail" onChange={handleChange} value={inscription.mail} className="input-mail w50" placeholder="Adresse email professionnelle*" />
                                         <div className="select w50">
-                                            <select className="input-select">
+                                            <select name="structure" onChange={handleChange} value={inscription.structure} className="input-select">
                                                 <option>Structure / Organisme</option>
                                                 <option>Collectivité territoriale</option>
                                                 <option>Bureau d'études ou de conseil</option>
@@ -53,9 +251,9 @@ export default function Session(){
                                         </div>
                                     </div>
                                     <div className="flex gap15 mTop20">
-                                        <input type="text" className="input-text w50" placeholder="Fonction" />
+                                        <input name="fonction" onChange={handleChange} value={inscription.fonction} type="text" className="input-text w50" placeholder="Fonction" />
                                         <div className="select w50">
-                                            <select className="input-select">
+                                            <select name="type_fonction" onChange={handleChange} value={inscription.type_fonction} className="input-select">
                                                 <option>Type de fonction</option>
                                                 <option>Chargé.e de mission</option>
                                                 <option>Directeur.rice ou chef.fe</option>
@@ -66,26 +264,29 @@ export default function Session(){
                                         </div>
                                     </div>
                                     <div className="flex gap15 mTop20 mBot30">
-                                        <input type="text" className="input-text w50" placeholder="Ville de résidence" />
+                                        <input name="ville" onChange={handleChange} value={inscription.ville} type="text" className="input-text w50" placeholder="Ville de résidence" />
                                         <div className="select w50">
-                                            <select className="input-select">
+                                            <select name="pays" onChange={handleChange} value={inscription.pays} className="input-select">
                                                 <option>Pays</option>
+                                                <option>France</option>
                                             </select>
                                             <span className="material-icons">expand_more</span>
                                         </div>
-                                        <input type="text" className="input-text" placeholder="Numéro de téléphone" />
+                                        <input name="telephone" onChange={handleChange} value={inscription.telephone} type="text" className="input-text" placeholder="Numéro de téléphone" />
                                     </div>
                                     <span className={styles.Title}>Collecte de données pour le calcul du bilan carbone</span>
                                     <div className="select w100 mTop20 mBot20">
-                                        <select className="input-select">
+                                        <select name="transport" onChange={handleChange} value={inscription.transport} className="input-select">
                                             <option>Mode de transport principal pour vous rendre à l'événement :*</option>
+                                            <option>Bus</option>
                                         </select>
                                         <span className="material-icons">expand_more</span>
                                     </div>
                                     <input type="text" className="input-text" placeholder="Avez-vous des besoins spécifiques pour accéder au lieu de la rencontre ?" />
                                     <div className="select w100 mTop20 mBot30">
-                                        <select className="input-select">
+                                        <select name="hebergement" onChange={handleChange} value={inscription.hebergement} className="input-select">
                                             <option>Votre type d'hébergement*</option>
+                                            <option>Hôtel</option>
                                         </select>
                                         <span className="material-icons">expand_more</span>
                                     </div>
@@ -95,28 +296,25 @@ export default function Session(){
                                         <div className="w50">
                                             <span className={styles.Title}>Souhaitez-vous déjeuner sur place ?</span>
                                             <div className="flex aligncenter gap10 mTop10">
-                                                <input type="radio" /> Oui
-                                                <input type="radio" /> Non
+                                                <input name="repas" onChange={handleChange} value="true" type="radio" /> Oui
+                                                <input name="repas" onChange={handleChange} value="false" type="radio" /> Non
                                             </div>
                                         </div>
                                         <div className="w50">
                                             <span className={styles.Title}>Souhaitez-vous covoiturer ?</span>
                                             <div className="flex aligncenter gap10 mTop10">
-                                                <input type="radio" /> Oui
-                                                <input type="radio" /> Non
+                                                <input name="covoit" onChange={handleChange} value="true" type="radio" /> Oui
+                                                <input name="covoit" onChange={handleChange} value="false" type="radio" /> Non
                                             </div>
                                         </div>
                                     </div>
                                     <div className="mBot30">
-                                        <div className="checkbox mBot20">
-                                            <input type="checkbox" /> <span>J’accepte de recevoir des actualités de l’ADEME. Vous pourrez vous désabonner à tout moment via le lien de désinscription en bas de nos e-mails.</span>
-                                        </div>
                                         <div className="checkbox">
-                                            <input type="checkbox" /> <span>J’ai lu et j’accepte que l’ADEME collecte mes données afin de garantir la bonne utilisation des services offerts*et reconnais avoir pris connaissance de sa politique de protection des données personnelles.</span>
+                                            <input name="rgpd" onChange={handleChange} value={inscription.rgpd} type="checkbox" /> <span>J’ai lu et j’accepte que l’ADEME collecte mes données afin de garantir la bonne utilisation des services offerts*et reconnais avoir pris connaissance de sa politique de protection des données personnelles.</span>
                                         </div>
                                     </div>
                                     <div className="flex alignright">
-                                        <button className="btn__normal btn__dark">
+                                        <button onClick={register} className="btn__normal btn__dark">
                                             Valider mon inscription
                                         </button>
                                     </div>
@@ -131,7 +329,7 @@ export default function Session(){
                                         </div>
                                         <div className="w80">
                                             <span className={styles.dLabel}>Date et horaires :</span>
-                                            <span className={styles.dValue}>21/02/2024 à 9h00</span>
+                                            <span className={styles.dValue}>{formatDate(data.metasSession.dateHoraires)}</span>
                                         </div>
                                     </div>
                                     <div className="flex alignstart gap10 mTop20">
@@ -140,7 +338,7 @@ export default function Session(){
                                         </div>
                                         <div className="w80">
                                             <span className={styles.dLabel}>Date limite d'inscription :</span>
-                                            <span className={styles.dValue}>21/02/2024 à 9h00</span>
+                                            <span className={styles.dValue}>{formatDate(data.metasSession.dateLimiteInscription)}</span>
                                         </div>
                                     </div>
                                     <div className="flex alignstart gap10 mTop20">
@@ -149,7 +347,7 @@ export default function Session(){
                                         </div>
                                         <div className="w80">
                                             <span className={styles.dLabel}>Lieu de la rencontre :</span>
-                                            <span className={styles.dValue}>2 Passage de l'Hôtel de ville, 68100 MULHOUSE</span>
+                                            <span className={styles.dValue}>{data.metasSession.lieuRencontre}</span>
                                         </div>
                                     </div>
                                     <div className="flex alignstart gap10 mTop20">
@@ -158,7 +356,7 @@ export default function Session(){
                                         </div>
                                         <div className="w80">
                                             <span className={styles.dLabel}>Nombre de places :</span>
-                                            <span className={styles.dValue}>50 personnes</span>
+                                            <span className={styles.dValue}>{data.metasSession.nombrePlaces}</span>
                                         </div>
                                     </div>
                                     <div className="flex alignstart gap10 mTop20">
@@ -167,7 +365,7 @@ export default function Session(){
                                         </div>
                                         <div className="w80">
                                             <span className={styles.dLabel}>Pour venir :</span>
-                                            <span className={styles.dValue}>Bus, Tram, Vélo</span>
+                                            <span className={styles.dValue}>{data.metasSession.infosTransport}</span>
                                         </div>
                                     </div>
                                     <div className="flex alignstart gap10 mTop20">
@@ -176,16 +374,8 @@ export default function Session(){
                                         </div>
                                         <div className="w80">
                                             <span className={styles.dLabel}>Infos complémentaires :</span>
-                                            <span className={styles.dValue}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pulvinar justo nec lorem viverra imperdiet.</span>
+                                            <span className={styles.dValue}>{data.metasSession.infosComplementaires}</span>
                                         </div>
-                                    </div>
-                                </div>
-                                <div className={`${styles.Box} mTop40`}>
-                                    <span className={styles.Title}>Accès rapide</span>
-                                    <div className="mTop20">
-                                        <Link href="/connexion" className="btn__normal btn__dark w100 text-center">Se connecter</Link>
-                                        <Link href="/inscription" className="btn__normal btn__orange w100 text-center mTop10">Créer un compte</Link>
-                                        <Link href="/rencontres/energie-eau-assainissement" className="btn__normal btn__light w100 text-center mTop10">Retourner au module</Link>
                                     </div>
                                 </div>
                             </div>
@@ -193,6 +383,53 @@ export default function Session(){
                     </div>
                 </div>
             </div>
+            <div className="section">
+                <div className="boxed">
+                    <h2>Équipe pédagogique</h2>
+                    {data.metasSession.intervenants.length > 0 ? (
+                        <div className="flex wrap gap25 mTop40">
+                            {data.metasSession.intervenants.map((inter, index) => {
+                                return (
+                                    <div key={index} className="w32">
+                                        <Team
+                                            img="/medias/user.png"
+                                            name={inter.nom}
+                                            description={inter.fonction}
+                                        />
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    ) : (
+                        <span>À venir.</span>
+                    )}
+                </div>
+            </div>
+            <div className="section blued">
+                <div className="boxed">
+                    <h2>Découvrez le programme de la session</h2>
+                    <div className="flex wrap gap25 mTop40">
+                        {data.metasSession.programmeSession.map((programme, index) => {
+                            return (
+                                <div key={index} className="w23">
+                                    <ProgItem
+                                        type={programme.horaires}
+                                        title={programme.titre}
+                                        description={programme.description}
+                                    />
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
+            </div>
+
+            {alert != null && (
+                <Alert datas={alert} setAlert={setAlert} />
+            )}  
+            {notif != null && (
+                <Notif datas={notif} setNotif={setNotif} />
+            )}
         </>
     )
 }

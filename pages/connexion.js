@@ -10,6 +10,7 @@ export default function Login(){
     const [resetPass, setResetPass] = useState(false)
     const [notif, setNotif] = useState(null)
     const [userLogin, setUserLogin] = useState({ mail: '', motDePasse: '' })
+    const [lostMail, setLostMail] = useState('')
     const router = useRouter();
 
     const handleChange = async (event) => {
@@ -57,6 +58,40 @@ export default function Login(){
             });
         }
     };
+
+    const forgetPassword = async () => {
+        if(lostMail){
+            if(lostMail.includes("@") && lostMail.includes(".")){
+                const fetcher = await fetch('/api/users/lib/forgot-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ mail: lostMail })
+                })
+                const json = await fetcher.json()
+                if(json){
+                    setNotif({
+                        text: 'Un e-mail avec votre nouveau mot de passe vous a été envoyé !',
+                        icon: 'done'
+                    });  
+                    setResetPass(false)                    
+                }
+            }
+            else{
+                setNotif({
+                    text: 'Format d\'adresse e-mail incorrect.',
+                    icon: 'close'
+                });                   
+            }
+        }
+        else{
+            setNotif({
+                text: 'Veuillez saisir votre adresse e-mail.',
+                icon: 'close'
+            });            
+        }
+    }
     
 
     return (
@@ -94,13 +129,13 @@ export default function Login(){
                                     <>
                                         <h2>Réinitialisez votre mot de passe</h2>
                                         <div className="mBot20 mTop20">
-                                            <input type="mail" className="input-mail" placeholder="Adresse e-mail..." />
+                                            <input type="mail" name="lostMail" value={lostMail} onChange={(event) => setLostMail(event.target.value)} className="input-mail" placeholder="Adresse e-mail..." />
                                         </div>
                                         <div className="flex flex-end gap10">
                                             <button onClick={(() => setResetPass(prev => !prev))} className="btn__normal btn__light">
                                                 Revenir à la connexion
                                             </button>
-                                            <button className="btn__normal btn__dark">
+                                            <button onClick={forgetPassword} className="btn__normal btn__dark">
                                                 Valider
                                             </button>
                                         </div>

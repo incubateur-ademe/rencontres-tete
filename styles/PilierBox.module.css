@@ -18,3 +18,12 @@
 .Pilier p{
     margin-inline: auto;
 }
+
+.NoActive{
+    opacity: 0.25;
+    transition:.2s ease;
+}
+
+.NoActive:hover{
+    opacity: 1;
+}

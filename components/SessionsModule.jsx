@@ -51,7 +51,7 @@ export default function SessionsModule({ id, setOpen, open, nom }){
     }
     useEffect(() => {
         getSessions(passed)
-    }, [passed, actions])
+    }, [passed, actions, open])
 
     return (
         <>
@@ -75,6 +75,7 @@ export default function SessionsModule({ id, setOpen, open, nom }){
                                             region={session.region}
                                             title={nom}
                                             id={session.id}
+                                            moduleId={id}
                                             setOpen={setOpen}
                                             setAlert={setAlert}
                                             action={() => deleteSession(session.id)}

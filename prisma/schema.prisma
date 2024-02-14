@@ -15,6 +15,7 @@ model Module {
   datePublication DateTime?
   lastUpdate      DateTime?
   nom             String
+  slug            String        @unique
   pilier          String
   thematique      String
   description     String?
@@ -44,6 +45,7 @@ model User {
   fonction   String
   newsletter Boolean
   sessions   Session[] @relation("UserSessions")
+  registrations  Registration[]
 }
 
 model Session {
@@ -58,6 +60,7 @@ model Session {
   metasSession    MetasSession?
   status          String
   users           User[]       @relation("UserSessions")
+  registrations   Registration[]
 }
 
 model MetasSession {
@@ -75,4 +78,24 @@ model MetasSession {
   session               Session  @relation(fields: [sessionId], references: [id])
 }
 
-
+model Registration {
+  id             Int      @id @default(autoincrement())
+  civilite       String
+  nom            String
+  prenom         String
+  mail           String
+  structure      String
+  fonction       String?
+  typeFonction   String
+  ville          String?
+  pays           String
+  telephone      String?
+  transport      String?
+  besoins        String?
+  repas          Boolean
+  covoit         Boolean
+  userId         Int
+  sessionId      Int
+  user           User     @relation(fields: [userId], references: [id])
+  session        Session  @relation(fields: [sessionId], references: [id])
+}

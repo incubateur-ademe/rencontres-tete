@@ -82,7 +82,7 @@ export default function Home() {
                 pic="climat-air-energie.png"
                 title="Climat Air Energie" 
                 description="Découvrez l’ensemble des rencontres disponibles pour le pilier Climat Air Energie" 
-                link="/rencontres"
+                link="/rencontres?pilier=Climat Air Energie"
               />
             </div>
             <div className="w32">
@@ -90,15 +90,15 @@ export default function Home() {
                 pic="economie-circulaire.png"
                 title="Economie circulaire" 
                 description="Découvrez l’ensemble des rencontres disponibles pour le pilier Economie circulaire" 
-                link="/rencontres"
+                link="/rencontres?pilier=Economie circulaire"
               />
             </div>
             <div className="w32">
               <PilierBox 
                 pic="economie-circulaire.png"
-                title="Climat Air Energie" 
-                description="Découvrez l’ensemble des rencontres disponibles pour le pilier Climat Air Energie" 
-                link="/rencontres"
+                title="Transversal" 
+                description="Découvrez l’ensemble des rencontres disponibles pour le pilier Transversal" 
+                link="/rencontres?pilier=Transversal"
               />
             </div>
           </div>

@@ -2,7 +2,9 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import styles from '@/styles/SessionsBack.module.css'
 
-export default function SessionsBack({date, region, title, id, setOpen, setAlert, setActions, action, status}){
+export default function SessionsBack({date, region, title, id, setOpen, setAlert, setActions, action, status, moduleId}){
+
+    console.log("module Id base => ", moduleId)
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -60,7 +62,7 @@ export default function SessionsBack({date, region, title, id, setOpen, setAlert
                             className={styles.Corb}>
                             <span className="material-icons">delete</span>
                         </button>
-                        <button onClick={() => setOpen({ id: id, type: 'edit', model: 'session', nom: title })} className={styles.Register}>Modifier la session</button>
+                        <button onClick={() => setOpen({ id: id, type: 'edit', model: 'session', nom: title, moduleId: moduleId })} className={styles.Register}>Modifier la session</button>
                         {status == 'brouillon' && (
                             <button  
                                 onClick={() => setAlert({

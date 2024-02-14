@@ -53,10 +53,10 @@ export default function Account({ user }){
                             <div className="w80">
                                 <div className={styles.Dash}>
                                     {page == 0 && (
-                                        <Rencontres />
+                                        <Rencontres user={user} />
                                     )}
                                     {page == 1 && (
-                                        <Profil />
+                                        <Profil user={user} />
                                     )}
                                 </div>
                             </div>

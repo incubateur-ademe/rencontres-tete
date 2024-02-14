@@ -41,3 +41,24 @@
     color:#FFF;
     background:var(--primary)
 }
+
+.RegionActive{
+    background-color:var(--primary) !important;
+    color: #FFF !important;
+}
+
+.AddFilter{
+    border:0px;
+    background:var(--primaryBack);
+    color:var(--primary);
+    display: inline-flex;
+    padding:5px 10px;
+    border-radius: 5px;
+    cursor:pointer;
+    align-items: center;
+    gap:4px;
+}
+
+.AddFilter span{
+    font-size: 1rem;
+}

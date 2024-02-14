@@ -1,8 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
-import Cookies from 'js-cookie';
-import { decodeJWT } from '@/utils/jwt';
 import { useRouter } from 'next/router'
 import styles from '@/styles/Header.module.css'
 

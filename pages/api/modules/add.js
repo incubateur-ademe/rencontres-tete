@@ -6,17 +6,23 @@ export default async function handle(req, res) {
 
         try {
             const now = new Date();
-            
-            // Créer un nouveau module avec MetasModule si les données sont fournies
+
+            let slug = moduleData.nom
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[.,]/g, "")
+            .replace(/\s+/g, '-')
+            .toLowerCase()
+
             const newModule = await prisma.module.create({
                 data: {
                     ...moduleData,
+                    slug: slug,
                     datePublication: now,
                     lastUpdate: now,
                     metasModule: metasModuleData ? {
                         create: {
                             ...metasModuleData,
-                            // lastUpdate: now, // Ajoutez cette ligne si votre MetasModule a aussi un champ lastUpdate
                         },
                     } : undefined,
                 },

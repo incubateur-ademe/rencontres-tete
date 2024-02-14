@@ -57,6 +57,8 @@ export default function Modules(){
         const json = await fetcher.json()
         setModules(json)
     }
+
+    console.log(modules)
     
     const filterModules = async (event) => {
         const filter = event.target.value;
@@ -138,7 +140,7 @@ export default function Modules(){
                             {open.model == 'module' ? (
                                 <EditModule setOpen={setOpen} id={open.id} />
                             ) : (
-                                <EditSession setOpen={setOpen} id={open.id} nom={open.nom} />
+                                <EditSession setOpen={setOpen} id={open.id} nom={open.nom} moduleId={open.moduleId} />
                             )}
                             
                         </>

@@ -1,12 +1,105 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
+import prisma from '@/prisma';
 import { useState, useEffect } from 'react'
 import PilierBox from '@/components/PilierBox'
 import ModuleBox from '@/components/ModuleBox'
 import styles from '@/styles/Rencontres.module.css'
 
-export default function Rencontres(){
+export async function getServerSideProps(context) {
+    const { query } = context;
+
+    // Extraire les filtres depuis l'objet query
+    const { pilier, nom, region, departement, thematique, dateDebut } = query;
+
+    // Construire votre logique de requête basée sur les filtres
+    let queryOptions = {
+        where: {},
+        include: {
+            sessions: true, // Ajustez selon le besoin de votre requête
+        },
+    };
+
+    if (pilier) queryOptions.where.pilier = pilier;
+    if (nom) queryOptions.where.nom = { contains: nom, mode: 'insensitive' };
+    if (region) queryOptions.include.sessions.where.region = region;
+    if (departement) queryOptions.include.sessions.where.departement = departement;
+    if (thematique) queryOptions.where.thematique = thematique;
+    if (dateDebut) queryOptions.include.sessions.where.dateDebut = { gte: new Date(dateDebut) };
+
+    // Récupérer les modules depuis la base de données ou une API externe
+    let base = await prisma.module.findMany(queryOptions);
+
+    base = base.map(module => ({
+        ...module,
+        datePublication: module.datePublication ? module.datePublication.toISOString() : null,
+        lastUpdate: module.lastUpdate ? module.lastUpdate.toISOString() : null,
+    }));
+
+    // Retourner les base comme props à la page
+    return {
+        props: {
+            base: JSON.parse(JSON.stringify(base))
+        },
+    };
+}
+
+
+export default function Rencontres({ base }){
+
+    const [modules, setModules] = useState(base)
+    const [actions, setActions] = useState(0)
+    const [loader, setLoader] = useState(false)
+    const [filtres, setFiltres] = useState({
+        pilier: '',
+        nom: '',
+        region: '',
+        departement: '',
+        thematique: '',
+        dateDebut: ''
+    })
+
+    const getModules = async () => {
+        const { pilier, nom, region, departement, thematique, dateDebut } = filtres
+        let url = '/api/modules/?'
+
+        if(pilier){
+            url += 'pilier='+encodeURIComponent(pilier)+'&'
+        }
+
+        if(nom){
+            url += 'nom='+encodeURIComponent(nom)
+        }
+
+        if(region){
+            url += 'region='+encodeURIComponent(region)+'&'
+        }
+
+        if(departement){
+            url += 'departement='+encodeURIComponent(departement)+'&'
+        }
+
+        if(thematique){
+            url += 'thematique='+encodeURIComponent(thematique)+'&'
+        }
+
+        if(dateDebut){
+            url += 'dateDebut='+encodeURIComponent(dateDebut)+'&'
+        }
+
+        const fetcher = await fetch(url)
+        const json = await fetcher.json()
+        setModules(json)
+    }
+
+    useEffect(() => {
+        setActions(prev => prev+1)
+        if(actions > 0){
+            getModules()
+        }
+    }, [filtres])
+
     return (
         <>
             <Head>
@@ -22,7 +115,8 @@ export default function Rencontres(){
                                 pic="climat-air-energie.png"
                                 title="Climat Air Energie" 
                                 description="Découvrez l’ensemble des rencontres disponibles pour le pilier Climat Air Energie" 
-                                link="/"
+                                setFiltres={setFiltres}
+                                active={filtres.pilier}
                             />
                             </div>
                             <div className="w32">
@@ -30,15 +124,17 @@ export default function Rencontres(){
                                 pic="economie-circulaire.png"
                                 title="Economie circulaire" 
                                 description="Découvrez l’ensemble des rencontres disponibles pour le pilier Economie circulaire" 
-                                link="/"
+                                setFiltres={setFiltres}
+                                active={filtres.pilier}
                             />
                             </div>
                             <div className="w32">
                             <PilierBox 
                                 pic="economie-circulaire.png"
-                                title="Climat Air Energie" 
-                                description="Découvrez l’ensemble des rencontres disponibles pour le pilier Climat Air Energie" 
-                                link="/"
+                                title="Transversal" 
+                                description="Découvrez l’ensemble des rencontres disponibles pour le pilier Transversal" 
+                                setFiltres={setFiltres}
+                                active={filtres.pilier}
                             />
                             </div>
                         </div>
@@ -48,95 +144,80 @@ export default function Rencontres(){
                     <div className="boxed">
                         <div className="flex gap50">
                             <div className="w70">
-                                <h2>Tous les modules disponibles :</h2>
-                                <div className="flex wrap gap15 mTop40">
-                                    <div className="w32">
-                                    <ModuleBox 
-                                        title="Planification territoriale" 
-                                        link="/rencontres/planification-territoriale"
-                                    />
-                                    </div>
-                                    <div className="w32">
-                                    <ModuleBox 
-                                        title="Energie, eau et assainissement" 
-                                        link="/rencontres/energie-eau-assainissement"
-                                    />
-                                    </div>
-                                    <div className="w32">
-                                    <ModuleBox 
-                                        title="Mobilité et qualité de l'air"
-                                        link="/rencontres/mobilite-qualite-de-lair"    
-                                    />
-                                    </div>
-                                    <div className="w32">
-                                    <ModuleBox 
-                                        title="Transition bas carbone" 
-                                        link="/rencontres/transition-bas-carbone"    
-                                    />
-                                    </div>
-                                    <div className="w32">
-                                    <ModuleBox 
-                                        title="Prévention et gestion des déchêts" 
-                                        link="/rencontres/prevention-gestion-des-dechets"
-                                    />
-                                    </div>
-                                    <div className="w32">
-                                    <ModuleBox 
-                                        title="Consommation responsable" 
-                                        link="/rencontres/consommation-responsable"    
-                                    />
-                                    </div>
-                                    <div className="w32">
-                                    <ModuleBox 
-                                        title="Autres piliers de l'économie circulaire" 
-                                        link="/rencontres/autres-piliers-economie-circulaire"    
-                                    />
-                                    </div>
-                                    <div className="w32">
-                                    <ModuleBox 
-                                        title="Gouvernance et pilotage" 
-                                        link="/rencontres/gouvernance-pilotage"    
-                                    />
-                                    </div>
+                                <h2>Tous les modules disponibles {(filtres.pilier != '' || filtres.nom != '' || filtres.dateDebut != '' || filtres.thematique != '' || filtres.departement != '' || filtres.region != '') && 'suivant vos critères'} :</h2>
+                                {(filtres.pilier != '' || filtres.nom != '' || filtres.dateDebut != '' || filtres.thematique != '' || filtres.departement != '' || filtres.region != '') && (
+                                <div className="flex aligncenter wrap gap10 mTop20">
+                                    {filtres.pilier != '' && (
+                                        <button
+                                            onClick={() => setFiltres(prev => { return { ...prev, pilier: '' } })}
+                                            className={styles.AddFilter}>{filtres.pilier}
+                                            <span className="material-icons">close</span>
+                                        </button>
+                                    )}
+                                    {filtres.nom != '' && (
+                                        <button
+                                            onClick={() => setFiltres(prev => { return { ...prev, nom: '' } })}
+                                            className={styles.AddFilter}>{filtres.nom}
+                                            <span className="material-icons">close</span>
+                                        </button>
+                                    )}
+                                    {filtres.region != '' && (
+                                        <button
+                                            onClick={() => setFiltres(prev => { return { ...prev, region: '' } })}
+                                            className={styles.AddFilter}>{filtres.region}
+                                            <span className="material-icons">close</span>
+                                        </button>
+                                    )}
+                                    {filtres.departement != '' && (
+                                        <button
+                                            onClick={() => setFiltres(prev => { return { ...prev, departement: '' } })}
+                                            className={styles.AddFilter}>{filtres.departement}
+                                            <span className="material-icons">close</span>
+                                        </button>
+                                    )}
+                                    {filtres.thematique != '' && (
+                                        <button
+                                            onClick={() => setFiltres(prev => { return { ...prev, thematique: '' } })}
+                                            className={styles.AddFilter}>{filtres.thematique}
+                                            <span className="material-icons">close</span>
+                                        </button>
+                                    )}
+                                    {filtres.dateDebut != '' && (
+                                        <button
+                                            onClick={() => setFiltres(prev => { return { ...prev, dateDebut: '' } })}
+                                            className={styles.AddFilter}>{filtres.dateDebut}
+                                            <span className="material-icons">close</span>
+                                        </button>
+                                    )}
                                 </div>
+                                )}
+                                {modules.length > 0 ? (
+                                <div className="flex wrap gap15 mTop40">
+                                    {modules.map((module, index) => (
+                                        <div key={index} className="w32">
+                                            <ModuleBox 
+                                                title={module.nom}
+                                                id={module.id}
+                                                link={`/rencontres/${module.slug}`}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                                ) : (
+                                    <div className="mTop20">
+                                        <span>Aucun module de disponible actuellement.</span>
+                                    </div>                                    
+                                )}
                             </div>          
                             <div className="w30">
                                 <div>
                                     <span className={styles.Label}>Pilier de la transition écologique</span>
                                     <div className="select">
-                                        <select className="input-select">
+                                        <select name="pilier" value={filtres.pilier} onChange={(event) => setFiltres(prev => { return { ...prev, pilier: event.target.value, nom: '' } })} className="input-select">
                                             <option>Tous les piliers</option>
-                                        </select>
-                                        <span className="material-icons">expand_more</span>
-                                    </div>
-                                </div>
-                                <div className="mTop40">
-                                    <span className={styles.Label}>Rechercher par nom</span>
-                                    <input type="text" className="input-text" placeholder="Commencez à taper..." />
-                                </div>
-                                <div className="mTop40">
-                                    <span className={styles.Label}>Rechercher par région</span>
-                                    <ul className={styles.Regions}>
-                                        <li><span className="material-icons">room</span>Auvergne-Rhône-Alpes</li>
-                                        <li><span className="material-icons">room</span>Bourgogne-Franche-Comté</li>
-                                        <li><span className="material-icons">room</span>Bretagne</li>
-                                        <li><span className="material-icons">room</span>Centre-Val de Loire</li>
-                                        <li><span className="material-icons">room</span>Corse</li>
-                                        <li><span className="material-icons">room</span>Normandie</li>
-                                        <li><span className="material-icons">room</span>Nouvelle-Aquitaine</li>
-                                        <li><span className="material-icons">room</span>Occitanie</li>
-                                        <li><span className="material-icons">room</span>Grand-Est</li>
-                                        <li><span className="material-icons">room</span>Hauts-de-France</li>
-                                        <li><span className="material-icons">room</span>Île-de-France</li>
-                                        <li><span className="material-icons">room</span>Pays de la Loire</li>
-                                        <li><span className="material-icons">room</span>Provence-Alpes-Côte d'Azur</li>
-                                    </ul>
-                                </div>
-                                <div className="mTop40">
-                                    <span className={styles.Label}>Rechercher par département</span>
-                                    <div className="select">
-                                        <select className="input-select">
-                                            <option>Tous les départements</option>
+                                            <option>Climat Air Energie</option>
+                                            <option>Economie circulaire</option>
+                                            <option>Transversal</option>
                                         </select>
                                         <span className="material-icons">expand_more</span>
                                     </div>
@@ -144,17 +225,174 @@ export default function Rencontres(){
                                 <div className="mTop40">
                                     <span className={styles.Label}>Rechercher par thématique</span>
                                     <div className="select">
-                                        <select className="input-select">
+                                        <select name="thematique" value={filtres.thematique} onChange={(event) => setFiltres(prev => { return { ...prev, thematique: event.target.value, nom: '' } })} className="input-select">
                                             <option>Toutes les thématiques</option>
+                                            <option>Planification territoriale</option>
+                                            <option>Energie, eau et assainissement</option>
+                                            <option>Mobilité et qualité de l'air</option>
+                                            <option>Transition bas carbone</option>
+                                            <option>Prévention et gestion des déchêts</option>
+                                            <option>Consommation responsable</option>
+                                            <option>Autres piliers de l'économie circulaire</option>
+                                            <option>Gouvernance et pilotage</option>
                                         </select>
                                         <span className="material-icons">expand_more</span>
                                     </div>
                                 </div>
                                 <div className="mTop40">
-                                    <span className={styles.Label}>Rechercher par date</span>
+                                    <span className={styles.Label}>Rechercher par nom</span>
+                                    <input 
+                                        name="nom" 
+                                        value={filtres.nom} 
+                                        onChange={(event) => setFiltres(
+                                            prev => { 
+                                                return { 
+                                                    pilier: '',
+                                                    nom: event.target.value,
+                                                    region: '',
+                                                    departement: '',
+                                                    thematique: '',
+                                                    dateDebut: ''
+                                                } 
+                                            }
+                                        )} 
+                                        type="text" 
+                                        className="input-text" 
+                                        placeholder="Commencez à taper..." 
+                                    />
+                                </div>
+                                <div className="mTop40">
+                                    <span className={styles.Label}>Rechercher par région</span>
+                                    <ul className={styles.Regions}>
+                                        <li className={filtres.region == 'Auvergne-Rhône-Alpes' ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Auvergne-Rhône-Alpes' } })}><span className="material-icons">room</span>Auvergne-Rhône-Alpes</li>
+                                        <li className={filtres.region == 'Bourgogne-Franche-Comté' ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Bourgogne-Franche-Comté' } })}><span className="material-icons">room</span>Bourgogne-Franche-Comté</li>
+                                        <li className={filtres.region == 'Bretagne' ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Bretagne' } })}><span className="material-icons">room</span>Bretagne</li>
+                                        <li className={filtres.region == 'Centre-Val de Loire' ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Centre-Val de Loire' } })}><span className="material-icons">room</span>Centre-Val de Loire</li>
+                                        <li className={filtres.region == 'Corse' ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Corse' } })}><span className="material-icons">room</span>Corse</li>
+                                        <li className={filtres.region == 'Normandie' ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Normandie' } })}><span className="material-icons">room</span>Normandie</li>
+                                        <li className={filtres.region == 'Nouvelle-Aquitaine' ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Nouvelle-Aquitaine' } })}><span className="material-icons">room</span>Nouvelle-Aquitaine</li>
+                                        <li className={filtres.region == 'Occitanie' ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Occitanie' } })}><span className="material-icons">room</span>Occitanie</li>
+                                        <li className={filtres.region == 'Grand-Est' ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Grand-Est' } })}><span className="material-icons">room</span>Grand-Est</li>
+                                        <li className={filtres.region == 'Hauts-de-France' ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Hauts-de-France' } })}><span className="material-icons">room</span>Hauts-de-France</li>
+                                        <li className={filtres.region == 'Île-de-France' ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Île-de-France' } })}><span className="material-icons">room</span>Île-de-France</li>
+                                        <li className={filtres.region == 'Pays de la Loire' ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Pays de la Loire' } })}><span className="material-icons">room</span>Pays de la Loire</li>
+                                        <li className={filtres.region == "Provence-Alpes-Côte d'Azur" ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "Provence-Alpes-Côte d'Azur" } })}><span className="material-icons">room</span>Provence-Alpes-Côte d'Azur</li>
+                                    </ul>
+                                </div>
+                                <div className="mTop40">
+                                    <span className={styles.Label}>Rechercher par département</span>
+                                    <div className="select">
+                                        <select name="departement" value={filtres.departement} onChange={(event) => setFiltres(prev => { return { ...prev, departement: event.target.value, region: '', nom: '' } })} className="input-select">
+                                            <option>Tous les départements</option>
+                                            <option>01 - Ain</option>
+                                            <option>02 - Aisne</option>
+                                            <option>03 - Allier</option>
+                                            <option>04 - Alpes-de-Haute-Provence</option>
+                                            <option>05 - Hautes-Alpes</option>
+                                            <option>06 - Alpes-Maritimes</option>
+                                            <option>07 - Ardèche</option>
+                                            <option>08 - Ardennes</option>
+                                            <option>09 - Ariège</option>
+                                            <option>10 - Aube</option>
+                                            <option>11 - Aude</option>
+                                            <option>12 - Aveyron</option>
+                                            <option>13 - Bouches-du-Rhône</option>
+                                            <option>14 - Calvados</option>
+                                            <option>15 - Cantal</option>
+                                            <option>16 - Charente</option>
+                                            <option>17 - Charente-Maritime</option>
+                                            <option>18 - Cher</option>
+                                            <option>19 - Corrèze</option>
+                                            <option>2A - Corse-du-Sud</option>
+                                            <option>2B - Haute-Corse</option>
+                                            <option>21 - Côte-d'Or</option>
+                                            <option>22 - Côtes-d'Armor</option>
+                                            <option>23 - Creuse</option>
+                                            <option>24 - Dordogne</option>
+                                            <option>25 - Doubs</option>
+                                            <option>26 - Drôme</option>
+                                            <option>27 - Eure</option>
+                                            <option>28 - Eure-et-Loir</option>
+                                            <option>29 - Finistère</option>
+                                            <option>30 - Gard</option>
+                                            <option>31 - Haute-Garonne</option>
+                                            <option>32 - Gers</option>
+                                            <option>33 - Gironde</option>
+                                            <option>34 - Hérault</option>
+                                            <option>35 - Ille-et-Vilaine</option>
+                                            <option>36 - Indre</option>
+                                            <option>37 - Indre-et-Loire</option>
+                                            <option>38 - Isère</option>
+                                            <option>39 - Jura</option>
+                                            <option>40 - Landes</option>
+                                            <option>41 - Loir-et-Cher</option>
+                                            <option>42 - Loire</option>
+                                            <option>43 - Haute-Loire</option>
+                                            <option>44 - Loire-Atlantique</option>
+                                            <option>45 - Loiret</option>
+                                            <option>46 - Lot</option>
+                                            <option>47 - Lot-et-Garonne</option>
+                                            <option>48 - Lozère</option>
+                                            <option>49 - Maine-et-Loire</option>
+                                            <option>50 - Manche</option>
+                                            <option>51 - Marne</option>
+                                            <option>52 - Haute-Marne</option>
+                                            <option>53 - Mayenne</option>
+                                            <option>54 - Meurthe-et-Moselle</option>
+                                            <option>55 - Meuse</option>
+                                            <option>56 - Morbihan</option>
+                                            <option>57 - Moselle</option>
+                                            <option>58 - Nièvre</option>
+                                            <option>59 - Nord</option>
+                                            <option>60 - Oise</option>
+                                            <option>61 - Orne</option>
+                                            <option>62 - Pas-de-Calais</option>
+                                            <option>63 - Puy-de-Dôme</option>
+                                            <option>64 - Pyrénées-Atlantiques</option>
+                                            <option>65 - Hautes-Pyrénées</option>
+                                            <option>66 - Pyrénées-Orientales</option>
+                                            <option>67 - Bas-Rhin</option>
+                                            <option>68 - Haut-Rhin</option>
+                                            <option>69 - Rhône</option>
+                                            <option>70 - Haute-Saône</option>
+                                            <option>71 - Saône-et-Loire</option>
+                                            <option>72 - Sarthe</option>
+                                            <option>73 - Savoie</option>
+                                            <option>74 - Haute-Savoie</option>
+                                            <option>75 - Paris</option>
+                                            <option>76 - Seine-Maritime</option>
+                                            <option>77 - Seine-et-Marne</option>
+                                            <option>78 - Yvelines</option>
+                                            <option>79 - Deux-Sèvres</option>
+                                            <option>80 - Somme</option>
+                                            <option>81 - Tarn</option>
+                                            <option>82 - Tarn-et-Garonne</option>
+                                            <option>83 - Var</option>
+                                            <option>84 - Vaucluse</option>
+                                            <option>85 - Vendée</option>
+                                            <option>86 - Vienne</option>
+                                            <option>87 - Haute-Vienne</option>
+                                            <option>88 - Vosges</option>
+                                            <option>89 - Yonne</option>
+                                            <option>90 - Territoire de Belfort</option>
+                                            <option>91 - Essonne</option>
+                                            <option>92 - Hauts-de-Seine</option>
+                                            <option>93 - Seine-Saint-Denis</option>
+                                            <option>94 - Val-de-Marne</option>
+                                            <option>95 - Val-d'Oise</option>
+                                            <option>971 - Guadeloupe</option>
+                                            <option>972 - Martinique</option>
+                                            <option>973 - Guyane</option>
+                                            <option>974 - Réunion</option>
+                                            <option>976 - Mayotte</option>
+                                        </select>
+                                        <span className="material-icons">expand_more</span>
+                                    </div>
+                                </div>
+                                <div className="mTop40">
+                                    <span className={styles.Label}>Rechercher par date de début</span>
                                     <div className="flex aligncenter gap10">
-                                        <input type="date" className="input-date" />
-                                        <input type="date" className="input-date" />
+                                        <input name="dateDebut" value={filtres.dateDebut} onChange={(event) => setFiltres(prev => { return { ...prev, dateDebut: event.target.value, nom: '' } })} type="date" className="input-date" />
                                     </div>                                    
                                 </div>
                             </div>
