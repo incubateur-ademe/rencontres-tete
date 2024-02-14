@@ -46,7 +46,7 @@ export default function Module({ data }){
     const [departement, setDepartement] = useState('')
 
     const getSessions = async (departement) => {
-        const fetcher = await fetch(`/api/sessions?id=${data.id}&departement=${departement}`)
+        const fetcher = await fetch(`/api/sessions?id=${data.id}&departement=${departement}&status=publish`)
         const json = await fetcher.json()
         setSessions(json)
     }

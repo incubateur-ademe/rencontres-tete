@@ -9,6 +9,18 @@ import ModuleBox from '@/components/ModuleBox'
 export default function Home() {
 
   const [region, setRegion] = useState("")
+  const [search, setSearch] = useState('')
+  const [finds, setFinds] = useState([])
+
+  const getModules = async (nom) => {
+    const fetcher = await fetch(`/api/modules/?nom=${nom}`)
+    const json = await fetcher.json()
+    setFinds(json)
+  }
+
+  useEffect(() => {
+    getModules(search)
+  }, [search])
 
   return (
     <div className={styles.Home}>
@@ -21,7 +33,16 @@ export default function Home() {
             <div className="w50">
               <h1>Les Rencontres des Territoires Engagés</h1>
               <p>Participez aux Rencontres Territoire Engagé de l'ADEME organisées partout en France et montez en compétence sur les thématiques Climat Air Energie et Economie Circulaire, pour mettre en œuvre la transition écologique sur votre territoire.</p>
-              <input className="input-text mTop30" type="text" placeholder="Rechercher une rencontre par nom, par date..." />
+              <div className={styles.Searching}>
+                <input name="search" value={search} onChange={(event) => setSearch(event.target.value)} className="input-text mTop30" type="text" placeholder="Rechercher une rencontre par nom, par date..." />
+                {(finds.length > 0 && search.length > 0) && (
+                  <ul>
+                    {finds.map((item, index) => {
+                      return <li><Link href={`/rencontres/${item.slug}`}>{item.nom}</Link></li>
+                    })}
+                  </ul>
+                )}
+              </div>              
               <Link className="link mTop30" href="/rencontres">Voir toutes les rencontres à venir →</Link>
             </div>
             <div className="w50">
@@ -36,37 +57,37 @@ export default function Home() {
             <div className="w50">
               <div className="map__image">
                 <img src="/medias/map/france.png" className="france" />
-                <img src="/medias/map/FR-COR.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('COR')} onMouseOut={() => setRegion('')} className={`map corse ${region == "COR" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-HDF.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('HDF')} onMouseOut={() => setRegion('')} className={`map haut-de-france ${region == "HDF" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-GES.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('GES')} onMouseOut={() => setRegion('')} className={`map grand-est ${region == "GES" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-NOR.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('NOR')} onMouseOut={() => setRegion('')} className={`map normandie ${region == "NOR" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-IDF.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('IDF')} onMouseOut={() => setRegion('')} className={`map ile-de-france ${region == "IDF" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-BFC.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('BFC')} onMouseOut={() => setRegion('')} className={`map bourgogne ${region == "BFC" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-ARA.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('ARA')} onMouseOut={() => setRegion('')} className={`map auvergne ${region == "ARA" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-PAC.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('PAC')} onMouseOut={() => setRegion('')} className={`map provence ${region == "PAC" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-OCC.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('OCC')} onMouseOut={() => setRegion('')} className={`map occitanie ${region == "OCC" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-NAQ.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('NAQ')} onMouseOut={() => setRegion('')} className={`map nouvelle-aquitaine ${region == "NAQ" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-CVL.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('CVL')} onMouseOut={() => setRegion('')} className={`map centre ${region == "CVL" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-PDL.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('PDL')} onMouseOut={() => setRegion('')} className={`map loire ${region == "PDL" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-BRE.png" onClick={() => window.location.href = "/rencontres"} onMouseOver={() => setRegion('BRE')} onMouseOut={() => setRegion('')} className={`map bretagne ${region == "BRE" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-COR.png" onClick={() => window.location.href = `/rencontres?region=Corse`} onMouseOver={() => setRegion('COR')} onMouseOut={() => setRegion('')} className={`map corse ${region == "COR" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-HDF.png" onClick={() => window.location.href = `/rencontres?region=Hauts-de-France`} onMouseOver={() => setRegion('HDF')} onMouseOut={() => setRegion('')} className={`map haut-de-france ${region == "HDF" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-GES.png" onClick={() => window.location.href = `/rencontres?region=Grand-Est`} onMouseOver={() => setRegion('GES')} onMouseOut={() => setRegion('')} className={`map grand-est ${region == "GES" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-NOR.png" onClick={() => window.location.href = `/rencontres?region=Normandie`} onMouseOver={() => setRegion('NOR')} onMouseOut={() => setRegion('')} className={`map normandie ${region == "NOR" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-IDF.png" onClick={() => window.location.href = `/rencontres?region=Île-de-France`} onMouseOver={() => setRegion('IDF')} onMouseOut={() => setRegion('')} className={`map ile-de-france ${region == "IDF" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-BFC.png" onClick={() => window.location.href = `/rencontres?region=Bourgogne-Franche-Comté`} onMouseOver={() => setRegion('BFC')} onMouseOut={() => setRegion('')} className={`map bourgogne ${region == "BFC" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-ARA.png" onClick={() => window.location.href = `/rencontres?region=Auvergne-Rhône-Alpes`} onMouseOver={() => setRegion('ARA')} onMouseOut={() => setRegion('')} className={`map auvergne ${region == "ARA" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-PAC.png" onClick={() => window.location.href = `/rencontres?region=Provence-Alpes-Côte d'Azur`} onMouseOver={() => setRegion('PAC')} onMouseOut={() => setRegion('')} className={`map provence ${region == "PAC" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-OCC.png" onClick={() => window.location.href = `/rencontres?region=Occitanie`} onMouseOver={() => setRegion('OCC')} onMouseOut={() => setRegion('')} className={`map occitanie ${region == "OCC" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-NAQ.png" onClick={() => window.location.href = `/rencontres?region=Nouvelle-Aquitaine`} onMouseOver={() => setRegion('NAQ')} onMouseOut={() => setRegion('')} className={`map nouvelle-aquitaine ${region == "NAQ" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-CVL.png" onClick={() => window.location.href = `/rencontres?region=Centre-Val de Loire`} onMouseOver={() => setRegion('CVL')} onMouseOut={() => setRegion('')} className={`map centre ${region == "CVL" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-PDL.png" onClick={() => window.location.href = `/rencontres?region=Pays de la Loire`} onMouseOver={() => setRegion('PDL')} onMouseOut={() => setRegion('')} className={`map loire ${region == "PDL" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-BRE.png" onClick={() => window.location.href = `/rencontres?region=Bretagne`} onMouseOver={() => setRegion('BRE')} onMouseOut={() => setRegion('')} className={`map bretagne ${region == "BRE" && styles.RegionLight}`} />
               </div>
             </div>
             <div className="w50">
               <h2>Découvrez les rencontres à venir dans votre région</h2>
               <ul className={styles.Regions}>
-                <li><Link href="/rencontres" onMouseOver={() => setRegion('ARA')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Auvergne-Rhône-Alpes</Link></li>
-                <li><Link href="/rencontres" onMouseOver={() => setRegion('BFC')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Bourgogne-Franche-Comté</Link></li>
-                <li><Link href="/rencontres" onMouseOver={() => setRegion('BRE')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Bretagne</Link></li>
-                <li><Link href="/rencontres" onMouseOver={() => setRegion('CVL')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Centre-Val de Loire</Link></li>
-                <li><Link href="/rencontres" onMouseOver={() => setRegion('COR')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Corse</Link></li>
-                <li><Link href="/rencontres" onMouseOver={() => setRegion('NOR')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Normandie</Link></li>
-                <li><Link href="/rencontres" onMouseOver={() => setRegion('NAQ')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Nouvelle-Aquitaine</Link></li>
-                <li><Link href="/rencontres" onMouseOver={() => setRegion('OCC')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Occitanie</Link></li>
-                <li><Link href="/rencontres" onMouseOver={() => setRegion('GES')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Grand-Est</Link></li>
-                <li><Link href="/rencontres" onMouseOver={() => setRegion('HDF')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Hauts-de-France</Link></li>
-                <li><Link href="/rencontres" onMouseOver={() => setRegion('IDF')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Île-de-France</Link></li>
-                <li><Link href="/rencontres" onMouseOver={() => setRegion('PDL')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Pays de la Loire</Link></li>
-                <li><Link href="/rencontres" onMouseOver={() => setRegion('PAC')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Provence-Alpes-Côte d'Azur</Link></li>
+                <li><Link href={`/rencontres?region=Auvergne-Rhône-Alpes`} onMouseOver={() => setRegion('ARA')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Auvergne-Rhône-Alpes</Link></li>
+                <li><Link href={`/rencontres?region=Bourgogne-Franche-Comté`} onMouseOver={() => setRegion('BFC')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Bourgogne-Franche-Comté</Link></li>
+                <li><Link href={`/rencontres?region=Bretagne`} onMouseOver={() => setRegion('BRE')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Bretagne</Link></li>
+                <li><Link href={`/rencontres?region=Centre-Val de Loire`} onMouseOver={() => setRegion('CVL')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Centre-Val de Loire</Link></li>
+                <li><Link href={`/rencontres?region=Corse`} onMouseOver={() => setRegion('COR')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Corse</Link></li>
+                <li><Link href={`/rencontres?region=Normandie`} onMouseOver={() => setRegion('NOR')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Normandie</Link></li>
+                <li><Link href={`/rencontres?region=Nouvelle-Aquitaine`} onMouseOver={() => setRegion('NAQ')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Nouvelle-Aquitaine</Link></li>
+                <li><Link href={`/rencontres?region=Occitanie`} onMouseOver={() => setRegion('OCC')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Occitanie</Link></li>
+                <li><Link href={`/rencontres?region=Grand-Est`} onMouseOver={() => setRegion('GES')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Grand-Est</Link></li>
+                <li><Link href={`/rencontres?region=Hauts-de-France`} onMouseOver={() => setRegion('HDF')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Hauts-de-France</Link></li>
+                <li><Link href={`/rencontres?region=Île-de-France`} onMouseOver={() => setRegion('IDF')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Île-de-France</Link></li>
+                <li><Link href={`/rencontres?region=Pays de la Loire`} onMouseOver={() => setRegion('PDL')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Pays de la Loire</Link></li>
+                <li><Link href={`/rencontres?region=Provence-Alpes-Côte d'Azur`} onMouseOver={() => setRegion('PAC')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Provence-Alpes-Côte d'Azur</Link></li>
               </ul>
               <Link href="/rencontres" className="btn__normal btn__dark">Voir toutes les rencontres</Link>
             </div>
@@ -111,49 +132,49 @@ export default function Home() {
           <div className="w24">
           <ModuleBox 
               title="Planification territoriale" 
-              link="/rencontres/planification-territoriale"
+              link="/rencontres/?thematique=Planification territoriale"
           />
           </div>
           <div className="w24">
           <ModuleBox 
               title="Energie, eau et assainissement" 
-              link="/rencontres/energie-eau-assainissement"
+              link="/rencontres/?thematique=Energie, eau et assainissement"
           />
           </div>
           <div className="w24">
           <ModuleBox 
               title="Mobilité et qualité de l'air"
-              link="/rencontres/mobilite-qualite-de-lair"    
+              link="/rencontres/?thematique=Mobilié et qualité de l'air"    
           />
           </div>
           <div className="w24">
           <ModuleBox 
               title="Transition bas carbone" 
-              link="/rencontres/transition-bas-carbone"    
+              link="/rencontres/?thematique=Transition bas carbone"    
           />
           </div>
           <div className="w24">
           <ModuleBox 
               title="Prévention et gestion des déchêts" 
-              link="/rencontres/prevention-gestion-des-dechets"
+              link="/rencontres/?thematique=Prévention et gestion des d'échêts"
           />
           </div>
           <div className="w24">
           <ModuleBox 
               title="Consommation responsable" 
-              link="/rencontres/consommation-responsable"    
+              link="/rencontres/?thematique=Consommation responsable"    
           />
           </div>
           <div className="w24">
           <ModuleBox 
               title="Autres piliers de l'économie circulaire" 
-              link="/rencontres/autres-piliers-economie-circulaire"    
+              link="/rencontres/?thematique=Autres piliers de l'économie circulaire"    
           />
           </div>
           <div className="w24">
           <ModuleBox 
               title="Gouvernance et pilotage" 
-              link="/rencontres/gouvernance-pilotage"    
+              link="/rencontres/?thematique=Gouvernance et pilotage"    
           />
           </div>
           </div>

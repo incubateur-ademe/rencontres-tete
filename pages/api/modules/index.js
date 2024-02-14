@@ -15,12 +15,21 @@ export default async function handle(req, res) {
     include: {
       sessions: {
         where: sessionWhere,
-        // Incluez cette ligne pour éviter d'exclure les modules sans sessions
-        // lorsque aucun filtre spécifique de session n'est appliqué
-        ...(Object.keys(sessionWhere).length === 0 && { where: undefined }),
       },
     },
   };
+
+  if (region) {
+    queryOptions.where.sessions = {
+      some: sessionWhere,
+    };
+  }
+
+  if (departement) {
+    queryOptions.where.sessions = {
+      some: sessionWhere,
+    };
+  }
 
   // Filtres liés directement aux modules
   if (pilier) queryOptions.where.pilier = pilier;

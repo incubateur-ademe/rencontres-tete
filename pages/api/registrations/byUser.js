@@ -4,42 +4,38 @@ export default async function handle(req, res) {
   const { userId, status } = req.query;
 
   let dateCondition = {};
-  let now = new Date()
+  let now = new Date();
 
-//   if(status){
-//     // ajouter conditions si session.dateDebut < now ou non
-//     if(status == 'upcoming'){
-//         dateCondition = {
-//             dateDebut: {
-//                 gt: now,
-//             },
-//         };
-//     }
-//     if(status == 'old'){
-//         dateCondition = {
-//             dateDebut: {
-//                 lt: now,
-//             },
-//         };
-//     }
-//   }
+  if (status) {
+    if (status === 'upcoming') {
+      dateCondition = {
+        dateDebut: {
+          gt: now,
+        },
+      };
+    } else if (status === 'old') {
+      dateCondition = {
+        dateDebut: {
+          lt: now,
+        },
+      };
+    }
+  }
 
   let queryOptions = {
     where: {
-        userId: parseInt(userId),
+      userId: parseInt(userId),
+      // Supposons ici que chaque inscription a une session directement liée, sans utiliser 'some'
+      session: dateCondition,
     },
     include: {
-        // user: true,
-        session: {
-            where: true
-        }
+      session: true,
     },
   };
 
-
   try {
     const registrations = await prisma.registration.findMany(queryOptions);
-    res.json(registrations); // Retourner tous les modules, y compris ceux sans sessions
+    res.json(registrations);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Une erreur est survenue lors de la récupération des modules' });

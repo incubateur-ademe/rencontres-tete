@@ -36,3 +36,35 @@
 .RegionLight{
     opacity: 1;
 }
+
+.Searching{
+    position: relative;
+}
+
+.Searching ul{
+    position: absolute;
+    top:100%;
+    left:0;
+    width:100%;
+    list-style: none;
+    box-shadow: 1px 1px 15px rgba(0,0,0,0.07);
+    background-color: #FFF;
+    z-index: 5;
+}
+
+.Searching ul li a{
+    text-decoration: none;
+    color:var(--secondary);
+    background:#FFF;
+    display: block;
+    padding:12px 15px;
+    border-bottom:1px solid rgba(0,0,0,0.07)
+}
+
+.Searching ul li a:hover{
+    background-color: #F9F9F9;
+}
+
+.Searching ul li:last-child a{
+    border-bottom: 0px;
+}

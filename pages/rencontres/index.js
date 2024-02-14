@@ -9,56 +9,83 @@ import styles from '@/styles/Rencontres.module.css'
 
 export async function getServerSideProps(context) {
     const { query } = context;
-
-    // Extraire les filtres depuis l'objet query
     const { pilier, nom, region, departement, thematique, dateDebut } = query;
 
-    // Construire votre logique de requête basée sur les filtres
+    let sessionWhere = {}; // Initialiser avec un objet vide
+
+    // Construire les conditions pour les sessions si nécessaire
+    if (region) sessionWhere.region = region;
+    if (departement) sessionWhere.departement = departement;
+    if (dateDebut) sessionWhere.dateDebut = { gte: new Date(dateDebut) };
+
     let queryOptions = {
         where: {},
         include: {
-            sessions: true, // Ajustez selon le besoin de votre requête
+            sessions: {
+                where: sessionWhere, // Appliquer les conditions de filtrage des sessions ici
+            },
         },
     };
 
+    // Appliquer des filtres liés directement aux modules
     if (pilier) queryOptions.where.pilier = pilier;
-    if (nom) queryOptions.where.nom = { contains: nom, mode: 'insensitive' };
-    if (region) queryOptions.include.sessions.where.region = region;
-    if (departement) queryOptions.include.sessions.where.departement = departement;
     if (thematique) queryOptions.where.thematique = thematique;
-    if (dateDebut) queryOptions.include.sessions.where.dateDebut = { gte: new Date(dateDebut) };
+    if (nom) queryOptions.where.nom = {
+        contains: nom,
+        mode: 'insensitive',
+    };
+
+    // Assurez-vous que les modules retournés ont des sessions qui correspondent aux critères si région est spécifiée
+    if (region) {
+        queryOptions.where.sessions = {
+            some: sessionWhere,
+        };
+    }
 
     // Récupérer les modules depuis la base de données ou une API externe
     let base = await prisma.module.findMany(queryOptions);
 
+    // Transformer les dates en chaînes ISO si nécessaire
     base = base.map(module => ({
         ...module,
         datePublication: module.datePublication ? module.datePublication.toISOString() : null,
         lastUpdate: module.lastUpdate ? module.lastUpdate.toISOString() : null,
     }));
 
-    // Retourner les base comme props à la page
+    // Retourner les données transformées comme props à la page
     return {
         props: {
-            base: JSON.parse(JSON.stringify(base))
+            base: JSON.parse(JSON.stringify(base)),
+            region: region ? region : '',
+            pilier: pilier ? pilier : '',
+            thematique: thematique ? thematique : ''
         },
     };
 }
 
 
-export default function Rencontres({ base }){
+
+export default function Rencontres({ base, region, pilier, thematique }){
 
     const [modules, setModules] = useState(base)
     const [actions, setActions] = useState(0)
     const [loader, setLoader] = useState(false)
     const [filtres, setFiltres] = useState({
-        pilier: '',
+        pilier: pilier,
         nom: '',
-        region: '',
+        region: region,
         departement: '',
-        thematique: '',
+        thematique: thematique,
         dateDebut: ''
     })
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
 
     const getModules = async () => {
         const { pilier, nom, region, departement, thematique, dateDebut } = filtres
@@ -185,7 +212,7 @@ export default function Rencontres({ base }){
                                     {filtres.dateDebut != '' && (
                                         <button
                                             onClick={() => setFiltres(prev => { return { ...prev, dateDebut: '' } })}
-                                            className={styles.AddFilter}>{filtres.dateDebut}
+                                            className={styles.AddFilter}>{formatDate(filtres.dateDebut)}
                                             <span className="material-icons">close</span>
                                         </button>
                                     )}
@@ -214,7 +241,7 @@ export default function Rencontres({ base }){
                                     <span className={styles.Label}>Pilier de la transition écologique</span>
                                     <div className="select">
                                         <select name="pilier" value={filtres.pilier} onChange={(event) => setFiltres(prev => { return { ...prev, pilier: event.target.value, nom: '' } })} className="input-select">
-                                            <option>Tous les piliers</option>
+                                            <option value="">Tous les piliers</option>
                                             <option>Climat Air Energie</option>
                                             <option>Economie circulaire</option>
                                             <option>Transversal</option>
@@ -226,7 +253,7 @@ export default function Rencontres({ base }){
                                     <span className={styles.Label}>Rechercher par thématique</span>
                                     <div className="select">
                                         <select name="thematique" value={filtres.thematique} onChange={(event) => setFiltres(prev => { return { ...prev, thematique: event.target.value, nom: '' } })} className="input-select">
-                                            <option>Toutes les thématiques</option>
+                                            <option value="">Toutes les thématiques</option>
                                             <option>Planification territoriale</option>
                                             <option>Energie, eau et assainissement</option>
                                             <option>Mobilité et qualité de l'air</option>
