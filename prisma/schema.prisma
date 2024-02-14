@@ -46,6 +46,7 @@ model User {
   newsletter Boolean
   sessions   Session[] @relation("UserSessions")
   registrations  Registration[]
+  reviews   Review[]
 }
 
 model Session {
@@ -61,6 +62,7 @@ model Session {
   status          String
   users           User[]       @relation("UserSessions")
   registrations   Registration[]
+  reviews   Review[]
 }
 
 model MetasSession {
@@ -98,4 +100,14 @@ model Registration {
   sessionId      Int
   user           User     @relation(fields: [userId], references: [id])
   session        Session  @relation(fields: [sessionId], references: [id])
+}
+
+model Review {
+  id          Int      @id @default(autoincrement())
+  note        Int      // Supposons que la note soit un entier. Ajustez selon vos besoins
+  commentaire String
+  userId      Int
+  sessionId   Int
+  user        User     @relation(fields: [userId], references: [id])
+  session     Session  @relation(fields: [sessionId], references: [id])
 }
