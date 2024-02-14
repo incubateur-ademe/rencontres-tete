@@ -21,7 +21,13 @@ export default function Rencontres({ user }){
         getUserSessions()
     }, [status])
 
-    console.log(rencontres)
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
 
     return (
         <div className={styles.Rencontres}>
@@ -38,12 +44,11 @@ export default function Rencontres({ user }){
                     <div className="flex gap15 wrap mTop30">
                         {rencontres.map((rencontre, index) => {
                             return (
-                                <div key={index} onClick={() => setOpen(123)} className="w49">
+                                <div key={index} onClick={() => setOpen(rencontre.session.id)} className="w49">
                                     <SessionBox 
-                                        date="21/02/2024"
-                                        region="Grand Est"
-                                        title="Énergie, eau et assainissement"
-                                        link="/rencontres/energie-eau-assainissement/session-21-02-2024"
+                                        date={formatDate(rencontre.session.dateDebut)}
+                                        region={rencontre.session.region}
+                                        title={rencontre.session.module.nom}
                                         register="false"
                                     />
                                 </div> 

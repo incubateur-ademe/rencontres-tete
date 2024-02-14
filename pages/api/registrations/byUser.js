@@ -25,11 +25,15 @@ export default async function handle(req, res) {
   let queryOptions = {
     where: {
       userId: parseInt(userId),
-      // Supposons ici que chaque inscription a une session directement liée, sans utiliser 'some'
+      // Supposons ici que chaque inscription a une session directement liée
       session: dateCondition,
     },
     include: {
-      session: true,
+      session: {
+        include: {
+          module: true // Inclure le module via la session
+        }
+      },
     },
   };
 

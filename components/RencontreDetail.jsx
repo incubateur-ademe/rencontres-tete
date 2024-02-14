@@ -8,41 +8,70 @@ export default function RencontreDetail({id, setOpen}){
 
     const [passed, setPassed] = useState(true)
     const [rating, setRating] = useState(4);
+    const [data, setData] = useState({})
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+
+    const getUserSession = async () => {
+        const fetcher = await fetch(`/api/sessions/${id}`)
+        const json = await fetcher.json()
+        setData(json[0])
+    }
+
+    useEffect(() => {
+        getUserSession()
+    }, [])
+
+    console.log(data)
 
     return (
         <>
             <span onClick={() => setOpen(null)} className={styles.Back}>Retour à mes rencontres</span>
             <div className="w100 mTop25">
                 <SessionBox 
-                    date="21/02/2024"
-                    region="Grand Est"
-                    title="Énergie, eau et assainissement"
-                    link="/rencontres/energie-eau-assainissement/session-21-02-2024"
+                    date={formatDate(data.dateDebut)}
+                    region={data.region}
+                    title={data?.module?.nom}
                     register="false"
                 />
             </div>
             <div className="flex alignstart gap30 mTop30">
-                <div className="flex alignstart gap10 w30">
-                    <div className="w10">
-                        <img src="/medias/icon-lieu.png" alt="icon" className="w70" />
+                <div className="flex alignstart gap10 w35">
+                    <div className="w7">
+                        <img src="/medias/icon-lieu.png" alt="icon" className="w80" />
                     </div>
                     <div className="w80">
                         <span className={styles.dLabel}>Lieu de la rencontre :</span>
-                        <span className={styles.dValue}>2 Passage de l'Hôtel de ville, 68100 MULHOUSE</span>
+                        <span className={styles.dValue}>{data?.metasSession?.lieuRencontre}</span>
                     </div>
                 </div>
-                <div className="flex alignstart gap10 w30">
+                <div className="flex alignstart gap10 w20">
                     <div className="w10">
-                        <img src="/medias/icon-date.png" alt="icon" className="w70" />
+                        <img src="/medias/icon-date.png" alt="icon" className="w90" />
                     </div>
                     <div className="w80">
-                        <span className={styles.dLabel}>Date et horaires :</span>
-                        <span className={styles.dValue}>21/02/2024 à 9h00</span>
+                        <span className={styles.dLabel}>Date :</span>
+                        <span className={styles.dValue}>{formatDate(data?.dateDebut)}</span>
+                    </div>
+                </div>
+                <div className="flex alignstart gap10 w20">
+                    <div className="w10">
+                        <img src="/medias/icon-date.png" alt="icon" className="w90" />
+                    </div>
+                    <div className="w80">
+                        <span className={styles.dLabel}>Tarif :</span>
+                        <span className={styles.dValue}>{data?.module?.metasModule?.tarif}</span>
                     </div>
                 </div>
             </div>
-            <span className={styles.Subtitle}>À faire avant la rencontre :</span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse placerat vehicula orci. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Cras ac hendrerit neque, vitae vehicula sapien. Morbi fermentum, augue sed lacinia commodo, nisi libero maximus tellus, eleifend aliquet ligula eros eu massa.</p>
+            <span className={styles.Subtitle}>En savoir plus sur ce module :</span>
+            <p>{data?.module?.description}</p>
             <span className={styles.Subtitle}>Ressources :</span>
             <ul className={styles.Ressources}>
                 <li><Link target="_blank" href="/">PDF - Indications préalable à l'événement</Link></li>

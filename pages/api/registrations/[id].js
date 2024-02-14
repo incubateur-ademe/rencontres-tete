@@ -5,12 +5,11 @@ export default async function handle(req, res) {
 
   let queryOptions = {
     include: {
-      metasSession: true,
-      module: {
+      session: {
         include: {
-          metasModule: true
-        }       
-      }
+            module: true
+        }
+      },
     },
   };
 
@@ -20,7 +19,7 @@ export default async function handle(req, res) {
     };
   }
 
-  const sessions = await prisma.session.findMany(queryOptions);
+  const registration = await prisma.registration.findMany(queryOptions);
 
-  res.json(sessions);
+  res.json(registration);
 }

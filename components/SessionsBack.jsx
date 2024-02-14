@@ -4,8 +4,6 @@ import styles from '@/styles/SessionsBack.module.css'
 
 export default function SessionsBack({date, region, title, id, setOpen, setAlert, setActions, action, status, moduleId}){
 
-    console.log("module Id base => ", moduleId)
-
     function formatDate(dateString) {
         const date = new Date(dateString);
         const day = date.getDate().toString().padStart(2, '0');
