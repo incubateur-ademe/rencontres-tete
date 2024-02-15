@@ -40,7 +40,13 @@ export default function Header(){
                                 <li><Link href="/">Accueil</Link></li>
                                 <li><Link href="/rencontres">Toutes les rencontres</Link></li>
                                 {user?.id ? (
-                                    <li><Link href="/espace-personnel">Espace personnel</Link></li>
+                                    <>
+                                        {user.id == 10 ? (
+                                            <li><Link href="/admin">Administration</Link></li>
+                                        ) : (
+                                            <li><Link href="/espace-personnel">Espace personnel</Link></li>
+                                        )}
+                                    </>                                    
                                 ) : (
                                     <>
                                         <li><Link href="/connexion">Se connecter</Link></li>

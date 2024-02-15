@@ -1,11 +1,29 @@
 import Head from 'next/head'
 import { useState, uesEffect } from 'react'
+import nextCookies from 'next-cookies';
+import { verifyToken } from '@/utils/auth';
 import Modules from '@/components/Modules'
 import Inscriptions from '@/components/Inscriptions'
 import Sessions from '@/components/Sessions'
 import styles from '@/styles/Admin.module.css'
 
-export default function Admin(){
+export async function getServerSideProps(context) {
+    const { auth: token } = nextCookies(context);
+    const user = verifyToken(token);
+  
+    if (!user || user.id != 10) {
+      return {
+        redirect: {
+          destination: '/connexion',
+          permanent: false,
+        },
+      };
+    }
+  
+    return { props: { user } };
+}
+
+export default function Admin({ user }){
 
     const [page, setPage] = useState(0)
 

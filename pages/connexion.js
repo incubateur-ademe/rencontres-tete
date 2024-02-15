@@ -40,7 +40,12 @@ export default function Login(){
                 
                     const jwtJson = await jwtResponse.json();
                     if(jwtJson){
-                        router.push('/espace-personnel');
+                        if(json.user.id == 10){
+                            router.push('/admin');
+                        }
+                        else{
+                            router.push('/espace-personnel');
+                        }                       
                     }
                     
                 } else {
