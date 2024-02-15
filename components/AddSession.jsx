@@ -33,15 +33,12 @@ export default function AddSession({setOpen, id, nom}){
 
     const addTranche = () => {
         setDatas(prevDatas => {
-            // Copie profonde pour éviter les mutations directes
             const updatedDatas = JSON.parse(JSON.stringify(prevDatas));
     
-            // Vérifie si le tableau programmeModule existe, sinon crée un tableau vide
             if (!updatedDatas.metasSession.programmeSession) {
                 updatedDatas.metasSession.programmeSession = [];
             }
     
-            // Ajoute un nouvel objet tranche avec des valeurs vides ou par défaut
             updatedDatas.metasSession.programmeSession.push({
                 horaires: '',
                 titre: '',
@@ -54,15 +51,12 @@ export default function AddSession({setOpen, id, nom}){
 
     const addIntervenant = () => {
         setDatas(prevDatas => {
-            // Copie profonde pour éviter les mutations directes
             const updatedDatas = JSON.parse(JSON.stringify(prevDatas));
     
-            // Vérifie si le tableau programmeModule existe, sinon crée un tableau vide
             if (!updatedDatas.metasSession.intervenants) {
                 updatedDatas.metasSession.intervenants = [];
             }
     
-            // Ajoute un nouvel objet tranche avec des valeurs vides ou par défaut
             updatedDatas.metasSession.intervenants.push({
                 nom: '',
                 fonction: '',
@@ -107,7 +101,6 @@ export default function AddSession({setOpen, id, nom}){
         setAlert({
             icon: 'warning',
             text: 'Êtes-vous sûr de vouloir supprimer cette section ?',
-            // Supposons que `action` sera appelé si l'utilisateur confirme
             action: () => deleteTranche(index)
         });
     };
@@ -117,29 +110,25 @@ export default function AddSession({setOpen, id, nom}){
         setAlert({
             icon: 'warning',
             text: 'Êtes-vous sûr de vouloir supprimer cet intervenant ?',
-            // Supposons que `action` sera appelé si l'utilisateur confirme
             action: () => deleteIntervenant(index)
         });
     };
 
     const handleChange = (event) => {
         const { name, value, dataset } = event.target;
-        const index = dataset.index; // Récupérer l'index pour les éléments du tableau, si défini
+        const index = dataset.index;
     
         setDatas(prevDatas => {
-            // Gestion des champs dans le tableau programmeModule
-            if (name.startsWith("metasSession.programmeSession") && index !== undefined) {
-                const fieldName = name.split(".")[2]; // Obtient 'horaires' de "metasSession.programmeSession.horaires"
     
-                // Copie profonde pour éviter la mutation directe (optionnelle mais recommandée)
+            if (name.startsWith("metasSession.programmeSession") && index !== undefined) {
+                const fieldName = name.split(".")[2];
+    
                 const updatedDatas = JSON.parse(JSON.stringify(prevDatas));
     
-                // Assurez-vous que programmeSession est initialisé
                 if (!updatedDatas.metasSession.programmeSession) {
                     updatedDatas.metasSession.programmeSession = [];
                 }
     
-                // Mettre à jour l'élément spécifique dans le tableau
                 if (updatedDatas.metasSession.programmeSession[index]) {
                     updatedDatas.metasSession.programmeSession[index][fieldName] = value;
                 }
@@ -147,17 +136,14 @@ export default function AddSession({setOpen, id, nom}){
                 return updatedDatas;
             }
             else if (name.startsWith("metasSession.intervenants") && index !== undefined) {
-                const fieldName = name.split(".")[2]; // Obtient 'horaires' de "metasSession.programmeSession.horaires"
-    
-                // Copie profonde pour éviter la mutation directe (optionnelle mais recommandée)
+                const fieldName = name.split(".")[2];
+
                 const updatedDatas = JSON.parse(JSON.stringify(prevDatas));
-    
-                // Assurez-vous que programmeSession est initialisé
+
                 if (!updatedDatas.metasSession.intervenants) {
                     updatedDatas.metasSession.intervenants = [];
                 }
-    
-                // Mettre à jour l'élément spécifique dans le tableau
+
                 if (updatedDatas.metasSession.intervenants[index]) {
                     updatedDatas.metasSession.intervenants[index][fieldName] = value;
                 }
@@ -165,7 +151,6 @@ export default function AddSession({setOpen, id, nom}){
                 return updatedDatas;
             }
             else if (name.includes('.')) {
-                // Gestion des champs imbriqués mais pas dans un tableau
                 const [parent, key] = name.split('.');
                 return {
                     ...prevDatas,
@@ -175,7 +160,6 @@ export default function AddSession({setOpen, id, nom}){
                     }
                 };
             } else {
-                // Gérer les champs de niveau supérieur
                 return {
                     ...prevDatas,
                     [name]: value
@@ -185,7 +169,7 @@ export default function AddSession({setOpen, id, nom}){
     };
 
     const moveSectionUp = (index) => {
-        if (index === 0) return; // Ne peut pas déplacer plus haut que le premier élément
+        if (index === 0) return;
     
         setDatas((prevDatas) => {
             const updatedProgrammeSession = [...prevDatas.metasSession.programmeSession];
@@ -282,6 +266,8 @@ export default function AddSession({setOpen, id, nom}){
           status: 'brouillon'
         };
 
+        const uploadedUrlsPDF = await uploadFiles();
+
         const metasSessionData = {
             dateHoraires: datas.metasSession.dateHoraires,
             lieuRencontre: datas.metasSession.lieuRencontre,
@@ -291,7 +277,7 @@ export default function AddSession({setOpen, id, nom}){
             infosComplementaires: datas.metasSession.infosComplementaires,
             intervenants: datas.metasSession.intervenants,
             programmeSession: datas.metasSession.programmeSession,
-            urlsPDF: datas.metasSession.urlsPDF
+            urlsPDF: [...datas.metasSession.urlsPDF, ...uploadedUrlsPDF]
         }
 
         if(sessionData.moduleId != '' 
@@ -338,62 +324,66 @@ export default function AddSession({setOpen, id, nom}){
     }
 
     function handleFiles(event) {
-        const newFiles = Array.from(event.target.files);
-        const newFilesNames = newFiles.map(file => file.name);
+        const newFiles = Array.from(event.target.files).map(file => ({
+            file,
+            nom: file.name,
+        }));
       
         setDatas(prev => ({
-          ...prev,
-          metasSession: {
-            ...prev.metasSession,
-            urlsPDF: [...prev.metasSession.urlsPDF, ...newFilesNames],
-            selectedFiles: [...prev.metasSession.selectedFiles, ...newFiles] // Stockez les fichiers ici
-          }
-        }));
-      }
-         
-
-    function deleteFile(index) {
-        setDatas(prev => ({
-          ...prev,
-          metasSession: {
-            ...prev.metasSession,
-            urlsPDF: prev.metasSession.urlsPDF.filter((_, i) => i !== index),
-            selectedFiles: prev.metasSession.selectedFiles.filter((_, i) => i !== index)
-          }
+            ...prev,
+            metasSession: {
+                ...prev.metasSession,
+                selectedFiles: [...prev.metasSession.selectedFiles, ...newFiles]
+            }
         }));
     }
-      
+    
+    
+
+    function deleteFile(index, type) {
+        setDatas(prev => {
+            const newDatas = { ...prev, metasSession: { ...prev.metasSession } };
+    
+            if (type === 'uploaded') {
+                newDatas.metasSession.urlsPDF = prev.metasSession.urlsPDF.filter((_, i) => i !== index);
+            } else if (type === 'selected') {
+                newDatas.metasSession.selectedFiles = prev.metasSession.selectedFiles.filter((_, i) => i !== index);
+            }
+    
+            return newDatas;
+        });
+    }
       
 
     async function uploadFiles() {
-        const files = datas.metasSession.selectedFiles; // Utilisez les fichiers de l'état
+        const files = datas.metasSession.selectedFiles;
         const formData = new FormData();
       
-        files.forEach(file => {
-          formData.append("files", file);
+        files.forEach(obj => {
+            formData.append("files", obj.file);
         });
       
         const response = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData,
+            method: 'POST',
+            body: formData,
         });
       
         if (response.ok) {
-          const { urlsPDF } = await response.json();
-          // Mettez à jour l'état avec les URLs reçues
-          setDatas(prev => ({
-            ...prev,
-            metasSession: {
-              ...prev.metasSession,
-              urlsPDF: [...prev.metasSession.urlsPDF, ...urlsPDF]
-            }
-          }));
+            const { urlsPDF } = await response.json();
+  
+            setDatas(prev => ({
+                ...prev,
+                metasSession: {
+                    ...prev.metasSession,
+                    urlsPDF: [...prev.metasSession.urlsPDF, ...urlsPDF]
+                }
+            }));
+            return urlsPDF;
         } else {
-          console.error('Erreur lors de l\'upload des fichiers');
+            console.error('Erreur lors de l\'upload des fichiers');
+            return [];
         }
-    }
-    
-      
+    }     
 
     return (
         <>
@@ -690,16 +680,38 @@ export default function AddSession({setOpen, id, nom}){
                 <div>
                     <div className="flex wrap gap20 mTop20">
                         <div className="w48 text-left">
-                            <div>
+                        <div>
                                 <input type="file" id="doc" multiple onChange={handleFiles} style={{ display: 'none' }} />
                                 <button onClick={() => document.getElementById('doc').click()}>+ Ajouter des documents</button>
                                 <div>
-                                {datas.metasSession.urlsPDF.map((file, index) => (
-                                    <div key={index}>
-                                    {file}
-                                    <button onClick={() => deleteFile(index)}>Supprimer</button>
-                                    </div>
-                                ))}
+                                    {/* Affichage des fichiers déjà uploadés */}
+                                    {datas.metasSession.urlsPDF.map((file, index) => (
+                                        <div key={`uploaded-${index}`}>
+                                            {file.nom}
+                                            <button onClick={() => deleteFile(index, 'uploaded')}>Supprimer</button>
+                                        </div>
+                                    ))}
+
+                                    {/* Affichage des fichiers sélectionnés mais pas encore uploadés */}
+                                    {datas.metasSession.selectedFiles.map((fileObj, index) => {
+                                        // Assurez-vous que cette ligne correspond à la structure de vos objets dans selectedFiles
+                                        const fileName = fileObj.file ? fileObj.file.name : fileObj.name; // Ajustez selon votre structure
+
+                                        // Vérifiez si le fichier sélectionné a déjà été uploadé
+                                        const isUploaded = datas.metasSession.urlsPDF.some(uploadedFile => uploadedFile.nom === fileName);
+
+                                        // N'affichez que les fichiers qui n'ont pas encore été uploadés
+                                        if (!isUploaded) {
+                                            return (
+                                                <div key={`selected-${index}`}>
+                                                    {fileName}
+                                                    <button onClick={() => deleteFile(index, 'selected')}>Supprimer</button>
+                                                </div>
+                                            );
+                                        } else {
+                                            return null; // Le fichier est déjà uploadé, donc on ne l'affiche pas ici
+                                        }
+                                    })}
                                 </div>
                             </div>
                         </div>

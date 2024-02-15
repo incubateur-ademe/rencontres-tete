@@ -104,7 +104,7 @@
     margin:20px 0;
 }
 
-.Ressources li a{
+.Ressources button{
     color:var(--primary);
     font-weight: 500;
     line-height: 1.5em;
@@ -191,4 +191,36 @@
 
 .Import:hover{
     opacity: 0.65;
+}
+
+.Fichier{
+    border:0px;
+    color:var(--primary);
+    text-decoration: underline;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.Filer{
+    display: inline-flex;
+    color:var(--primary);
+    align-items: center;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+.Filer button{
+    border:0px;
+    background:var(--primary);
+    color:#FFF;
+    display: flex;
+    width:20px;
+    height: 20px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.Filer button span{
+    font-size:.8rem;
 }

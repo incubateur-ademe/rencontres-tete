@@ -27,6 +27,7 @@ export default async function handler(req, res) {
       if (err) return reject(err);
       resolve({ files });
     });
+    
   }).catch(err => {
     console.error(err);
     res.status(500).json({ error: `Erreur lors de l'analyse du formulaire: ${err.message}` });
@@ -36,16 +37,20 @@ export default async function handler(req, res) {
   // Vérifiez si la promesse a été rejetée et a retourné
   if (!data) return;
 
-  // Traitement des fichiers uploadés pour renvoyer les URLs
+  // Dans votre API de traitement de fichier
   const urlsPDF = Object.values(data.files).flatMap(fileArray => {
     // Gérer les cas où plusieurs fichiers sont uploadés sous le même nom
     const files = Array.isArray(fileArray) ? fileArray : [fileArray];
     return files.map(file => {
       const filePath = path.relative('./public', file.filepath);
-      // Utiliser une URL relative ou ajuster selon votre logique de serveur
-      return `/uploads/${path.basename(filePath)}`;
+      // Construire un objet avec le nom et l'URL du fichier
+      return {
+        nom: file.originalFilename, // ou file.newFilename selon votre gestion des noms de fichiers
+        url: `/uploads/${path.basename(filePath)}`
+      };
     });
   });
+
 
   res.status(200).json({ urlsPDF });
 }
