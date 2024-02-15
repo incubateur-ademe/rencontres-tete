@@ -57,8 +57,6 @@ export default function Modules(){
         const json = await fetcher.json()
         setModules(json)
     }
-
-    console.log(modules)
     
     const filterModules = async (event) => {
         const filter = event.target.value;
