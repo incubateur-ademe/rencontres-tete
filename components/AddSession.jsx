@@ -26,7 +26,8 @@ export default function AddSession({setOpen, id, nom}){
           infosComplementaires: '',
           intervenants: [],
           programmeSession: [],
-          urlsPDF: []
+          urlsPDF: [],
+          selectedFiles: []
         }
     });
 
@@ -252,6 +253,7 @@ export default function AddSession({setOpen, id, nom}){
     };  
 
     async function addSession(sessionData, metasSessionData, moduleId) {
+
         const response = await fetch('/api/sessions/add', {
           method: 'POST',
           headers: {
@@ -334,6 +336,64 @@ export default function AddSession({setOpen, id, nom}){
         })
         setImporting('Importer le programme du module')
     }
+
+    function handleFiles(event) {
+        const newFiles = Array.from(event.target.files);
+        const newFilesNames = newFiles.map(file => file.name);
+      
+        setDatas(prev => ({
+          ...prev,
+          metasSession: {
+            ...prev.metasSession,
+            urlsPDF: [...prev.metasSession.urlsPDF, ...newFilesNames],
+            selectedFiles: [...prev.metasSession.selectedFiles, ...newFiles] // Stockez les fichiers ici
+          }
+        }));
+      }
+         
+
+    function deleteFile(index) {
+        setDatas(prev => ({
+          ...prev,
+          metasSession: {
+            ...prev.metasSession,
+            urlsPDF: prev.metasSession.urlsPDF.filter((_, i) => i !== index),
+            selectedFiles: prev.metasSession.selectedFiles.filter((_, i) => i !== index)
+          }
+        }));
+    }
+      
+      
+
+    async function uploadFiles() {
+        const files = datas.metasSession.selectedFiles; // Utilisez les fichiers de l'état
+        const formData = new FormData();
+      
+        files.forEach(file => {
+          formData.append("files", file);
+        });
+      
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+      
+        if (response.ok) {
+          const { urlsPDF } = await response.json();
+          // Mettez à jour l'état avec les URLs reçues
+          setDatas(prev => ({
+            ...prev,
+            metasSession: {
+              ...prev.metasSession,
+              urlsPDF: [...prev.metasSession.urlsPDF, ...urlsPDF]
+            }
+          }));
+        } else {
+          console.error('Erreur lors de l\'upload des fichiers');
+        }
+    }
+    
+      
 
     return (
         <>
@@ -630,10 +690,18 @@ export default function AddSession({setOpen, id, nom}){
                 <div>
                     <div className="flex wrap gap20 mTop20">
                         <div className="w48 text-left">
-                            <input type="file" id="doc" className="input-file" />
-                            <label for="doc">
-                                + Ajouter un document
-                            </label>
+                            <div>
+                                <input type="file" id="doc" multiple onChange={handleFiles} style={{ display: 'none' }} />
+                                <button onClick={() => document.getElementById('doc').click()}>+ Ajouter des documents</button>
+                                <div>
+                                {datas.metasSession.urlsPDF.map((file, index) => (
+                                    <div key={index}>
+                                    {file}
+                                    <button onClick={() => deleteFile(index)}>Supprimer</button>
+                                    </div>
+                                ))}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
