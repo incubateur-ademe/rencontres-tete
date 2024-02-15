@@ -37,7 +37,7 @@ export default function Home() {
                 <input name="search" value={search} onChange={(event) => setSearch(event.target.value)} className="input-text mTop30" type="text" placeholder="Rechercher une rencontre par nom, par date..." />
                 {(finds.length > 0 && search.length > 0) && (
                   <ul>
-                    {finds.map((item, index) => {
+                    {finds.slice(0, 5).map((item, index) => {
                       return <li><Link href={`/rencontres/${item.slug}`}>{item.nom}</Link></li>
                     })}
                   </ul>

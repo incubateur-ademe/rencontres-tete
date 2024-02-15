@@ -171,3 +171,24 @@
 .Quill{
     min-height:150px;
 }
+
+.Import{
+    border:0px;
+    color:var(--primary);
+    background-color: var(--primaryBack);
+    display: inline-flex;
+    align-items: center;
+    gap:5px;
+    border-radius: 5px;
+    padding:6px 12px;
+    margin-top:25px;
+    cursor:pointer;
+}
+
+.Import span{
+    font-size: 1rem;
+}
+
+.Import:hover{
+    opacity: 0.65;
+}

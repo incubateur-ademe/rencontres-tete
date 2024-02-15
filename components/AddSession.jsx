@@ -12,6 +12,7 @@ export default function AddSession({setOpen, id, nom}){
     const [indexToDelete, setIndexToDelete] = useState(null);
     const [indexToDeleteI, setIndexToDeleteI] = useState(null);
     const [editContent, setEditContent] = useState('');
+    const [importing, setImporting] = useState('Importer le programme du module')
     const [datas, setDatas] = useState({
         moduleId: id,
         departement: '',
@@ -316,7 +317,23 @@ export default function AddSession({setOpen, id, nom}){
         }
     }
 
-    
+    const importProgramme = async () => {
+        setImporting('Import en cours...')
+        const moduleId = id
+        const fetcher = await fetch(`/api/modules/${moduleId}`)
+        const json = await fetcher.json()
+        const res = json[0]
+        setDatas(prev => {
+            return {
+                ...prev,
+                metasSession: {
+                    ...prev.metasSession,
+                    programmeSession: res.metasModule.programmeModule
+                }
+            }
+        })
+        setImporting('Importer le programme du module')
+    }
 
     return (
         <>
@@ -570,7 +587,11 @@ export default function AddSession({setOpen, id, nom}){
                     </button>
                 </div>
 
-                <span className={styles.Subtitle}>Programme de la session</span>
+                <div className="flex aligncenter space-between mTop10">
+                    <span className={styles.Subtitle}>Programme de la session</span>
+                    <button onClick={importProgramme} className={styles.Import}><span className="material-icons">download</span>{importing}</button>
+                </div>
+                
                 <div>
                     {datas?.metasSession.programmeSession.length > 0 && datas?.metasSession.programmeSession.map((programme, index) => {
                         return (

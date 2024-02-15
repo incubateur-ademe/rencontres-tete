@@ -7,13 +7,12 @@ import 'react-quill/dist/quill.snow.css';
 
 export default function EditSession({setOpen, id, nom, moduleId}){
 
-    console.log("module ID => ", moduleId)
-
     const [alert, setAlert] = useState(null)
     const [notif, setNotif] = useState(null)
     const [indexToDelete, setIndexToDelete] = useState(null);
     const [indexToDeleteI, setIndexToDeleteI] = useState(null);
     const [editContent, setEditContent] = useState('');
+    const [importing, setImporting] = useState('Importer le programme du module')
     const [datas, setDatas] = useState({
         moduleId: id,
         departement: '',
@@ -327,6 +326,23 @@ export default function EditSession({setOpen, id, nom, moduleId}){
         }
     }
 
+    const importProgramme = async () => {
+        setImporting('Import en cours...')
+        const fetcher = await fetch(`/api/modules/${moduleId}`)
+        const json = await fetcher.json()
+        const res = json[0]
+        setDatas(prev => {
+            return {
+                ...prev,
+                metasSession: {
+                    ...prev.metasSession,
+                    programmeSession: res.metasModule.programmeModule
+                }
+            }
+        })
+        setImporting('Importer le programme du module')
+    }
+
     useEffect(() => {
         getDatas()
     }, [])
@@ -582,7 +598,11 @@ export default function EditSession({setOpen, id, nom, moduleId}){
                     </button>
                 </div>
 
-                <span className={styles.Subtitle}>Programme de la session</span>
+                <div className="flex aligncenter space-between mTop10">
+                    <span className={styles.Subtitle}>Programme de la session</span>
+                    <button onClick={importProgramme} className={styles.Import}><span className="material-icons">download</span>{importing}</button>
+                </div>
+                
                 <div>
                     {datas?.metasSession.programmeSession.length > 0 && datas?.metasSession.programmeSession.map((programme, index) => {
                         return (
