@@ -230,6 +230,7 @@ export default function AddModule({setOpen}){
         });
     }, [editContent]);
 
+
     return (
         <>
             <div className="mBot30">
@@ -310,14 +311,38 @@ export default function AddModule({setOpen}){
                     <div className="select w40">
                         <select onChange={handleChange} name="thematique" value={datas?.thematique} className="input-select">
                             <option value="">Thématique du module</option>
-                            <option>Planification territoriale</option>
-                            <option>Energie, eau et assainissement</option>
-                            <option>Mobilité et qualité de l'air</option>
-                            <option>Transition bas carbone</option>
-                            <option>Prévention et gestion des déchêts</option>
-                            <option>Consommation responsable</option>
-                            <option>Autres piliers de l'économie circulaire</option>
-                            <option>Gouvernance et pilotage</option>
+                            {(datas.pilier == undefined || datas.pilier == '') && (
+                                <>
+                                    <option>Planification territoriale</option>
+                                    <option>Energie, eau et assainissement</option>
+                                    <option>Mobilité et qualité de l'air</option>
+                                    <option>Transition bas carbone</option>
+                                    <option>Prévention et gestion des déchêts</option>
+                                    <option>Consommation responsable</option>
+                                    <option>Autres piliers de l'économie circulaire</option>
+                                    <option>Gouvernance et pilotage</option>
+                                </>
+                            )}
+                            {datas?.pilier == 'Climat Air Energie' && (
+                                <>
+                                    <option>Planification territoriale</option>
+                                    <option>Energie, eau et assainissement</option>
+                                    <option>Mobilité et qualité de l'air</option>
+                                    <option>Transition bas carbone</option>
+                                </>                                
+                            )}
+                            {datas?.pilier == 'Economie circulaire' && (
+                                <>
+                                    <option>Prévention et gestion des déchêts</option>
+                                    <option>Consommation responsable</option>
+                                    <option>Autres piliers de l'économie circulaire</option>
+                                </>                                
+                            )}
+                            {datas?.pilier == 'Transversal' && (
+                                <>
+                                    <option>Gouvernance et pilotage</option>
+                                </>                                
+                            )}
                         </select>
                         <span className="material-icons">expand_more</span>
                     </div>

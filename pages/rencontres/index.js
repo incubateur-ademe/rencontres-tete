@@ -127,6 +127,15 @@ export default function Rencontres({ base, region, pilier, thematique }){
         }
     }, [filtres])
 
+    useEffect(() => {
+        setFiltres(prev => {
+            return {
+                ...prev,
+                thematique: ''
+            }
+        })
+    }, [filtres.pilier])
+
     return (
         <>
             <Head>
@@ -254,14 +263,41 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                     <div className="select">
                                         <select name="thematique" value={filtres.thematique} onChange={(event) => setFiltres(prev => { return { ...prev, thematique: event.target.value, nom: '' } })} className="input-select">
                                             <option value="">Toutes les thématiques</option>
-                                            <option>Planification territoriale</option>
-                                            <option>Energie, eau et assainissement</option>
-                                            <option>Mobilité et qualité de l'air</option>
-                                            <option>Transition bas carbone</option>
-                                            <option>Prévention et gestion des déchêts</option>
-                                            <option>Consommation responsable</option>
-                                            <option>Autres piliers de l'économie circulaire</option>
-                                            <option>Gouvernance et pilotage</option>
+                                            {filtres.pilier == '' ? (
+                                            <>
+                                                <option>Planification territoriale</option>
+                                                <option>Energie, eau et assainissement</option>
+                                                <option>Mobilité et qualité de l'air</option>
+                                                <option>Transition bas carbone</option>
+                                                <option>Prévention et gestion des déchêts</option>
+                                                <option>Consommation responsable</option>
+                                                <option>Autres piliers de l'économie circulaire</option>
+                                                <option>Gouvernance et pilotage</option>
+                                            </>
+                                            ) : (
+                                                <>
+                                                    {filtres.pilier == 'Climat Air Energie' && (
+                                                        <>
+                                                            <option>Planification territoriale</option>
+                                                            <option>Energie, eau et assainissement</option>
+                                                            <option>Mobilité et qualité de l'air</option>
+                                                            <option>Transition bas carbone</option> 
+                                                        </>                                                       
+                                                    )}
+                                                    {filtres.pilier == 'Economie circulaire' && (
+                                                        <>
+                                                            <option>Prévention et gestion des déchêts</option>
+                                                            <option>Consommation responsable</option>
+                                                            <option>Autres piliers de l'économie circulaire</option>
+                                                        </>                                                       
+                                                    )}
+                                                    {filtres.pilier == 'Transversal' && (
+                                                        <>
+                                                            <option>Gouvernance et pilotage</option>
+                                                        </>                                                       
+                                                    )}
+                                                </>
+                                            )}
                                         </select>
                                         <span className="material-icons">expand_more</span>
                                     </div>
