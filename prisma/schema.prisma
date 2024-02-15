@@ -15,6 +15,7 @@ model Module {
   datePublication DateTime?
   lastUpdate      DateTime?
   nom             String
+  code            String
   slug            String        @unique
   pilier          String
   thematique      String

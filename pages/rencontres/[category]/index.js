@@ -72,7 +72,7 @@ export default function Module({ data }){
                             </p>
                             <span className={styles.Tag}>{data.pilier}</span>
                             <p>{data.description}</p>
-                            <p>Code module : #{data.id} - Dernière mise à jour : {lastUpdate}</p>
+                            <p>Code module : #{data.code} - Dernière mise à jour : {lastUpdate}</p>
                         </div>
                         <div className="flex gap50 mTop50">
                             <div className="w70">                                

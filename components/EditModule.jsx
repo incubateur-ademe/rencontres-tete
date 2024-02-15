@@ -14,6 +14,7 @@ export default function EditModule({setOpen, id}){
     const [datas, setDatas] = useState({
         nom: '',
         description: '',
+        code: '',
         metasModule: {
           resumeProgramme: '',
           objectifs: '',
@@ -182,7 +183,8 @@ export default function EditModule({setOpen, id}){
           nom: datas.nom,
           description: datas.description,
           pilier: datas.pilier,
-          thematique: datas.thematique
+          thematique: datas.thematique,
+          code: datas.code
         };
 
         const metasModuleData = {
@@ -197,6 +199,7 @@ export default function EditModule({setOpen, id}){
         if(moduleData.nom != '' 
         && moduleData.description != '' 
         && moduleData.pilier != '' 
+        && moduleData.code != '' 
         && moduleData.thematique != '' 
         && metasModuleData.duree != ''
         && metasModuleData.objectifs != ''
@@ -249,8 +252,9 @@ export default function EditModule({setOpen, id}){
             <div>
                 <span className={styles.Subtitle}>Informations principales</span>
                 <div className="mTop20">
-                    <div className="flex">
-                        <input type="text" className="input-text" onChange={handleChange} name="nom" value={datas?.nom} placeholder="Titre du module" />
+                    <div className="flex gap20">
+                        <input type="text" className="input-text w70" onChange={handleChange} name="nom" value={datas?.nom} placeholder="Titre du module" />
+                        <input type="text" className="input-text w30" onChange={handleChange} name="code" value={datas?.code} placeholder="Code du module" />
                     </div>
                     <div className="flex mTop20">
                         <textarea className="textarea" onChange={handleChange} name="description" value={datas?.description} placeholder="Texte d'introduction"></textarea>

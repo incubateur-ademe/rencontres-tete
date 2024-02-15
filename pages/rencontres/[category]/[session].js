@@ -55,6 +55,7 @@ export default function Session({ data, user }){
 
     const [alert, setAlert] = useState(null)
     const [notif, setNotif] = useState(null)
+    const [check, setCheck] = useState(false)
 
     const [inscription, setInscription] = useState({
         userId: '',
@@ -116,7 +117,8 @@ export default function Session({ data, user }){
         })
 
         const json = await registering.json()
-        console.log(json)
+
+        setCheck(true)
 
         setAlert(null)
         setNotif({
@@ -199,6 +201,17 @@ export default function Session({ data, user }){
 
     }, [])
 
+    useEffect(() => {
+        const checker = async () => {
+            const fetcher = await fetch(`/api/registrations/byUserSession?userId=${user.id}&sessionId=${data.id}`)
+            const json = await fetcher.json()
+            if(json.length > 0){
+                setCheck(true)
+            }
+        }
+        checker()
+    }, [data, alert])
+
     return (
         <>
             <Head>
@@ -220,10 +233,16 @@ export default function Session({ data, user }){
                                 <span className={styles.Tag}>{data.module.nom}</span>
                             </div>                            
                             <p>{data.module.description}</p>
-                            <p>Code module : #{data.moduleId} - Dernière mise à jour : {formatDate(data.lastUpdate)}</p>
+                            <p>Code module : #{data.module.code} - Dernière mise à jour : {formatDate(data.lastUpdate)}</p>
                         </div>
                         <div className="flex alignstart gap40 mTop40">
                             <div className={`w70 ${styles.Box}`}>
+                                {check && (
+                                    <div className={styles.Already}>
+                                        <span className="material-icons">done</span>
+                                        <div>Vous participez à cette rencontre ! Retrouvez tous les informations sur la rencontre "{data.module.nom}" directement dans votre <Link href="/espace-personnel">espace personnel</Link>.</div>
+                                    </div>
+                                )}
                                 <span className={styles.Title}>Inscription à la rencontre</span>
                                 <div className={styles.Form}>
                                     <div className="flex gap15 mTop20">
@@ -313,11 +332,13 @@ export default function Session({ data, user }){
                                             <input name="rgpd" onChange={handleChange} value={inscription.rgpd} type="checkbox" /> <span>J’ai lu et j’accepte que l’ADEME collecte mes données afin de garantir la bonne utilisation des services offerts*et reconnais avoir pris connaissance de sa politique de protection des données personnelles.</span>
                                         </div>
                                     </div>
-                                    <div className="flex alignright">
-                                        <button onClick={register} className="btn__normal btn__dark">
-                                            Valider mon inscription
-                                        </button>
-                                    </div>
+                                    {!check && (
+                                        <div className="flex alignright">
+                                            <button onClick={register} className="btn__normal btn__dark">
+                                                Valider mon inscription
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className="w30">

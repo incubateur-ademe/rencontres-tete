@@ -31,6 +31,12 @@ export default async function handle(req, res) {
     };
   }
 
+  if (dateDebut) {
+    queryOptions.where.sessions = {
+      some: sessionWhere,
+    };
+  }
+
   // Filtres liés directement aux modules
   if (pilier) queryOptions.where.pilier = pilier;
   if (thematique) queryOptions.where.thematique = thematique;

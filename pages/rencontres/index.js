@@ -235,6 +235,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                                 title={module.nom}
                                                 id={module.id}
                                                 link={`/rencontres/${module.slug}`}
+                                                theme={module.thematique}
                                             />
                                         </div>
                                     ))}
