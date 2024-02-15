@@ -6,6 +6,7 @@ export default function Participants({ session, setOpen }){
 
     const [number, setNumber] = useState(0)
     const [users, setUsers] = useState([])
+    const [actions, setActions] = useState(0)
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -26,7 +27,7 @@ export default function Participants({ session, setOpen }){
 
     useEffect(() => {
         getParticipants()
-    }, [])
+    }, [actions])
 
     return (
         <>
@@ -40,7 +41,7 @@ export default function Participants({ session, setOpen }){
                     {users.length > 0 ? (
                         <>
                             {users.map((user, index) => {
-                                return <Participant data={user} />
+                                return <Participant key={index} data={user} setActions={setActions} />
                             })}
                         </>
                     ) : (

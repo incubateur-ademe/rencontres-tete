@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { Notif } from '@/components/Notif'
 import SessionStat from '@/components/SessionStat'
+import Reviews from '@/components/Reviews'
 import Participants from '@/components/Participants'
 import styles from '@/styles/Admin.module.css'
 
@@ -22,6 +24,10 @@ export default function Inscriptions(){
     }
 
     const getSessions = async (region, module) => {
+        setNotif({
+            icon: 'hourglass_top',
+            text: 'Chargement des sessions...'
+        })
         let url = '/api/sessions/?'
 
         if(region){
@@ -112,7 +118,13 @@ export default function Inscriptions(){
                     {open.type == 'check' && (
                         <Participants session={open.session} setOpen={setOpen}  />
                     )}
+                    {open.type == 'reviews' && (
+                        <Reviews session={open.session} setOpen={setOpen}  />
+                    )}
                 </>
+            )}
+            {notif != null && (
+                <Notif datas={notif} setNotif={setNotif} />
             )}
         </>
     )

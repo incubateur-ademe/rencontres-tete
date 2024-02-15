@@ -118,31 +118,21 @@
     background-color: var(--primaryBack);
     padding:6px 12px;
     border-radius: 5px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
 }
 
 .UserName span{
     font-size: 1rem;
 }
 
-.Corb{
-    border:0px;
-    color:var(--primary);
+.Rev{
+    margin:0px !important;
     background-color: var(--primaryBack);
-    width:31px;
-    height: 31px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    margin-bottom:15px;
-    cursor:pointer;
-    transition:.2s ease;
-}
-
-.Corb:hover{
-    opacity: 0.65;
-}
-
-.Corb span{
-    font-size: 1rem;
+    padding:15px;
+    margin-top: -15px !important;
+    border-radius: 10px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-top:1px dotted var(--primary)
 }
