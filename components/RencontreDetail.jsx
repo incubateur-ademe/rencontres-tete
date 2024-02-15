@@ -95,7 +95,7 @@ export default function RencontreDetail({id, setOpen, userId}){
             const now = new Date();
             const dateDebut = new Date(data.dateDebut);
 
-            if (dateDebut <= now) {
+            if (dateDebut > now) {
                 setPassed(false);
             } else {
                 setPassed(true);

@@ -17,7 +17,15 @@ export default async function handle(req, res) {
 
             // Supprimer les MetasSession liées à ces sessions
             if (sessionIds.length > 0) {
+                await prisma.registration.deleteMany({
+                    where: { sessionId: { in: sessionIds } },
+                });
+
                 await prisma.metasSession.deleteMany({
+                    where: { sessionId: { in: sessionIds } },
+                });
+
+                await prisma.review.deleteMany({
                     where: { sessionId: { in: sessionIds } },
                 });
             }
