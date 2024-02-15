@@ -1,14 +1,20 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import Alert from '@/components/Alert'
+import { Notif } from '@/components/Notif'
 import SessionBox from '@/components/SessionBox'
 import Rating from '@mui/material/Rating';
 import styles from '@/styles/Account.module.css'
 
-export default function RencontreDetail({id, setOpen}){
+export default function RencontreDetail({id, setOpen, userId}){
 
+    const [alert, setAlert] = useState(null)
+    const [notif, setNotif] = useState(null)
     const [passed, setPassed] = useState(true)
     const [rating, setRating] = useState(4);
+    const [commentaires, setCommentaires] = useState('')
     const [data, setData] = useState({})
+    const [reviewDisabled, setReviewDisabled] = useState(false)
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -24,11 +30,79 @@ export default function RencontreDetail({id, setOpen}){
         setData(json[0])
     }
 
+    const registerReview = async () => {
+        setAlert(null)
+        const fetcher = await fetch('/api/reviews/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                note: rating,
+                commentaire: commentaires,
+                userId: userId,
+                sessionId: data.id
+            })
+        })
+        const json = await fetcher.json()
+        if(json.id){
+            setNotif({
+                text: 'Votre avis a bien été enregistré !',
+                icon: 'done'
+            })   
+            setReviewDisabled(true)         
+        }
+    }
+
+    const addReview = async () => {
+        if(commentaires != ''){
+            setAlert({
+                icon: 'warning',
+                text: 'Une fois votre avis validé vous ne pourrez plus le modifier. Validez-vous votre avis ?',
+                // Supposons que `action` sera appelé si l'utilisateur confirme
+                action: () => registerReview()
+            });
+        }
+        else{
+            setNotif({
+                text: 'Vous n\'avez pas laissé de commentaires.',
+                icon: 'close'
+            })
+        }
+    }
+
+    const checkReview = async () => {
+        const fetcher = await fetch(`/api/reviews/check?userId=${userId}&sessionId=${data.id}`)
+        const json = await fetcher.json()
+        const rev = json[0]
+        setReviewDisabled(true)
+        setRating(rev.note)
+        setCommentaires(rev.commentaire)
+    }
+
     useEffect(() => {
         getUserSession()
     }, [])
 
-    console.log(data)
+    useEffect(() => {
+        if(data.id){
+            checkReview()
+        }
+    }, [data])
+
+    useEffect(() => {
+        if (data && data.dateDebut) {
+            const now = new Date();
+            const dateDebut = new Date(data.dateDebut);
+
+            if (dateDebut <= now) {
+                setPassed(false);
+            } else {
+                setPassed(true);
+            }
+        }
+    }, [data]);
+    
 
     return (
         <>
@@ -72,12 +146,22 @@ export default function RencontreDetail({id, setOpen}){
             </div>
             <span className={styles.Subtitle}>En savoir plus sur ce module :</span>
             <p>{data?.module?.description}</p>
-            <span className={styles.Subtitle}>Ressources :</span>
-            <ul className={styles.Ressources}>
-                <li><Link target="_blank" href="/">PDF - Indications préalable à l'événement</Link></li>
-                <li><Link target="_blank" href="/">PDF - Informations pratiques pour vous rendre à l'événement</Link></li>
-                <li><Link target="_blank" href="/">PDF - Règlement intérieur</Link></li>
-            </ul>   
+            
+            {data?.metasSession?.urlsPDF.length > 0 ? (
+                <>
+                    <span className={styles.Subtitle}>Ressources :</span>
+                    <ul className={styles.Ressources}>
+                        <li><Link target="_blank" href="/">PDF - Indications préalable à l'événement</Link></li>
+                        <li><Link target="_blank" href="/">PDF - Informations pratiques pour vous rendre à l'événement</Link></li>
+                        <li><Link target="_blank" href="/">PDF - Règlement intérieur</Link></li>
+                    </ul>
+                </>
+            ) : (
+                <div>
+                    <span className={styles.Subtitle}>Ressources :</span>
+                    <span className="block mTop20">Pas de ressources disponibles.</span>
+                </div>
+            )}   
             {passed && (
                 <>
                     <span className={styles.Subtitle}>Donnez votre avis sur la rencontre :</span>
@@ -91,12 +175,20 @@ export default function RencontreDetail({id, setOpen}){
                             }}
                         />
                     </div>
-                    <textarea className="textarea mTop15"></textarea>
-                    <div className='mTop20 flex alignright'>
-                        <button className="btn__normal btn__dark">Valider mon avis</button>
-                    </div>
+                    <textarea disabled={reviewDisabled} name="commentaires" value={commentaires} onChange={(event) => setCommentaires(event.target.value)} className="textarea mTop15"></textarea>
+                    {!reviewDisabled && (
+                        <div className='mTop20 flex alignright'>
+                            <button onClick={addReview} className="btn__normal btn__dark">Valider mon avis</button>
+                        </div>
+                    )}
                 </>
-            )}     
+            )}    
+            {alert != null && (
+                <Alert datas={alert} setAlert={setAlert} />
+            )}  
+            {notif != null && (
+                <Notif datas={notif} setNotif={setNotif} />
+            )} 
         </>
     )
 }

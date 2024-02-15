@@ -13,7 +13,7 @@ export default function SessionBox({date, region, title, link, register}){
                     <div className="w70">
                         <span className={styles.Title}>{title}</span>
                     </div>
-                    {register != 'false' && (
+                    {(register != 'false' && register != 'true') && (
                     <div className="w30">
                         <Link className={styles.Register} href={link}>S'inscrire</Link>
                     </div>
