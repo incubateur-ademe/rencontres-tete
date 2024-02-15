@@ -76,8 +76,10 @@ export default function RencontreDetail({id, setOpen, userId}){
         const json = await fetcher.json()
         const rev = json[0]
         setReviewDisabled(true)
-        setRating(rev.note)
-        setCommentaires(rev.commentaire)
+        if(rev){
+            setRating(rev.note)
+            setCommentaires(rev.commentaire)
+        }
     }
 
     useEffect(() => {
@@ -151,9 +153,9 @@ export default function RencontreDetail({id, setOpen, userId}){
                 <>
                     <span className={styles.Subtitle}>Ressources :</span>
                     <ul className={styles.Ressources}>
-                        <li><Link target="_blank" href="/">PDF - Indications préalable à l'événement</Link></li>
-                        <li><Link target="_blank" href="/">PDF - Informations pratiques pour vous rendre à l'événement</Link></li>
-                        <li><Link target="_blank" href="/">PDF - Règlement intérieur</Link></li>
+                        {data?.metasSession?.urlsPDF.map((item, index) => {
+                            return <li><Link target="_blank" href={item.url}>{item.nom}</Link></li>
+                        })}
                     </ul>
                 </>
             ) : (

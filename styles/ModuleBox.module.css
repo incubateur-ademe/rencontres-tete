@@ -5,9 +5,14 @@
     border-radius: 10px;
     display: block;
     text-decoration: none;
-    /* aspect-ratio:4/4; */
+    aspect-ratio:4/3;
     position: relative;
-    min-height: 120%;
+    /* min-height: 120%; */
+}
+
+.ModuleHeight{
+    aspect-ratio: unset;
+    min-height: 135%;
 }
 
 .Title{

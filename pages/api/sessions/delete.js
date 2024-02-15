@@ -5,6 +5,10 @@ export default async function handle(req, res) {
         const { id } = req.query;
 
         try {
+            await prisma.registration.deleteMany({
+                where: { sessionId: parseInt(id) },
+            });
+
             await prisma.metasSession.deleteMany({
                 where: { sessionId: parseInt(id) },
             });
