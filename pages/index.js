@@ -29,12 +29,12 @@ export default function Home() {
       </Head>
       <div className="section">
         <div className="boxed">
-          <div className="flex aligncenter gap50">
-            <div className="w50">
+          <div className="flex aligncenter gap50 toColumn">
+            <div className="w50 wm100">
               <h1>Les Rencontres des Territoires Engagés</h1>
               <p>Participez aux Rencontres Territoire Engagé de l'ADEME organisées partout en France et montez en compétence sur les thématiques Climat Air Energie et Economie Circulaire, pour mettre en œuvre la transition écologique sur votre territoire.</p>
               <div className={styles.Searching}>
-                <input name="search" value={search} onChange={(event) => setSearch(event.target.value)} className="input-text mTop30" type="text" placeholder="Rechercher une rencontre par nom, par date..." />
+                <input name="search" value={search} onChange={(event) => setSearch(event.target.value)} className="input-text mTop30" type="text" placeholder="Rechercher un module par nom..." />
                 {(finds.length > 0 && search.length > 0) && (
                   <ul>
                     {finds.slice(0, 5).map((item, index) => {
@@ -45,7 +45,7 @@ export default function Home() {
               </div>              
               <Link className="link mTop30" href="/rencontres">Voir toutes les rencontres à venir →</Link>
             </div>
-            <div className="w50">
+            <div className="w50 wm100">
               <img src="/medias/Meeting.png" alt="les rencontres des territoires engagés" className="w100" />
             </div>
           </div>
@@ -53,8 +53,8 @@ export default function Home() {
       </div>
       <div className="section border-top">
         <div className="boxed">
-          <div className="flex gap50 aligncenter">
-            <div className="w50">
+          <div className="flex gap50 aligncenter toColumn">
+            <div className="w50 noM">
               <div className="map__image">
                 <img src="/medias/map/france.png" className="france" />
                 <img src="/medias/map/FR-COR.png" onClick={() => window.location.href = `/rencontres?region=Corse`} onMouseOver={() => setRegion('COR')} onMouseOut={() => setRegion('')} className={`map corse ${region == "COR" && styles.RegionLight}`} />
@@ -72,9 +72,9 @@ export default function Home() {
                 <img src="/medias/map/FR-BRE.png" onClick={() => window.location.href = `/rencontres?region=Bretagne`} onMouseOver={() => setRegion('BRE')} onMouseOut={() => setRegion('')} className={`map bretagne ${region == "BRE" && styles.RegionLight}`} />
               </div>
             </div>
-            <div className="w50">
+            <div className="w50 wm100">
               <h2>Découvrez les rencontres à venir dans votre région</h2>
-              <ul className={styles.Regions}>
+              <ul className={`${styles.Regions}`}>
                 <li><Link href={`/rencontres?region=Auvergne-Rhône-Alpes`} onMouseOver={() => setRegion('ARA')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Auvergne-Rhône-Alpes</Link></li>
                 <li><Link href={`/rencontres?region=Bourgogne-Franche-Comté`} onMouseOver={() => setRegion('BFC')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Bourgogne-Franche-Comté</Link></li>
                 <li><Link href={`/rencontres?region=Bretagne`} onMouseOver={() => setRegion('BRE')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Bretagne</Link></li>
@@ -97,8 +97,8 @@ export default function Home() {
       <div className="section blued">
         <div className="boxed">
           <h2>Découvrez toutes les rencontres</h2>
-          <div className="flex space-between mTop40">
-            <div className="w32">
+          <div className="flex space-between mTop40 toColumn">
+            <div className="w32 wm100 mmBot20">
               <PilierBox 
                 pic="climat-air-energie.png"
                 title="Climat Air Energie" 
@@ -106,7 +106,7 @@ export default function Home() {
                 link="/rencontres?pilier=Climat Air Energie"
               />
             </div>
-            <div className="w32">
+            <div className="w32 wm100 mmBot20">
               <PilierBox 
                 pic="economie-circulaire.png"
                 title="Economie circulaire" 
@@ -114,7 +114,7 @@ export default function Home() {
                 link="/rencontres?pilier=Economie circulaire"
               />
             </div>
-            <div className="w32">
+            <div className="w32 wm100">
               <PilierBox 
                 pic="economie-circulaire.png"
                 title="Transversal" 
@@ -129,49 +129,49 @@ export default function Home() {
         <div className="boxed">
           <h2>Découvrez toutes les thématiques abordées</h2>
           <div className="flex wrap gap15 mTop40">
-          <div className="w24">
+          <div className="w24 wm47">
           <ModuleBox 
               title="Planification territoriale" 
               link="/rencontres/?thematique=Planification territoriale"
           />
           </div>
-          <div className="w24">
+          <div className="w24 wm47">
           <ModuleBox 
               title="Energie, eau et assainissement" 
               link="/rencontres/?thematique=Energie, eau et assainissement"
           />
           </div>
-          <div className="w24">
+          <div className="w24 wm47">
           <ModuleBox 
               title="Mobilité et qualité de l'air"
               link="/rencontres/?thematique=Mobilié et qualité de l'air"    
           />
           </div>
-          <div className="w24">
+          <div className="w24 wm47">
           <ModuleBox 
               title="Transition bas carbone" 
               link="/rencontres/?thematique=Transition bas carbone"    
           />
           </div>
-          <div className="w24">
+          <div className="w24 wm47">
           <ModuleBox 
               title="Prévention et gestion des déchêts" 
               link="/rencontres/?thematique=Prévention et gestion des d'échêts"
           />
           </div>
-          <div className="w24">
+          <div className="w24 wm47">
           <ModuleBox 
               title="Consommation responsable" 
               link="/rencontres/?thematique=Consommation responsable"    
           />
           </div>
-          <div className="w24">
+          <div className="w24 wm47">
           <ModuleBox 
               title="Autres piliers de l'économie circulaire" 
               link="/rencontres/?thematique=Autres piliers de l'économie circulaire"    
           />
           </div>
-          <div className="w24">
+          <div className="w24 wm47">
           <ModuleBox 
               title="Gouvernance et pilotage" 
               link="/rencontres/?thematique=Gouvernance et pilotage"    
@@ -182,15 +182,15 @@ export default function Home() {
       </div>
       <div className="section-top border-top">
         <div className="boxed">
-          <div className="flex">
-            <div className="w60">
+          <div className="flex toColumn">
+            <div className="w60 wm100">
               <h2><span className="orange">Créez un compte</span> ou connectez-vous pour vous inscrire aux rencontres dans votre région.</h2>
-              <div className="flex aligncenter gap20 mTop30">
+              <div className="flex aligncenter gap20 mTop30 toColumn mmLeft">
                 <Link href="/inscription" className="btn__normal btn__dark">S'inscrire à la plateforme</Link>
                 <Link href="/connexion" className="btn__normal btn__light">Se connecter</Link>
               </div>
             </div>
-            <div className="w40">
+            <div className="w40 wm100">
               <img src="medias/inscription.png" className="w100" />
             </div>
           </div>

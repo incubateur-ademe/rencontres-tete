@@ -58,3 +58,19 @@
     height:auto;
     display: inline-block;
 }
+
+@media(max-width:810px){
+    .Subfooter{
+        padding:40px 0 0;
+    }
+
+    .Subfooter ul{
+        gap:10px;
+    }
+    
+    .Subfooter ul li a{
+        padding-right: 0px;
+        margin-right: 0px;
+        margin-inline: 10px;
+    }
+}

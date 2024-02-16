@@ -68,3 +68,21 @@
 .Searching ul li:last-child a{
     border-bottom: 0px;
 }
+
+@media(max-width:810px){
+    .Home h1{
+        font-size:2.5rem
+    }
+
+    .Regions li a{
+        text-decoration: none;
+        color: var(--primary);
+        background-color: var(--primaryBack);
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 12px 15px;
+        border-radius: 8px;
+        font-size: 0.95rem;
+    }
+}

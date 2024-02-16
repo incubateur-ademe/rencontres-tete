@@ -50,3 +50,23 @@
     margin-top:5px;
     border-radius: 10px;
 }
+
+@media(max-width:810px){
+    .Module{
+        padding:20px !important;
+        aspect-ratio:unset;
+        height:160px;
+    }
+
+    .Title{
+        font-size:1rem
+    }
+
+    .Icon{
+        bottom:20px;
+        right:20px;
+        width:30px;
+        height: 28px;
+        font-size: 1rem !important;
+    }
+}

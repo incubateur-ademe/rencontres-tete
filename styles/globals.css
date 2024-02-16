@@ -43,6 +43,10 @@ span, a{
   font-weight: 300;
 }
 
+h2 span{
+  font-weight: 500;
+}
+
 p{
   line-height: 1.75em;
   color:var(--secondary);
@@ -383,4 +387,92 @@ p{
 
 .text-left{
   text-align: left;
+}
+
+@media(max-width:1280px){
+  p{
+    font-size:0.95rem;
+  }
+
+  .boxed{
+    max-width: 1200px;
+  }
+
+  .grand-est {
+    position: absolute;
+    top: 12%;
+    right: 7.9%;
+  }
+
+  .normandie {
+    position: absolute;
+    top: 13.1%;
+    left: 17.7%;
+  }
+
+  .ile-de-france {
+    position: absolute;
+    top: 22.5%;
+    left: 42.5%;
+  }
+
+  .bourgogne {
+    position: absolute;
+    top: 32.3%;
+    right: 16%;
+  }
+
+  .auvergne {
+    position: absolute;
+    top: 50%;
+    right: 15.5%;
+  }
+
+  .provence {
+    position: absolute;
+    top: 67.85%;
+    right: 11.35%;
+  }
+
+  .occitanie {
+    position: absolute;
+    top: 68.75%;
+    left: 30%;
+  }
+
+  .nouvelle-aquitaine {
+    position: absolute;
+    bottom: 8.35%;
+    left: 19.3%;
+  }
+
+  .centre {
+    position: absolute;
+    bottom: 45.3%;
+    left: 32.4%;
+  }
+
+  .loire {
+    position: absolute;
+    top: 30.3%;
+    left: 13.35%;
+  }
+
+  .bretagne {
+    position: absolute;
+    top: 26.8%;
+    left: -2.95%;
+  }
+}
+
+@media(max-width:810px){
+  .boxed{
+    max-width:90%;
+  }
+
+  .mmLeft{
+    text-align: left;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
 }

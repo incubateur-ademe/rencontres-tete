@@ -49,8 +49,8 @@ export default function Header(){
                                     </>                                    
                                 ) : (
                                     <>
-                                        <li><Link href="/connexion">Se connecter</Link></li>
-                                        <li><Link href="/inscription">Créer un compte</Link></li>
+                                        <li><Link className={styles.LinkFunction} href="/connexion">Se connecter</Link></li>
+                                        <li><Link className={styles.LinkFunction} href="/inscription">Créer un compte</Link></li>
                                     </>
                                 )}
 
