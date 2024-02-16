@@ -27,6 +27,11 @@ export default function Admin({ user }){
 
     const [page, setPage] = useState(0)
 
+    const logout = async () => {
+        const unlog = await fetch('/api/logout')
+        window.location.href = "/"
+    }
+
     return (
         <>
             <div className={styles.Account}>
@@ -42,7 +47,7 @@ export default function Admin({ user }){
                                     <ul>
                                         <li onClick={() => {setPage(0)}}><span className={page == 0 ? styles.active : undefined}>Modules</span></li>
                                         <li onClick={() => {setPage(1)}}><span className={page == 1 ? styles.active : undefined}>Inscriptions</span></li>
-                                        <li onClick={() => window.location.href = '/'}><span className={page == 2 ? styles.active : undefined}>Déconnexion</span></li>
+                                        <li onClick={logout}><span className={page == 2 ? styles.active : undefined}>Déconnexion</span></li>
                                     </ul>
                                 </div>
                                 <div className="w80">
