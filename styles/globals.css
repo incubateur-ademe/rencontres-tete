@@ -475,4 +475,8 @@ p{
     justify-content: flex-start;
     align-items: flex-start;
   }
+
+  .wm100{
+    width: 100% !important;
+  }
 }

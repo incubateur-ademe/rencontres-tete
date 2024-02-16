@@ -118,7 +118,7 @@ export default function Login(){
                                         <div className="mBot20">
                                             <input type="password" name="motDePasse" onChange={handleChange} value={userLogin.motDePasse} className="input-text" placeholder="Mot de passe" />
                                         </div>
-                                        <div className="flex flex-end gap10">
+                                        <div className="flex flex-end toColumn mCenter gap10">
                                             <Link href="/inscription" className="btn__normal btn__light">
                                                 Créer un compte
                                             </Link>
@@ -136,7 +136,7 @@ export default function Login(){
                                         <div className="mBot20 mTop20">
                                             <input type="mail" name="lostMail" value={lostMail} onChange={(event) => setLostMail(event.target.value)} className="input-mail" placeholder="Adresse e-mail..." />
                                         </div>
-                                        <div className="flex flex-end gap10">
+                                        <div className="flex toColumn flex-end gap10">
                                             <button onClick={(() => setResetPass(prev => !prev))} className="btn__normal btn__light">
                                                 Revenir à la connexion
                                             </button>

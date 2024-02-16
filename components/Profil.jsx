@@ -116,20 +116,20 @@ export default function Profil({ user }){
         <div className={styles.Profil}>
             <span className={styles.Title}>Vos informations personnelles</span>
             <div className="mTop30">
-                <div className="flex gap20">
-                    <input disabled type="text" name="nom" onChange={handleChange} value={userData?.nom} className="input-text w50" placeholder="Nom" />
-                    <input disabled type="text" name="prenom" onChange={handleChange} value={userData?.prenom} className="input-text w50" placeholder="Prénom" />
+                <div className="flex gap20 toColumn wm100">
+                    <input disabled type="text" name="nom" onChange={handleChange} value={userData?.nom} className="input-text w50 wm100" placeholder="Nom" />
+                    <input disabled type="text" name="prenom" onChange={handleChange} value={userData?.prenom} className="input-text w50 wm100" placeholder="Prénom" />
                 </div>
-                <div className="flex gap20 mTop20">
-                    <input disabled type="mail" name="mail" onChange={handleChange} value={userData?.mail} className="input-mail w50" placeholder="Adresse e-mail" />
-                    <input disabled type="text" name="telephone" onChange={handleChange} value={userData?.telephone} className="input-text w50" placeholder="Numéro de téléphone" />
+                <div className="flex gap20 mTop20 toColumn">
+                    <input disabled type="mail" name="mail" onChange={handleChange} value={userData?.mail} className="input-mail w50 wm100" placeholder="Adresse e-mail" />
+                    <input disabled type="text" name="telephone" onChange={handleChange} value={userData?.telephone} className="input-text w50 wm100" placeholder="Numéro de téléphone" />
                 </div>
             </div>
             <span className={styles.Subtitle}>Vous souhaitez modifier votre mot de passe ?</span>
             <div className="mTop30">
-                <div className="flex gap20">
-                    <input type="password" name="motDePasse" onChange={handleChangePass} value={passw.motDePasse} className="input-text w50" placeholder="Nouveau mot de passe" />
-                    <input type="password" name="motDePasse2" onChange={handleChangePass} value={passw.motDePasse2} className="input-text w50" placeholder="Confirmez votre mot de passe*" />
+                <div className="flex gap20 toColumn">
+                    <input type="password" name="motDePasse" onChange={handleChangePass} value={passw.motDePasse} className="input-text w50 wm100" placeholder="Nouveau mot de passe" />
+                    <input type="password" name="motDePasse2" onChange={handleChangePass} value={passw.motDePasse2} className="input-text w50 wm100" placeholder="Confirmez votre mot de passe*" />
                 </div>
                 <div className="flex alignright mTop20">
                     <button onClick={changePassword} className="btn__normal btn__dark">Modifier le mot de passe</button>

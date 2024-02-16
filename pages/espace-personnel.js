@@ -42,15 +42,15 @@ export default function Account({ user }){
                 <div className="boxed">
                     <h1>Votre espace personnel</h1>
                     <div className={styles.Box}>
-                        <div className="flex gap50">
-                            <div className={`w20 ${styles.Sidebar}`}>
+                        <div className="flex toColumn gap50 mgap20">
+                            <div className={`w20 ${styles.Sidebar} wm100`}>
                                 <ul>
                                     <li onClick={() => {setPage(0)}}><span className={page == 0 ? styles.active : undefined}>Mes rencontres</span></li>
                                     <li onClick={() => {setPage(1)}}><span className={page == 1 ? styles.active : undefined}>Mon profil</span></li>
                                     <li onClick={logout}><span className={page == 2 ? styles.active : undefined}>Déconnexion</span></li>
                                 </ul>
                             </div>
-                            <div className="w80">
+                            <div className="w80 wm100">
                                 <div className={styles.Dash}>
                                     {page == 0 && (
                                         <Rencontres user={user} />

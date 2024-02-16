@@ -119,17 +119,17 @@ export default function Register(){
                                 <>
                                     <h1>Créez votre compte</h1>
                                     <div className={styles.Box}>
-                                        <div className="flex gap20 mBot20">
-                                            <input type="text" name="nom" onChange={handleChange} value={userDetails.nom} className="input-text" placeholder="Nom*" />
-                                            <input type="text" name="prenom" onChange={handleChange} value={userDetails.prenom} className="input-text" placeholder="Prénom*" />
+                                        <div className="flex gap20 mBot20 toColumn">
+                                            <input type="text" name="nom" onChange={handleChange} value={userDetails.nom} className="input-text wm100" placeholder="Nom*" />
+                                            <input type="text" name="prenom" onChange={handleChange} value={userDetails.prenom} className="input-text wm100" placeholder="Prénom*" />
                                         </div>
-                                        <div className="flex gap20 mBot20">
-                                            <input type="mail" name="mail" onChange={handleChange} value={userDetails.mail} className="input-mail" placeholder="Adresse email*" />
-                                            <input type="text" name="telephone" onChange={handleChange} value={userDetails.telephone} className="input-text" placeholder="Numéro de téléphone" />
+                                        <div className="flex gap20 mBot20 toColumn">
+                                            <input type="mail" name="mail" onChange={handleChange} value={userDetails.mail} className="input-mail wm100" placeholder="Adresse email*" />
+                                            <input type="text" name="telephone" onChange={handleChange} value={userDetails.telephone} className="input-text wm100" placeholder="Numéro de téléphone" />
                                         </div>
-                                        <div className="flex gap20 mBot20">
-                                            <input type="password" name="motDePasse" onChange={handleChange} value={userDetails.motDePasse} className="input-text" placeholder="Mot de passe*" />
-                                            <input type="password" name="motDePasse2" onChange={handleChange} value={userDetails.motDePasse2} className="input-text" placeholder="Confirmez le mot de passe*" />
+                                        <div className="flex gap20 mBot20 toColumn">
+                                            <input type="password" name="motDePasse" onChange={handleChange} value={userDetails.motDePasse} className="input-text wm100" placeholder="Mot de passe*" />
+                                            <input type="password" name="motDePasse2" onChange={handleChange} value={userDetails.motDePasse2} className="input-text wm100" placeholder="Confirmez le mot de passe*" />
                                         </div>
                                         <div className="flex gap15 mBot30">
                                             <input type="text" name="fonction" onChange={handleChange} value={userDetails.fonction}  className="input-text" placeholder="Type de fonction*" />

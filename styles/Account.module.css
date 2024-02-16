@@ -112,3 +112,28 @@
     display: block;
     width: fit-content;
 }
+
+@media(max-width:810px){
+    .Box{
+        padding:30px;
+    }
+
+    .Menu{
+        padding-bottom:20px;
+    }
+
+    .Sidebar{
+        border-right:0px;
+        border-bottom:1px solid var(--primaryBack)
+    }
+
+    .Account h1{
+        font-size:2rem;
+    }
+
+    .Menu button{
+        font-size: 1rem;
+        text-align: left;
+        padding:10px;
+    }
+}

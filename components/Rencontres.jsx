@@ -44,7 +44,7 @@ export default function Rencontres({ user }){
                     <div className="flex gap15 wrap mTop30">
                         {rencontres.map((rencontre, index) => {
                             return (
-                                <div key={index} onClick={() => setOpen(rencontre.session.id)} className="w49">
+                                <div key={index} onClick={() => setOpen(rencontre.session.id)} className="w49 wm100">
                                     <SessionBox 
                                         date={formatDate(rencontre.session.dateDebut)}
                                         region={rencontre.session.region}
