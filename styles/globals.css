@@ -389,6 +389,10 @@ p{
   text-align: left;
 }
 
+.text-right{
+  text-align: right;
+}
+
 @media(max-width:1280px){
   p{
     font-size:0.95rem;

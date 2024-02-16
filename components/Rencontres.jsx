@@ -59,6 +59,7 @@ export default function Rencontres({ user }){
                                             <SessionBox 
                                                 date={formatDate(rencontre.session.dateDebut)}
                                                 region={rencontre.session.region}
+                                                dept={rencontre.session.departement}
                                                 title={rencontre.session.module.nom}
                                                 register="false"
                                                 see="true"

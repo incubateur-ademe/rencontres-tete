@@ -116,7 +116,9 @@ export default function RencontreDetail({id, setOpen, userId}){
                     date={formatDate(data.dateDebut)}
                     region={data.region}
                     title={data?.module?.nom}
+                    dept={data?.departement}
                     register="false"
+                    see='true'
                 />
             </div>
             <div className="flex alignstart gap30 mTop30">
@@ -126,7 +128,7 @@ export default function RencontreDetail({id, setOpen, userId}){
                     </div>
                     <div className="w80">
                         <span className={styles.dLabel}>Lieu de la rencontre :</span>
-                        <span className={styles.dValue}>{data?.metasSession?.lieuRencontre}</span>
+                        <span className={styles.dValue}>{data.metasSession !== undefined ? data.metasSession.lieuRencontre : 'Chargement...'}</span>
                     </div>
                 </div>
                 <div className="flex alignstart gap10 w20">
@@ -135,7 +137,7 @@ export default function RencontreDetail({id, setOpen, userId}){
                     </div>
                     <div className="w80">
                         <span className={styles.dLabel}>Date :</span>
-                        <span className={styles.dValue}>{formatDate(data?.dateDebut)}</span>
+                        <span className={styles.dValue}>{data !== undefined ? formatDate(data?.dateDebut) : 'Chargement...'}</span>
                     </div>
                 </div>
                 <div className="flex alignstart gap10 w20">
@@ -144,12 +146,12 @@ export default function RencontreDetail({id, setOpen, userId}){
                     </div>
                     <div className="w80">
                         <span className={styles.dLabel}>Tarif :</span>
-                        <span className={styles.dValue}>{data?.module?.metasModule?.tarif}</span>
+                        <span className={styles.dValue}>{data.module !== undefined ? data.module.metasModule.tarif : 'Chargement...'}</span>
                     </div>
                 </div>
             </div>
             <span className={styles.Subtitle}>En savoir plus sur ce module :</span>
-            <p>{data?.module?.description}</p>
+            <p>{data.module !== undefined ? data.module.description : 'Chargement...'}</p>
             
             {data?.metasSession?.urlsPDF.length > 0 ? (
                 <>
