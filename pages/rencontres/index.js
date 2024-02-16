@@ -230,7 +230,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                 {modules.length > 0 ? (
                                 <div className="flex wrap gap15 mTop40">
                                     {modules.map((module, index) => (
-                                        <div key={index} className="w32 wm47">
+                                        <div key={index} className="w32 wm100">
                                             <ModuleBox 
                                                 title={module.nom}
                                                 id={module.id}

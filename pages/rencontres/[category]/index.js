@@ -8,9 +8,13 @@ import SessionBox from '@/components/SessionBox'
 import styles from '@/styles/Module.module.css'
 
 export async function getServerSideProps(context) {
+    const { req, query } = context;
     const { category } = context.query;
 
-    const getData = await fetch(`http://localhost:3000/api/modules/slug?slug=${category}`)
+    const protocol = req.headers['x-forwarded-proto'] || 'http';
+    const host = req.headers.host;
+
+    const getData = await fetch(`${protocol}://${host}/api/modules/slug?slug=${category}`)
     const json = await getData.json()
 
     if(json.page === true){

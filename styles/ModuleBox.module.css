@@ -1,6 +1,6 @@
 .Module{
     border:1px solid var(--primaryThird);
-    padding:40px;
+    padding:40px !important;
     padding-right: 60px;
     border-radius: 10px;
     display: block;
@@ -55,7 +55,7 @@
     .Module{
         padding:20px !important;
         aspect-ratio:unset;
-        height:160px;
+        min-height: 150px;
     }
 
     .Title{

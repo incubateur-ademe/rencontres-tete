@@ -10,7 +10,11 @@ import { verifyToken } from '@/utils/auth';
 import styles from '@/styles/Session.module.css'
 
 export async function getServerSideProps(context) {
+    const { req, query } = context;
     const { category, session } = context.query;
+
+    const protocol = req.headers['x-forwarded-proto'] || 'http';
+    const host = req.headers.host;
 
     const { auth: token } = nextCookies(context);
     const user = verifyToken(token);
@@ -24,7 +28,7 @@ export async function getServerSideProps(context) {
       };
     }
 
-    const getData = await fetch(`http://localhost:3000/api/sessions/slug?module_slug=${category}&session=${session}`)
+    const getData = await fetch(`${protocol}://${host}/api/sessions/slug?module_slug=${category}&session=${session}`)
     const json = await getData.json()
 
     if(json.length > 0){
