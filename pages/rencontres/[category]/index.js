@@ -58,7 +58,7 @@ export default function Module({ data }){
     return (
         <>
             <Head>
-                <title>ADEME</title>
+                <title>{data.nom}</title>
             </Head>
             <div className={styles.Module}>
                 <div className="section">
@@ -74,13 +74,13 @@ export default function Module({ data }){
                             <p>{data.description}</p>
                             <p>Code module : #{data.code} - Dernière mise à jour : {lastUpdate}</p>
                         </div>
-                        <div className="flex gap50 mTop50">
-                            <div className="w70">                                
+                        <div className="flex toColumn gap50 mTop50">
+                            <div className="w70 wm100">                                
                                 <div className={styles.Content} dangerouslySetInnerHTML={{ __html: data.metasModule.resumeProgramme }}>
 
                                 </div>
                             </div>
-                            <div className="w30">
+                            <div className="w30 wm100">
                                 <div className="text-center">
                                     <img src="/medias/infos-cles.png" alt="infos clés" className="w50" />
                                 </div>
@@ -157,7 +157,7 @@ export default function Module({ data }){
                     <div className="flex wrap gap25 mTop40">
                         {data.metasModule.programmeModule.map((programme, index) => {
                             return (
-                                <div key={index} className="w23">
+                                <div key={index} className="w23 wm100">
                                     <ProgItem
                                         type={programme.horaires}
                                         title={programme.titre}
@@ -172,8 +172,8 @@ export default function Module({ data }){
             <div className="section" id="sessions">
                 <div className="boxed">
                     <h2>Les sessions à venir</h2>
-                    <div className="flex aligncenter gap10 mTop20">
-                        <div className="w30">
+                    <div className="flex aligncenter gap10 mTop20 toColumn">
+                        <div className="w30 wm100">
                             <div className="select">
                                 <select name="departement" value={departement} onChange={(event) => {setDepartement(event.target.value)}} className="input-select">
                                     <option value="">Sélectionnez un département</option>
@@ -287,7 +287,7 @@ export default function Module({ data }){
                     <div className="flex wrap gap15 mTop30">
                         {sessions.map((session, index) => {
                             return (
-                                <div key={index} className="w32">
+                                <div key={index} className="w32 wm100">
                                     <SessionBox 
                                         date={formatDate(session.dateDebut)}
                                         region={session.region}

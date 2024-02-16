@@ -259,8 +259,8 @@ export default function Session({ data, user }){
                             <p>{data.module.description}</p>
                             <p>Code module : #{data.module.code} - Dernière mise à jour : {formatDate(data.lastUpdate)}</p>
                         </div>
-                        <div className="flex alignstart gap40 mTop40">
-                            <div className={`w70 ${styles.Box}`}>
+                        <div className="flex alignstart toColumn gap40 mTop40">
+                            <div className={`w70 wm100 ${styles.Box}`}>
                                 {check ? (
                                     <div className={styles.Already}>
                                         <span className="material-icons">done</span>
@@ -383,7 +383,7 @@ export default function Session({ data, user }){
                                     )}
                                 </div>
                             </div>
-                            <div className="w30">
+                            <div className="w30 wm100">
                                 <div className={styles.Box}>
                                     <span className={styles.Title}>Détails pratiques</span>
                                     <div className="flex alignstart gap10 mTop30">
@@ -453,7 +453,7 @@ export default function Session({ data, user }){
                         <div className="flex wrap gap25 mTop40">
                             {data.metasSession.intervenants.map((inter, index) => {
                                 return (
-                                    <div key={index} className="w32">
+                                    <div key={index} className="w32 wm100">
                                         <Team
                                             img="/medias/user.png"
                                             name={inter.nom}
@@ -477,7 +477,7 @@ export default function Session({ data, user }){
                     <div className="flex wrap gap25 mTop40">
                         {data.metasSession.programmeSession.map((programme, index) => {
                             return (
-                                <div key={index} className="w23">
+                                <div key={index} className="w23 wm100">
                                     <ProgItem
                                         type={programme.horaires}
                                         title={programme.titre}
