@@ -47,7 +47,7 @@ export default function SessionsBack({date, region, title, id, setOpen, setAlert
                 </div>
                 <div className="flex alignend space-between gap40 mTop20 w100">
                     <div className="w50">
-                        <span className={styles.Title}><span>Module :</span>(Brouillon) {title}</span>
+                        <span className={styles.Title}><span>Module :</span>{status == 'brouillon' && '(Brouillon)'} {title}</span>
                     </div>
                     <div className="w50 flex alignend flex-end gap5">
                         <button 
