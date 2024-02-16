@@ -56,6 +56,8 @@ export default function Session({ data, user }){
     const [alert, setAlert] = useState(null)
     const [notif, setNotif] = useState(null)
     const [check, setCheck] = useState(false)
+    const [inscriptionPasse, setInscriptionPasse] = useState(false)
+    const [dispo, setDispo] = useState(true)
 
     const [inscription, setInscription] = useState({
         userId: '',
@@ -180,6 +182,15 @@ export default function Session({ data, user }){
         }
     }
 
+    const getAvailable = async () => {
+        const fetcher = await fetch(`/api/registrations/bySession?sessionId=${data.id}`)
+        const json = await fetcher.json()
+        const max = parseInt(data.metasSession.nombrePlaces)
+        if(json.length >= max){
+            setDispo(false)
+        }
+    }
+
     useEffect(() => {
         const getUserInfo = async () => {
             const fetcher = await fetch(`/api/users/${user.id}`)
@@ -212,6 +223,19 @@ export default function Session({ data, user }){
         checker()
     }, [data, alert])
 
+    useEffect(() => {
+        const maintenant = new Date();
+        const dateLimite = new Date(data.metasSession.dateLimiteInscription);
+
+        getAvailable()
+    
+        if (dateLimite < maintenant) {
+          setInscriptionPasse(true);
+        } else {
+          setInscriptionPasse(false);
+        }
+      }, [data]);
+
     return (
         <>
             <Head>
@@ -225,11 +249,11 @@ export default function Session({ data, user }){
                             <p className={styles.Breadcrump}>
                                 <Link href="/">Accueil</Link> /
                                 <Link href="/rencontres">Toutes les rencontres</Link> /
-                                <Link href={`/rencontres/${data.module.slug}`}>Énergie, eau et assainissement</Link> /
+                                <Link href={`/rencontres/${data.module.slug}`}>{data.module.nom}</Link> /
                                 <span>Rencontre du {formatDate(data.dateDebut)}</span>
                             </p>
                             <div className="flex aligncenter gap10">
-                                <span className={styles.Region}>{data.region}</span>
+                                <span className={styles.Region}>{data.departement+' - '+data.region}</span>
                                 <span className={styles.Tag}>{data.module.nom}</span>
                             </div>                            
                             <p>{data.module.description}</p>
@@ -237,11 +261,29 @@ export default function Session({ data, user }){
                         </div>
                         <div className="flex alignstart gap40 mTop40">
                             <div className={`w70 ${styles.Box}`}>
-                                {check && (
+                                {check ? (
                                     <div className={styles.Already}>
                                         <span className="material-icons">done</span>
                                         <div>Vous participez à cette rencontre ! Retrouvez tous les informations sur la rencontre "{data.module.nom}" directement dans votre <Link href="/espace-personnel">espace personnel</Link>.</div>
                                     </div>
+                                ) : (
+                                    <>
+                                        {inscriptionPasse ? (
+                                            <div className={styles.Already}>
+                                                <span className="material-icons">error_outline</span>
+                                                <div><strong>Date limite d'inscription atteinte.</strong> Les inscriptions sont fermées pour cette session !</div>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                {!dispo && (
+                                                    <div className={styles.Already}>
+                                                        <span className="material-icons">error_outline</span>
+                                                        <div><strong>Il ne reste plus de place pour cette session.</strong> Les inscriptions sont fermées.</div>
+                                                    </div>                                                    
+                                                )}
+                                            </>
+                                        )}
+                                    </>
                                 )}
                                 <span className={styles.Title}>Inscription à la rencontre</span>
                                 <div className={styles.Form}>
@@ -332,7 +374,7 @@ export default function Session({ data, user }){
                                             <input name="rgpd" onChange={handleChange} value={inscription.rgpd} type="checkbox" /> <span>J’ai lu et j’accepte que l’ADEME collecte mes données afin de garantir la bonne utilisation des services offerts*et reconnais avoir pris connaissance de sa politique de protection des données personnelles.</span>
                                         </div>
                                     </div>
-                                    {!check && (
+                                    {(!check && !inscriptionPasse && dispo) && (
                                         <div className="flex alignright">
                                             <button onClick={register} className="btn__normal btn__dark">
                                                 Valider mon inscription

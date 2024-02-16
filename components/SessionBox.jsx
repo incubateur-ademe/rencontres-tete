@@ -1,13 +1,13 @@
 import Link from 'next/link'
 import styles from '@/styles/SessionBox.module.css'
 
-export default function SessionBox({date, region, title, link, register}){
+export default function SessionBox({date, region, title, link, register, dept}){
     return (
         <>
             <div className={styles.SessionBox}>
                 <div className="flex aligncenter space-between">
                     <span className={styles.Date}>{date}</span>
-                    <span className={styles.Region}>{region}</span>
+                    <span className={styles.Region}>{dept && `${dept} - `}{region}</span>
                 </div>
                 <div className="flex alignend gap40 mTop20">
                     <div className="w70">

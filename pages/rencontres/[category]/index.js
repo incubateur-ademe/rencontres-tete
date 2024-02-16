@@ -297,6 +297,7 @@ export default function Module({ data }){
                                         .replace(/[.,]/g, "")
                                         .replace(/\s+/g, '-')
                                         .toLowerCase()}`}
+                                        dept={session.departement}
                                     />
                                 </div>
                             )
