@@ -148,7 +148,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                         <div className="flex space-between mTop40 toColumn">
                             <div className="w32 wm100 mmBot20">
                             <PilierBox 
-                                pic="climat-air-energie.png"
+                                pic="climat-air-energie.webp"
                                 title="Climat Air Energie" 
                                 description="Découvrez l’ensemble des rencontres disponibles pour le pilier Climat Air Energie" 
                                 setFiltres={setFiltres}
@@ -157,7 +157,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                             </div>
                             <div className="w32 wm100 mmBot20">
                             <PilierBox 
-                                pic="economie-circulaire.png"
+                                pic="economie-circulaire.webp"
                                 title="Economie circulaire" 
                                 description="Découvrez l’ensemble des rencontres disponibles pour le pilier Economie circulaire" 
                                 setFiltres={setFiltres}
@@ -166,7 +166,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                             </div>
                             <div className="w32 wm100">
                             <PilierBox 
-                                pic="transversal.png"
+                                pic="transversal.webp"
                                 title="Transversal" 
                                 description="Découvrez l’ensemble des rencontres disponibles pour le pilier Transversal" 
                                 setFiltres={setFiltres}
@@ -474,7 +474,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                             </div>
                             </div>
                             <div className="w40 wm100">
-                            <img src="medias/inscription.png" className="w100" />
+                            <img src="medias/inscription.webp" className="w100" />
                             </div>
                         </div>
                     </div>

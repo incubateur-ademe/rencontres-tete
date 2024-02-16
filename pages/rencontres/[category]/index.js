@@ -86,7 +86,7 @@ export default function Module({ data }){
                             </div>
                             <div className="w30 wm100">
                                 <div className="text-center">
-                                    <img src="/medias/infos-cles.png" alt="infos clés" className="w50" />
+                                    <img src="/medias/infos-cles.webp" alt="infos clés" className="w50" />
                                 </div>
                                 <div className={styles.Infos}>
                                     <span>Informations clés</span>

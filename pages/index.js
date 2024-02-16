@@ -46,7 +46,7 @@ export default function Home() {
               <Link className="link mTop30" href="/rencontres">Voir toutes les rencontres à venir →</Link>
             </div>
             <div className="w50 wm100">
-              <img src="/medias/Meeting.png" alt="les rencontres des territoires engagés" className="w100" />
+              <img src="/medias/Meeting.webp" alt="les rencontres des territoires engagés" className="w100" />
             </div>
           </div>
         </div>
@@ -56,20 +56,20 @@ export default function Home() {
           <div className="flex gap50 aligncenter toColumn">
             <div className="w50 noM">
               <div className="map__image">
-                <img src="/medias/map/france.png" className="france" />
-                <img src="/medias/map/FR-COR.png" onClick={() => window.location.href = `/rencontres?region=Corse`} onMouseOver={() => setRegion('COR')} onMouseOut={() => setRegion('')} className={`map corse ${region == "COR" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-HDF.png" onClick={() => window.location.href = `/rencontres?region=Hauts-de-France`} onMouseOver={() => setRegion('HDF')} onMouseOut={() => setRegion('')} className={`map haut-de-france ${region == "HDF" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-GES.png" onClick={() => window.location.href = `/rencontres?region=Grand-Est`} onMouseOver={() => setRegion('GES')} onMouseOut={() => setRegion('')} className={`map grand-est ${region == "GES" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-NOR.png" onClick={() => window.location.href = `/rencontres?region=Normandie`} onMouseOver={() => setRegion('NOR')} onMouseOut={() => setRegion('')} className={`map normandie ${region == "NOR" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-IDF.png" onClick={() => window.location.href = `/rencontres?region=Île-de-France`} onMouseOver={() => setRegion('IDF')} onMouseOut={() => setRegion('')} className={`map ile-de-france ${region == "IDF" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-BFC.png" onClick={() => window.location.href = `/rencontres?region=Bourgogne-Franche-Comté`} onMouseOver={() => setRegion('BFC')} onMouseOut={() => setRegion('')} className={`map bourgogne ${region == "BFC" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-ARA.png" onClick={() => window.location.href = `/rencontres?region=Auvergne-Rhône-Alpes`} onMouseOver={() => setRegion('ARA')} onMouseOut={() => setRegion('')} className={`map auvergne ${region == "ARA" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-PAC.png" onClick={() => window.location.href = `/rencontres?region=Provence-Alpes-Côte d'Azur`} onMouseOver={() => setRegion('PAC')} onMouseOut={() => setRegion('')} className={`map provence ${region == "PAC" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-OCC.png" onClick={() => window.location.href = `/rencontres?region=Occitanie`} onMouseOver={() => setRegion('OCC')} onMouseOut={() => setRegion('')} className={`map occitanie ${region == "OCC" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-NAQ.png" onClick={() => window.location.href = `/rencontres?region=Nouvelle-Aquitaine`} onMouseOver={() => setRegion('NAQ')} onMouseOut={() => setRegion('')} className={`map nouvelle-aquitaine ${region == "NAQ" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-CVL.png" onClick={() => window.location.href = `/rencontres?region=Centre-Val de Loire`} onMouseOver={() => setRegion('CVL')} onMouseOut={() => setRegion('')} className={`map centre ${region == "CVL" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-PDL.png" onClick={() => window.location.href = `/rencontres?region=Pays de la Loire`} onMouseOver={() => setRegion('PDL')} onMouseOut={() => setRegion('')} className={`map loire ${region == "PDL" && styles.RegionLight}`} />
-                <img src="/medias/map/FR-BRE.png" onClick={() => window.location.href = `/rencontres?region=Bretagne`} onMouseOver={() => setRegion('BRE')} onMouseOut={() => setRegion('')} className={`map bretagne ${region == "BRE" && styles.RegionLight}`} />
+                <img src="/medias/map/france.webp" className="france" />
+                <img src="/medias/map/FR-COR.webp" onClick={() => window.location.href = `/rencontres?region=Corse`} onMouseOver={() => setRegion('COR')} onMouseOut={() => setRegion('')} className={`map corse ${region == "COR" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-HDF.webp" onClick={() => window.location.href = `/rencontres?region=Hauts-de-France`} onMouseOver={() => setRegion('HDF')} onMouseOut={() => setRegion('')} className={`map haut-de-france ${region == "HDF" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-GES.webp" onClick={() => window.location.href = `/rencontres?region=Grand-Est`} onMouseOver={() => setRegion('GES')} onMouseOut={() => setRegion('')} className={`map grand-est ${region == "GES" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-NOR.webp" onClick={() => window.location.href = `/rencontres?region=Normandie`} onMouseOver={() => setRegion('NOR')} onMouseOut={() => setRegion('')} className={`map normandie ${region == "NOR" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-IDF.webp" onClick={() => window.location.href = `/rencontres?region=Île-de-France`} onMouseOver={() => setRegion('IDF')} onMouseOut={() => setRegion('')} className={`map ile-de-france ${region == "IDF" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-BFC.webp" onClick={() => window.location.href = `/rencontres?region=Bourgogne-Franche-Comté`} onMouseOver={() => setRegion('BFC')} onMouseOut={() => setRegion('')} className={`map bourgogne ${region == "BFC" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-ARA.webp" onClick={() => window.location.href = `/rencontres?region=Auvergne-Rhône-Alpes`} onMouseOver={() => setRegion('ARA')} onMouseOut={() => setRegion('')} className={`map auvergne ${region == "ARA" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-PAC.webp" onClick={() => window.location.href = `/rencontres?region=Provence-Alpes-Côte d'Azur`} onMouseOver={() => setRegion('PAC')} onMouseOut={() => setRegion('')} className={`map provence ${region == "PAC" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-OCC.webp" onClick={() => window.location.href = `/rencontres?region=Occitanie`} onMouseOver={() => setRegion('OCC')} onMouseOut={() => setRegion('')} className={`map occitanie ${region == "OCC" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-NAQ.webp" onClick={() => window.location.href = `/rencontres?region=Nouvelle-Aquitaine`} onMouseOver={() => setRegion('NAQ')} onMouseOut={() => setRegion('')} className={`map nouvelle-aquitaine ${region == "NAQ" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-CVL.webp" onClick={() => window.location.href = `/rencontres?region=Centre-Val de Loire`} onMouseOver={() => setRegion('CVL')} onMouseOut={() => setRegion('')} className={`map centre ${region == "CVL" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-PDL.webp" onClick={() => window.location.href = `/rencontres?region=Pays de la Loire`} onMouseOver={() => setRegion('PDL')} onMouseOut={() => setRegion('')} className={`map loire ${region == "PDL" && styles.RegionLight}`} />
+                <img src="/medias/map/FR-BRE.webp" onClick={() => window.location.href = `/rencontres?region=Bretagne`} onMouseOver={() => setRegion('BRE')} onMouseOut={() => setRegion('')} className={`map bretagne ${region == "BRE" && styles.RegionLight}`} />
               </div>
             </div>
             <div className="w50 wm100">
@@ -100,7 +100,7 @@ export default function Home() {
           <div className="flex space-between mTop40 toColumn">
             <div className="w32 wm100 mmBot20">
               <PilierBox 
-                pic="climat-air-energie.png"
+                pic="climat-air-energie.webp"
                 title="Climat Air Energie" 
                 description="Découvrez l’ensemble des rencontres disponibles pour le pilier Climat Air Energie" 
                 link="/rencontres?pilier=Climat Air Energie"
@@ -108,7 +108,7 @@ export default function Home() {
             </div>
             <div className="w32 wm100 mmBot20">
               <PilierBox 
-                pic="economie-circulaire.png"
+                pic="economie-circulaire.webp"
                 title="Economie circulaire" 
                 description="Découvrez l’ensemble des rencontres disponibles pour le pilier Economie circulaire" 
                 link="/rencontres?pilier=Economie circulaire"
@@ -116,7 +116,7 @@ export default function Home() {
             </div>
             <div className="w32 wm100">
               <PilierBox 
-                pic="transversal.png"
+                pic="transversal.webp"
                 title="Transversal" 
                 description="Découvrez l’ensemble des rencontres disponibles pour le pilier Transversal" 
                 link="/rencontres?pilier=Transversal"
@@ -199,7 +199,7 @@ export default function Home() {
               </div>
             </div>
             <div className="w40 wm100">
-              <img src="medias/inscription.png" className="w100" />
+              <img src="medias/inscription.webp" className="w100" />
             </div>
           </div>
         </div>

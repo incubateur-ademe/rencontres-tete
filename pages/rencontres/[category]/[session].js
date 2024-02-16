@@ -392,7 +392,7 @@ export default function Session({ data, user }){
                                     <span className={styles.Title}>Détails pratiques</span>
                                     <div className="flex alignstart gap10 mTop30">
                                         <div className="w10">
-                                            <img src="/medias/icon-date.png" alt="icon" className="w70" />
+                                            <img src="/medias/icon-date.webp" alt="icon" className="w70" />
                                         </div>
                                         <div className="w80">
                                             <span className={styles.dLabel}>Date et horaires :</span>
@@ -401,7 +401,7 @@ export default function Session({ data, user }){
                                     </div>
                                     <div className="flex alignstart gap10 mTop20">
                                         <div className="w10">
-                                            <img src="/medias/icon-date.png" alt="icon" className="w70" />
+                                            <img src="/medias/icon-date.webp" alt="icon" className="w70" />
                                         </div>
                                         <div className="w80">
                                             <span className={styles.dLabel}>Date limite d'inscription :</span>
@@ -410,7 +410,7 @@ export default function Session({ data, user }){
                                     </div>
                                     <div className="flex alignstart gap10 mTop20">
                                         <div className="w10">
-                                            <img src="/medias/icon-lieu.png" alt="icon" className="w70" />
+                                            <img src="/medias/icon-lieu.webp" alt="icon" className="w70" />
                                         </div>
                                         <div className="w80">
                                             <span className={styles.dLabel}>Lieu de la rencontre :</span>
@@ -419,7 +419,7 @@ export default function Session({ data, user }){
                                     </div>
                                     <div className="flex alignstart gap10 mTop20">
                                         <div className="w10">
-                                            <img src="/medias/icon-places.png" alt="icon" className="w70" />
+                                            <img src="/medias/icon-places.webp" alt="icon" className="w70" />
                                         </div>
                                         <div className="w80">
                                             <span className={styles.dLabel}>Nombre de places :</span>
@@ -428,7 +428,7 @@ export default function Session({ data, user }){
                                     </div>
                                     <div className="flex alignstart gap10 mTop20">
                                         <div className="w10">
-                                            <img src="/medias/icon-transport.png" alt="icon" className="w70" />
+                                            <img src="/medias/icon-transport.webp" alt="icon" className="w70" />
                                         </div>
                                         <div className="w80">
                                             <span className={styles.dLabel}>Pour venir :</span>
@@ -437,7 +437,7 @@ export default function Session({ data, user }){
                                     </div>
                                     <div className="flex alignstart gap10 mTop20">
                                         <div className="w10">
-                                            <img src="/medias/icon-infos.png" alt="icon" className="w70" />
+                                            <img src="/medias/icon-infos.webp" alt="icon" className="w70" />
                                         </div>
                                         <div className="w80">
                                             <span className={styles.dLabel}>Infos complémentaires :</span>
@@ -459,7 +459,7 @@ export default function Session({ data, user }){
                                 return (
                                     <div key={index} className="w32 wm100">
                                         <Team
-                                            img="/medias/user.png"
+                                            img="/medias/user.webp"
                                             name={inter.nom}
                                             description={inter.fonction}
                                         />
