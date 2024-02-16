@@ -50,6 +50,7 @@ export default function Rencontres({ user }){
                                         region={rencontre.session.region}
                                         title={rencontre.session.module.nom}
                                         register="false"
+                                        see="true"
                                     />
                                 </div> 
                             )

@@ -145,8 +145,8 @@ export default function Rencontres({ base, region, pilier, thematique }){
                 <div className="section blued">
                     <div className="boxed">
                         <h1>Découvrez toutes les rencontres à venir</h1>
-                        <div className="flex space-between mTop40">
-                            <div className="w32">
+                        <div className="flex space-between mTop40 toColumn">
+                            <div className="w32 wm100 mmBot20">
                             <PilierBox 
                                 pic="climat-air-energie.png"
                                 title="Climat Air Energie" 
@@ -155,7 +155,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                 active={filtres.pilier}
                             />
                             </div>
-                            <div className="w32">
+                            <div className="w32 wm100 mmBot20">
                             <PilierBox 
                                 pic="economie-circulaire.png"
                                 title="Economie circulaire" 
@@ -164,9 +164,9 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                 active={filtres.pilier}
                             />
                             </div>
-                            <div className="w32">
+                            <div className="w32 wm100">
                             <PilierBox 
-                                pic="economie-circulaire.png"
+                                pic="transversal.png"
                                 title="Transversal" 
                                 description="Découvrez l’ensemble des rencontres disponibles pour le pilier Transversal" 
                                 setFiltres={setFiltres}
@@ -178,8 +178,8 @@ export default function Rencontres({ base, region, pilier, thematique }){
                 </div>
                 <div className="section">
                     <div className="boxed">
-                        <div className="flex gap50">
-                            <div className="w70">
+                        <div className="flex toColumn gap50">
+                            <div className="w70 wm100">
                                 <h2>Tous les modules disponibles {(filtres.pilier != '' || filtres.nom != '' || filtres.dateDebut != '' || filtres.thematique != '' || filtres.departement != '' || filtres.region != '') && 'suivant vos critères'} :</h2>
                                 {(filtres.pilier != '' || filtres.nom != '' || filtres.dateDebut != '' || filtres.thematique != '' || filtres.departement != '' || filtres.region != '') && (
                                 <div className="flex aligncenter wrap gap10 mTop20">
@@ -230,7 +230,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                 {modules.length > 0 ? (
                                 <div className="flex wrap gap15 mTop40">
                                     {modules.map((module, index) => (
-                                        <div key={index} className="w32">
+                                        <div key={index} className="w32 wm47">
                                             <ModuleBox 
                                                 title={module.nom}
                                                 id={module.id}
@@ -246,7 +246,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                     </div>                                    
                                 )}
                             </div>          
-                            <div className="w30">
+                            <div className="w30 wm100">
                                 <div>
                                     <span className={styles.Label}>Pilier de la transition écologique</span>
                                     <div className="select">
@@ -465,15 +465,15 @@ export default function Rencontres({ base, region, pilier, thematique }){
                 </div>
                 <div className="section-top border-top">
                     <div className="boxed">
-                        <div className="flex">
-                            <div className="w60">
+                        <div className="flex toColumn">
+                            <div className="w60 wm100">
                             <h2><span className="orange">Créez un compte</span> ou connectez-vous pour vous inscrire aux rencontres dans votre région.</h2>
-                            <div className="flex aligncenter gap20 mTop30">
+                            <div className="flex aligncenter toColumn gap20 mTop30 mmLeft">
                                 <Link href="/inscription" className="btn__normal btn__dark">S'inscrire à la plateforme</Link>
                                 <Link href="/connexion" className="btn__normal btn__light">Se connecter</Link>
                             </div>
                             </div>
-                            <div className="w40">
+                            <div className="w40 wm100">
                             <img src="medias/inscription.png" className="w100" />
                             </div>
                         </div>

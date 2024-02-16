@@ -464,13 +464,16 @@ export default function Session({ data, user }){
                             })}
                         </div>
                     ) : (
-                        <span>À venir.</span>
+                        <div className="mTop40">
+                            <span>À venir.</span>
+                        </div>                        
                     )}
                 </div>
             </div>
             <div className="section blued">
                 <div className="boxed">
                     <h2>Découvrez le programme de la session</h2>
+                    {data.metasSession.intervenants.length > 0 ? (
                     <div className="flex wrap gap25 mTop40">
                         {data.metasSession.programmeSession.map((programme, index) => {
                             return (
@@ -484,6 +487,11 @@ export default function Session({ data, user }){
                             )
                         })}
                     </div>
+                    ):(
+                        <div className="mTop40">
+                            <span>À venir.</span>
+                        </div>       
+                    )}
                 </div>
             </div>
 

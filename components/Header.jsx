@@ -8,6 +8,7 @@ export default function Header(){
 
     const [user, setUser] = useState(null);
     const router = useRouter()
+    const [activeMenu, setActiveMenu] = useState(true)
 
     useEffect(() => {
         fetch('/api/auth')
@@ -35,28 +36,32 @@ export default function Header(){
                                 <img src="/logo-ademe.png" className={styles.Logo} />
                             </div>                          
                         </div>
-                        <div className={styles.Menu}>
+                        <div className={`${styles.Menu} ${activeMenu ? undefined : styles.ActiveMenu}`}>
                             <ul>
-                                <li><Link href="/">Accueil</Link></li>
-                                <li><Link href="/rencontres">Toutes les rencontres</Link></li>
+                                <li onClick={() => setActiveMenu(prev => !prev)}><Link href="/">Accueil</Link></li>
+                                <li onClick={() => setActiveMenu(prev => !prev)}><Link href="/rencontres">Toutes les rencontres</Link></li>
                                 {user?.id ? (
                                     <>
                                         {user.id == 10 ? (
-                                            <li><Link href="/admin">Administration</Link></li>
+                                            <li onClick={() => setActiveMenu(prev => !prev)} className={styles.pf}><Link href="/admin">Administration</Link></li>
                                         ) : (
-                                            <li><Link href="/espace-personnel">Espace personnel</Link></li>
+                                            <li onClick={() => setActiveMenu(prev => !prev)} className={styles.pf}><Link href="/espace-personnel">Espace personnel</Link></li>
                                         )}
                                     </>                                    
                                 ) : (
                                     <>
-                                        <li><Link className={styles.LinkFunction} href="/connexion">Se connecter</Link></li>
-                                        <li><Link className={styles.LinkFunction} href="/inscription">Créer un compte</Link></li>
+                                        <li onClick={() => setActiveMenu(prev => !prev)} className={styles.pf}><Link className={styles.LinkFunction} href="/connexion">Se connecter</Link></li>
+                                        <li onClick={() => setActiveMenu(prev => !prev)}><Link className={styles.LinkFunction} href="/inscription">Créer un compte</Link></li>
                                     </>
                                 )}
 
                             </ul>
+                            <button onClick={() => setActiveMenu(prev => !prev)} className={styles.MobileExit}>Fermer<span className="material-icons">close</span></button>
                         </div>
                     </div>
+                    <button onClick={() => setActiveMenu(prev => !prev)} className={styles.MenuToggle}>
+                        <span className="material-icons">menu</span>
+                    </button>
                 </div>
             </div>
         </>

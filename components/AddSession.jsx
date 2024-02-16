@@ -284,11 +284,11 @@ export default function AddSession({setOpen, id, nom}){
         && sessionData.departement != '' 
         && sessionData.region != '' 
         && metasSessionData.dateHoraires != ''
-        && metasSessionData.lieuRencontre != ''
-        && metasSessionData.nombrePlaces != ''
-        && metasSessionData.infosTransport != ''
-        && metasSessionData.intervenants.length >= 0
-        && metasSessionData.programmeSession.length >= 0
+        // && metasSessionData.lieuRencontre != ''
+        // && metasSessionData.nombrePlaces != ''
+        // && metasSessionData.infosTransport != ''
+        // && metasSessionData.intervenants.length >= 0
+        // && metasSessionData.programmeSession.length >= 0
         ){
             const add = await addSession(sessionData, metasSessionData, id)
             setNotif({

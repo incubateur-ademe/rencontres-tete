@@ -62,3 +62,9 @@
 .AddFilter span{
     font-size: 1rem;
 }
+
+@media(max-width:810px){
+    .Rencontres h1{
+        font-size:2rem;
+    }
+}

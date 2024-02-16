@@ -73,6 +73,7 @@ export default function SessionsModule({ id, setOpen, open, nom }){
                                         <SessionsBack 
                                             date={session.dateDebut}
                                             region={session.region}
+                                            dept={session.departement}
                                             title={nom}
                                             id={session.id}
                                             moduleId={id}

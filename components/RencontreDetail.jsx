@@ -11,7 +11,7 @@ export default function RencontreDetail({id, setOpen, userId}){
     const [alert, setAlert] = useState(null)
     const [notif, setNotif] = useState(null)
     const [passed, setPassed] = useState(true)
-    const [rating, setRating] = useState(4);
+    const [rating, setRating] = useState(0);
     const [commentaires, setCommentaires] = useState('')
     const [data, setData] = useState({})
     const [reviewDisabled, setReviewDisabled] = useState(false)
@@ -74,11 +74,13 @@ export default function RencontreDetail({id, setOpen, userId}){
     const checkReview = async () => {
         const fetcher = await fetch(`/api/reviews/check?userId=${userId}&sessionId=${data.id}`)
         const json = await fetcher.json()
-        const rev = json[0]
         setReviewDisabled(true)
-        if(rev){
-            setRating(rev.note)
-            setCommentaires(rev.commentaire)
+        if(json.length > 0){
+            setRating(json[0].note)
+            setCommentaires(json[0].commentaire)
+        }
+        else{
+            setReviewDisabled(false)
         }
     }
 

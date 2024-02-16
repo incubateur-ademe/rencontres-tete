@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import styles from '@/styles/SessionsBack.module.css'
 
-export default function SessionsBack({date, region, title, id, setOpen, setAlert, setActions, action, status, moduleId}){
+export default function SessionsBack({date, region, title, id, setOpen, setAlert, setActions, action, status, moduleId, dept}){
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -43,11 +43,11 @@ export default function SessionsBack({date, region, title, id, setOpen, setAlert
                     <div className="flex aligncenter gap15">
                         <span className={styles.Date}>{startDate}</span>
                     </div>
-                    <span className={styles.Region}>{region}</span>
+                    <span className={styles.Region}>{dept} - {region}</span>
                 </div>
                 <div className="flex alignend space-between gap40 mTop20 w100">
                     <div className="w50">
-                        <span className={styles.Title}><span>Module :</span>{title}</span>
+                        <span className={styles.Title}><span>Module :</span>(Brouillon) {title}</span>
                     </div>
                     <div className="w50 flex alignend flex-end gap5">
                         <button 

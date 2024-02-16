@@ -297,12 +297,13 @@ export default function EditSession({setOpen, id, nom, moduleId}){
         if (sessionData.moduleId != '' 
         && sessionData.departement != '' 
         && sessionData.region != '' 
-        && metasSessionData.dateHoraires != ''
-        && metasSessionData.lieuRencontre != ''
-        && metasSessionData.nombrePlaces != ''
-        && metasSessionData.infosTransport != ''
-        && metasSessionData.intervenants.length >= 0
-        && metasSessionData.programmeSession.length >= 0) {
+        // && metasSessionData.dateHoraires != ''
+        // && metasSessionData.lieuRencontre != ''
+        // && metasSessionData.nombrePlaces != ''
+        // && metasSessionData.infosTransport != ''
+        // && metasSessionData.intervenants.length >= 0
+        // && metasSessionData.programmeSession.length >= 0
+        ) {
             try {
                 const update = await updateSession(sessionData, metasSessionData, id);
                 setNotif({
@@ -613,7 +614,7 @@ export default function EditSession({setOpen, id, nom, moduleId}){
                                 <span className={styles.dLabel}>Date de la session :</span>
                             </div>
                         </div>
-                        <input type="date" onChange={handleChange} name="metasSession.dateHoraires" value={datas?.metasSession.dateHoraires} className="input-text mTop10" placeholder="Date de la session" />
+                        <input disabled type="date" onChange={handleChange} name="metasSession.dateHoraires" value={datas?.metasSession.dateHoraires} className="input-text mTop10" placeholder="Date de la session" />
                     </div>
                     <div className="w50">
                         <div className="flex aligncenter gap5 w50">

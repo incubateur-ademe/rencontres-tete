@@ -116,7 +116,7 @@ export default function Home() {
             </div>
             <div className="w32 wm100">
               <PilierBox 
-                pic="economie-circulaire.png"
+                pic="transversal.png"
                 title="Transversal" 
                 description="Découvrez l’ensemble des rencontres disponibles pour le pilier Transversal" 
                 link="/rencontres?pilier=Transversal"
@@ -131,48 +131,56 @@ export default function Home() {
           <div className="flex wrap gap15 mTop40">
           <div className="w24 wm47">
           <ModuleBox 
+              pilier="Climat Air Energie"
               title="Planification territoriale" 
               link="/rencontres/?thematique=Planification territoriale"
           />
           </div>
           <div className="w24 wm47">
           <ModuleBox 
+              pilier="Climat Air Energie"
               title="Energie, eau et assainissement" 
               link="/rencontres/?thematique=Energie, eau et assainissement"
           />
           </div>
           <div className="w24 wm47">
           <ModuleBox 
+              pilier="Climat Air Energie"
               title="Mobilité et qualité de l'air"
               link="/rencontres/?thematique=Mobilié et qualité de l'air"    
           />
           </div>
           <div className="w24 wm47">
           <ModuleBox 
+              pilier="Climat Air Energie"
               title="Transition bas carbone" 
               link="/rencontres/?thematique=Transition bas carbone"    
           />
           </div>
           <div className="w24 wm47">
           <ModuleBox 
+              pilier="Economie Circulaire"
               title="Prévention et gestion des déchêts" 
               link="/rencontres/?thematique=Prévention et gestion des d'échêts"
           />
           </div>
           <div className="w24 wm47">
           <ModuleBox 
+              pilier="Economie Circulaire"
               title="Consommation responsable" 
               link="/rencontres/?thematique=Consommation responsable"    
           />
           </div>
           <div className="w24 wm47">
           <ModuleBox 
+              pilier="Economie Circulaire"
               title="Autres piliers de l'économie circulaire" 
               link="/rencontres/?thematique=Autres piliers de l'économie circulaire"    
           />
           </div>
           <div className="w24 wm47">
           <ModuleBox 
+              pilier="Transversal"
               title="Gouvernance et pilotage" 
               link="/rencontres/?thematique=Gouvernance et pilotage"    
           />
