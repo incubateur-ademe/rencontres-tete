@@ -11,7 +11,7 @@ export const config = {
 
 export default async function handler(req, res) {
   // Assurez-vous que le dossier d'upload existe
-  const uploadDir = path.resolve('./uploads');
+  const uploadDir = path.resolve('/tmp/uploads');
   if (!fs.existsSync(uploadDir)){
     fs.mkdirSync(uploadDir, { recursive: true });
   }
