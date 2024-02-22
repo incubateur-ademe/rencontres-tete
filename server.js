@@ -9,7 +9,7 @@ const handle = app.getRequestHandler()
 app.prepare().then(() => {
   const server = express()
 
-  server.use("/uploads", express.static(__dirname + "/uploads"));
+  server.use("/uploads", express.static(__dirname + "/tmp/uploads"));
 
   server.all('*', (req, res) => {
       return handle(req, res)
