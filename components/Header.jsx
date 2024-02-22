@@ -34,12 +34,16 @@ export default function Header(){
                             </div>     
                             <div className={styles.Logo}>
                                 <img src="/logo-ademe.png" className={styles.Logo} />
+                            </div>      
+                            <div className={styles.Logo}>
+                                <img src="/rencontres-logo.webp" className={styles.Logo} />
                             </div>                          
                         </div>
                         <div className={`${styles.Menu} ${activeMenu ? undefined : styles.ActiveMenu}`}>
                             <ul>
                                 <li onClick={() => setActiveMenu(prev => !prev)}><Link href="/">Accueil</Link></li>
-                                <li onClick={() => setActiveMenu(prev => !prev)}><Link href="/rencontres">Toutes les rencontres</Link></li>
+                                <li onClick={() => setActiveMenu(prev => !prev)}><Link href="/rencontres">Les Rencontres</Link></li>
+                                <li><Link href="https://www.territoiresentransitions.fr/" rel="noreferrer" target="_blank">Territoires en Transitions</Link></li>
                                 {user?.id ? (
                                     <>
                                         {user.id == 10 ? (

@@ -21,9 +21,11 @@ export default function EditSession({setOpen, id, nom, moduleId}){
           dateHoraires: '',
           lieuRencontre: '',
           nombrePlaces: '',
+          nombreJours: '',
           infosTransport: '',
           dateLimiteInscription: '',
           infosComplementaires: '',
+          explications: '',
           intervenants: [],
           programmeSession: [],
           urlsPDF: [],
@@ -286,7 +288,9 @@ export default function EditSession({setOpen, id, nom, moduleId}){
             dateHoraires: datas.metasSession.dateHoraires,
             lieuRencontre: datas.metasSession.lieuRencontre,
             nombrePlaces: datas.metasSession.nombrePlaces,
+            nombreJours: datas.metasSession.nombreJours,
             infosTransport: datas.metasSession.infosTransport,
+            explications: datas.metasSession.explications,
             dateLimiteInscription: datas.metasSession.dateLimiteInscription,
             infosComplementaires: datas.metasSession.infosComplementaires,
             intervenants: datas.metasSession.intervenants,
@@ -410,10 +414,7 @@ export default function EditSession({setOpen, id, nom, moduleId}){
         }
     }
     
-    
-      
-    console.log(datas)
-      
+
 
     return (
         <>
@@ -652,17 +653,34 @@ export default function EditSession({setOpen, id, nom, moduleId}){
                         <input type="text" onChange={handleChange} name="metasSession.infosTransport" value={datas?.metasSession.infosTransport} className="input-text mTop10" placeholder="Transport, etc..." />
                     </div>
                 </div>
-                <div className="w100 mTop20">
-                        <div className="flex aligncenter gap5 w50">
-                            <div className="w5">
-                                <img src="/medias/icon-date.png" alt="icon" className="w80" />
+                <div className="flex gap20 toColumn">
+                    <div className="w50">
+                        <div className="w100 mTop20">
+                            <div className="flex aligncenter gap5 w60">
+                                <div className="w8">
+                                    <img src="/medias/icon-date.png" alt="icon" className="w80" />
+                                </div>
+                                <div className="w80">
+                                    <span className={styles.dLabel}>Date limite d'inscription :</span>
+                                </div>
                             </div>
-                            <div className="w95">
-                                <span className={styles.dLabel}>Date limite d'inscription :</span>
-                            </div>
+                            <input type="date" onChange={handleChange} name="metasSession.dateLimiteInscription" value={datas?.metasSession.dateLimiteInscription} className="input-text mTop10" placeholder="Date et horaires" />
                         </div>
-                        <input type="date" onChange={handleChange} name="metasSession.dateLimiteInscription" value={datas?.metasSession.dateLimiteInscription} className="input-text mTop10" placeholder="Date et horaires" />
                     </div>
+                    <div className="w50">
+                        <div className="w100 mTop20">
+                            <div className="flex aligncenter gap5 w70">
+                                <div className="w7">
+                                    <img src="/medias/icon-date.png" alt="icon" className="w80" />
+                                </div>
+                                <div className="w80">
+                                    <span className={styles.dLabel}>Nombre de jours de la session :</span>
+                                </div>
+                            </div>
+                            <input type="text" onChange={handleChange} name="metasSession.nombreJours" value={datas?.metasSession.nombreJours} className="input-text mTop10" placeholder="1, 2" />
+                        </div>
+                    </div>
+                </div>
                 <div>
                 <div className="w100 mTop20">
                     <div className="flex aligncenter gap5 w50">
@@ -752,8 +770,9 @@ export default function EditSession({setOpen, id, nom, moduleId}){
                     </button>
                 </div>
 
-                <span className={styles.Subtitle}>Documents spécifiques à cette rencontre</span>
+                <span className={styles.Subtitle}>Ressources à lire avant la rencontre</span>
                 <div>
+                    <textarea onChange={handleChange} name="metasSession.explications" value={datas?.metasSession.explications} className="textarea mTop20" placeholder="Explications facultatives..."></textarea>
                     <div className="flex wrap gap20 mTop20">
                         <div className="w48 text-left">
                             <div>

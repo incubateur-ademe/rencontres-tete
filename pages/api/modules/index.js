@@ -38,7 +38,7 @@ export default async function handle(req, res) {
   }
 
   // Filtres liés directement aux modules
-  if (pilier) queryOptions.where.pilier = pilier;
+  if (pilier) queryOptions.where.pilier = { contains: pilier, mode: 'insensitive' };
   if (thematique) queryOptions.where.thematique = thematique;
   if (nom) queryOptions.where.nom = { contains: nom, mode: 'insensitive' };
 

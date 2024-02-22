@@ -393,6 +393,18 @@ p{
   text-align: right;
 }
 
+.whited{
+  background-color: #FFF;
+}
+
+.regbox{
+  display: none;
+}
+
+.disnone{
+  display: none;
+}
+
 @media(max-width:1280px){
   p{
     font-size:0.95rem;

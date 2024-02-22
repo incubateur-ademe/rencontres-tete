@@ -11,7 +11,7 @@ export const config = {
 
 export default async function handler(req, res) {
   // Assurez-vous que le dossier d'upload existe
-  const uploadDir = path.resolve('./public/uploads');
+  const uploadDir = path.resolve('./uploads');
   if (!fs.existsSync(uploadDir)){
     fs.mkdirSync(uploadDir, { recursive: true });
   }
@@ -42,7 +42,7 @@ export default async function handler(req, res) {
     // Gérer les cas où plusieurs fichiers sont uploadés sous le même nom
     const files = Array.isArray(fileArray) ? fileArray : [fileArray];
     return files.map(file => {
-      const filePath = path.relative('./public', file.filepath);
+      const filePath = path.relative('.', file.filepath);
       // Construire un objet avec le nom et l'URL du fichier
       return {
         nom: file.originalFilename, // ou file.newFilename selon votre gestion des noms de fichiers

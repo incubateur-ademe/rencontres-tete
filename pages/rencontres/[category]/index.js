@@ -76,7 +76,7 @@ export default function Module({ data }){
                             </p>
                             <span className={styles.Tag}>{data.pilier}</span>
                             <p>{data.description}</p>
-                            <p>Code module : #{data.code} - Dernière mise à jour : {lastUpdate}</p>
+                            <p>Code rencontre : #{data.code} - Dernière mise à jour : {lastUpdate}</p>
                         </div>
                         <div className="flex toColumn gap50 mTop50">
                             <div className="w70 wm100">                                
@@ -157,7 +157,7 @@ export default function Module({ data }){
             </div>
             <div className="section blued">
                 <div className="boxed">
-                    <h2>Découvrez le programme du module</h2>
+                    <h2>Découvrez le programme de la rencontre</h2>
                     <div className="flex wrap gap25 mTop40">
                         {data.metasModule.programmeModule.map((programme, index) => {
                             return (
@@ -175,7 +175,7 @@ export default function Module({ data }){
             </div>
             <div className="section" id="sessions">
                 <div className="boxed">
-                    <h2>Les sessions à venir</h2>
+                    <h2>Les sessions à venir en régions</h2>
                     <div className="flex aligncenter gap10 mTop20 toColumn">
                         <div className="w30 wm100">
                             <div className="select">

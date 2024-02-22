@@ -21,6 +21,14 @@
     border-radius: 5px;
 }
 
+.Restant{
+    font-size:0.8rem;
+    font-weight: 500;
+    transform:translateY(1px);
+    margin-left: 5px;
+    opacity: 0.65;
+}
+
 .Title{
     font-size: 1.15rem;
     color: var(--primary);

@@ -183,6 +183,7 @@ export default function EditModule({setOpen, id}){
           nom: datas.nom,
           description: datas.description,
           pilier: datas.pilier,
+          pilier2: datas.pilier2 ? datas.pilier2 : undefined,
           thematique: datas.thematique,
           code: datas.code
         };
@@ -197,16 +198,16 @@ export default function EditModule({setOpen, id}){
         };
 
         if(moduleData.nom != '' 
-        && moduleData.description != '' 
+        // && moduleData.description != '' 
         && moduleData.pilier != '' 
         && moduleData.code != '' 
         && moduleData.thematique != '' 
-        && metasModuleData.duree != ''
-        && metasModuleData.objectifs != ''
-        && metasModuleData.publicCible != ''
-        && metasModuleData.tarif != ''
-        && metasModuleData.resumeProgramme != ''
-        && metasModuleData.programmeModule.length > 0
+        // && metasModuleData.duree != ''
+        // && metasModuleData.objectifs != ''
+        // && metasModuleData.publicCible != ''
+        // && metasModuleData.tarif != ''
+        // && metasModuleData.resumeProgramme != ''
+        // && metasModuleData.programmeModule.length > 0
         ){
             const update = await updateModule(moduleId, moduleData, metasModuleData)
             setNotif({
@@ -309,16 +310,25 @@ export default function EditModule({setOpen, id}){
                 </div>
                 <span className={styles.Subtitle}>Attributs du module</span>
                 <div className="flex gap20 mTop20">
-                    <div className="select w40">
+                    <div className="select w32">
                         <select onChange={handleChange} name="pilier" value={datas?.pilier} className="input-select">
-                            <option value="">Pilier du module</option>
+                            <option value="">Axe 1 du module</option>
                             <option>Climat Air Energie</option>
                             <option>Economie circulaire</option>
-                            <option>Transversal</option>
+                            <option>Approche transversale</option>
                         </select>
                         <span className="material-icons">expand_more</span>
                     </div>
-                    <div className="select w40">
+                    <div className="select w32">
+                        <select onChange={handleChange} name="pilier2" value={datas?.pilier2} className="input-select">
+                            <option value="">Axe 2 du module</option>
+                            <option>Climat Air Energie</option>
+                            <option>Economie circulaire</option>
+                            <option>Approche transversale</option>
+                        </select>
+                        <span className="material-icons">expand_more</span>
+                    </div>
+                    <div className="select w32">
                         <select onChange={handleChange} name="thematique" value={datas?.thematique} className="input-select">
                             <option value="">Thématique du module</option>
                             <option>Planification territoriale</option>

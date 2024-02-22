@@ -6,7 +6,7 @@ import SessionBox from '@/components/SessionBox'
 import Rating from '@mui/material/Rating';
 import styles from '@/styles/Account.module.css'
 
-export default function RencontreDetail({id, setOpen, userId}){
+export default function RencontreDetail({id, setOpen, userId, user}){
 
     const [alert, setAlert] = useState(null)
     const [notif, setNotif] = useState(null)
@@ -15,6 +15,7 @@ export default function RencontreDetail({id, setOpen, userId}){
     const [commentaires, setCommentaires] = useState('')
     const [data, setData] = useState({})
     const [reviewDisabled, setReviewDisabled] = useState(false)
+    const [userData, setUserData] = useState(null)
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -106,11 +107,51 @@ export default function RencontreDetail({id, setOpen, userId}){
             }
         }
     }, [data]);
+
+    useEffect(() => {
+        if(user){
+            const getUserIn = async () => {
+                const fetcher = await fetch(`/api/users/${user.id}`)
+                const json = await fetcher.json()
+                setUserData(json[0])
+            }
+            getUserIn()
+        }
+    }, [])
+
+    const generateBadge = async () => {
+        const datas = { nom: userData.nom, prenom: userData.prenom, nomModule: data?.module?.nom, tarif: data?.module?.metasModule?.tarif, date: formatDate(data?.dateDebut), region: data?.metasSession?.lieuRencontre };
+      
+        const response = await fetch('/api/generate-badge', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(datas),
+        });
+      
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+      
+        // Crée un élément <a> pour le téléchargement
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = "Badge de participation.pdf"; // Nom du fichier à télécharger
+        document.body.appendChild(a); // Ajoute l'élément à la page
+        a.click(); // Simule un clic sur l'élément
+      
+        // Nettoyage: retire l'élément et libère l'URL du blob
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      };
     
 
     return (
         <>
             <span onClick={() => setOpen(null)} className={styles.Back}>Retour à mes rencontres</span>
+            <div className="mTop20">
+                <button onClick={generateBadge} className="btn__normal btn__dark">Générer mon badge</button>
+            </div>
             <div className="w100 mTop25">
                 <SessionBox 
                     date={formatDate(data.dateDebut)}
@@ -156,6 +197,9 @@ export default function RencontreDetail({id, setOpen, userId}){
             {data?.metasSession?.urlsPDF.length > 0 ? (
                 <>
                     <span className={styles.Subtitle}>Ressources :</span>
+                    {data?.metasSession?.explications && (
+                        <p>{data?.metasSession?.explications}</p>
+                    )}
                     <ul className={styles.Ressources}>
                         {data?.metasSession?.urlsPDF.map((item, index) => {
                             return <li><Link target="_blank" href={item.url}>{item.nom}</Link></li>

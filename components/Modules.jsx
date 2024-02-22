@@ -91,10 +91,10 @@ export default function Modules(){
                     <div className="flex gap20 mTop30">
                         <div className="select w50">
                             <select onChange={filterModules} className="input-select">
-                                <option value="">Filtrer par pilier</option>
+                                <option value="">Filtrer par un axe spécifique</option>
                                 <option>Climat Air Energie</option>
                                 <option>Economie circulaire</option>
-                                <option>Transversal</option>
+                                <option>Approche transversale</option>
                             </select>
                             <span className="material-icons">expand_more</span>
                         </div>
@@ -119,6 +119,7 @@ export default function Modules(){
                                             id={module.id}
                                             setOpen={setOpen}
                                             setAlert={setAlert}
+                                            sessions={module.sessions}
                                             action={() => deleteModule(module.id)}
                                         />
                                     </div>                                     

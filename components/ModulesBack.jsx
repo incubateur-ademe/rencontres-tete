@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import styles from '@/styles/ModuleBack.module.css'
 
-export default function ModulesBack({date, lastUpdate, category, title, id, setOpen, setAlert, action}){
+export default function ModulesBack({date, lastUpdate, category, title, id, setOpen, setAlert, action, sessions}){
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -14,6 +14,13 @@ export default function ModulesBack({date, lastUpdate, category, title, id, setO
 
     const publicationDate = formatDate(date);
     const lastUpdateDate = formatDate(lastUpdate);
+
+    const now = new Date();
+
+    const nbSession = sessions.filter((session) => {
+        const dateDebut = new Date(session.dateDebut);
+        return dateDebut > now;
+    }).length;
       
     return (
         <>
@@ -27,7 +34,7 @@ export default function ModulesBack({date, lastUpdate, category, title, id, setO
                 </div>
                 <div className="flex alignend space-between gap40 mTop20 w100">
                     <div className="w50">
-                        <span className={styles.Title}><span>Module :</span>{title}</span>
+                        <span className={styles.Title}><span>Module ({nbSession} session{nbSession > 1 ? 's' : ''} à venir) :</span>{title}</span>
                     </div>
                     <div className="w50 flex alignend flex-end gap5">
                         <button 

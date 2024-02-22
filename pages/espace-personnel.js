@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Head from 'next/head'
 import nextCookies from 'next-cookies';
 import Cookies from 'js-cookie';
+import Alert from '@/components/Alert'
 import { verifyToken } from '@/utils/auth';
 import { useState, useEffect } from 'react'
 import Rencontres from '/components/Rencontres'
@@ -27,13 +28,22 @@ export async function getServerSideProps(context) {
 export default function Account({ user }){
 
     const [page, setPage] = useState(0)
+    const [alert, setAlert] = useState(null)
 
     const logout = async () => {
-        const unlog = await fetch('/api/logout')
-        window.location.href = "/"
+        setAlert({
+            icon: 'warning',
+            text: 'Êtes-vous sûr de vouloir vous déconnecter ?',
+            action: async () => {
+                const unlog = await fetch('/api/logout')
+                window.location.href = "/"
+            }
+        });
+
     }
 
     return (
+        <>
         <div className={styles.Account}>
             <Head>
                 <title>ADEME | Espace personnel</title>
@@ -65,5 +75,10 @@ export default function Account({ user }){
                 </div>
             </div>
         </div>
+
+        {alert != null && (
+            <Alert datas={alert} setAlert={setAlert} />
+        )}  
+        </>
     )
 }

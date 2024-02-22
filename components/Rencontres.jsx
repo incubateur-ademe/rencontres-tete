@@ -11,6 +11,7 @@ export default function Rencontres({ user }){
     const [rencontres, setRencontres] = useState([])
     const [status, setStatus] = useState('upcoming')
     const [load, setLoad] = useState(false)
+    
 
     const getUserSessions = async () => {
         setLoad(true)
@@ -40,9 +41,6 @@ export default function Rencontres({ user }){
             </div>
             {open == null ? (
             <>
-                <div className="mTop30">
-                    <button className="btn__normal btn__dark">Générer mon badge</button>
-                </div>
                 {load ? (
                     <>
                         <div className="mTop30">
@@ -63,6 +61,7 @@ export default function Rencontres({ user }){
                                                 title={rencontre.session.module.nom}
                                                 register="false"
                                                 see="true"
+                                                user={user}
                                             />
                                         </div> 
                                     )
@@ -78,7 +77,7 @@ export default function Rencontres({ user }){
             </>
             ) : (
                 <div className="mTop20">
-                    <RencontreDetail id={open} setOpen={setOpen} userId={user.id} />
+                    <RencontreDetail id={open} setOpen={setOpen} user={user} userId={user.id} />
                 </div>
             )}
         </div>

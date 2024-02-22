@@ -31,8 +31,8 @@ export default function Home() {
         <div className="boxed">
           <div className="flex aligncenter gap50 toColumn">
             <div className="w50 wm100">
-              <h1>Les Rencontres des Territoires Engagés</h1>
-              <p>Participez aux Rencontres Territoire Engagé de l'ADEME organisées partout en France et montez en compétence sur les thématiques Climat Air Energie et Economie Circulaire, pour mettre en œuvre la transition écologique sur votre territoire.</p>
+              <h1>Les Rencontres Territoire Engagé Transition écologique</h1>
+              <p>Participez aux Rencontres Territoire Engagé de l'ADEME organisées partout en France et montez en compétence sur les thématiques Climat Air Energie, Economie Circulaire et Approche transversale, pour mettre en œuvre la transition écologique sur votre territoire.</p>
               <div className={styles.Searching}>
                 <input name="search" value={search} onChange={(event) => setSearch(event.target.value)} className="input-text mTop30" type="text" placeholder="Rechercher un module par nom..." />
                 {(finds.length > 0 && search.length > 0) && (
@@ -102,23 +102,23 @@ export default function Home() {
               <PilierBox 
                 pic="climat-air-energie.webp"
                 title="Climat Air Energie" 
-                description="Découvrez l’ensemble des rencontres disponibles pour le pilier Climat Air Energie" 
+                description="Découvrez l’ensemble des rencontres programmées sur les thématiques Climat Air Énergie" 
                 link="/rencontres?pilier=Climat Air Energie"
               />
             </div>
             <div className="w32 wm100 mmBot20">
               <PilierBox 
-                pic="economie-circulaire.webp"
-                title="Economie circulaire" 
-                description="Découvrez l’ensemble des rencontres disponibles pour le pilier Economie circulaire" 
+                pic="climat-air-energie-1.webp"
+                title="Economie Circulaire" 
+                description="Découvrez l’ensemble des rencontres programmées sur les thématiques Économie Circulaire" 
                 link="/rencontres?pilier=Economie circulaire"
               />
             </div>
             <div className="w32 wm100">
               <PilierBox 
                 pic="transversal.webp"
-                title="Transversal" 
-                description="Découvrez l’ensemble des rencontres disponibles pour le pilier Transversal" 
+                title="Approche transversale" 
+                description="Découvrez l’ensemble des rencontres programmées sur l’approche transversale de la transition écologique" 
                 link="/rencontres?pilier=Transversal"
               />
             </div>
@@ -180,7 +180,7 @@ export default function Home() {
           </div>
           <div className="w24 wm47">
           <ModuleBox 
-              pilier="Transversal"
+              pilier="Approche transversale"
               title="Gouvernance et pilotage" 
               link="/rencontres/?thematique=Gouvernance et pilotage"    
           />

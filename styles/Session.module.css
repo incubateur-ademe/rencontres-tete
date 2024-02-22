@@ -102,3 +102,7 @@
     color: var(--primary);
     font-weight: 500;
 }
+
+.Act{
+    display: block;
+}

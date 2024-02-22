@@ -36,11 +36,11 @@ export async function getServerSideProps(context) {
     };
 
     // Assurez-vous que les modules retournés ont des sessions qui correspondent aux critères si région est spécifiée
-    if (region) {
-        queryOptions.where.sessions = {
-            some: sessionWhere,
-        };
-    }
+    // if (region || thematique) {
+    //     queryOptions.where.sessions = {
+    //         some: sessionWhere,
+    //     };
+    // }
 
     // Récupérer les modules depuis la base de données ou une API externe
     let base = await prisma.module.findMany(queryOptions);
@@ -127,39 +127,40 @@ export default function Rencontres({ base, region, pilier, thematique }){
         }
     }, [filtres])
 
-    useEffect(() => {
-        setFiltres(prev => {
-            return {
-                ...prev,
-                thematique: ''
-            }
-        })
-    }, [filtres.pilier])
+    // useEffect(() => {
+    //     setFiltres(prev => {
+    //         return {
+    //             ...prev,
+    //             thematique: ''
+    //         }
+    //     })
+    // }, [filtres.pilier])
+    
 
     return (
         <>
             <Head>
-                <title>ADEME | Toutes les rencontres</title>
+                <title>Les rencontres | ADEME</title>
             </Head>
             <div className={styles.Rencontres}>
                 <div className="section blued">
                     <div className="boxed">
-                        <h1>Découvrez toutes les rencontres à venir</h1>
+                        <h1>Les rencontres à venir dans votre région</h1>
                         <div className="flex space-between mTop40 toColumn">
                             <div className="w32 wm100 mmBot20">
                             <PilierBox 
                                 pic="climat-air-energie.webp"
                                 title="Climat Air Energie" 
-                                description="Découvrez l’ensemble des rencontres disponibles pour le pilier Climat Air Energie" 
+                                description="Découvrez l’ensemble des rencontres programmées sur les thématiques Climat Air Énergie" 
                                 setFiltres={setFiltres}
                                 active={filtres.pilier}
                             />
                             </div>
                             <div className="w32 wm100 mmBot20">
                             <PilierBox 
-                                pic="economie-circulaire.webp"
-                                title="Economie circulaire" 
-                                description="Découvrez l’ensemble des rencontres disponibles pour le pilier Economie circulaire" 
+                                pic="climat-air-energie-1.webp"
+                                title="Economie Circulaire" 
+                                description="Découvrez l’ensemble des rencontres programmées sur les thématiques Économie Circulaire" 
                                 setFiltres={setFiltres}
                                 active={filtres.pilier}
                             />
@@ -167,8 +168,8 @@ export default function Rencontres({ base, region, pilier, thematique }){
                             <div className="w32 wm100">
                             <PilierBox 
                                 pic="transversal.webp"
-                                title="Transversal" 
-                                description="Découvrez l’ensemble des rencontres disponibles pour le pilier Transversal" 
+                                title="Approche transversale" 
+                                description="Découvrez l’ensemble des rencontres programmées sur l’approche transversale de la transition écologique" 
                                 setFiltres={setFiltres}
                                 active={filtres.pilier}
                             />
@@ -180,9 +181,9 @@ export default function Rencontres({ base, region, pilier, thematique }){
                     <div className="boxed">
                         <div className="flex toColumn gap50">
                             <div className="w70 wm100">
-                                <h2>Tous les modules disponibles {(filtres.pilier != '' || filtres.nom != '' || filtres.dateDebut != '' || filtres.thematique != '' || filtres.departement != '' || filtres.region != '') && 'suivant vos critères'} :</h2>
+                                {/* <h2>Tous les modules disponibles {(filtres.pilier != '' || filtres.nom != '' || filtres.dateDebut != '' || filtres.thematique != '' || filtres.departement != '' || filtres.region != '') && 'suivant vos critères'} :</h2> */}
                                 {(filtres.pilier != '' || filtres.nom != '' || filtres.dateDebut != '' || filtres.thematique != '' || filtres.departement != '' || filtres.region != '') && (
-                                <div className="flex aligncenter wrap gap10 mTop20">
+                                <div className="flex aligncenter wrap gap10 mBot20">
                                     {filtres.pilier != '' && (
                                         <button
                                             onClick={() => setFiltres(prev => { return { ...prev, pilier: '' } })}
@@ -228,7 +229,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                 </div>
                                 )}
                                 {modules.length > 0 ? (
-                                <div className="flex wrap gap15 mTop40">
+                                <div className="flex wrap gap15">
                                     {modules.map((module, index) => (
                                         <div key={index} className="w32 wm100">
                                             <ModuleBox 
@@ -248,13 +249,13 @@ export default function Rencontres({ base, region, pilier, thematique }){
                             </div>          
                             <div className="w30 wm100">
                                 <div>
-                                    <span className={styles.Label}>Pilier de la transition écologique</span>
+                                    <span className={styles.Label}>Rechercher par axe de la transition écologique</span>
                                     <div className="select">
                                         <select name="pilier" value={filtres.pilier} onChange={(event) => setFiltres(prev => { return { ...prev, pilier: event.target.value, nom: '' } })} className="input-select">
-                                            <option value="">Tous les piliers</option>
+                                            <option value="">Tous les axes</option>
                                             <option>Climat Air Energie</option>
                                             <option>Economie circulaire</option>
-                                            <option>Transversal</option>
+                                            <option>Approche transversale</option>
                                         </select>
                                         <span className="material-icons">expand_more</span>
                                     </div>
@@ -292,7 +293,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                                             <option>Autres piliers de l'économie circulaire</option>
                                                         </>                                                       
                                                     )}
-                                                    {filtres.pilier == 'Transversal' && (
+                                                    {filtres.pilier == 'Approche transversale' && (
                                                         <>
                                                             <option>Gouvernance et pilotage</option>
                                                         </>                                                       

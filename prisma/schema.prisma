@@ -40,10 +40,12 @@ model User {
   id         Int       @id @default(autoincrement())
   nom        String
   prenom     String
+  region     String?
   mail       String    @unique
   telephone  String?
   motDePasse String
   fonction   String
+  organisation String?
   newsletter Boolean
   sessions   Session[] @relation("UserSessions")
   registrations  Registration[]
@@ -71,9 +73,11 @@ model MetasSession {
   dateHoraires          String  
   lieuRencontre         String
   nombrePlaces          String
+  nombreJours           String?
   infosTransport        String
   dateLimiteInscription String
   infosComplementaires  String  
+  explications          String?
   intervenants          Json     
   programmeSession      Json     
   urlsPDF               Json     
@@ -91,12 +95,12 @@ model Registration {
   fonction       String?
   typeFonction   String
   ville          String?
-  pays           String
+  region         String
   telephone      String?
   transport      String?
   besoins        String?
   repas          Boolean
-  covoit         Boolean
+  repas2         Boolean?
   userId         Int
   sessionId      Int
   user           User     @relation(fields: [userId], references: [id])

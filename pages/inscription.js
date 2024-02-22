@@ -27,8 +27,8 @@ export default function Register(){
     }
 
     const createAccount = async () => {
-        const { nom, prenom, mail, telephone, motDePasse, motDePasse2, fonction, newsletter, rgpd } = userDetails
-        if(nom && prenom && mail && motDePasse && motDePasse2 && fonction && rgpd){
+        const { nom, prenom, mail, telephone, motDePasse, motDePasse2, fonction, newsletter, rgpd, region, organisation } = userDetails
+        if(nom && prenom && mail && motDePasse && motDePasse2 && fonction && rgpd && region && organisation){
             if(motDePasse == motDePasse2){
                 const mailExist = await checkMail(mail)
                 if(!mailExist){
@@ -41,6 +41,8 @@ export default function Register(){
                             telephone: telephone,
                             motDePasse: motDePasse,
                             fonction: fonction,
+                            region: region,
+                            organisation: organisation,
                             newsletter: newsletter ? true : false
                         }
 
@@ -119,20 +121,53 @@ export default function Register(){
                                 <>
                                     <h1>Créez votre compte</h1>
                                     <div className={styles.Box}>
-                                        <div className="flex gap20 mBot20 toColumn">
+                                        <p>Votre compte personnel vous permet d’accéder à toutes les informations sur vos rencontres à venir (informations pratiques, ressources documentaires, prérequis, etc.) et à l’historique de vos rencontres passées.</p>
+                                        <div className="flex gap20 mBot20 mTop30 toColumn">
                                             <input type="text" name="nom" onChange={handleChange} value={userDetails.nom} className="input-text wm100" placeholder="Nom*" />
                                             <input type="text" name="prenom" onChange={handleChange} value={userDetails.prenom} className="input-text wm100" placeholder="Prénom*" />
                                         </div>
-                                        <div className="flex gap20 mBot20 toColumn">
+                                        <div className="mBot20">
                                             <input type="mail" name="mail" onChange={handleChange} value={userDetails.mail} className="input-mail wm100" placeholder="Adresse email*" />
+                                        </div>
+                                        <div className="flex gap20 mBot20 toColumn">
                                             <input type="text" name="telephone" onChange={handleChange} value={userDetails.telephone} className="input-text wm100" placeholder="Numéro de téléphone" />
+                                            <input type="text" name="organisation" onChange={handleChange} value={userDetails.organisation} className="input-text wm100" placeholder="Organisation*" />
                                         </div>
                                         <div className="flex gap20 mBot20 toColumn">
                                             <input type="password" name="motDePasse" onChange={handleChange} value={userDetails.motDePasse} className="input-text wm100" placeholder="Mot de passe*" />
                                             <input type="password" name="motDePasse2" onChange={handleChange} value={userDetails.motDePasse2} className="input-text wm100" placeholder="Confirmez le mot de passe*" />
                                         </div>
                                         <div className="flex gap15 mBot30">
-                                            <input type="text" name="fonction" onChange={handleChange} value={userDetails.fonction}  className="input-text" placeholder="Type de fonction*" />
+                                        <div className="select w50">
+                                                <select onChange={handleChange} name="fonction" value={userDetails.fonction} className="input-select">
+                                                    <option value=''>Type de fonction</option>
+                                                    <option>Chargé de mission en collectivité</option>
+                                                    <option>Directeur ou chef de service en collectivité</option>
+                                                    <option>Élu en collectivité</option>
+                                                    <option>Conseiller Territoire Engagé Transition écologique</option>
+                                                    <option>Partenaire de la région</option>
+                                                </select>
+                                                <span className="material-icons">expand_more</span>
+                                            </div>
+                                            <div className="select w50">
+                                                <select onChange={handleChange} name="region" value={userDetails.region} className="input-select">
+                                                    <option value=''>Région</option>
+                                                    <option>Auvergne-Rhône-Alpes</option>
+                                                    <option>Bourgogne-Franche-Comté</option>
+                                                    <option>Bretagne</option>
+                                                    <option>Centre-Val de Loire</option>
+                                                    <option>Corse</option>
+                                                    <option>Grand-Est</option>
+                                                    <option>Hauts-de-France</option>
+                                                    <option>Île-de-France</option>
+                                                    <option>Normandie</option>
+                                                    <option>Nouvelle-Aquitaine</option>
+                                                    <option>Occitanie</option>
+                                                    <option>Pays de la Loire</option>
+                                                    <option>Provence-Alpes-Côte d'Azur</option>
+                                                </select>
+                                                <span className="material-icons">expand_more</span>
+                                            </div>
                                         </div>
                                         <div className="mBot30">
                                             <div className="checkbox mBot20">

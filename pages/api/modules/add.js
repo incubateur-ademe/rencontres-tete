@@ -14,10 +14,17 @@ export default async function handle(req, res) {
             .replace(/\s+/g, '-')
             .toLowerCase()
 
+            let allPiliers = moduleData.pilier
+            if(moduleData.pilier2 != null && moduleData.pilier2 != ''){
+                allPiliers += ', '+moduleData.pilier2
+            }
+            delete moduleData.pilier2;
+
             const newModule = await prisma.module.create({
                 data: {
                     ...moduleData,
                     slug: slug,
+                    pilier: allPiliers,
                     datePublication: now,
                     lastUpdate: now,
                     metasModule: metasModuleData ? {

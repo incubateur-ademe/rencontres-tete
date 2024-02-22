@@ -11,7 +11,7 @@ export default function Participant({ data, setActions }){
     const deleteUser = async () => {
         setAlert(null)
         const fetcher = await fetch(`/api/registrations/delete?userId=${data.userId}&sessionId=${data.sessionId}`, { method: 'DELETE' })
-        const json = await fetcher.json()
+        // const json = await fetcher.json()
         setActions(prev => prev+1)
     }
 
@@ -19,7 +19,8 @@ export default function Participant({ data, setActions }){
         setAlert({
             icon: 'warning',
             text: 'Êtes-vous sûr de vouloir retirer ce participant ?',
-            action: () => deleteUser()
+            action: () => deleteUser(),
+            setAlert: setAlert
         });
     }
 
@@ -51,7 +52,7 @@ export default function Participant({ data, setActions }){
             )}
 
             {alert != null && (
-                <Alert datas={alert} setNotif={setAlert} />
+                <Alert datas={alert} setAlert={setAlert} />
             )}
         </>
     )
