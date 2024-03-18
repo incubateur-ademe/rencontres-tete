@@ -50,6 +50,7 @@ export default function SessionStat({ session, setOpen }){
                     <div className="w50 flex alignend flex-end gap5">
                         <button onClick={() => {setOpen({ type: 'reviews', session: session })}} className={styles.Register}>Voir les avis</button>
                         <button onClick={() => {setOpen({ type: 'check', session: session })}} className={styles.Register}>Voir les participants</button>
+                        <button onClick={() => {setOpen({ type: 'edit', session: session })}} className={styles.Register}>Infos</button>
                     </div>
                 </div>
             </div>

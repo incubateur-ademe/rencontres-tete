@@ -5,7 +5,7 @@ import DynamicQuill from '@/components/DynamicQuill';
 import styles from '@/styles/Admin.module.css'
 import 'react-quill/dist/quill.snow.css';
 
-export default function EditSession({setOpen, id, nom, moduleId}){
+export default function EditSession({setOpen, id, nom, moduleId, page}){
 
     const [alert, setAlert] = useState(null)
     const [notif, setNotif] = useState(null)
@@ -419,7 +419,7 @@ export default function EditSession({setOpen, id, nom, moduleId}){
     return (
         <>
             <div className="mBot30">
-                <span onClick={() => setOpen({ id:moduleId, type:'sessions', nom: nom })} className={styles.Back}>Retour aux sessions</span>
+                <span onClick={() => {page != undefined ? setOpen(null) : setOpen({ id:moduleId, type:'sessions', nom: nom })}} className={styles.Back}>Retour aux sessions</span>
             </div>
             <div className="flex aligncenter space-between w100">
                 <span className={`${styles.Title} w70`}>Modifier la session pour le module :<br /> {nom}</span>

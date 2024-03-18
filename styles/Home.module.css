@@ -69,6 +69,28 @@
     border-bottom: 0px;
 }
 
+.BackTo{
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap:5px;
+    background-color: var(--primaryBack);
+    width:fit-content;
+    color:var(--primary);
+    padding:10px 15px;
+    border-radius: 10px;
+    margin-top:20px;
+}
+
+.BackTo span{
+    font-size: .9rem;
+    transform: translateY(1px);
+}
+
+.BackTo:hover{
+    opacity: .65;
+}
+
 @media(max-width:810px){
     .Home h1{
         font-size:2.5rem

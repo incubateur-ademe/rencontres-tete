@@ -38,7 +38,7 @@ export default function SessionsBack({date, region, title, id, setOpen, setAlert
 
     return (
         <>
-            <div className={styles.SessionBox}>
+            <div className={`${styles.SessionBox} ${status == 'brouillon' ? styles.Brouillon : undefined}`}>
                 <div className="flex aligncenter space-between">
                     <div className="flex aligncenter gap15">
                         <span className={styles.Date}>{startDate}</span>

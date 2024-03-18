@@ -1,10 +1,11 @@
 import prisma from '@/prisma';
 
 export default async function handle(req, res) {
-  const { id, passed, departement, status, region } = req.query;
+  const { id, tri, passed, departement, status, region } = req.query;
 
   let queryOptions = {
     where: {},
+    orderBy: tri ? [{ dateDebut: tri }] : [],
     include: {
       module: true, // Inclure les détails du module lié à chaque session
     },
@@ -18,6 +19,12 @@ export default async function handle(req, res) {
   if (status == 'publish') {
     queryOptions.where.status = {
       not: 'brouillon',
+    };
+  }
+
+  if (status == 'brouillon') {
+    queryOptions.where.status = {
+      not: 'publish',
     };
   }
 

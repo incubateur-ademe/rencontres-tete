@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Notif } from '@/components/Notif'
+import EditSession from '@/components/EditSession'
 import SessionStat from '@/components/SessionStat'
 import Reviews from '@/components/Reviews'
 import Participants from '@/components/Participants'
@@ -51,6 +52,8 @@ export default function Inscriptions(){
     useEffect(() => {
         getSessions(region, module)
     }, [module, region])
+
+    console.log(open)
 
     return (
         <>
@@ -120,6 +123,9 @@ export default function Inscriptions(){
                     )}
                     {open.type == 'reviews' && (
                         <Reviews session={open.session} setOpen={setOpen}  />
+                    )}
+                    {open.type == 'edit' && (
+                        <EditSession setOpen={setOpen} id={open.session.id} nom={open.session.moduleName} moduleId={open.session.moduleId} page={3} />
                     )}
                 </>
             )}

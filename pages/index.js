@@ -32,7 +32,8 @@ export default function Home() {
           <div className="flex aligncenter gap50 toColumn">
             <div className="w50 wm100">
               <h1>Les Rencontres Territoire Engagé Transition écologique</h1>
-              <p>Participez aux Rencontres Territoire Engagé de l'ADEME organisées partout en France et montez en compétence sur les thématiques Climat Air Energie, Economie Circulaire et Approche transversale, pour mettre en œuvre la transition écologique sur votre territoire.</p>
+              <Link className={styles.BackTo} href="https://www.territoiresentransitions.fr/" target="_blank" rel="norefferer"><span className="material-icons">arrow_back</span>Retour vers l’espace Territoires en Transitions</Link>
+              <p>Participez aux Rencontres Territoire Engagé de l'ADEME organisées partout en France et montez en compétence sur les thématiques Climat Air Energie et Economie Circulaire, pour mettre en œuvre la transition écologique sur votre territoire.</p>
               <div className={styles.Searching}>
                 <input name="search" value={search} onChange={(event) => setSearch(event.target.value)} className="input-text mTop30" type="text" placeholder="Rechercher un module par nom..." />
                 {(finds.length > 0 && search.length > 0) && (

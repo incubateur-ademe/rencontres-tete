@@ -68,7 +68,7 @@ export default function Participants({ session, setOpen }){
                             })}
                         </>
                     ) : (
-                        <span>Pas de participant pour cette session.</span>
+                        <div><span>Pas de participant pour cette session.</span></div>                      
                     )}
                 </div>
             </div>

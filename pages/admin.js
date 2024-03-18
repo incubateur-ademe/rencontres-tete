@@ -5,6 +5,7 @@ import { verifyToken } from '@/utils/auth';
 import Modules from '@/components/Modules'
 import Inscriptions from '@/components/Inscriptions'
 import Sessions from '@/components/Sessions'
+import AllSessions from '@/components/AllSessions'
 import styles from '@/styles/Admin.module.css'
 
 export async function getServerSideProps(context) {
@@ -46,17 +47,21 @@ export default function Admin({ user }){
                                 <div className={`w20 ${styles.Sidebar}`}>
                                     <ul>
                                         <li onClick={() => {setPage(0)}}><span className={page == 0 ? styles.active : undefined}>Modules et sessions</span></li>
+                                        <li onClick={() => {setPage(2)}}><span className={page == 2 ? styles.active : undefined}>Toutes les sessions</span></li>
                                         <li onClick={() => {setPage(1)}}><span className={page == 1 ? styles.active : undefined}>Inscriptions</span></li>
-                                        <li onClick={logout}><span className={page == 2 ? styles.active : undefined}>Déconnexion</span></li>
+                                        <li onClick={logout}><span className={page == 3 ? styles.active : undefined}>Déconnexion</span></li>
                                     </ul>
                                 </div>
                                 <div className="w80">
                                     <div className={styles.Dash}>
                                         {page == 0 && (
-                                            <Modules />
+                                            <Modules setPage={setPage} />
                                         )}
                                         {page == 1 && (
                                             <Inscriptions />
+                                        )}
+                                        {page == 2 && (
+                                            <AllSessions page={page} setPage={setPage} />
                                         )}
                                     </div>
                                 </div>

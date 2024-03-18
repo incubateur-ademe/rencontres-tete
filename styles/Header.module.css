@@ -41,6 +41,23 @@
     display: none;
 }
 
+.Login{
+   background:var(--primaryBack);
+   border-radius: 10px;
+   margin-right:20px;
+}
+
+.Login:hover, .Create:hover{
+    text-decoration: none !important;
+    opacity: .65;
+}
+
+.Create{
+    background: var(--primary);
+    border-radius: 10px;
+    color:#FFF !important;
+}
+
 @media(max-width:810px){
     .Menu{
         position: fixed;
@@ -132,5 +149,14 @@
     /* .pf{
         border-top:1px solid var(--primaryBack);
     } */
+
+    .Login{
+        border-radius: 0px;
+    }
+
+    .Create{
+        border-radius: 0px;
+        color:#FFF !important
+;    }
 
 }

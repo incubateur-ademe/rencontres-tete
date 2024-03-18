@@ -43,7 +43,6 @@ export default function Header(){
                             <ul>
                                 <li onClick={() => setActiveMenu(prev => !prev)}><Link href="/">Accueil</Link></li>
                                 <li onClick={() => setActiveMenu(prev => !prev)}><Link href="/rencontres">Les Rencontres</Link></li>
-                                <li><Link href="https://www.territoiresentransitions.fr/" rel="noreferrer" target="_blank">Territoires en Transitions</Link></li>
                                 {user?.id ? (
                                     <>
                                         {user.id == 10 ? (
@@ -54,8 +53,8 @@ export default function Header(){
                                     </>                                    
                                 ) : (
                                     <>
-                                        <li onClick={() => setActiveMenu(prev => !prev)} className={styles.pf}><Link className={styles.LinkFunction} href="/connexion">Se connecter</Link></li>
-                                        <li onClick={() => setActiveMenu(prev => !prev)}><Link className={styles.LinkFunction} href="/inscription">Créer un compte</Link></li>
+                                        <li onClick={() => setActiveMenu(prev => !prev)} className={styles.pf}><Link className={`${styles.LinkFunction} ${styles.Login}`} href="/connexion">Se connecter</Link></li>
+                                        <li onClick={() => setActiveMenu(prev => !prev)}><Link className={`${styles.LinkFunction} ${styles.Create}`} href="/inscription">Créer un compte</Link></li>
                                     </>
                                 )}
 
