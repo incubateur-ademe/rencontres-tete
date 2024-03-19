@@ -445,6 +445,11 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
                                 <option>Occitanie</option>
                                 <option>Pays de la Loire</option>
                                 <option>Provence-Alpes-Côte d'Azur</option>
+                                <option>Guadeloupe</option>
+                                <option>Martinique</option>
+                                <option>Guyane</option>
+                                <option>La Reunion</option>
+                                <option>Mayotte</option>
                             </select>
                             <span className="material-icons">expand_more</span>
                         </div>
@@ -597,6 +602,31 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
                                         <option>13 - Bouches-du-Rhône</option>
                                         <option>83 - Var</option>
                                         <option>84 - Vaucluse</option>
+                                    </>
+                                )}
+                                {datas?.region == "Guadeloupe" && (
+                                    <>
+                                        <option>971 - Guadeloupe</option>
+                                    </>
+                                )}
+                                {datas?.region == "Martinique" && (
+                                    <>
+                                        <option>972 - Martinique</option>
+                                    </>
+                                )}
+                                {datas?.region == "Guyane" && (
+                                    <>
+                                        <option>973 - Guyane</option>
+                                    </>
+                                )}
+                                {datas?.region == "La Reunion" && (
+                                    <>
+                                        <option>974 - La Reunion</option>
+                                    </>
+                                )}
+                                {datas?.region == "Mayotte" && (
+                                    <>
+                                        <option>976 - Mayotte</option>
                                     </>
                                 )}
                             </select>

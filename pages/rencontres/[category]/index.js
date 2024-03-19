@@ -280,7 +280,7 @@ export default function Module({ data }){
                                     <option>971 - Guadeloupe</option>
                                     <option>972 - Martinique</option>
                                     <option>973 - Guyane</option>
-                                    <option>974 - Réunion</option>
+                                    <option>974 - La Reunion</option>
                                     <option>976 - Mayotte</option>
                                 </select>
                                 <span className="material-icons">expand_more</span>

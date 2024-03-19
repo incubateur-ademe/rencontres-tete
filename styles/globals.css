@@ -405,6 +405,20 @@ p{
   display: none;
 }
 
+.map__domtom{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  transform:translateY(-350px);
+  position: absolute;
+}
+
+.map__domtom img{
+  width: 70px;
+  opacity: .5;
+}
+
+
 @media(max-width:1280px){
   p{
     font-size:0.95rem;

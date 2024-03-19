@@ -342,6 +342,11 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                         <li className={filtres.region == 'Île-de-France' ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Île-de-France' } })}><span className="material-icons">room</span>Île-de-France</li>
                                         <li className={filtres.region == 'Pays de la Loire' ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Pays de la Loire' } })}><span className="material-icons">room</span>Pays de la Loire</li>
                                         <li className={filtres.region == "Provence-Alpes-Côte d'Azur" ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "Provence-Alpes-Côte d'Azur" } })}><span className="material-icons">room</span>Provence-Alpes-Côte d'Azur</li>
+                                        <li className={filtres.region == "Guadeloupe" ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "Guadeloupe" } })}><span className="material-icons">room</span>Guadeloupe</li>
+                                        <li className={filtres.region == "Martinique" ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "Martinique" } })}><span className="material-icons">room</span>Martinique</li>
+                                        <li className={filtres.region == "Guyane" ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "Guyane" } })}><span className="material-icons">room</span>Guyane</li>
+                                        <li className={filtres.region == "La Reunion" ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "La Reunion" } })}><span className="material-icons">room</span>La Reunion</li>
+                                        <li className={filtres.region == "Mayotte" ? styles.RegionActive : undefined} onClick={(event) => setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "Mayotte" } })}><span className="material-icons">room</span>Mayotte</li>
                                     </ul>
                                 </div>
                                 <div className="mTop40">
@@ -448,7 +453,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                             <option>971 - Guadeloupe</option>
                                             <option>972 - Martinique</option>
                                             <option>973 - Guyane</option>
-                                            <option>974 - Réunion</option>
+                                            <option>974 - La Reunion</option>
                                             <option>976 - Mayotte</option>
                                         </select>
                                         <span className="material-icons">expand_more</span>
