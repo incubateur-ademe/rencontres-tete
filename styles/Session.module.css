@@ -102,6 +102,10 @@
     text-wrap: balance;
 }
 
+.additional p{
+    margin:10px 0;
+}
+
 .Already span{
     font-size: 1.20rem;
 }

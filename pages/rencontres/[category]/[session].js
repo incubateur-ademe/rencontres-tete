@@ -297,7 +297,7 @@ export default function Session({ data, user }){
                                 <p>Code rencontre : #{data.module.code} - Dernière mise à jour : {formatDate(data.lastUpdate)}</p>
                                 <div className={styles.additional}>
                                     {data.metasSession.explications && (
-                                        <div dangerouslySetInnerHTML={{ __html: convertTextToHTML(data.metasSession.explications) }}>
+                                        <div dangerouslySetInnerHTML={{ __html: data.metasSession.explications }}>
                                         </div>
                                     )}
                                 </div>
