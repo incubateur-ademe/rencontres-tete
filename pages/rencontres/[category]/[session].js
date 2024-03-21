@@ -217,6 +217,22 @@ export default function Session({ data, user }){
 
     }, [])
 
+    function convertTextToHTML(text) {
+        // Échapper le texte pour éviter les injections XSS
+        let escapedText = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      
+        // Remplacer les sauts de ligne par <br />
+        escapedText = escapedText.replace(/\n/g, "<br />");
+      
+        // // Convertir les URL en liens cliquables
+        // const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+        // const htmlWithLinks = escapedText.replace(urlRegex, function(url) {
+        //   return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+        // });
+      
+        return escapedText;
+    }
+
     useEffect(() => {
         const checker = async () => {
             const fetcher = await fetch(`/api/registrations/byUserSession?userId=${user.id}&sessionId=${data.id}`)
@@ -254,7 +270,6 @@ export default function Session({ data, user }){
         }
       }
 
-
       console.log(data)
 
     return (
@@ -280,6 +295,12 @@ export default function Session({ data, user }){
                                 </div>                            
                                 <p>{data.module.description}</p>
                                 <p>Code rencontre : #{data.module.code} - Dernière mise à jour : {formatDate(data.lastUpdate)}</p>
+                                <div className={styles.additional}>
+                                    {data.metasSession.explications && (
+                                        <div dangerouslySetInnerHTML={{ __html: convertTextToHTML(data.metasSession.explications) }}>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                             <div className="w30 wm100">
                                 <div className={styles.Box}>
@@ -329,15 +350,17 @@ export default function Session({ data, user }){
                                             <span className={styles.dValue}>{data.metasSession.infosTransport}</span>
                                         </div>
                                     </div>
-                                    <div className="flex alignstart gap10 mTop20">
-                                        <div className="w10">
-                                            <img src="/medias/icon-infos.webp" alt="icon" className="w70" />
+                                    {data.metasSession.infosComplementaires && (
+                                        <div className="flex alignstart gap10 mTop20">
+                                            <div className="w10">
+                                                <img src="/medias/icon-infos.webp" alt="icon" className="w70" />
+                                            </div>
+                                            <div className="w80">
+                                                <span className={styles.dLabel}>Infos complémentaires :</span>
+                                                <span className={styles.dValue}>{data.metasSession.infosComplementaires}</span>
+                                            </div>
                                         </div>
-                                        <div className="w80">
-                                            <span className={styles.dLabel}>Infos complémentaires :</span>
-                                            <span className={styles.dValue}>{data.metasSession.infosComplementaires}</span>
-                                        </div>
-                                    </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -420,146 +443,150 @@ export default function Session({ data, user }){
                                         )}
                                     </>
                                 )}
-                                <div className={`regbox ${reg == 0 ? styles.Act : undefined}`}>
-                                <span className={styles.Title}>Vos informations personnelles</span>
-                                <div className={styles.Form}>
-                                    <div className="flex gap15 mTop20">
-                                        <div className="select w20">
-                                            <select name="civilite" onChange={handleChange} value={inscription.civilite} className="input-select">
-                                                <option>Civilité</option>
-                                                <option>Monsieur</option>
-                                                <option>Madame</option>
-                                                <option>Ne se prononce pas</option>
-                                            </select>
-                                            <span className="material-icons">expand_more</span>
-                                        </div>
-                                        <input name="nom" onChange={handleChange} value={inscription.nom} type="text" className="input-text w50" placeholder="Nom*" />
-                                        <input name="prenom" onChange={handleChange} value={inscription.prenom} type="text" className="input-text w50" placeholder="Prénom*" />
-                                    </div>
-                                    <div className="flex gap15 mTop20">
-                                        <input type="mail" name="mail" onChange={handleChange} value={inscription.mail} className="input-mail w50" placeholder="Adresse email professionnelle*" />
-                                        <div className="select w50">
-                                            <select name="structure" onChange={handleChange} value={inscription.structure} className="input-select">
-                                                <option value=''>Structure / Organisme</option>
-                                                <option>Collectivité territoriale</option>
-                                                <option>Bureau d'études ou de conseil</option>
-                                            </select>
-                                            <span className="material-icons">expand_more</span>
-                                        </div>
-                                    </div>
-                                    <div className="flex gap15 mTop20">
-                                        <input name="fonction" onChange={handleChange} value={inscription.fonction} type="text" className="input-text w50" placeholder="Poste" />
-                                        <div className="select w50">
-                                            <select name="type_fonction" onChange={handleChange} value={inscription.type_fonction} className="input-select">
-                                                <option value="">Type de poste</option>
-                                                <option>Chargé de mission en collectivité</option>
-                                                <option>Directeur ou chef de service en collectivité</option>
-                                                <option>Élu en collectivité</option>
-                                                <option>Conseiller Territoire Engagé Transition écologique</option>
-                                                <option>Partenaire de la région</option>
-                                            </select>
-                                            <span className="material-icons">expand_more</span>
-                                        </div>
-                                    </div>
-                                    <div className="flex gap15 mTop20 mBot20">
-                                        <input name="ville" onChange={handleChange} value={inscription.ville} type="text" className="input-text w50" placeholder="Ville de résidence" />
-                                        <div className="select w50">
-                                            <select name="region" onChange={handleChange} value={inscription.region} className="input-select">
-                                                <option value=''>Région</option>
-                                                <option>Auvergne-Rhône-Alpes</option>
-                                                <option>Bourgogne-Franche-Comté</option>
-                                                <option>Bretagne</option>
-                                                <option>Centre-Val de Loire</option>
-                                                <option>Corse</option>
-                                                <option>Grand-Est</option>
-                                                <option>Hauts-de-France</option>
-                                                <option>Île-de-France</option>
-                                                <option>Normandie</option>
-                                                <option>Nouvelle-Aquitaine</option>
-                                                <option>Occitanie</option>
-                                                <option>Pays de la Loire</option>
-                                                <option>Provence-Alpes-Côte d'Azur</option>
-                                                <option>Guadeloupe</option>
-                                                <option>Martinique</option>
-                                                <option>Guyane</option>
-                                                <option>La Reunion</option>
-                                                <option>Mayotte</option>
-                                            </select>
-                                            <span className="material-icons">expand_more</span>
-                                        </div>
-                                        <input name="telephone" onChange={handleChange} value={inscription.telephone} type="text" className="input-text" placeholder="Numéro de téléphone" />
-                                    </div>
-                                    <div className="text-right">
-                                        <button onClick={() => nextStep()} className="btn__normal btn__dark">Continuer</button>
-                                    </div>
-                                </div>
-                                </div>
-                                <div className={`regbox ${reg == 1 ? styles.Act : undefined}`}>
-                                <span className={styles.Title}>Collecte de données pour le calcul du bilan carbone</span>
-                                    <div className="select w100 mTop20 mBot20">
-                                        <select name="transport" onChange={handleChange} value={inscription.transport} className="input-select">
-                                            <option value="">Mode de transport principal pour vous rendre à la rencontre :*</option>
-                                            <option>À pied</option>
-                                            <option>En vélo</option>
-                                            <option>Deux-roues (scooter, trottinette)</option>
-                                            <option>Transport en commun (Bus-Tram)</option>
-                                            <option>Train</option>
-                                            <option>Co-Voiturage</option>
-                                            <option>Voiture</option>
-                                            <option>Voiture électrique</option>
-                                            <option>Avion</option>
-                                        </select>
-                                        <span className="material-icons">expand_more</span>
-                                    </div>
-                                    <input type="text" className="input-text" placeholder="Avez-vous des besoins spécifiques pour accéder au lieu de la rencontre ?" />
-                                    <div className="select w100 mTop20 mBot30">
-                                        <select name="hebergement" onChange={handleChange} value={inscription.hebergement} className="input-select">
-                                            <option>Votre type d'hébergement*</option>
-                                            <option>Hôtel</option>
-                                        </select>
-                                        <span className="material-icons">expand_more</span>
-                                    </div>
-                                    <span className={styles.Title}>Informations complémentaires pour la session</span>
-                                    <p>Afin de vous accueillir dans les meilleures conditions, précisez-nous vos besoins (accès PMR, handicaps...). Ces informations resteront confidentielles.</p>                                   
-                                    <textarea className="textarea mBot20" placeholder="Besoins accessibilité..."></textarea>
-                                    <div className="flex gap50 mBot30">
-                                        <div className="w50">
-                                            <span className={styles.Title}>Souhaitez-vous déjeuner sur place {data.metasSession.nombreJours > 1 && 'le jour 1'} ?</span>
-                                            <div className="flex aligncenter gap10 mTop10">
-                                                <input name="repas" onChange={handleChange} value="true" type="radio" /> Oui
-                                                <input name="repas" onChange={handleChange} value="false" type="radio" /> Non
+                                {!check && (
+                                    <>
+                                    <div className={`regbox ${reg == 0 ? styles.Act : undefined}`}>
+                                        <span className={styles.Title}>Vos informations personnelles</span>
+                                        <div className={styles.Form}>
+                                            <div className="flex gap15 mTop20">
+                                                <div className="select w20">
+                                                    <select name="civilite" onChange={handleChange} value={inscription.civilite} className="input-select">
+                                                        <option>Civilité</option>
+                                                        <option>Monsieur</option>
+                                                        <option>Madame</option>
+                                                        <option>Ne se prononce pas</option>
+                                                    </select>
+                                                    <span className="material-icons">expand_more</span>
+                                                </div>
+                                                <input name="nom" onChange={handleChange} value={inscription.nom} type="text" className="input-text w50" placeholder="Nom*" />
+                                                <input name="prenom" onChange={handleChange} value={inscription.prenom} type="text" className="input-text w50" placeholder="Prénom*" />
+                                            </div>
+                                            <div className="flex gap15 mTop20">
+                                                <input type="mail" name="mail" onChange={handleChange} value={inscription.mail} className="input-mail w50" placeholder="Adresse email professionnelle*" />
+                                                <div className="select w50">
+                                                    <select name="structure" onChange={handleChange} value={inscription.structure} className="input-select">
+                                                        <option value=''>Structure / Organisme</option>
+                                                        <option>Collectivité territoriale</option>
+                                                        <option>Bureau d'études ou de conseil</option>
+                                                    </select>
+                                                    <span className="material-icons">expand_more</span>
+                                                </div>
+                                            </div>
+                                            <div className="flex gap15 mTop20">
+                                                <input name="fonction" onChange={handleChange} value={inscription.fonction} type="text" className="input-text w50" placeholder="Poste" />
+                                                <div className="select w50">
+                                                    <select name="type_fonction" onChange={handleChange} value={inscription.type_fonction} className="input-select">
+                                                        <option value="">Type de poste</option>
+                                                        <option>Chargé de mission en collectivité</option>
+                                                        <option>Directeur ou chef de service en collectivité</option>
+                                                        <option>Élu en collectivité</option>
+                                                        <option>Conseiller Territoire Engagé Transition écologique</option>
+                                                        <option>Partenaire de la région</option>
+                                                    </select>
+                                                    <span className="material-icons">expand_more</span>
+                                                </div>
+                                            </div>
+                                            <div className="flex gap15 mTop20 mBot20">
+                                                <input name="ville" onChange={handleChange} value={inscription.ville} type="text" className="input-text w50" placeholder="Ville de résidence" />
+                                                <div className="select w50">
+                                                    <select name="region" onChange={handleChange} value={inscription.region} className="input-select">
+                                                        <option value=''>Région</option>
+                                                        <option>Auvergne-Rhône-Alpes</option>
+                                                        <option>Bourgogne-Franche-Comté</option>
+                                                        <option>Bretagne</option>
+                                                        <option>Centre-Val de Loire</option>
+                                                        <option>Corse</option>
+                                                        <option>Grand-Est</option>
+                                                        <option>Hauts-de-France</option>
+                                                        <option>Île-de-France</option>
+                                                        <option>Normandie</option>
+                                                        <option>Nouvelle-Aquitaine</option>
+                                                        <option>Occitanie</option>
+                                                        <option>Pays de la Loire</option>
+                                                        <option>Provence-Alpes-Côte d'Azur</option>
+                                                        <option>Guadeloupe</option>
+                                                        <option>Martinique</option>
+                                                        <option>Guyane</option>
+                                                        <option>La Reunion</option>
+                                                        <option>Mayotte</option>
+                                                    </select>
+                                                    <span className="material-icons">expand_more</span>
+                                                </div>
+                                                <input name="telephone" onChange={handleChange} value={inscription.telephone} type="text" className="input-text" placeholder="Numéro de téléphone" />
+                                            </div>
+                                            <div className="text-right">
+                                                <button onClick={() => nextStep()} className="btn__normal btn__dark">Continuer</button>
                                             </div>
                                         </div>
-                                        <div className={`w50 ${data.metasSession.nombreJours > 1 ? undefined : 'disnone'}`}>
-                                            <span className={styles.Title}>Souhaitez-vous déjeuner sur place {data.metasSession.nombreJours > 1 && 'le jour 2'} ?</span>
-                                            <div className="flex aligncenter gap10 mTop10">
-                                                <input name="repas2" onChange={handleChange} value="true" type="radio" /> Oui
-                                                <input name="repas2" onChange={handleChange} value="false" type="radio" /> Non
+                                        </div>
+                                        <div className={`regbox ${reg == 1 ? styles.Act : undefined}`}>
+                                        <span className={styles.Title}>Collecte de données pour le calcul de l'empreinte environnementale de l'évènement</span>
+                                            <div className="select w100 mTop20 mBot20">
+                                                <select name="transport" onChange={handleChange} value={inscription.transport} className="input-select">
+                                                    <option value="">Mode de transport principal pour vous rendre à la rencontre :*</option>
+                                                    <option>À pied</option>
+                                                    <option>En vélo</option>
+                                                    <option>Deux-roues (scooter, trottinette)</option>
+                                                    <option>Transport en commun (Bus-Tram)</option>
+                                                    <option>Train</option>
+                                                    <option>Co-Voiturage</option>
+                                                    <option>Voiture</option>
+                                                    <option>Voiture électrique</option>
+                                                    <option>Avion</option>
+                                                </select>
+                                                <span className="material-icons">expand_more</span>
                                             </div>
-                                        </div>
-                                        {/* <div className="w50">
-                                            <span className={styles.Title}>Souhaitez-vous covoiturer ?</span>
-                                            <div className="flex aligncenter gap10 mTop10">
-                                                <input name="covoit" onChange={handleChange} value="true" type="radio" /> Oui
-                                                <input name="covoit" onChange={handleChange} value="false" type="radio" /> Non
+                                            <div className="select w100 mTop20 mBot30">
+                                                <select name="hebergement" onChange={handleChange} value={inscription.hebergement} className="input-select">
+                                                    <option>Votre type d'hébergement*</option>
+                                                    <option>Hôtel</option>
+                                                    <option>Airbnb</option>
+                                                    <option>Chez des amis</option>
+                                                    <option>Chez moi</option>
+                                                </select>
+                                                <span className="material-icons">expand_more</span>
                                             </div>
-                                        </div> */}
-                                    </div>
-                                    <div className="mBot30">
-                                        <div className="checkbox">
-                                            <input name="rgpd" onChange={handleChange} value={inscription.rgpd} type="checkbox" /> <span>J’ai lu et j’accepte que l’ADEME collecte mes données afin de garantir la bonne utilisation des services offerts*et reconnais avoir pris connaissance de sa politique de protection des données personnelles.</span>
+                                            <span className={styles.Title}>Besoins spécifiques complémentaires</span>                           
+                                            <textarea className="textarea mBot20 mTop20" placeholder="Afin de vous accueillir dans les meilleures conditions, précisez-nous vos besoins (accès PMR, handicaps...). Ces informations resteront confidentielles."></textarea>
+                                            <div className="flex gap50 mBot30">
+                                                <div className="w50">
+                                                    <span className={styles.Title}>Souhaitez-vous déjeuner sur place {data.metasSession.nombreJours > 1 && 'le jour 1'} ?</span>
+                                                    <div className="flex aligncenter gap10 mTop10">
+                                                        <input name="repas" onChange={handleChange} value="true" type="radio" /> Oui
+                                                        <input name="repas" onChange={handleChange} value="false" type="radio" /> Non
+                                                    </div>
+                                                </div>
+                                                <div className={`w50 ${data.metasSession.nombreJours > 1 ? undefined : 'disnone'}`}>
+                                                    <span className={styles.Title}>Souhaitez-vous déjeuner sur place {data.metasSession.nombreJours > 1 && 'le jour 2'} ?</span>
+                                                    <div className="flex aligncenter gap10 mTop10">
+                                                        <input name="repas2" onChange={handleChange} value="true" type="radio" /> Oui
+                                                        <input name="repas2" onChange={handleChange} value="false" type="radio" /> Non
+                                                    </div>
+                                                </div>
+                                                {/* <div className="w50">
+                                                    <span className={styles.Title}>Souhaitez-vous covoiturer ?</span>
+                                                    <div className="flex aligncenter gap10 mTop10">
+                                                        <input name="covoit" onChange={handleChange} value="true" type="radio" /> Oui
+                                                        <input name="covoit" onChange={handleChange} value="false" type="radio" /> Non
+                                                    </div>
+                                                </div> */}
+                                            </div>
+                                            <div className="mBot30">
+                                                <div className="checkbox">
+                                                    <input name="rgpd" onChange={handleChange} value={inscription.rgpd} type="checkbox" /> <span>J’ai lu et j’accepte que l’ADEME collecte mes données afin de garantir la bonne utilisation des services offerts et reconnais avoir pris connaissance de sa politique de protection des données personnelles.</span>
+                                                </div>
+                                            </div>
+                                            {(!check && !inscriptionPasse && dispo) && (
+                                                <div className="flex gap10 alignright">
+                                                    <button onClick={() => setReg(0)} className="btn__normal btn__light">Retour</button>
+                                                    <button onClick={register} className="btn__normal btn__dark">
+                                                        Valider mon inscription
+                                                    </button>
+                                                </div>
+                                            )}
                                         </div>
-                                    </div>
-                                    {(!check && !inscriptionPasse && dispo) && (
-                                        <div className="flex gap10 alignright">
-                                            <button onClick={() => setReg(0)} className="btn__normal btn__light">Retour</button>
-                                            <button onClick={register} className="btn__normal btn__dark">
-                                                Valider mon inscription
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-                               
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>

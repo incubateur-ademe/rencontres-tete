@@ -418,6 +418,15 @@ p{
   opacity: .5;
 }
 
+.boxed-small{
+  max-width: 1180px;
+  margin-inline: auto;
+}
+
+.paddline{
+  padding:0 3%;
+  box-sizing: border-box;
+}
 
 @media(max-width:1280px){
   p{

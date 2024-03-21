@@ -120,6 +120,7 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
     const getDatas = async () => {
         const fetcher = await fetch(`/api/sessions/${id}`)
         const json = await fetcher.json()
+        setEditContent(json[0].metasSession.explications)
         setDatas(prevDatas => ({
             ...prevDatas,
             ...json[0],
@@ -290,7 +291,7 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
             nombrePlaces: datas.metasSession.nombrePlaces,
             nombreJours: datas.metasSession.nombreJours,
             infosTransport: datas.metasSession.infosTransport,
-            explications: datas.metasSession.explications,
+            explications: editContent,
             dateLimiteInscription: datas.metasSession.dateLimiteInscription,
             infosComplementaires: datas.metasSession.infosComplementaires,
             intervenants: datas.metasSession.intervenants,
@@ -413,6 +414,18 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
             return []; // Retournez un tableau vide en cas d'erreur
         }
     }
+
+    useEffect(() => {
+        setDatas(prev => {
+            return {
+                ...prev,
+                metasSession: {
+                    ...prev.metasSession,
+                    explications: editContent
+                }
+            };
+        });
+    }, [editContent]);
     
 
 
@@ -802,7 +815,10 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
 
                 <span className={styles.Subtitle}>Ressources à lire avant la rencontre</span>
                 <div>
-                    <textarea onChange={handleChange} name="metasSession.explications" value={datas?.metasSession.explications} className="textarea mTop20" placeholder="Explications facultatives..."></textarea>
+                    <div className={`mTop20 ${styles.Quill}`}>
+                        <DynamicQuill theme="snow" value={editContent} onChange={setEditContent} />
+                    </div>
+                    {/* <textarea onChange={handleChange} name="metasSession.explications" value={datas?.metasSession.explications} className="textarea mTop20" placeholder="Explications facultatives..."></textarea> */}
                     <div className="flex wrap gap20 mTop20">
                         <div className="w48 text-left">
                             <div>

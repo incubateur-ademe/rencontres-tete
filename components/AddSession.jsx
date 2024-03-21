@@ -278,7 +278,7 @@ export default function AddSession({setOpen, id, nom}){
             dateLimiteInscription: datas.metasSession.dateLimiteInscription,
             infosComplementaires: datas.metasSession.infosComplementaires,
             intervenants: datas.metasSession.intervenants,
-            explications: datas.metasSession.explications,
+            explications: editContent,
             nombreJours: datas.metasSession.nombreJours,
             programmeSession: datas.metasSession.programmeSession,
             urlsPDF: [...datas.metasSession.urlsPDF, ...uploadedUrlsPDF]
@@ -393,6 +393,18 @@ export default function AddSession({setOpen, id, nom}){
     useEffect(() => {
         importProgramme()
     }, [])
+
+    useEffect(() => {
+        setDatas(prev => {
+            return {
+                ...prev,
+                metasSession: {
+                    ...prev.metasSession,
+                    explications: editContent
+                }
+            };
+        });
+    }, [editContent]);
 
     return (
         <>
@@ -781,7 +793,10 @@ export default function AddSession({setOpen, id, nom}){
 
                 <span className={styles.Subtitle}>Ressources à lire avant la rencontre</span>
                 <div>
-                    <textarea onChange={handleChange} name="metasSession.explications" value={datas?.metasSession.explications} className="textarea mTop20" placeholder="Explications facultatives..."></textarea>
+                    <div className={`mTop20 ${styles.Quill}`}>
+                        <DynamicQuill theme="snow" value={editContent} onChange={setEditContent} />
+                    </div>
+                    {/* <textarea onChange={handleChange} name="metasSession.explications" value={datas?.metasSession.explications} className="textarea mTop20" placeholder="Explications facultatives..."></textarea> */}
                     <div className="flex wrap gap20 mTop20">
                         <div className="w48 text-left">
                         <div>

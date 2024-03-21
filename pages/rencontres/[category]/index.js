@@ -59,6 +59,21 @@ export default function Module({ data }){
         getSessions(departement)
     }, [departement])
 
+    useEffect(() => {
+        // Sélectionnez le conteneur qui a le contenu injecté
+        const contentDiv = document.querySelector(`.${styles.Content}`);
+        if (contentDiv) {
+          // Trouvez tous les <p> dans ce conteneur
+          contentDiv.querySelectorAll('p').forEach((p) => {
+            // Vérifiez si le <p> contient un <br>
+            if (p.innerHTML.includes('<br')) {
+              // Ajoutez la classe spécifique si un <br> est trouvé
+              p.classList.add(styles.pWithBr);
+            }
+          });
+        }
+      }, [data.metasModule.resumeProgramme]);
+
     return (
         <>
             <Head>
@@ -75,19 +90,20 @@ export default function Module({ data }){
                                 <span>{data.nom}</span>
                             </p>
                             <span className={styles.Tag}>{data.pilier}</span>
-                            <p>{data.description}</p>
+                            <p className={styles.Intro}><strong>{data.description}</strong></p>
                             <p>Code rencontre : #{data.code} - Dernière mise à jour : {lastUpdate}</p>
                         </div>
-                        <div className="flex toColumn gap50 mTop50">
+                        <div className="flex aligncenter toColumn gap80 mTop50 paddline">
                             <div className="w70 wm100">                                
-                                <div className={styles.Content} dangerouslySetInnerHTML={{ __html: data.metasModule.resumeProgramme }}>
-
-                                </div>
+                            <div
+                                className={styles.Content}
+                                dangerouslySetInnerHTML={{ __html: data.metasModule.resumeProgramme }}
+                                ></div>
                             </div>
                             <div className="w30 wm100">
-                                <div className="text-center">
+                                {/* <div className="text-center">
                                     <img src="/medias/infos-cles.webp" alt="infos clés" className="w50" />
-                                </div>
+                                </div> */}
                                 <div className={styles.Infos}>
                                     <span>Informations clés</span>
                                     <div className={styles.InfosContent}>

@@ -14,6 +14,15 @@
     color:var(--primary)
 }
 
+.pWithBr{
+    margin:0px !important;
+    display: none;
+}
+
+.Intro strong{
+    font-weight: 500;
+}
+
 .Tag{
     background:var(--primary);
     color:#FFF;
@@ -38,6 +47,10 @@
 
 .Breadcrump span{
     font-weight: 500;
+}
+
+.Content{
+    text-align: justify;
 }
 
 .Content h3{
@@ -65,7 +78,7 @@
 }
 
 .InfosContent{
-    padding:30px 50px;
+    padding:30px 25px;
 }
 
 .InfosLabel{
