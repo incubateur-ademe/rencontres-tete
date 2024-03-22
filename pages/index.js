@@ -132,7 +132,7 @@ export default function Home() {
                 pic="transversal.webp"
                 title="Approche transversale" 
                 description="Découvrez l’ensemble des rencontres programmées sur l’approche transversale de la transition écologique" 
-                link="/rencontres?pilier=Transversal"
+                link="/rencontres?pilier=Approche transversale"
               />
             </div>
           </div>
