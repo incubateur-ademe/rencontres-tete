@@ -198,7 +198,7 @@ export default function RencontreDetail({id, setOpen, userId, user}){
                 <>
                     <span className={styles.Subtitle}>Ressources :</span>
                     {data?.metasSession?.explications && (
-                        <p>{data?.metasSession?.explications}</p>
+                        <div dangerouslySetInnerHTML={{ __html: data.metasSession.explications }}></div>
                     )}
                     <ul className={styles.Ressources}>
                         {data?.metasSession?.urlsPDF.map((item, index) => {
