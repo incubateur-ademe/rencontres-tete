@@ -44,6 +44,7 @@ export async function getServerSideProps(context) {
 
     // Récupérer les modules depuis la base de données ou une API externe
     let base = await prisma.module.findMany(queryOptions);
+    base = base.filter(module => module.sessions.length > 0);
 
     // Transformer les dates en chaînes ISO si nécessaire
     base = base.map(module => ({
