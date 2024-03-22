@@ -174,7 +174,7 @@ export default function Home() {
           <ModuleBox 
               pilier="Economie Circulaire"
               title="Prévention et gestion des déchêts" 
-              link="/rencontres/?thematique=Prévention et gestion des d'échêts"
+              link="/rencontres/?thematique=Prévention et gestion des déchêts"
           />
           </div>
           <div className="w24 wm47">
