@@ -43,7 +43,7 @@ export default function Participant({ data, setActions }){
                     <div className="w22"><span className={styles.Label}>Transport</span>{data.transport}</div>
                     <div className="w22"><span className={styles.Label}>Repas</span>{data.repas ? 'Oui' : 'Non'}</div>
                     <div className="w30"><span className={styles.Label}>Besoin spécifique</span>{data.besoins != null ? data.besoins : '-'}</div>
-                    <div className="w20"><span className={styles.Label}>Covoiturage</span>{data.covoit ? 'Oui' : 'Non'}</div>
+                    <div className="w20"><span className={styles.Label}>Présence</span>{data.days ? 'Complète' : '1/2'}</div>
                 </div>
             </div>
 

@@ -22,6 +22,7 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
           lieuRencontre: '',
           nombrePlaces: '',
           nombreJours: '',
+          optionjour: false,
           infosTransport: '',
           dateLimiteInscription: '',
           infosComplementaires: '',
@@ -64,7 +65,8 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
                 nom: '',
                 fonction: '',
                 structure: '',
-                email: ''
+                email: '',
+                linkedin: ''
             });
     
             return updatedDatas;
@@ -290,6 +292,7 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
             lieuRencontre: datas.metasSession.lieuRencontre,
             nombrePlaces: datas.metasSession.nombrePlaces,
             nombreJours: datas.metasSession.nombreJours,
+            optionjour: datas.metasSession.optionjour,
             infosTransport: datas.metasSession.infosTransport,
             explications: editContent,
             dateLimiteInscription: datas.metasSession.dateLimiteInscription,
@@ -298,6 +301,8 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
             programmeSession: datas.metasSession.programmeSession,
             urlsPDF: [...datas.metasSession.urlsPDF, ...uploadedUrlsPDF],
         };
+
+        console.log(metasSessionData)
 
         if (sessionData.moduleId != '' 
         && sessionData.departement != '' 
@@ -367,6 +372,7 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
         }));
     }
     
+    console.log("datas : ", datas)
     
 
     function deleteFile(index, type) {
@@ -415,6 +421,18 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
         }
     }
 
+    const handleChangeOption = (event) => {
+        setDatas(prev => {
+            return {
+                ...prev,
+                metasSession: {
+                    ...prev.metasSession,
+                    optionjour: event.target.checked
+                }
+            };
+        });
+    };
+
     useEffect(() => {
         setDatas(prev => {
             return {
@@ -426,7 +444,8 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
             };
         });
     }, [editContent]);
-    
+
+    console.log("optionjour => ", datas.metasSession.optionjour)
 
 
     return (
@@ -725,6 +744,10 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
                     </div>
                 </div>
                 <div>
+                <div className="mTop20">
+                    <input type="checkbox" checked={datas?.metasSession.optionjour} onChange={handleChangeOption} name="metasSession.optionjour" />&nbsp;&nbsp;
+                    <span>Possibilité de s'inscrire à un seul jour sur les deux</span>                   
+                </div>
                 <div className="w100 mTop20">
                     <div className="flex aligncenter gap5 w50">
                         <div className="w5">
@@ -752,6 +775,9 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
                                         </div>         
                                         <div className="flex mTop20 w100">
                                             <input type="mail" onChange={handleChange} data-index={index} name="metasSession.intervenants.email" value={intervenant.email} className="input-text" placeholder="Adresse e-mail de l'intervenant" />
+                                        </div>  
+                                        <div className="flex mTop20 w100">
+                                            <input type="text" onChange={handleChange} data-index={index} name="metasSession.intervenants.linkedin" value={intervenant.linkedin} className="input-text" placeholder="Linkedin" />
                                         </div>  
                                     </div>
                                     <div className="w10 flex aligncenter flex-end gap5">

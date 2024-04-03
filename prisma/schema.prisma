@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,108 +8,110 @@ datasource db {
 }
 
 model Module {
-  id              Int           @id @default(autoincrement())
-  datePublication DateTime?
-  lastUpdate      DateTime?
+  id              Int          @id @default(autoincrement())
   nom             String
-  code            String
-  slug            String        @unique
+  description     String?
   pilier          String
   thematique      String
-  description     String?
-  sessions        Session[]
+  datePublication DateTime?
+  lastUpdate      DateTime?
+  slug            String       @unique
+  code            String
   metasModule     MetasModule?
+  sessions        Session[]
 }
 
 model MetasModule {
-  id               Int      @id @default(autoincrement())
-  resumeProgramme  String   
-  objectifs        String   
-  duree            String  
-  publicCible      String   
-  tarif            String    
-  programmeModule  Json     
-  moduleId         Int      @unique
-  module           Module   @relation(fields: [moduleId], references: [id])
+  id              Int    @id @default(autoincrement())
+  resumeProgramme String
+  objectifs       String
+  duree           String
+  publicCible     String
+  tarif           String
+  programmeModule Json
+  moduleId        Int    @unique
+  module          Module @relation(fields: [moduleId], references: [id])
 }
 
 model User {
-  id         Int       @id @default(autoincrement())
-  nom        String
-  prenom     String
-  region     String?
-  mail       String    @unique
-  telephone  String?
-  motDePasse String
-  fonction   String
-  organisation String?
-  newsletter Boolean
-  sessions   Session[] @relation("UserSessions")
-  registrations  Registration[]
-  reviews   Review[]
+  id            Int            @id @default(autoincrement())
+  nom           String
+  prenom        String
+  mail          String         @unique
+  telephone     String?
+  motDePasse    String
+  fonction      String
+  newsletter    Boolean
+  region        String?
+  organisation  String?
+  registrations Registration[]
+  reviews       Review[]
+  sessions      Session[]      @relation("UserSessions")
 }
 
 model Session {
-  id             Int          @id @default(autoincrement())
-  datePublication DateTime?
-  lastUpdate      DateTime?
-  region          String
-  departement     String
+  id              Int            @id @default(autoincrement())
   dateDebut       DateTime
   moduleId        Int
-  module          Module       @relation(fields: [moduleId], references: [id])
-  metasSession    MetasSession?
+  departement     String
+  region          String
+  datePublication DateTime?
+  lastUpdate      DateTime?
   status          String
-  users           User[]       @relation("UserSessions")
+  metasSession    MetasSession?
   registrations   Registration[]
-  reviews   Review[]
+  reviews         Review[]
+  module          Module         @relation(fields: [moduleId], references: [id])
+  users           User[]         @relation("UserSessions")
 }
 
 model MetasSession {
   id                    Int      @id @default(autoincrement())
-  dateHoraires          String  
+  dateHoraires          String
   lieuRencontre         String
   nombrePlaces          String
-  nombreJours           String?
   infosTransport        String
   dateLimiteInscription String
-  infosComplementaires  String  
-  explications          String?
-  intervenants          Json     
-  programmeSession      Json     
-  urlsPDF               Json     
+  infosComplementaires  String
+  intervenants          Json
+  programmeSession      Json
+  urlsPDF               Json
   sessionId             Int      @unique
+  nombreJours           String?
+  explications          String?
+  optionjour            Boolean?
   session               Session  @relation(fields: [sessionId], references: [id])
 }
 
 model Registration {
-  id             Int      @id @default(autoincrement())
-  civilite       String
-  nom            String
-  prenom         String
-  mail           String
-  structure      String
-  fonction       String?
-  typeFonction   String
-  ville          String?
-  region         String
-  telephone      String?
-  transport      String?
-  besoins        String?
-  repas          Boolean
-  repas2         Boolean?
-  userId         Int
-  sessionId      Int
-  user           User     @relation(fields: [userId], references: [id])
-  session        Session  @relation(fields: [sessionId], references: [id])
+  id           Int      @id @default(autoincrement())
+  civilite     String
+  nom          String
+  prenom       String
+  mail         String
+  structure    String
+  fonction     String?
+  typeFonction String
+  ville        String?
+  telephone    String?
+  transport    String?
+  besoins      String?
+  repas        Boolean
+  userId       Int
+  sessionId    Int
+  region       String
+  repas2       Boolean?
+  days         Boolean?
+  session      Session  @relation(fields: [sessionId], references: [id])
+  user         User     @relation(fields: [userId], references: [id])
 }
 
 model Review {
-  id          Int      @id @default(autoincrement())
-  note        Int      // Supposons que la note soit un entier. Ajustez selon vos besoins
+  id          Int     @id @default(autoincrement())
+  note        Int
   commentaire String
   userId      Int
   sessionId   Int
-  user        User     @relation(fields: [userId], references: [id])
-  session     Session  @relation(fields: [sessionId], references: [id])
+  session     Session @relation(fields: [sessionId], references: [id])
+  user        User    @relation(fields: [userId], references: [id])
 }

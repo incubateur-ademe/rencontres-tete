@@ -63,6 +63,9 @@ export default function Session({ data, user }){
     const [inscriptionPasse, setInscriptionPasse] = useState(false)
     const [dispo, setDispo] = useState(true)
     const [reg, setReg] = useState(0)
+    const [nbInscrits, setNbInscrits] = useState(0)
+    const [other, setOther] = useState(false)
+    const [otherSave, setOtherSave] = useState('')
 
     const [inscription, setInscription] = useState({
         userId: '',
@@ -79,9 +82,11 @@ export default function Session({ data, user }){
         transport: '',
         besoins: '',
         hebergement: '',
+        days: true,
         repas: false,
         repas2: false,
-        rgpd: false
+        rgpd: false,
+        rgpd2: false
     })
 
     const handleChange = (event) => {
@@ -100,7 +105,7 @@ export default function Session({ data, user }){
             mail: inscription.mail,
             nom: inscription.nom,
             prenom: inscription.prenom,
-            structure: inscription.structure,
+            structure: inscription.structure == 'Autre' ? otherSave : inscription.structure,
             fonction: inscription.fonction,
             typeFonction: inscription.type_fonction,
             ville: inscription.ville,
@@ -108,7 +113,8 @@ export default function Session({ data, user }){
             telephone: inscription.telephone,
             transport: inscription.transport,
             repas: inscription.repas,
-            repas2: inscription.repas2
+            repas2: inscription.repas2,
+            days: inscription.days
         }
 
         const registering = await fetch('/api/registrations/add', {
@@ -149,14 +155,16 @@ export default function Session({ data, user }){
             hebergement: '',
             repas: false,
             repas2: false,
-            rgpd: false
+            days: true,
+            rgpd: false,
+            rgpd2: false
         })
     }
 
     const register = async () => {
-        const { civilite, nom, prenom, mail, structure, fonction, type_fonction, ville, region, telephone, transport, besoins, hebergement, repas, rgpd } = inscription
+        const { civilite, nom, prenom, mail, structure, fonction, type_fonction, ville, region, telephone, transport, besoins, hebergement, repas, rgpd, rgpd2 } = inscription
         if(civilite && nom && prenom && mail && structure && fonction && type_fonction && region && transport && hebergement){
-            if(rgpd){
+            if(rgpd && rgpd2){
                 if(mail.includes('@') && mail.includes('.')){
                     setAlert({
                         icon: 'warning',
@@ -174,7 +182,7 @@ export default function Session({ data, user }){
             }
             else{
                 setNotif({
-                    text: 'Veuillez accepter les conditions d\'utilisation',
+                    text: 'Veuillez accepter les conditions',
                     icon: 'close'
                 })                
             }
@@ -245,6 +253,17 @@ export default function Session({ data, user }){
     }, [data, alert])
 
     useEffect(() => {
+        const checker = async () => {
+            const fetcher = await fetch(`/api/registrations/bySession?sessionId=${data.id}`)
+            const json = await fetcher.json()
+            if(json.length > 0){
+                setNbInscrits(json.length)
+            }
+        }
+        checker()
+    }, [data, alert])
+
+    useEffect(() => {
         const maintenant = new Date();
         const dateLimite = new Date(data.metasSession.dateLimiteInscription);
 
@@ -270,7 +289,30 @@ export default function Session({ data, user }){
         }
       }
 
-      console.log(data)
+      const transformLinks = (html) => {
+        // Cette regex trouve les liens et capture l'URL
+        const urlRegex = /<a href="(http[s]?:\/\/.*?)".*?>(.*?)<\/a>/g;
+        
+        return html.replace(urlRegex, (match, url, linkText) => {
+          // Remplacez "Cliquez ici" par le texte que vous voulez montrer comme lien
+          const clickableText = "Lien externe";
+          
+          // Retourne le HTML modifié avec le texte cliquable qui garde l'URL comme destination
+          return `<a href="${url}">${clickableText}</a>`;
+        });
+      };
+      
+    const transformedHTML = transformLinks(data.metasSession.explications);
+
+    useEffect(() => {
+        if(inscription.structure == 'Autre'){
+            setOther(true)
+        }
+        else{
+            setOther(false)
+            setOtherSave('')
+        }
+    }, [inscription.structure])
 
     return (
         <>
@@ -297,7 +339,7 @@ export default function Session({ data, user }){
                                 <p>Code rencontre : #{data.module.code} - Dernière mise à jour : {formatDate(data.lastUpdate)}</p>
                                 <div className={styles.additional}>
                                     {data.metasSession.explications && (
-                                        <div dangerouslySetInnerHTML={{ __html: data.metasSession.explications }}>
+                                        <div dangerouslySetInnerHTML={{ __html: transformedHTML }}>
                                         </div>
                                     )}
                                 </div>
@@ -339,6 +381,15 @@ export default function Session({ data, user }){
                                         <div className="w80">
                                             <span className={styles.dLabel}>Nombre de places :</span>
                                             <span className={styles.dValue}>{data.metasSession.nombrePlaces}</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex alignstart gap10 mTop20">
+                                        <div className="w10">
+                                            <img src="/medias/icon-places.webp" alt="icon" className="w70" />
+                                        </div>
+                                        <div className="w80">
+                                            <span className={styles.dLabel}>Nombre de places restantes :</span>
+                                            <span className={styles.dValue}>{data.metasSession.nombrePlaces-nbInscrits}</span>
                                         </div>
                                     </div>
                                     <div className="flex alignstart gap10 mTop20">
@@ -402,6 +453,7 @@ export default function Session({ data, user }){
                                                 img="/medias/user.webp"
                                                 name={inter.nom}
                                                 description={`${inter.fonction} - ${inter.structure}`}
+                                                linkedin={inter.linkedin}
                                             />
                                         </div>
                                     )
@@ -467,11 +519,16 @@ export default function Session({ data, user }){
                                                     <select name="structure" onChange={handleChange} value={inscription.structure} className="input-select">
                                                         <option value=''>Structure / Organisme</option>
                                                         <option>Collectivité territoriale</option>
-                                                        <option>Bureau d'études ou de conseil</option>
+                                                        <option>Autre</option>
                                                     </select>
                                                     <span className="material-icons">expand_more</span>
                                                 </div>
                                             </div>
+                                            {other && (
+                                                <div className="mTop20">
+                                                    <input type="text" onChange={(event) => setOtherSave(event.target.value)} value={otherSave} className="input-text" placeholder="Indiquez le type de structure" />
+                                                </div>
+                                            )}
                                             <div className="flex gap15 mTop20">
                                                 <input name="fonction" onChange={handleChange} value={inscription.fonction} type="text" className="input-text w50" placeholder="Poste" />
                                                 <div className="select w50">
@@ -549,6 +606,15 @@ export default function Session({ data, user }){
                                             <span className={styles.Title}>Besoins spécifiques complémentaires</span>                           
                                             <textarea className="textarea mBot20 mTop20" placeholder="Afin de vous accueillir dans les meilleures conditions, précisez-nous vos besoins (accès PMR, handicaps...). Ces informations resteront confidentielles."></textarea>
                                             <div className="flex gap50 mBot30">
+                                                <div className={`w50 ${data.metasSession.optionjour == true ? undefined : 'disnone'}`}>
+                                                    <span className={styles.Title}>Participerez vous les deux jours ?</span>
+                                                    <div className="flex aligncenter gap10 mTop10">
+                                                        <input name="days" checked={inscription.days} onChange={handleChange} value="true" type="radio" /> Oui
+                                                        <input name="days" onChange={handleChange} value="false" type="radio" /> Non
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="flex gap50 mBot30">
                                                 <div className="w50">
                                                     <span className={styles.Title}>Souhaitez-vous déjeuner sur place {data.metasSession.nombreJours > 1 && 'le jour 1'} ?</span>
                                                     <div className="flex aligncenter gap10 mTop10">
@@ -556,24 +622,22 @@ export default function Session({ data, user }){
                                                         <input name="repas" onChange={handleChange} value="false" type="radio" /> Non
                                                     </div>
                                                 </div>
-                                                <div className={`w50 ${data.metasSession.nombreJours > 1 ? undefined : 'disnone'}`}>
+                                                <div className={`w50 ${(data.metasSession.nombreJours > 1 && inscription.days) ? undefined : 'disnone'}`}>
                                                     <span className={styles.Title}>Souhaitez-vous déjeuner sur place {data.metasSession.nombreJours > 1 && 'le jour 2'} ?</span>
                                                     <div className="flex aligncenter gap10 mTop10">
                                                         <input name="repas2" onChange={handleChange} value="true" type="radio" /> Oui
                                                         <input name="repas2" onChange={handleChange} value="false" type="radio" /> Non
                                                     </div>
                                                 </div>
-                                                {/* <div className="w50">
-                                                    <span className={styles.Title}>Souhaitez-vous covoiturer ?</span>
-                                                    <div className="flex aligncenter gap10 mTop10">
-                                                        <input name="covoit" onChange={handleChange} value="true" type="radio" /> Oui
-                                                        <input name="covoit" onChange={handleChange} value="false" type="radio" /> Non
-                                                    </div>
-                                                </div> */}
+                                            </div>
+                                            <div className="mBot10">
+                                                <div className="checkbox">
+                                                    <input name="rgpd" onChange={handleChange} value={inscription.rgpd} type="checkbox" /> <span>J’ai lu et j’accepte que l’ADEME collecte mes données afin de garantir la bonne utilisation des services offerts et reconnais avoir pris connaissance de sa politique de protection des données personnelles.</span>
+                                                </div>
                                             </div>
                                             <div className="mBot30">
                                                 <div className="checkbox">
-                                                    <input name="rgpd" onChange={handleChange} value={inscription.rgpd} type="checkbox" /> <span>J’ai lu et j’accepte que l’ADEME collecte mes données afin de garantir la bonne utilisation des services offerts et reconnais avoir pris connaissance de sa politique de protection des données personnelles.</span>
+                                                    <input name="rgpd2" onChange={handleChange} value={inscription.rgpd2} type="checkbox" /> <span>En m'inscrivant, je m'engage à participer à cette rencontre</span>
                                                 </div>
                                             </div>
                                             {(!check && !inscriptionPasse && dispo) && (

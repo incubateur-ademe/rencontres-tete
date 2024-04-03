@@ -11,6 +11,7 @@ export default function EditModule({setOpen, id}){
     const [notif, setNotif] = useState(null)
     const [indexToDelete, setIndexToDelete] = useState(null);
     const [editContent, setEditContent] = useState('');
+    const [editObjectifs, setEditObjectifs] = useState('');
     const [datas, setDatas] = useState({
         nom: '',
         description: '',
@@ -75,6 +76,7 @@ export default function EditModule({setOpen, id}){
         const json = await fetcher.json()
         setDatas(json[0])
         setEditContent(json[0].metasModule.resumeProgramme)
+        setEditObjectifs(json[0].metasModule.objectifs)
     }
 
     const handleChange = (event) => {
@@ -241,6 +243,18 @@ export default function EditModule({setOpen, id}){
         });
     }, [editContent]);
 
+    useEffect(() => {
+        setDatas(prev => {
+            return {
+                ...prev,
+                metasModule: {
+                    ...prev.metasModule,
+                    objectifs: editObjectifs
+                }
+            };
+        });
+    }, [editObjectifs]);
+
     return (
         <>
             <div className="mBot30">
@@ -266,8 +280,9 @@ export default function EditModule({setOpen, id}){
                     <DynamicQuill theme="snow" value={editContent} onChange={setEditContent} />
                 </div>
                 <span className={styles.Subtitle}>Informations pratiques</span>
-                <div className="flex mTop20">
-                    <textarea className="textarea" onChange={handleChange} name="metasModule.objectifs" value={datas?.metasModule.objectifs} placeholder="Objectifs du module"></textarea>
+                <div className={`mTop20 ${styles.Quill}`}>
+                    <span>Objectifs du module</span><br /><br />
+                    <DynamicQuill theme="snow" value={editObjectifs} onChange={setEditObjectifs} />
                 </div>
                 <div className="flex gap20 mTop20">
                     <input type="text" onChange={handleChange} name="metasModule.duree" value={datas?.metasModule.duree} className="input-text w33" placeholder="Durée du module" />

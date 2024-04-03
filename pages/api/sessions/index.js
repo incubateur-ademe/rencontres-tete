@@ -1,7 +1,7 @@
 import prisma from '@/prisma';
 
 export default async function handle(req, res) {
-  const { id, tri, passed, departement, status, region } = req.query;
+  const { id, tri, passed, departement, status, region, module } = req.query;
 
   let queryOptions = {
     where: {},
@@ -14,7 +14,6 @@ export default async function handle(req, res) {
   if (id) {
     queryOptions.where.moduleId = parseInt(id);
   }
-
 
   if (status == 'publish') {
     queryOptions.where.status = {

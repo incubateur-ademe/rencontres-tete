@@ -108,7 +108,7 @@ export default function Module({ data }){
                                     <span>Informations clés</span>
                                     <div className={styles.InfosContent}>
                                         <span className={styles.InfosLabel}>Objectifs :</span>
-                                        <span className={styles.InfosValue}>{data.metasModule.objectifs}</span>
+                                        <span className={styles.InfosValue} dangerouslySetInnerHTML={{ __html: data.metasModule.objectifs}}></span>
                                         <div className="flex aligncenter gap5">
                                             <span className={styles.InfosLabel}>Durée :</span>
                                             <span className={styles.InfosValue}>{data.metasModule.duree}</span>
@@ -122,7 +122,7 @@ export default function Module({ data }){
                                             <span className={styles.InfosValue}>{data.metasModule.tarif}</span>
                                         </div>
                                         <div className="text-center mTop15">
-                                            <Link href="#sessions" className="btn__normal btn__dark w100">Les prochaines sessions</Link>
+                                            <Link href="#sessions" className="btn__normal btn__orange w100">S'inscrire à une session</Link>
                                         </div>
                                     </div>
                                 </div>

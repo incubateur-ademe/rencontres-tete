@@ -25,6 +25,7 @@ export default function AddSession({setOpen, id, nom}){
           explications: '',
           dateLimiteInscription: '',
           nombreJours: '',
+          optionjour: false,
           infosComplementaires: '',
           intervenants: [],
           programmeSession: [],
@@ -63,7 +64,8 @@ export default function AddSession({setOpen, id, nom}){
                 nom: '',
                 fonction: '',
                 structure: '',
-                email: ''
+                email: '',
+                linkedin: ''
             });
     
             return updatedDatas;
@@ -280,6 +282,7 @@ export default function AddSession({setOpen, id, nom}){
             intervenants: datas.metasSession.intervenants,
             explications: editContent,
             nombreJours: datas.metasSession.nombreJours,
+            optionjour: datas.metasSession.optionjour,
             programmeSession: datas.metasSession.programmeSession,
             urlsPDF: [...datas.metasSession.urlsPDF, ...uploadedUrlsPDF]
         }
@@ -405,6 +408,18 @@ export default function AddSession({setOpen, id, nom}){
             };
         });
     }, [editContent]);
+
+    const handleChangeOption = (event) => {
+        setDatas(prev => {
+            return {
+                ...prev,
+                metasSession: {
+                    ...prev.metasSession,
+                    optionjour: event.target.checked
+                }
+            };
+        });
+    };
 
     return (
         <>
@@ -703,6 +718,10 @@ export default function AddSession({setOpen, id, nom}){
                     </div>
                 </div>
                 <div>
+                <div className="mTop20">
+                    <input type="checkbox" checked={datas?.metasSession.optionjour} onChange={handleChangeOption} name="metasSession.optionjour" />&nbsp;&nbsp;
+                    <span>Possibilité de s'inscrire à un seul jour sur les deux</span>                   
+                </div>
                 <div className="w100 mTop20">
                     <div className="flex aligncenter gap5 w50">
                         <div className="w5">
@@ -730,6 +749,9 @@ export default function AddSession({setOpen, id, nom}){
                                         </div>         
                                         <div className="flex mTop20 w100">
                                             <input type="mail" onChange={handleChange} data-index={index} name="metasSession.intervenants.email" value={intervenant.email} className="input-text" placeholder="Adresse e-mail de l'intervenant" />
+                                        </div>  
+                                        <div className="flex mTop20 w100">
+                                            <input type="text" onChange={handleChange} data-index={index} name="metasSession.intervenants.linkedin" value={intervenant.linkedin} className="input-text" placeholder="Linkedin" />
                                         </div>  
                                     </div>
                                     <div className="w10 flex aligncenter flex-end gap5">

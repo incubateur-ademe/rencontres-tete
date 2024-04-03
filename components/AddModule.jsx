@@ -11,6 +11,7 @@ export default function AddModule({setOpen}){
     const [notif, setNotif] = useState(null)
     const [indexToDelete, setIndexToDelete] = useState(null);
     const [editContent, setEditContent] = useState('');
+    const [editObjectifs, setEditObjectifs] = useState('');
     const [datas, setDatas] = useState({
         nom: '',
         description: '',
@@ -75,6 +76,7 @@ export default function AddModule({setOpen}){
         const json = await fetcher.json()
         setDatas(json[0])
         setEditContent(json[0].metasModule.resumeProgramme)
+        setEditObjectifs(json[0].metasModule.objectifs)
     }
 
     const handleChange = (event) => {
@@ -234,6 +236,18 @@ export default function AddModule({setOpen}){
         });
     }, [editContent]);
 
+    useEffect(() => {
+        setDatas(prev => {
+            return {
+                ...prev,
+                metasModule: {
+                    ...prev.metasModule,
+                    objectifs: editObjectifs
+                }
+            };
+        });
+    }, [editObjectifs]);
+
 
     return (
         <>
@@ -260,8 +274,9 @@ export default function AddModule({setOpen}){
                     <DynamicQuill theme="snow" value={editContent} onChange={setEditContent} />
                 </div>
                 <span className={styles.Subtitle}>Informations pratiques</span>
-                <div className="flex mTop20">
-                    <textarea className="textarea" onChange={handleChange} name="metasModule.objectifs" value={datas?.metasModule.objectifs} placeholder="Objectifs du module"></textarea>
+                <div className="mTop20">
+                    <span>Objectifs du module</span><br /><br />
+                    <DynamicQuill theme="snow" value={editObjectifs} onChange={setEditObjectifs} />
                 </div>
                 <div className="flex gap20 mTop20">
                     <input type="text" onChange={handleChange} name="metasModule.duree" value={datas?.metasModule.duree} className="input-text w33" placeholder="Durée du module" />

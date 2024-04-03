@@ -23,7 +23,7 @@ export default function SessionStat({ session, setOpen }){
 
     useEffect(() => {
         getParticipants()
-    }, [])
+    }, [session])
 
     const maintenant = new Date();
     const dateDebut = new Date(session.dateDebut);
@@ -35,7 +35,7 @@ export default function SessionStat({ session, setOpen }){
             <div className={`${styles.SessionStat} mBot10`}>
                 <div className="flex aligncenter space-between">
                     <div className="flex aligncenter gap15">
-                        <span className={styles.Date}>{formatDate(session.dateDebut)} - <span className={styles.Restant}>{joursRestants} jour{joursRestants > 1 ? 's': ''} restant{joursRestants > 1 ? 's': ''}</span></span>
+                        <span className={styles.Date}>{formatDate(session.dateDebut)} - <span className={styles.Restant}>{joursRestants >= 0 ? `${joursRestants} jour${joursRestants > 1 ? 's': ''} restant${joursRestants > 1 ? 's': ''}` : 'Terminée'}</span></span>
                         <span className={styles.Region}>{session.region}</span>
                     </div>
                     <span className={styles.LastMaj}>{number} participant{number > 1 && 's'}</span>

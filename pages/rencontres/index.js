@@ -245,7 +245,11 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                 </div>
                                 ) : (
                                     <div className="mTop20">
-                                        <span>Aucun module de disponible actuellement.</span>
+                                        {(filtres.region && filtres.thematique) ? (
+                                            <span>Aucune rencontre disponible avec les filtres activés. <Link href={`/rencontres?region=${filtres.region}`}>Voir les rencontres programmées dans ma région</Link></span>
+                                        ) : (
+                                            <span>Aucun module de disponible actuellement.</span>
+                                        )}                                       
                                     </div>                                    
                                 )}
                             </div>          

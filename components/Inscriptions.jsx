@@ -15,7 +15,7 @@ export default function Inscriptions(){
     const [modules, setModules] = useState([])
     const [sessions, setSessions] = useState([])
     const [region, setRegion] = useState('')
-    const [module, setModule] = useState('')
+    const [module, setModule] = useState(0)
 
     const getModules = async () => {
         let url = '/api/modules/'
@@ -36,7 +36,7 @@ export default function Inscriptions(){
         }
 
         if(module){
-            url += 'module='+encodeURIComponent(module)+'&'
+            url += 'id='+encodeURIComponent(module)+'&'
         }
 
         const fetcher = await fetch(url)
@@ -53,7 +53,6 @@ export default function Inscriptions(){
         getSessions(region, module)
     }, [module, region])
 
-    console.log(open)
 
     return (
         <>
@@ -67,7 +66,7 @@ export default function Inscriptions(){
                             <select name="module" value={module} onChange={(event) => {setModule(event.target.value)}} className="input-select">
                                 <option value="">Filtrer par module</option>
                                 {modules.map((module, index) => {
-                                    return <option key={index}>{module.nom}</option>
+                                    return <option value={module.id} key={index}>{module.nom}</option>
                                 })}
                             </select>
                             <span className="material-icons">expand_more</span>
@@ -95,7 +94,7 @@ export default function Inscriptions(){
                     <span className={styles.Subtitle}>
                         {(region || module) ? (
                             <>
-                                Le sessions {module && 'du module '+module+' '}{region && 'dans la région '+region} :
+                                Toutes les sessions suivants les filtres :
                             </>
                         ) : (
                             <>Les 10 dernières sessions publiées</>
