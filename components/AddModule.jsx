@@ -179,27 +179,35 @@ export default function AddModule({setOpen}){
 
     const saveModifs = async () => {
 
-        const moduleData = {
+        const formData = new FormData();
+
+        // Sérialisez `moduleData` et `metasModuleData` en JSON et ajoutez-les au formData
+        formData.append('moduleData', JSON.stringify({
           nom: datas.nom,
           description: datas.description,
           pilier: datas.pilier,
-          pilier2: datas.pilier2 ? datas.pilier2 : null,
+          pilier2: datas.pilier2 ? datas.pilier2 : undefined,
           thematique: datas.thematique,
           code: datas.code
-        };
-
-        const metasModuleData = {
+        }));
+    
+        formData.append('metasModuleData', JSON.stringify({
           duree: datas.metasModule.duree,
           objectifs: datas.metasModule.objectifs,
           publicCible: datas.metasModule.publicCible,
           resumeProgramme: datas.metasModule.resumeProgramme,
           tarif: datas.metasModule.tarif,
           programmeModule: datas.metasModule.programmeModule
-        };
+        }));
+    
+        // Ajoutez l'image au formData si elle a été sélectionnée
+        if (selectedImage) {
+            formData.append('visuel', selectedImage);
+        }
 
-        if(moduleData.nom != '' 
-        // && moduleData.description != '' 
-        && moduleData.code != '' 
+        if(datas.nom != '' 
+        // && datas.description != '' 
+        && datas.code != '' 
         // && moduleData.pilier != '' 
         // && moduleData.thematique != '' 
         // && metasModuleData.duree != ''
@@ -209,11 +217,28 @@ export default function AddModule({setOpen}){
         // && metasModuleData.resumeProgramme != ''
         // && metasModuleData.programmeModule.length > 0
         ){
-            const add = await addModule(moduleData, metasModuleData)
-            setNotif({
-                text: 'Module ajouté !',
-                icon: 'done'
-            })
+            try {
+                const add = await fetch('/api/modules/add', {
+                  method: 'POST',
+                  body: formData,
+                });
+              
+                if (!add.ok) {
+                  const errorMessage = await add.text();
+                  throw new Error(`Erreur HTTP: ${add.status} - ${errorMessage}`);
+                }
+              
+                const updateResponse = await add.json();
+                setNotif({
+                    text: 'Le module a été créé !',
+                    icon: 'done'
+                });
+            } catch (error) {
+                setNotif({
+                    text: `Erreur lors de l'enregistrement : ${error.message}`,
+                    icon: 'close'
+                });
+            }
             setOpen(null)
         }
         else{
@@ -248,6 +273,34 @@ export default function AddModule({setOpen}){
         });
     }, [editObjectifs]);
 
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [previewUrl, setPreviewUrl] = useState(null);
+
+    const handleImageChange = (event) => {
+        if (event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+            setSelectedImage(file); // Mettez à jour l'état avec le fichier sélectionné si vous l'utilisez
+    
+            // Créer une URL pour le fichier sélectionné
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                // Lorsque la lecture est terminée, stockez l'URL résultante dans l'état previewUrl
+                setPreviewUrl(reader.result);
+            };
+            reader.readAsDataURL(file); // Démarrez la lecture du fichier
+        }
+    };
+
+    const removeMedia = () => {
+        console.log("remove")
+        setSelectedImage(null)
+        setPreviewUrl(null)
+        setDatas(prev => {
+            return {...prev, visuel: null}
+        })
+    }
+    
+
 
     return (
         <>
@@ -257,6 +310,27 @@ export default function AddModule({setOpen}){
             <div className="flex aligncenter space-between w100 gap40">
                 <span className={`${styles.Title} w70`}>Ajouter un nouveau module</span>
                 <button onClick={saveModifs} className="btn__normal btn__dark">Enregistrer le module</button>
+            </div>
+            <span className={styles.Subtitle}>Ajouter un visuel (optionnel)</span>
+            <div className="flex gap20 mTop20">
+                <input className={styles.visuel} type="file" id="visu" name="visuel" accept="image/*" onChange={handleImageChange} />
+                {
+                    (datas.visuel || previewUrl ) ? (
+                        <label className={styles.visubox} htmlFor="visu">
+                            {previewUrl ? (
+                                <img src={previewUrl} alt="Aperçu" />
+                            ) : datas.visuel ? (
+                                <img src={datas.visuel} alt="Visuel actuel du module" />
+                            ) : null}
+                            <span className="material-icons">photo_library</span>
+                            <button onClick={removeMedia} className={styles.remover}><span className="material-icons">close</span></button>
+                        </label>
+                    ) : (
+                        <label className={styles.visubox} htmlFor="visu">
+                            <span className="material-icons">add_photo_alternate</span>
+                        </label>                        
+                    )
+                }
             </div>
             <div>
                 <span className={styles.Subtitle}>Informations principales</span>

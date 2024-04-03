@@ -93,14 +93,17 @@ export default function Module({ data }){
                             <p className={styles.Intro}><strong>{data.description}</strong></p>
                             <p>Code rencontre : #{data.code} - Dernière mise à jour : {lastUpdate}</p>
                         </div>
-                        <div className="flex aligncenter toColumn gap80 mTop50 paddline">
-                            <div className="w70 wm100">                                
+                        <div className="flex toColumn gap80 mTop50 paddline">
+                            <div className="w70 wm100">   
+                            {data.visuel != null && (
+                                <img src={data.visuel} alt="visuel" className={styles.visu} />
+                            )}                             
                             <div
                                 className={styles.Content}
                                 dangerouslySetInnerHTML={{ __html: data.metasModule.resumeProgramme }}
                                 ></div>
                             </div>
-                            <div className="w30 wm100">
+                            <div className={`w30 wm100 ${styles.sticky}`}>
                                 {/* <div className="text-center">
                                     <img src="/medias/infos-cles.webp" alt="infos clés" className="w50" />
                                 </div> */}

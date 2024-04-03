@@ -49,9 +49,9 @@
     font-weight: 500;
 }
 
-.Content{
+/* .Content{
     text-align: justify;
-}
+} */
 
 .Content h3{
     font-weight: 600;
@@ -159,3 +159,11 @@
     width:20px;
     margin-top:10px;
 }
+
+.visu{
+    width: 100%;
+    aspect-ratio: 16/8;
+    object-fit: cover;
+    border-radius: 18px;
+}
+

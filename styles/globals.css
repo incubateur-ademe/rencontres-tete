@@ -423,14 +423,14 @@ p{
   margin-inline: auto;
 }
 
-.paddline{
-  padding:0 3%;
-  box-sizing: border-box;
-}
-
 @media(max-width:1280px){
   p{
     font-size:0.95rem;
+  }
+
+  .paddline{
+      padding:0 3%;
+      box-sizing: border-box;
   }
 
   .boxed{

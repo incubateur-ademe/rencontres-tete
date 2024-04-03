@@ -17,6 +17,7 @@ model Module {
   lastUpdate      DateTime?
   slug            String       @unique
   code            String
+  visuel          String?
   metasModule     MetasModule?
   sessions        Session[]
 }

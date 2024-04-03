@@ -298,7 +298,7 @@ export default function Session({ data, user }){
           const clickableText = "Lien externe";
           
           // Retourne le HTML modifié avec le texte cliquable qui garde l'URL comme destination
-          return `<a href="${url}">${clickableText}</a>`;
+          return `<a target="_blank" rel="noreferer noopener" href="${url}">${clickableText}</a>`;
         });
       };
       
