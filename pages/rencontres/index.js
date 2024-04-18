@@ -245,10 +245,12 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                 </div>
                                 ) : (
                                     <div className="mTop20">
-                                        {(filtres.region && filtres.thematique) ? (
-                                            <span>Aucune rencontre disponible avec les filtres activés. <Link href={`/rencontres?region=${filtres.region}`}>Voir les rencontres programmées dans ma région</Link></span>
+                                        {(filtres.region && filtres.pilier) ? (
+                                            <span>Aucune rencontre disponible avec les filtres activés dans cette région.<br /> <a className={styles.nothing} onClick={() => setFiltres(prev => { return { ...prev, pilier: '' } })}>Voir les rencontres programmées dans ma région</a></span>
+                                        ) : filtres.region ? (
+                                            <span>Aucune rencontre disponible avec les filtres activés.<br /> Sélectionnez une autre région pour voir les prochaines rencontres programmées.</span>
                                         ) : (
-                                            <span>Aucun module de disponible actuellement.</span>
+                                            <span>Aucune rencontre disponible avec les filtres activés.<br /> Sélectionnez une autre thématique pour voir les prochaines rencontres programmées.</span>
                                         )}                                       
                                     </div>                                    
                                 )}

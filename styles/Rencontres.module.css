@@ -13,6 +13,17 @@
     margin-bottom:15px;
 }
 
+.nothing{
+    color:var(--primary);
+    display: inline-block;
+    background-color: var(--primaryBack);
+    padding:10px 20px;
+    margin-top: 10px;
+    border-radius: 10px;
+    font-weight: 300;
+    cursor:pointer;
+}
+
 .Regions{
     list-style:none;
     gap:10px;
