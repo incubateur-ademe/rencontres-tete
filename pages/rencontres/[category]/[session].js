@@ -314,6 +314,25 @@ export default function Session({ data, user }){
         }
     }, [inscription.structure])
 
+    function groupByDay(programmes) {
+        const groups = {};
+    
+        programmes.forEach(programme => {
+            const dayMatch = programme.horaires.match(/Jour (\d+)/);
+            if (dayMatch) {
+                const day = dayMatch[1];
+                if (!groups[day]) {
+                    groups[day] = [];
+                }
+                groups[day].push(programme);
+            }
+        });
+    
+        return groups;
+    }
+
+    const groupedData = groupByDay(data.metasSession.programmeSession);
+
     return (
         <>
             <Head>
@@ -420,19 +439,23 @@ export default function Session({ data, user }){
                 <div className="">
                     <div className="boxed">
                         <h2>Découvrez le programme de la session</h2>
-                        {data.metasSession.intervenants.length > 0 ? (
+                        {data.metasSession.programmeSession.length > 0 ? (
                         <div className="flex wrap gap25 mTop40">
-                            {data.metasSession.programmeSession.map((programme, index) => {
-                                return (
-                                    <div key={index} className="w23 wm100">
-                                        <ProgItem
-                                            type={programme.horaires}
-                                            title={programme.titre}
-                                            description={programme.description}
-                                        />
+                            {Object.keys(groupedData).map(day => (
+                                <div key={day}>
+                                    <div className="flex wrap gap25">
+                                        {groupedData[day].map((programme, index) => (
+                                            <div key={index} className="w23 wm100">
+                                                <ProgItem
+                                                    type={programme.horaires}
+                                                    title={programme.titre}
+                                                    description={programme.description}
+                                                />
+                                            </div>
+                                        ))}
                                     </div>
-                                )
-                            })}
+                                </div>
+                            ))}
                         </div>
                         ):(
                             <div className="mTop40">

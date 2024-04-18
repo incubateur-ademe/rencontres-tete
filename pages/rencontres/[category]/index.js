@@ -74,6 +74,25 @@ export default function Module({ data }){
         }
       }, [data.metasModule.resumeProgramme]);
 
+    function groupByDay(programmes) {
+        const groups = {};
+    
+        programmes.forEach(programme => {
+            const dayMatch = programme.horaires.match(/Jour (\d+)/);
+            if (dayMatch) {
+                const day = dayMatch[1];
+                if (!groups[day]) {
+                    groups[day] = [];
+                }
+                groups[day].push(programme);
+            }
+        });
+    
+        return groups;
+    }
+
+    const groupedData = groupByDay(data.metasModule.programmeModule);
+
     return (
         <>
             <Head>
@@ -177,18 +196,22 @@ export default function Module({ data }){
             <div className="section blued">
                 <div className="boxed">
                     <h2>Découvrez le programme de la rencontre</h2>
-                    <div className="flex wrap gap25 mTop40">
-                        {data.metasModule.programmeModule.map((programme, index) => {
-                            return (
-                                <div key={index} className="w23 wm100">
-                                    <ProgItem
-                                        type={programme.horaires}
-                                        title={programme.titre}
-                                        description={programme.description}
-                                    />
+                        <div className="flex wrap gap25 mTop40">
+                        {Object.keys(groupedData).map(day => (
+                            <div key={day}>
+                                <div className="flex wrap gap25">
+                                    {groupedData[day].map((programme, index) => (
+                                        <div key={index} className="w23 wm100">
+                                            <ProgItem
+                                                type={programme.horaires}
+                                                title={programme.titre}
+                                                description={programme.description}
+                                            />
+                                        </div>
+                                    ))}
                                 </div>
-                            )
-                        })}
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
