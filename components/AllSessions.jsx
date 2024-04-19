@@ -17,8 +17,9 @@ export default function Modules({setPage, page}){
     const [currentTri, setCurrentTri] = useState('desc')
     const [currentStatus, setCurrentStatus] = useState('')
     const [sessions, setSessions] = useState([])
+    const [currentRegion, setCurrentRegion] = useState('')
 
-    const getSessions = async (tri, status) => {
+    const getSessions = async (tri, status, region) => {
         let url = '/api/sessions/'
         if (tri) {
             url += `?tri=${encodeURIComponent(tri)}`;
@@ -26,6 +27,9 @@ export default function Modules({setPage, page}){
 
         if (status) {
             url += `&status=${encodeURIComponent(status)}`;
+        }
+        if(region) {
+            url += `&region=${encodeURIComponent(region)}`
         }
         const fetcher = await fetch(url)
         const json = await fetcher.json()
@@ -39,15 +43,25 @@ export default function Modules({setPage, page}){
     const trierSessions = async (event) => {
         const tri = event.target.value;
         const status = currentStatus
+        const region = currentRegion
         setCurrentTri(tri)
-        getSessions(tri, status);
+        getSessions(tri, status, region);
     }
 
     const trierStatus = async (event) => {
         const status = event.target.value;
         const tri = currentTri
+        const region = currentRegion
         setCurrentStatus(status)
-        getSessions(tri, status);
+        getSessions(tri, status, region);
+    }
+
+    const trierRegion = async (event) => {
+        const region = event.target.value;
+        const tri = currentTri
+        const status = currentStatus
+        setCurrentRegion(region)
+        getSessions(tri, status, region);
     }
 
     const deleteSession = async (sessionId) => {
@@ -82,7 +96,7 @@ export default function Modules({setPage, page}){
                         <span className={`${styles.Title} w65`}>Toutes les sessions</span>
                     </div>
                     <div className="flex gap20 mTop30">
-                        <div className="select w50">
+                        <div className="select w20">
                             <select onChange={trierStatus} className="input-select">
                                 <option value="">Filtrer par statut</option>
                                 <option value="brouillon">Brouillons</option>
@@ -90,7 +104,31 @@ export default function Modules({setPage, page}){
                             </select>
                             <span className="material-icons">expand_more</span>
                         </div>
-                        <div className="select w50">
+                        <div className="select w40">
+                            <select onChange={trierRegion} className="input-select">
+                                <option value="">Filtrer par région</option>
+                                <option>Auvergne-Rhône-Alpes</option>
+                                <option>Bourgogne-Franche-Comté</option>
+                                <option>Bretagne</option>
+                                <option>Centre-Val de Loire</option>
+                                <option>Corse</option>
+                                <option>Grand-Est</option>
+                                <option>Hauts-de-France</option>
+                                <option>Île-de-France</option>
+                                <option>Normandie</option>
+                                <option>Nouvelle-Aquitaine</option>
+                                <option>Occitanie</option>
+                                <option>Pays de la Loire</option>
+                                <option>Provence-Alpes-Côte d'Azur</option>
+                                <option>Guadeloupe</option>
+                                <option>Martinique</option>
+                                <option>Guyane</option>
+                                <option>La Reunion</option>
+                                <option>Mayotte</option>
+                            </select>
+                            <span className="material-icons">expand_more</span>
+                        </div>
+                        <div className="select w40">
                             <select onChange={trierSessions} className="input-select">
                                 <option value="desc">Trier par date (ordre décroissant)</option>
                                 <option value="asc">Trier par date (ordre croissant)</option>
