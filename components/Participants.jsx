@@ -8,6 +8,8 @@ export default function Participants({ session, setOpen }){
     const [number, setNumber] = useState(0)
     const [users, setUsers] = useState([])
     const [actions, setActions] = useState(0)
+    const [fonctions, setFonctions] = useState([])
+    const [selectedFonction, setSelectedFonction] = useState('') 
 
     const exportToExcel = (jsonArray, sheetName) => {
         const workbook = XLSX.utils.book_new();
@@ -40,12 +42,19 @@ export default function Participants({ session, setOpen }){
     const getParticipants = async () => {
         const fetcher = await fetch(`/api/registrations/bySession?sessionId=${session.id}`)
         const json = await fetcher.json()
+        console.log(json)
         if(json.length > 0){
             setNumber(json.length)
             setUsers(json)
+            updateFonctions(json)
         }
     }
-    
+
+    const updateFonctions = (participants) => {
+        const allFonctions = participants.map(participant => participant.fonction);
+        const uniqueFonctions = Array.from(new Set(allFonctions));
+        setFonctions(uniqueFonctions);
+    }
 
     useEffect(() => {
         getParticipants()
@@ -55,21 +64,23 @@ export default function Participants({ session, setOpen }){
         <>
             <div className={styles.Participants}>
                 <span onClick={() => setOpen(null)} className={styles.Back}>Retour aux sessions</span>
-                <div className="flex aligncenter space-between w100 gap40 mTop30">
-                    <span className={`${styles.Title} w65`}>{session.moduleName} <br />Inscriptions à la session du {formatDate(session.dateDebut)}, {session.region}</span>
-                    <span className={styles.Number}><span className="material-icons">people</span><strong>{number} participant{number > 1 && 's'}</strong></span>                
-                </div>
                 <div className="mTop30">
-                    <button className="btn__normal btn__dark mBot30" onClick={() => exportToExcel(users, `Participants Session ${session.region}`)}>Exporter la liste des participants</button>
-                    {users.length > 0 ? (
-                        <>
-                            {users.map((user, index) => {
-                                return <Participant key={index} data={user} setActions={setActions} />
-                            })}
-                        </>
-                    ) : (
-                        <div><span>Pas de participant pour cette session.</span></div>                      
-                    )}
+                    <div className="flex gap20 aligncenter mBot30">                   
+                    <div className="select w40">
+                        <select value={selectedFonction} onChange={(e) => setSelectedFonction(e.target.value)} className="input-select">
+                            <option value="">Toutes les fonctions</option>
+                            {fonctions.map((fonction, index) => (
+                                <option key={index} value={fonction}>{fonction}</option>
+                            ))}
+                        </select>
+                        <span className="material-icons">expand_more</span>
+                    </div>
+                    <button className="btn__normal btn__dark" onClick={() => exportToExcel(users, `Participants Session ${session.region}`)}>Exporter la liste des participants</button>
+                    </div>
+                    {users.filter(user => selectedFonction === '' || user.fonction === selectedFonction).map((user, index) => {
+                        return <Participant key={index} data={user} setActions={setActions} />
+                    })}
+                    {users.length === 0 && <div><span>Pas de participant pour cette session.</span></div>}
                 </div>
             </div>
         </>

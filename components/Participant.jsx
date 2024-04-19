@@ -36,8 +36,8 @@ export default function Participant({ data, setActions }){
                     <div className="w22"><span className={styles.Label}>Prénom</span>{data.prenom}</div>
                     <div className="w30"><span className={styles.Label}>E-mail</span>{data.mail}</div>
                     <div className="w20"><span className={styles.Label}>Téléphone</span>{data.telephone ? data.telephone : '-'}</div>
-                    <div className="w22"><span className={styles.Label}>Structure</span>INNOV'events</div>
-                    <div className="w22"><span className={styles.Label}>Fonction</span>{data.structure}</div>
+                    <div className="w22"><span className={styles.Label}>Structure</span>{data.structure}</div>
+                    <div className="w22"><span className={styles.Label}>Fonction</span>{data.fonction}</div>
                     <div className="w30"><span className={styles.Label}>Type de fonction</span>{data.typeFonction}</div>
                     <div className="w20"><span className={styles.Label}>Ville</span>{data.ville ? data.ville : '-'}</div>
                     <div className="w22"><span className={styles.Label}>Transport</span>{data.transport}</div>
