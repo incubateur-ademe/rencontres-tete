@@ -60,9 +60,15 @@ export default function Participants({ session, setOpen }){
     }
 
     const updateFonctions = (participants) => {
-        const allFonctions = participants.map(participant => participant.fonction);
-        const uniqueFonctions = Array.from(new Set(allFonctions));
-        setFonctions(uniqueFonctions);
+        let fonctionCounts = {};
+        participants.forEach(participant => {
+            fonctionCounts[participant.fonction] = (fonctionCounts[participant.fonction] || 0) + 1;
+        });
+        const fonctionArray = Object.keys(fonctionCounts).map(fonction => ({
+            fonction: fonction,
+            count: fonctionCounts[fonction]
+        }));
+        setFonctions(fonctionArray);
     }
 
     const sendMail = async () => {
@@ -106,8 +112,8 @@ export default function Participants({ session, setOpen }){
                     <div className="select w40">
                         <select value={selectedFonction} onChange={(e) => setSelectedFonction(e.target.value)} className="input-select">
                             <option value="">Toutes les fonctions</option>
-                            {fonctions.map((fonction, index) => (
-                                <option key={index} value={fonction}>{fonction}</option>
+                            {fonctions.map((fonctionObj, index) => (
+                                <option key={index} value={fonctionObj.fonction}>{fonctionObj.fonction} ({fonctionObj.count})</option>
                             ))}
                         </select>
                         <span className="material-icons">expand_more</span>
