@@ -82,6 +82,7 @@ export default function Session({ data, user }){
         transport: '',
         besoins: '',
         hebergement: '',
+        regime: '',
         days: true,
         repas: false,
         repas2: false,
@@ -114,6 +115,7 @@ export default function Session({ data, user }){
             transport: inscription.transport,
             repas: inscription.repas,
             repas2: inscription.repas2,
+            regime: inscription.regime,
             days: inscription.days
         }
 
@@ -153,6 +155,7 @@ export default function Session({ data, user }){
             transport: '',
             besoins: '',
             hebergement: '',
+            regime: '',
             repas: false,
             repas2: false,
             days: true,
@@ -198,7 +201,7 @@ export default function Session({ data, user }){
     const getAvailable = async () => {
         const fetcher = await fetch(`/api/registrations/bySession?sessionId=${data.id}`)
         const json = await fetcher.json()
-        const max = parseInt(data.metasSession.nombrePlaces)
+        const max = parseInt(data.metasSession.nombrePlaces) || 0
         if(json.length >= max){
             setDispo(false)
         }
@@ -325,11 +328,18 @@ export default function Session({ data, user }){
                     groups[day] = [];
                 }
                 groups[day].push(programme);
+            } else {
+                const unspecified = "Non spécifié";
+                if (!groups[unspecified]) {
+                    groups[unspecified] = [];
+                }
+                groups[unspecified].push(programme);
             }
         });
     
         return groups;
     }
+    
 
     const groupedData = groupByDay(data.metasSession.programmeSession);
 
@@ -355,7 +365,7 @@ export default function Session({ data, user }){
                                     <span className={styles.Tag}>{data.module.nom}</span>
                                 </div>                            
                                 <p>{data.module.description}</p>
-                                <p>Code rencontre : #{data.module.code} - Dernière mise à jour : {formatDate(data.lastUpdate)}</p>
+                                {/* <p>Code rencontre : #{data.module.code} - Dernière mise à jour : {formatDate(data.lastUpdate)}</p> */}
                                 <div className={styles.additional}>
                                     {data.metasSession.explications && (
                                         <div dangerouslySetInnerHTML={{ __html: transformedHTML }}>
@@ -440,24 +450,24 @@ export default function Session({ data, user }){
                     <div className="boxed">
                         <h2>Découvrez le programme de la session</h2>
                         {data.metasSession.programmeSession.length > 0 ? (
-                        <div className="flex wrap gap25 mTop40">
-                            {Object.keys(groupedData).map(day => (
-                                <div key={day}>
-                                    <div className="flex wrap gap25">
-                                        {groupedData[day].map((programme, index) => (
-                                            <div key={index} className="w23 wm100">
-                                                <ProgItem
-                                                    type={programme.horaires}
-                                                    title={programme.titre}
-                                                    description={programme.description}
-                                                />
-                                            </div>
-                                        ))}
+                            <div className="flex wrap gap25 mTop40">
+                                {Object.keys(groupedData).map(day => (
+                                    <div key={day}>
+                                        <div className="flex wrap gap25">
+                                            {groupedData[day].map((programme, index) => (
+                                                <div key={index} className="w23 wm100">
+                                                    <ProgItem
+                                                        type={programme.horaires}
+                                                        title={programme.titre}
+                                                        description={programme.description}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
-                        ):(
+                                ))}
+                            </div>
+                        ) : (
                             <div className="mTop40">
                                 <span>À venir.</span>
                             </div>       
@@ -518,7 +528,7 @@ export default function Session({ data, user }){
                                         )}
                                     </>
                                 )}
-                                {!check && (
+                                {(!check && dispo) && (
                                     <>
                                     <div className={`regbox ${reg == 0 ? styles.Act : undefined}`}>
                                         <span className={styles.Title}>Vos informations personnelles</span>
@@ -600,7 +610,7 @@ export default function Session({ data, user }){
                                         </div>
                                         </div>
                                         <div className={`regbox ${reg == 1 ? styles.Act : undefined}`}>
-                                        <span className={styles.Title}>Collecte de données pour le calcul de l'empreinte environnementale de l'évènement</span>
+                                            <span className={styles.Title}>Collecte de données pour le calcul de l'empreinte environnementale de l'évènement</span>
                                             <div className="select w100 mTop20 mBot20">
                                                 <select name="transport" onChange={handleChange} value={inscription.transport} className="input-select">
                                                     <option value="">Mode de transport principal pour vous rendre à la rencontre :*</option>
@@ -626,17 +636,6 @@ export default function Session({ data, user }){
                                                 </select>
                                                 <span className="material-icons">expand_more</span>
                                             </div>
-                                            <span className={styles.Title}>Besoins spécifiques complémentaires</span>                           
-                                            <textarea className="textarea mBot20 mTop20" placeholder="Afin de vous accueillir dans les meilleures conditions, précisez-nous vos besoins (accès PMR, handicaps...). Ces informations resteront confidentielles."></textarea>
-                                            <div className="flex gap50 mBot30">
-                                                <div className={`w50 ${data.metasSession.optionjour == true ? undefined : 'disnone'}`}>
-                                                    <span className={styles.Title}>Participerez vous les deux jours ?</span>
-                                                    <div className="flex aligncenter gap10 mTop10">
-                                                        <input name="days" checked={inscription.days} onChange={handleChange} value="true" type="radio" /> Oui
-                                                        <input name="days" onChange={handleChange} value="false" type="radio" /> Non
-                                                    </div>
-                                                </div>
-                                            </div>
                                             <div className="flex gap50 mBot30">
                                                 <div className="w50">
                                                     <span className={styles.Title}>Souhaitez-vous déjeuner sur place {data.metasSession.nombreJours > 1 && 'le jour 1'} ?</span>
@@ -650,6 +649,30 @@ export default function Session({ data, user }){
                                                     <div className="flex aligncenter gap10 mTop10">
                                                         <input name="repas2" onChange={handleChange} value="true" type="radio" /> Oui
                                                         <input name="repas2" onChange={handleChange} value="false" type="radio" /> Non
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {inscription.repas == "true" && (
+                                                <>
+                                                    <span className={styles.Title}>Quel est votre type de régime alimentaire ?</span>
+                                                    <div className="select w100 mTop20 mBot20">
+                                                        <select name="regime" onChange={handleChange} value={inscription.regime} className="input-select">
+                                                            <option>Omnivore</option>
+                                                            <option>Végétarien</option>
+                                                            <option>Vegan</option>
+                                                        </select>
+                                                        <span className="material-icons">expand_more</span>
+                                                    </div>                                                
+                                                </>
+                                            )}
+                                            <span className={styles.Title}>Besoins spécifiques complémentaires</span>                           
+                                            <textarea className="textarea mBot20 mTop20" placeholder="Précisez-nous vos besoins (accès PMR, handicaps, allergies, …)"></textarea>
+                                            <div className="flex gap50 mBot30">
+                                                <div className={`w50 ${data.metasSession.optionjour == true ? undefined : 'disnone'}`}>
+                                                    <span className={styles.Title}>Participerez vous les deux jours ?</span>
+                                                    <div className="flex aligncenter gap10 mTop10">
+                                                        <input name="days" checked={inscription.days} onChange={handleChange} value="true" type="radio" /> Oui
+                                                        <input name="days" onChange={handleChange} value="false" type="radio" /> Non
                                                     </div>
                                                 </div>
                                             </div>

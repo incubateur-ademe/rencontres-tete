@@ -103,6 +103,7 @@ model Registration {
   region       String
   repas2       Boolean?
   days         Boolean?
+  regime       String?
   session      Session  @relation(fields: [sessionId], references: [id])
   user         User     @relation(fields: [userId], references: [id])
 }

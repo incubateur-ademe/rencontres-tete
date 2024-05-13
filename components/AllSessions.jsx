@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import Alert from '@/components/Alert'
+import Reviews from '@/components/Reviews'
+import Participants from '@/components/Participants'
 import ModulesBack from '@/components/ModulesBack'
 import SessionsBack from '@/components/SessionsBack'
 import EditModule from '@/components/EditModule'
@@ -15,14 +17,19 @@ export default function Modules({setPage, page}){
     const [alert, setAlert] = useState(null)
     const [actions, setActions] = useState(0)
     const [currentTri, setCurrentTri] = useState('desc')
+    const [currentCodes, setCurrentCodes] = useState('')
     const [currentStatus, setCurrentStatus] = useState('')
     const [sessions, setSessions] = useState([])
     const [currentRegion, setCurrentRegion] = useState('')
 
-    const getSessions = async (tri, status, region) => {
+    const getSessions = async (tri, status, region, codes) => {
         let url = '/api/sessions/'
         if (tri) {
             url += `?tri=${encodeURIComponent(tri)}`;
+        }
+
+        if (codes) {
+            url += `?tricodes=${encodeURIComponent(codes)}`;
         }
 
         if (status) {
@@ -42,26 +49,30 @@ export default function Modules({setPage, page}){
   
     const trierSessions = async (event) => {
         const tri = event.target.value;
+        const codes = ''
+        setCurrentCodes('')
         const status = currentStatus
         const region = currentRegion
         setCurrentTri(tri)
-        getSessions(tri, status, region);
+        getSessions(tri, status, region, codes);
     }
 
     const trierStatus = async (event) => {
         const status = event.target.value;
         const tri = currentTri
+        const codes = currentCodes
         const region = currentRegion
         setCurrentStatus(status)
-        getSessions(tri, status, region);
+        getSessions(tri, status, region, codes);
     }
 
     const trierRegion = async (event) => {
         const region = event.target.value;
         const tri = currentTri
+        const codes = currentCodes
         const status = currentStatus
         setCurrentRegion(region)
-        getSessions(tri, status, region);
+        getSessions(tri, status, region, codes);
     }
 
     const deleteSession = async (sessionId) => {
@@ -86,6 +97,15 @@ export default function Modules({setPage, page}){
         
     }
 
+    const trierParCodes = async (event) => {
+        const region = currentRegion;
+        const tri = ''
+        const codes = event.target.value
+        setCurrentCodes(codes)
+        const status = currentStatus
+        getSessions(tri, status, region, codes);
+    }
+
     console.log(sessions)
 
     return (
@@ -104,7 +124,7 @@ export default function Modules({setPage, page}){
                             </select>
                             <span className="material-icons">expand_more</span>
                         </div>
-                        <div className="select w40">
+                        <div className="select w20">
                             <select onChange={trierRegion} className="input-select">
                                 <option value="">Filtrer par région</option>
                                 <option>Auvergne-Rhône-Alpes</option>
@@ -128,10 +148,19 @@ export default function Modules({setPage, page}){
                             </select>
                             <span className="material-icons">expand_more</span>
                         </div>
-                        <div className="select w40">
-                            <select onChange={trierSessions} className="input-select">
-                                <option value="desc">Trier par date (ordre décroissant)</option>
-                                <option value="asc">Trier par date (ordre croissant)</option>
+                        <div className="select w30">
+                            <select value={currentTri} onChange={trierSessions} className="input-select">
+                                <option value="">Trier par date</option>
+                                <option value="desc">Ordre descendant</option>
+                                <option value="asc">Ordre ascendant</option>
+                            </select>
+                            <span className="material-icons">expand_more</span>
+                        </div>
+                        <div className="select w30">
+                            <select value={currentCodes} onChange={trierParCodes} className="input-select">
+                                <option value="">Trier par codes</option>
+                                <option value="asc">Ordre ascendant</option>
+                                <option value="desc">Ordre descendant</option>
                             </select>
                             <span className="material-icons">expand_more</span>
                         </div>
@@ -143,6 +172,7 @@ export default function Modules({setPage, page}){
                                     <div key={index} className="w100 mBot10">
                                         <SessionsBack 
                                             date={session.dateDebut}
+                                            code={session.module.code}
                                             region={session.region}
                                             dept={session.departement}
                                             title={session.moduleName}
@@ -153,6 +183,7 @@ export default function Modules({setPage, page}){
                                             action={() => deleteSession(session.id)}
                                             status={session.status}
                                             setActions={setActions}
+                                            session={session}
                                         />
                                     </div>                                     
                                 )
@@ -166,6 +197,12 @@ export default function Modules({setPage, page}){
                 </>
             ) : (
                 <>  
+                    {open.type == 'check' && (
+                        <Participants session={open.session} setOpen={setOpen}  />
+                    )}
+                    {open.type == 'reviews' && (
+                        <Reviews session={open.session} setOpen={setOpen}  />
+                    )}
                     {open.type == 'edit' && (
                         <>
                             {open.model == 'module' ? (

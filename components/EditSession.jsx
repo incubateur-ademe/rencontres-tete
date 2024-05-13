@@ -677,7 +677,7 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
                                 <span className={styles.dLabel}>Date de la session :</span>
                             </div>
                         </div>
-                        <input disabled type="date" onChange={handleChange} name="metasSession.dateHoraires" value={datas?.metasSession.dateHoraires} className="input-text mTop10" placeholder="Date de la session" />
+                        <input type="date" onChange={handleChange} name="metasSession.dateHoraires" value={datas?.metasSession.dateHoraires} className="input-text mTop10" placeholder="Date de la session" />
                     </div>
                     <div className="w50">
                         <div className="flex aligncenter gap5 w50">

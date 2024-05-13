@@ -16,6 +16,7 @@ export default function Modules(setPage){
     const [filter, setFilter] = useState(null)
     const [currentPilier, setCurrentPilier] = useState('')
     const [currentTri, setCurrentTri] = useState('desc')
+    const [currentCodes, setCurrentCodes] = useState('')
     const [actions, setActions] = useState(0)
 
     const deleteModule = async (moduleId) => {
@@ -42,7 +43,7 @@ export default function Modules(setPage){
 
     const [modules, setModules] = useState([])
 
-    const getModules = async (pilier, tri) => {
+    const getModules = async (pilier, tri, codes) => {
         let url = '/api/modules/?';
     
         if (pilier) {
@@ -51,6 +52,10 @@ export default function Modules(setPage){
     
         if (tri) {
             url += `tri=${encodeURIComponent(tri)}`;
+        }
+
+        if (codes) {
+            url += `tricodes=${encodeURIComponent(codes)}`;
         }
     
         const fetcher = await fetch(url)
@@ -63,7 +68,8 @@ export default function Modules(setPage){
         setCurrentPilier(filter)
 
         const tri = currentTri; 
-        getModules(filter, tri);
+        const codes = currentCodes;
+        getModules(filter, tri, codes);
     }
     
     const trierModules = async (event) => {
@@ -71,7 +77,22 @@ export default function Modules(setPage){
         setCurrentTri(tri)
 
         const pilier = currentPilier; 
-        getModules(pilier, tri);
+        const codes = '';
+        setCurrentCodes('')
+        
+        getModules(pilier, tri, codes);
+        
+    }
+
+    const trierParCodes = async (event) => {
+        const cod = event.target.value
+        setCurrentCodes(cod)
+
+        setCurrentTri('')
+        const tri = ''
+
+        const pilier = currentPilier; 
+        getModules(pilier, tri, cod);
     }
     
 
@@ -96,7 +117,7 @@ export default function Modules(setPage){
                         <button onClick={() => setOpen({ type: 'add', model: 'module' })} className="btn__normal btn__dark">Ajouter un nouveau module</button>
                     </div>
                     <div className="flex gap20 mTop30">
-                        <div className="select w50">
+                        <div className="select w30">
                             <select onChange={filterModules} className="input-select">
                                 <option value="">Filtrer par un axe spécifique</option>
                                 <option>Climat Air Energie</option>
@@ -105,10 +126,18 @@ export default function Modules(setPage){
                             </select>
                             <span className="material-icons">expand_more</span>
                         </div>
-                        <div className="select w50">
-                            <select onChange={trierModules} className="input-select">
+                        <div className="select w35">
+                            <select value={currentTri} onChange={trierModules} className="input-select">
                                 <option value="desc">Trier par dernière date de publication</option>
                                 <option value="asc">Trier par première date de publication</option>
+                            </select>
+                            <span className="material-icons">expand_more</span>
+                        </div>
+                        <div className="select w30">
+                            <select value={currentCodes} onChange={trierParCodes} className="input-select">
+                                <option value="">Trier par codes</option>
+                                <option value="asc">Ordre ascendant</option>
+                                <option value="desc">Ordre descendant</option>
                             </select>
                             <span className="material-icons">expand_more</span>
                         </div>
@@ -120,6 +149,7 @@ export default function Modules(setPage){
                                     <div key={index} className="w100 mBot10">
                                         <ModulesBack 
                                             date={module.datePublication}
+                                            code={module.code}
                                             lastUpdate={module.lastUpdate}
                                             category={module.pilier}
                                             title={module.nom}

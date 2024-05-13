@@ -94,6 +94,10 @@
     color:var(--secondary)
 }
 
+.InfosValue ul{
+    list-style-position: inside;
+}
+
 .TeamPic{
     width:30%;
     aspect-ratio:1/1;

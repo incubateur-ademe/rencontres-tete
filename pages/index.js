@@ -115,7 +115,7 @@ export default function Home() {
               <PilierBox 
                 pic="climat-air-energie.webp"
                 title="Climat Air Energie" 
-                description="Découvrez l’ensemble des rencontres programmées sur les thématiques Climat Air Énergie" 
+                description="Adaptation au changement climatique, Rafraîchissement urbain, Géothermie, Zéro Artificialisation Nette, … Découvrez les rencontres programmées sur la thématique Climat Air Energie !" 
                 link="/rencontres?pilier=Climat Air Energie"
               />
             </div>
@@ -123,7 +123,7 @@ export default function Home() {
               <PilierBox 
                 pic="climat-air-energie-1.webp"
                 title="Economie Circulaire" 
-                description="Découvrez l’ensemble des rencontres programmées sur les thématiques Économie Circulaire" 
+                description="Tarification Incitative, Sobriété, Alimentation Durable, Tourisme, Biodéchets, … Découvrez les rencontres programmées sur la thématique Economie Circulaire !" 
                 link="/rencontres?pilier=Economie circulaire"
               />
             </div>
@@ -131,7 +131,7 @@ export default function Home() {
               <PilierBox 
                 pic="transversal.webp"
                 title="Approche transversale" 
-                description="Découvrez l’ensemble des rencontres programmées sur l’approche transversale de la transition écologique" 
+                description="Pilotage du programme TETE, Budget Vert, Engagement de ses élus, … Découvrez les rencontres programmées sur l’approche transversale de la transition écologique !" 
                 link="/rencontres?pilier=Approche transversale"
               />
             </div>

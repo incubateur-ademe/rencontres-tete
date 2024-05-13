@@ -44,7 +44,7 @@ export async function getServerSideProps(context) {
 
     // Récupérer les modules depuis la base de données ou une API externe
     let base = await prisma.module.findMany(queryOptions);
-    base = base.filter(module => module.sessions.length > 0);
+    // base = base.filter(module => module.sessions.length > 0);
 
     // Transformer les dates en chaînes ISO si nécessaire
     base = base.map(module => ({
@@ -67,6 +67,8 @@ export async function getServerSideProps(context) {
 
 
 export default function Rencontres({ base, region, pilier, thematique }){
+
+    console.log(base)
 
     const [modules, setModules] = useState(base)
     const [actions, setActions] = useState(0)
@@ -153,7 +155,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                             <PilierBox 
                                 pic="climat-air-energie.webp"
                                 title="Climat Air Energie" 
-                                description="Découvrez l’ensemble des rencontres programmées sur les thématiques Climat Air Énergie" 
+                                description="Adaptation au changement climatique, Rafraîchissement urbain, Géothermie, Zéro Artificialisation Nette, … Découvrez les rencontres programmées sur la thématique Climat Air Energie !" 
                                 setFiltres={setFiltres}
                                 active={filtres.pilier}
                             />
@@ -162,7 +164,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                             <PilierBox 
                                 pic="climat-air-energie-1.webp"
                                 title="Economie Circulaire" 
-                                description="Découvrez l’ensemble des rencontres programmées sur les thématiques Économie Circulaire" 
+                                description="Tarification Incitative, Sobriété, Alimentation Durable, Tourisme, Biodéchets, … Découvrez les rencontres programmées sur la thématique Economie Circulaire !" 
                                 setFiltres={setFiltres}
                                 active={filtres.pilier}
                             />
@@ -171,7 +173,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                             <PilierBox 
                                 pic="transversal.webp"
                                 title="Approche transversale" 
-                                description="Découvrez l’ensemble des rencontres programmées sur l’approche transversale de la transition écologique" 
+                                description="Pilotage du programme TETE, Budget Vert, Engagement de ses élus, … Découvrez les rencontres programmées sur l’approche transversale de la transition écologique !" 
                                 setFiltres={setFiltres}
                                 active={filtres.pilier}
                             />
@@ -239,6 +241,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                                 id={module.id}
                                                 link={`/rencontres/${module.slug}`}
                                                 theme={module.thematique}
+                                                length={module.sessions}
                                             />
                                         </div>
                                     ))}

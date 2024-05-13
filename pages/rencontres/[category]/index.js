@@ -74,7 +74,7 @@ export default function Module({ data }){
         }
       }, [data.metasModule.resumeProgramme]);
 
-    function groupByDay(programmes) {
+      function groupByDay(programmes) {
         const groups = {};
     
         programmes.forEach(programme => {
@@ -85,14 +85,20 @@ export default function Module({ data }){
                     groups[day] = [];
                 }
                 groups[day].push(programme);
+            } else {
+                const unspecified = "Non spécifié";
+                if (!groups[unspecified]) {
+                    groups[unspecified] = [];
+                }
+                groups[unspecified].push(programme);
             }
         });
     
         return groups;
     }
+    
 
     const groupedData = groupByDay(data.metasModule.programmeModule);
-
     return (
         <>
             <Head>
@@ -110,7 +116,7 @@ export default function Module({ data }){
                             </p>
                             <span className={styles.Tag}>{data.pilier}</span>
                             <p className={styles.Intro}><strong>{data.description}</strong></p>
-                            <p>Code rencontre : #{data.code} - Dernière mise à jour : {lastUpdate}</p>
+                            {/* <p>Code rencontre : #{data.code} - Dernière mise à jour : {lastUpdate}</p> */}
                         </div>
                         <div className="flex toColumn gap80 mTop50 paddline">
                             <div className="w70 wm100">   
@@ -196,7 +202,7 @@ export default function Module({ data }){
             <div className="section blued">
                 <div className="boxed">
                     <h2>Découvrez le programme de la rencontre</h2>
-                        <div className="flex wrap gap25 mTop40">
+                    <div className="flex wrap gap25 mTop40">
                         {Object.keys(groupedData).map(day => (
                             <div key={day}>
                                 <div className="flex wrap gap25">

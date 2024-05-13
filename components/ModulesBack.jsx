@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import styles from '@/styles/ModuleBack.module.css'
 
-export default function ModulesBack({date, lastUpdate, category, title, id, setOpen, setAlert, action, sessions}){
+export default function ModulesBack({date, code, lastUpdate, category, title, id, setOpen, setAlert, action, sessions}){
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -30,7 +30,7 @@ export default function ModulesBack({date, lastUpdate, category, title, id, setO
                         <span className={styles.Date}>Publié le {publicationDate}</span>
                         <span className={styles.Region}>{category}</span>
                     </div>
-                    <span className={styles.LastMaj}>Date de dernière mise à jour : {lastUpdateDate}</span>
+                    <span className={styles.LastMaj}>Code module : #{code}</span>
                 </div>
                 <div className="flex alignend space-between gap40 mTop20 w100">
                     <div className="w50">

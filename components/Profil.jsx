@@ -138,7 +138,7 @@ export default function Profil({ user }){
             <div className={styles.DeleteAccount}>
                 <span className={styles.Subtitle}>Vous souhaitez supprimer votre compte ?</span>
                 <div className="checkbox mTop30">
-                    <input name="rgpd" value={rgpd} onChange={() => setRgpd(prev => !prev)} type="checkbox" /> <span>J’ai lu et j’accepte que l’ADEME collecte mes données afin de garantir la bonne utilisation des services offerts* et reconnais avoir pris connaissance de sa politique de protection des données personnelles.</span>
+                    <input name="rgpd" value={rgpd} onChange={() => setRgpd(prev => !prev)} type="checkbox" /> <span>Je confirme ma demande de suppression de mon compte et de toutes mes données associées.</span>
                 </div>
                 <div className="flex mTop20">
                     <button 

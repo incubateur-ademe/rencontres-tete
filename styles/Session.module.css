@@ -26,6 +26,7 @@
     display: inline-block;
     padding:6px 12px;
     border-radius: 5px;
+    font-size: 0.8rem;
 }
 
 .Region{
@@ -36,6 +37,7 @@
     display: inline-block;
     padding:6px 12px;
     border-radius: 5px;
+    font-size: 0.8rem;
 }
 
 .Breadcrump{
@@ -91,6 +93,7 @@
     padding:15px;
     color:var(--primary);
     font-weight: 300;
+    margin-inline: auto;
 }
 
 .additional {
@@ -104,6 +107,10 @@
 
 .additional p{
     margin:10px 0;
+}
+
+.additional ul{
+    list-style-position: inside;
 }
 
 .additional a{

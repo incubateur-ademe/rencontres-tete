@@ -1,15 +1,23 @@
 import prisma from '@/prisma';
 
 export default async function handle(req, res) {
-  const { id, tri, passed, departement, status, region, module } = req.query;
+  const { id, tri, tricodes, passed, departement, status, region, module } = req.query;
 
   let queryOptions = {
     where: {},
-    orderBy: tri ? [{ dateDebut: tri }] : [],
+    orderBy: [],
     include: {
       module: true, // Inclure les détails du module lié à chaque session
     },
   };
+
+  if (tri) {
+    queryOptions.orderBy.push({ dateDebut: tri });
+  }
+  if (tricodes) {
+    queryOptions.orderBy.push({ module: { code: tricodes } });
+  }
+  
 
   if (id) {
     queryOptions.where.moduleId = parseInt(id);

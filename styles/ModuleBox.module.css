@@ -1,6 +1,6 @@
 .Module{
     border:1px solid var(--primaryThird);
-    padding:40px !important;
+    padding:30px !important;
     padding-right: 60px;
     border-radius: 10px;
     display: block;
@@ -12,7 +12,7 @@
 
 .ModuleHeight{
     aspect-ratio: unset;
-    min-height: 280px;
+    min-height: 320px;
 }
 
 .Title{
@@ -51,11 +51,39 @@
     border-radius: 10px;
 }
 
+.Dispos{
+    color: var(--orange) !important;
+    background-color: #F28E401C;
+    max-width: 65%;
+    display: block;
+    position: absolute;
+    bottom: 30px;
+    padding: 10px 10px;
+    box-sizing: border-box;
+    left: 25px;
+    border-radius: 10px;
+    font-size: .8rem;
+}
+
+.Soon{
+    color:#AAA;
+    background-color:#F9F9F9;
+    max-width:58%;
+    display: block;
+    position: absolute;
+    bottom:30px;
+    padding: 10px 15px;
+    box-sizing: border-box;
+    left:30px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
 @media(max-width:810px){
     .Module{
         padding:20px !important;
         aspect-ratio:unset;
-        min-height: 150px;
+        min-height: 200px;
     }
 
     .Title{
@@ -69,4 +97,13 @@
         height: 28px;
         font-size: 1rem !important;
     }
+
+    .Dispos{
+        left:20px
+    }
+
+    .Soon{
+        left: 20px;
+    }
+    
 }

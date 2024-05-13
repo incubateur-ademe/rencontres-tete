@@ -1,7 +1,7 @@
 import prisma from '@/prisma';
 
 export default async function handle(req, res) {
-  const { pilier, tri, thematique, nom, region, departement, dateDebut } = req.query;
+  const { pilier, tri, tricodes, thematique, nom, region, departement, dateDebut } = req.query;
 
   let sessionWhere = {};
   // Construire les conditions pour les sessions
@@ -11,7 +11,7 @@ export default async function handle(req, res) {
 
   let queryOptions = {
     where: {},
-    orderBy: tri ? [{ id: tri }] : [],
+    orderBy: tri ? [{ id: tri }] : tricodes ? [{ code: tricodes }] : [],
     include: {
       sessions: {
         where: sessionWhere,

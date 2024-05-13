@@ -174,7 +174,7 @@ export default function Register(){
                                                 <input type="checkbox" name="newsletter" onChange={handleChange} value={userDetails.newsletter}  /> <span>J’accepte de recevoir des actualités de l’ADEME. Vous pourrez vous désabonner à tout moment via le lien de désinscription en bas de nos e-mails.</span>
                                             </div>
                                             <div className="checkbox">
-                                                <input type="checkbox" name="rgpd" onChange={handleChange} value={userDetails.rgpd} /> <span>J’ai lu et j’accepte que l’ADEME collecte mes données afin de garantir la bonne utilisation des services offerts*et reconnais avoir pris connaissance de sa politique de protection des données personnelles.</span>
+                                                <input type="checkbox" name="rgpd" onChange={handleChange} value={userDetails.rgpd} /> <span>J’ai lu et j’accepte que l’ADEME collecte mes données afin de garantir la bonne utilisation des services offerts et reconnais avoir pris connaissance de sa politique de protection des données personnelles.</span>
                                             </div>
                                         </div>
                                         <div className="flex flex-end gap10">
