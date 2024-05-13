@@ -82,7 +82,7 @@ export default function Session({ data, user }){
         transport: '',
         besoins: '',
         hebergement: '',
-        regime: '',
+        regime: 'Omnivore',
         days: true,
         repas: false,
         repas2: false,
@@ -155,7 +155,7 @@ export default function Session({ data, user }){
             transport: '',
             besoins: '',
             hebergement: '',
-            regime: '',
+            regime: 'Omnivore',
             repas: false,
             repas2: false,
             days: true,
@@ -652,11 +652,11 @@ export default function Session({ data, user }){
                                                     </div>
                                                 </div>
                                             </div>
-                                            {inscription.repas == "true" && (
+                                            {(inscription.repas || inscription.repas2) && (
                                                 <>
                                                     <span className={styles.Title}>Quel est votre type de régime alimentaire ?</span>
                                                     <div className="select w100 mTop20 mBot20">
-                                                        <select name="regime" onChange={handleChange} value={inscription.regime} className="input-select">
+                                                        <select value={inscription.regime} name="regime" onChange={handleChange} value={inscription.regime} className="input-select">
                                                             <option>Omnivore</option>
                                                             <option>Végétarien</option>
                                                             <option>Vegan</option>
