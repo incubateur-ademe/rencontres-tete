@@ -120,8 +120,8 @@ export default function Rencontres({ base, region, pilier, thematique }){
 
         const fetcher = await fetch(url)
         const json = await fetcher.json()
-        const alles = json.filter(module => module.sessions.length > 0)
-        setModules(alles)
+        // const alles = json.filter(module => module.sessions.length > 0)
+        setModules(json)
     }
 
     useEffect(() => {
