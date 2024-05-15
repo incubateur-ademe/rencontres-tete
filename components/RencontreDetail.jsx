@@ -144,7 +144,8 @@ export default function RencontreDetail({id, setOpen, userId, user}){
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
       };
-    
+
+
 
     return (
         <>
@@ -160,6 +161,8 @@ export default function RencontreDetail({id, setOpen, userId, user}){
                     dept={data?.departement}
                     register="false"
                     see='true'
+                    data={data}
+                    detail="true"
                 />
             </div>
             <div className="flex alignstart gap30 mTop30">

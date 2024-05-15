@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import styles from '@/styles/SessionBox.module.css'
 
-export default function SessionBox({date, region, title, link, register, dept, see}){
+export default function SessionBox({date, region, title, link, data, register, dept, see, detail}){
     return (
         <>
             <div className={styles.SessionBox}>
@@ -18,7 +18,7 @@ export default function SessionBox({date, region, title, link, register, dept, s
                         <Link className={styles.Register} href={link}>S'inscrire</Link>
                     </div>
                     )}
-                    {see == 'true' && (
+                    {(see == 'true' && detail != "true") && (
                         <div className="w30 text-right">
                             <button className={styles.Register}>Voir plus</button>
                         </div>

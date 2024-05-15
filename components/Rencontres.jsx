@@ -77,7 +77,7 @@ export default function Rencontres({ user }){
             </>
             ) : (
                 <div className="mTop20">
-                    <RencontreDetail id={open} setOpen={setOpen} user={user} userId={user.id} />
+                    <RencontreDetail id={open} setOpen={setOpen} user={user} userId={user.id}  />
                 </div>
             )}
         </div>
