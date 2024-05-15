@@ -85,6 +85,7 @@
     display: block;
     font-weight: 500;
     color:var(--primary);
+    text-wrap:nowrap;
 }
 
 .InfosValue{

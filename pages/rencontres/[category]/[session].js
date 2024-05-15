@@ -260,7 +260,7 @@ export default function Session({ data, user }){
             const fetcher = await fetch(`/api/registrations/bySession?sessionId=${data.id}`)
             const json = await fetcher.json()
             if(json.length > 0){
-                setNbInscrits(json.length)
+                setNbInscrits(json.filter((item) => !item.deleted).length)
             }
         }
         checker()

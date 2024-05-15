@@ -141,7 +141,7 @@ export default function Module({ data }){
                                             <span className={styles.InfosLabel}>Durée :</span>
                                             <span className={styles.InfosValue}>{data.metasModule.duree}</span>
                                         </div>
-                                        <div className="flex aligncenter gap5">
+                                        <div className="mTop10 aligncenter gap10">
                                             <span className={styles.InfosLabel}>Public cible :</span>
                                             <span className={styles.InfosValue}>{data.metasModule.publicCible}</span>
                                         </div>
