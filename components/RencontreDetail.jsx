@@ -162,7 +162,7 @@ export default function RencontreDetail({id, setOpen, userId, user}){
                     register="false"
                     see='true'
                     data={data}
-                    detail="true"
+                    detail="yes"
                 />
             </div>
             <div className="flex alignstart gap30 mTop30">
