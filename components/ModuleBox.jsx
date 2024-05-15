@@ -6,6 +6,8 @@ export default function ModuleBox({title, link, theme, pilier, length}){
    
     const [sess, setSess] = useState(0)
 
+    console.log("length => ", length)
+
     useEffect(() => {
         if(length){
             length.map((session, i) => {
@@ -14,7 +16,9 @@ export default function ModuleBox({title, link, theme, pilier, length}){
                 }
             })
         }
-    }, [])
+    }, [length])
+
+    console.log("sess => ", sess)
 
     return (
         <>
@@ -27,7 +31,7 @@ export default function ModuleBox({title, link, theme, pilier, length}){
                     <span className={styles.Theme}>{pilier}</span>
                 )}
                 <span className={`${styles.Icon} material-icons`}>add</span>
-                {sess > 0 ? (
+                {(sess > 0 && length.length > 0) ? (
                     <span className={styles.Dispos}>{length.length} rencontre{length.length > 1 ? 's' : ''} disponible{length.length > 1 ? 's' : ''}</span>
                 ) : (
                     <span className={styles.Soon}>Rencontres à venir</span>

@@ -10,6 +10,7 @@ import styles from '@/styles/Rencontres.module.css'
 export async function getServerSideProps(context) {
     const { query } = context;
     const { pilier, nom, region, departement, thematique, dateDebut } = query;
+    
 
     let sessionWhere = {}; // Initialiser avec un objet vide
 
@@ -81,6 +82,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
         thematique: thematique,
         dateDebut: ''
     })
+    const [switcher, setSwitcher] = useState(false)
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -120,8 +122,16 @@ export default function Rencontres({ base, region, pilier, thematique }){
 
         const fetcher = await fetch(url)
         const json = await fetcher.json()
-        // const alles = json.filter(module => module.sessions.length > 0)
-        setModules(json)
+        let alles;
+        if (switcher) {
+            alles = json.filter(module =>
+                module.sessions.some(session => session.status === 'publish')
+            );
+        } else {
+            alles = json;
+        }
+
+        setModules(alles)
     }
 
     useEffect(() => {
@@ -129,7 +139,9 @@ export default function Rencontres({ base, region, pilier, thematique }){
         if(actions > 0){
             getModules()
         }
-    }, [filtres])
+    }, [filtres, switcher])
+
+    
 
     // useEffect(() => {
     //     setFiltres(prev => {
@@ -185,6 +197,12 @@ export default function Rencontres({ base, region, pilier, thematique }){
                     <div className="boxed">
                         <div className="flex toColumn gap50">
                             <div className="w70 wm100">
+                                <div className="flex aligncenter gap10 mgap15 mBot30">
+                                    <div className={`${styles.Switcher} ${switcher ? styles.On : undefined}`} onClick={() => setSwitcher(prev => !prev)}>
+                                        <span className={switcher ? styles.Activate : undefined}></span>
+                                    </div>
+                                    <span className={styles.FilterSwitch}>Modules avec une ou plusieures sessions disponibles</span>
+                                </div>
                                 {/* <h2>Tous les modules disponibles {(filtres.pilier != '' || filtres.nom != '' || filtres.dateDebut != '' || filtres.thematique != '' || filtres.departement != '' || filtres.region != '') && 'suivant vos critères'} :</h2> */}
                                 {(filtres.pilier != '' || filtres.nom != '' || filtres.dateDebut != '' || filtres.thematique != '' || filtres.departement != '' || filtres.region != '') && (
                                 <div className="flex aligncenter wrap gap10 mBot20">

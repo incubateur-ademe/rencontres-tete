@@ -74,8 +74,42 @@
     font-size: 1rem;
 }
 
+.Switcher{
+    width:50px;
+    background:var(--primaryBack);
+    height:25px;
+    border-radius: 35px;
+    position:relative;
+}
+
+.Switcher span{
+    width:15px;
+    height: 15px;
+    border-radius: 50%;
+    display: block;
+    background:var(--primary);
+    position: absolute;
+    top:50%;
+    left:5px;
+    transform:translateY(-50%) translateX(0%);
+    transition:.2s ease;
+}
+
+.Switcher span.Activate{
+    transform:translateY(-50%) translateX(170%);
+    background-color:#FFF !important;
+}
+
+.On{
+    background:var(--primary);
+}
+
 @media(max-width:810px){
     .Rencontres h1{
         font-size:2rem;
+    }
+
+    .FilterSwitch{
+        max-width: 70%;
     }
 }
