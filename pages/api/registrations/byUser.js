@@ -27,6 +27,7 @@ export default async function handle(req, res) {
       userId: parseInt(userId),
       // Supposons ici que chaque inscription a une session directement liée
       session: dateCondition,
+      deleted: false
     },
     include: {
       session: {

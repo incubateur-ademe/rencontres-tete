@@ -1,0 +1,48 @@
+import prisma from '@/prisma';
+
+export default async function handle(req, res) {
+    if (req.method !== 'POST') {
+        res.setHeader('Allow', ['POST']);
+        return res.status(405).send(`Method ${req.method} Not Allowed`);
+    }
+
+    const { userId, sessionId } = req.body;
+
+    if (!userId || !sessionId) {
+        return res.status(400).send("userId et sessionId sont requis.");
+    }
+
+    // Convertir et valider les identifiants comme des entiers
+    const parsedUserId = parseInt(userId, 10);
+    const parsedSessionId = parseInt(sessionId, 10);
+
+    if (isNaN(parsedUserId) || isNaN(parsedSessionId)) {
+        return res.status(400).send("userId et sessionId doivent être des entiers valides.");
+    }
+
+    try {
+        const registration = await prisma.registration.findFirst({
+            where: {
+                userId: parsedUserId,
+                sessionId: parsedSessionId
+            }
+        });
+        
+        if (registration) {
+            const updatedRegistration = await prisma.registration.update({
+                where: {
+                    id: registration.id
+                },
+                data: {
+                    deleted: true
+                }
+            });
+            res.json(updatedRegistration);
+        } else {
+            res.status(404).send("Registration not found.");
+        }
+    } catch (error) {
+        console.error("Erreur lors de la mise à jour de la session:", error.message);
+        res.status(500).json({ error: "Une erreur interne est survenue" });
+    }
+}

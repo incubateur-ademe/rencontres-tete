@@ -51,7 +51,6 @@ export default function Participants({ session, setOpen }){
     const getParticipants = async () => {
         const fetcher = await fetch(`/api/registrations/bySession?sessionId=${session.id}`)
         const json = await fetcher.json()
-        console.log(json)
         if(json.length > 0){
             setNumber(json.length)
             setUsers(json)
@@ -73,7 +72,7 @@ export default function Participants({ session, setOpen }){
 
     const sendMail = async () => {
         console.log('envoi email')
-        // fonction pour envoyer le mail
+        // fonction pour envoyer le mail uniquement aux NON ANNULÉS
         
         setAlert(null)
         setNotif({

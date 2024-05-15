@@ -23,7 +23,7 @@ export default function Rencontres({ user }){
 
     useEffect(() => {
         getUserSessions()
-    }, [status])
+    }, [status, open])
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -52,6 +52,7 @@ export default function Rencontres({ user }){
                         {rencontres.length > 0 ? (
                             <div className="flex gap15 wrap mTop30">
                                 {rencontres.map((rencontre, index) => {
+                                    if(rencontre.deleted == false || rencontre.deleted == undefined){
                                     return (
                                         <div key={index} onClick={() => setOpen(rencontre.session.id)} className="w49 wm100">
                                             <SessionBox 
@@ -65,6 +66,7 @@ export default function Rencontres({ user }){
                                             />
                                         </div> 
                                     )
+                                    }
                                 })}
                             </div>
                         ) : (

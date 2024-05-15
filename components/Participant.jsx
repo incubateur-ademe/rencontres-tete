@@ -26,10 +26,12 @@ export default function Participant({ data, setActions }){
 
     return (
         <>
-            <div className={styles.User}>
+            <div className={`${styles.User} ${data.deleted ? styles.Canceled : undefined}`}>
                 <div className="flex aligncenter gap10">
-                    <span className={styles.UserName}><span className="material-icons">person</span>{data.nom} {data.prenom}</span>
-                    <button onClick={preDeleteUser} className={styles.Corb}><span className="material-icons">delete</span></button>
+                    <span className={styles.UserName}><span className="material-icons">{data.deleted ? 'cancel' : 'person'}</span>{data.nom} {data.prenom}</span>
+                    {!data.deleted && (
+                        <button onClick={preDeleteUser} className={styles.Corb}><span className="material-icons">delete</span></button>
+                    )}                   
                 </div>               
                 <div className={styles.Table}>
                     <div className="w22"><span className={styles.Label}>Nom</span>{data.nom}</div>
@@ -43,7 +45,7 @@ export default function Participant({ data, setActions }){
                     <div className="w22"><span className={styles.Label}>Transport</span>{data.transport}</div>
                     <div className="w22"><span className={styles.Label}>Repas</span>{data.repas ? 'J1 : Oui' : 'J1 : Non'}{data.repas2 ? ' / J2 : Oui' : ' / J2 : Non'}{data.regime ? ` (${data.regime})` : ''}</div>
                     <div className="w30"><span className={styles.Label}>Besoin spécifique</span>{data.besoins != null ? data.besoins : '-'}</div>
-                    <div className="w20"><span className={styles.Label}>Présence</span>{data.days ? 'Complète' : '1/2'}</div>
+                    <div className="w20"><span className={styles.Label}>Présence</span>{data.deleted ? 'Annulée' : data.days ? 'Complète' : '1/2'}</div>
                 </div>
             </div>
 

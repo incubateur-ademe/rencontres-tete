@@ -158,3 +158,16 @@
     font-size: 1.5rem;
     margin-bottom: 20px;
 }
+
+.Canceled{
+    opacity: 0.6;
+}
+
+.Canceled .UserName{
+    background-color: red;
+    color:#FFF;
+}
+
+.Canceled .Label{
+    color:red !important;
+}

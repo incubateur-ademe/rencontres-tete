@@ -8,6 +8,8 @@ import styles from '@/styles/Account.module.css'
 
 export default function RencontreDetail({id, setOpen, userId, user}){
 
+    console.log(id, setOpen, userId, user)
+
     const [alert, setAlert] = useState(null)
     const [notif, setNotif] = useState(null)
     const [passed, setPassed] = useState(true)
@@ -145,13 +147,37 @@ export default function RencontreDetail({id, setOpen, userId, user}){
         window.URL.revokeObjectURL(url);
       };
 
+      const tryCancel = async () => {
+        setAlert({
+            icon: 'warning',
+            text: 'Êtes-vous sur de ne plus vouloir participer à cette rencontre ?',
+            // Supposons que `action` sera appelé si l'utilisateur confirme
+            action: () => cancel()
+        });
+      }
 
+      const cancel = async () => {
+        id // userId
+        const fetcher = await fetch('/api/registrations/cancel', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                userId: userId,
+                sessionId: id
+            })
+        })
+        const json = await fetcher.json()
+        setOpen(null)
+      }
 
     return (
         <>
             <span onClick={() => setOpen(null)} className={styles.Back}>Retour à mes rencontres</span>
-            <div className="mTop20">
+            <div className="mTop20 flex aligncenter toColumn gap10">
                 <button onClick={generateBadge} className="btn__normal btn__dark">Générer mon badge</button>
+                <button onClick={tryCancel} className="btn__normal btn__light">Je souhaite retirer mon inscription</button>
             </div>
             <div className="w100 mTop25">
                 <SessionBox 

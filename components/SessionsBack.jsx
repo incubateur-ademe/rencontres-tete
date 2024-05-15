@@ -20,7 +20,7 @@ export default function SessionsBack({date, session, code, region, title, id, se
         const fetcher = await fetch(`/api/registrations/bySession?sessionId=${session.id}`)
         const json = await fetcher.json()
         if(json.length > 0){
-            setNumber(json.length)
+            setNumber(json.filter((item) => !item.deleted).length)
         }
     }
 

@@ -10,6 +10,7 @@ export default async function handle(req, res) {
             const newRegistration = await prisma.registration.create({
                 data: {
                     ...inscriptionData,
+                    deleted: false,
                     user: {
                         connect: { id: parseInt(userId) },
                     },
