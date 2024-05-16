@@ -162,7 +162,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                 <div className="section blued">
                     <div className="boxed">
                         <h1>Les rencontres à venir dans votre région</h1>
-                        <div className="flex space-between mTop40 toColumn">
+                        {/* <div className="flex space-between mTop40 toColumn">
                             <div className="w32 wm100 mmBot20">
                             <PilierBox 
                                 pic="climat-air-energie.webp"
@@ -190,7 +190,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                 active={filtres.pilier}
                             />
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="section">
@@ -201,7 +201,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                     <div className={`${styles.Switcher} ${switcher ? styles.On : undefined}`} onClick={() => setSwitcher(prev => !prev)}>
                                         <span className={switcher ? styles.Activate : undefined}></span>
                                     </div>
-                                    <span className={styles.FilterSwitch}>Modules avec une ou plusieures sessions disponibles</span>
+                                    <span className={styles.FilterSwitch}>Afficher uniquement les thématiques avec des Rencontres programmées</span>
                                 </div>
                                 {/* <h2>Tous les modules disponibles {(filtres.pilier != '' || filtres.nom != '' || filtres.dateDebut != '' || filtres.thematique != '' || filtres.departement != '' || filtres.region != '') && 'suivant vos critères'} :</h2> */}
                                 {(filtres.pilier != '' || filtres.nom != '' || filtres.dateDebut != '' || filtres.thematique != '' || filtres.departement != '' || filtres.region != '') && (

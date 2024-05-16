@@ -11,6 +11,25 @@ export default function Home() {
   const [region, setRegion] = useState("")
   const [search, setSearch] = useState('')
   const [finds, setFinds] = useState([])
+  let trad = []
+  trad["COR"] = "Corse"
+  trad["HDF"] = "Hauts-de-France"
+  trad["GES"] = "Grand-Est"
+  trad["NOR"] = "Normandie"
+  trad["IDF"] = "Île-de-France"
+  trad["BFC"] = "Bourgogne-Franche-Comté"
+  trad["ARA"] = "Auvergne-Rhône-Alpes"
+  trad["PAC"] = "Provence-Alpes-Côte d'Azur"
+  trad["OCC"] = "Occitanie"
+  trad["NAQ"] = "Nouvelle-Aquitaine"
+  trad["CVL"] = "Centre-Val de Loire"
+  trad["PDL"] = "Pays de la Loire"
+  trad["BRE"] = "Bretagne"
+  trad["GUA"] = "Guadeloupe"
+  trad["MART"] = "Martinique"
+  trad["GUY"] = "Guyane"
+  trad["REU"] = "La Reunion"
+  trad["MAY"] = "Mayotte"
 
   const getModules = async (nom) => {
     const fetcher = await fetch(`/api/modules/?nom=${nom}`)
@@ -71,6 +90,9 @@ export default function Home() {
                 <img src="/medias/map/FR-CVL.webp" onClick={() => window.location.href = `/rencontres?region=Centre-Val de Loire`} onMouseOver={() => setRegion('CVL')} onMouseOut={() => setRegion('')} className={`map centre ${region == "CVL" && styles.RegionLight}`} />
                 <img src="/medias/map/FR-PDL.webp" onClick={() => window.location.href = `/rencontres?region=Pays de la Loire`} onMouseOver={() => setRegion('PDL')} onMouseOut={() => setRegion('')} className={`map loire ${region == "PDL" && styles.RegionLight}`} />
                 <img src="/medias/map/FR-BRE.webp" onClick={() => window.location.href = `/rencontres?region=Bretagne`} onMouseOver={() => setRegion('BRE')} onMouseOut={() => setRegion('')} className={`map bretagne ${region == "BRE" && styles.RegionLight}`} />
+                {region != '' && (
+                  <span className={styles.regionTag}>{trad[region]}</span>
+                )}               
               </div>
               <div className="map__domtom">
                 <img src="/medias/map/FR-GUA.png" onClick={() => window.location.href = `/rencontres?region=Guadeloupe`} onMouseOver={() => setRegion('GUA')} onMouseOut={() => setRegion('')} className={`${region == "GUA" && styles.RegionLight}`} />
@@ -79,6 +101,7 @@ export default function Home() {
                 <img src="/medias/map/FR-REU.png" onClick={() => window.location.href = `/rencontres?region=La Reunion`} onMouseOver={() => setRegion('REU')} onMouseOut={() => setRegion('')} className={`${region == "REU" && styles.RegionLight}`} />
                 <img src="/medias/map/FR-MAY.png" onClick={() => window.location.href = `/rencontres?region=Mayotte`} onMouseOver={() => setRegion('MAY')} onMouseOut={() => setRegion('')} className={`${region == "MAY" && styles.RegionLight}`} />
               </div>
+              <span className={styles.legend}>Carte des régions de France</span>
             </div>
             <div className="w50 wm100">
               <h2>Découvrez les rencontres à venir dans votre région</h2>
@@ -173,7 +196,7 @@ export default function Home() {
           <div className="w24 wm47">
           <ModuleBox 
               pilier="Economie Circulaire"
-              title="Prévention et gestion des déchêts" 
+              title="Prévention et gestion des déchets" 
               link="/rencontres/?thematique=Prévention et gestion des déchêts"
           />
           </div>

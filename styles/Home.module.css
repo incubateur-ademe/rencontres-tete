@@ -41,6 +41,29 @@
     position: relative;
 }
 
+.legend{
+    display: block;
+    text-align: center;
+    font-style: italic;
+    font-size: 0.9rem;
+    opacity: .35;
+}
+
+.regionTag{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    background:#FFF;
+    display: inline-block;
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-weight: 400;
+    color:var(--primary);
+    z-index: 9;
+    pointer-events: none;
+}
+
 .Searching ul{
     position: absolute;
     top:100%;

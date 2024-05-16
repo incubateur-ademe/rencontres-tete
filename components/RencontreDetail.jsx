@@ -239,6 +239,12 @@ export default function RencontreDetail({id, setOpen, userId, user}){
                 <div>
                     <span className={styles.Subtitle}>Ressources :</span>
                     <span className="block mTop20">Pas de ressources disponibles.</span>
+                    {data.metasSession.mail_referent != null && data.metasSession.mail_referent != undefined && (
+                        <>
+                            <span className={styles.Subtitle}>Contact du référent :</span>
+                            <span className="block mTop20">{data.metasSession.mail_referent}</span>                        
+                        </>
+                    )}
                 </div>
             )}   
             {passed && (

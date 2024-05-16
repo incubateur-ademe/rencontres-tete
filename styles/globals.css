@@ -271,6 +271,10 @@ p{
   opacity: 0;
 }
 
+.map__image img, .map__domtom img{
+  cursor: pointer;
+}
+
 .map{
   opacity: 0.45;
   transition:.2s ease;

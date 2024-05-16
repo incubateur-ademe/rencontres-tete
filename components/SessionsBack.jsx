@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import styles from '@/styles/SessionsBack.module.css'
 
-export default function SessionsBack({date, session, code, region, title, id, setOpen, setAlert, setActions, action, status, moduleId, dept}){
+export default function SessionsBack({isModule, date, session, code, region, title, id, setOpen, setAlert, setActions, action, status, moduleId, dept}){
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -94,10 +94,12 @@ export default function SessionsBack({date, session, code, region, title, id, se
                                 </button>
                             )}
                         </div>
-                        <div className="w100 flex aligncend flex-end gap5 mTop10">
-                            <button onClick={() => {setOpen({ type: 'reviews', session: session })}} className={styles.Register}>Voir les avis</button>
-                            <button onClick={() => {setOpen({ type: 'check', session: session })}} className={styles.Register}>Voir les participants</button>
-                        </div>
+                        {!isModule && (
+                            <div className="w100 flex aligncend flex-end gap5 mTop10">
+                                <button onClick={() => {setOpen({ type: 'reviews', session: session })}} className={styles.Register}>Voir les avis</button>
+                                <button onClick={() => {setOpen({ type: 'check', session: session })}} className={styles.Register}>Voir les participants</button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

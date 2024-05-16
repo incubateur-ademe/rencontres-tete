@@ -2,7 +2,7 @@
     padding:20px;
     border-radius: 10px;
     background:var(--primaryBack);
-    cursor:pointer;
+    /* cursor:pointer; */
 }
 
 .Date{

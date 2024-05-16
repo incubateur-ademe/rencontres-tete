@@ -23,6 +23,7 @@ export default function AddSession({setOpen, id, nom}){
           nombrePlaces: '',
           infosTransport: '',
           explications: '',
+          mail_referent: '',
           dateLimiteInscription: '',
           nombreJours: '',
           optionjour: false,
@@ -282,6 +283,7 @@ export default function AddSession({setOpen, id, nom}){
             intervenants: datas.metasSession.intervenants,
             explications: editContent,
             nombreJours: datas.metasSession.nombreJours,
+            mail_referent: datas.metasSession.mail_referent,
             optionjour: datas.metasSession.optionjour,
             programmeSession: datas.metasSession.programmeSession,
             urlsPDF: [...datas.metasSession.urlsPDF, ...uploadedUrlsPDF]
@@ -664,6 +666,14 @@ export default function AddSession({setOpen, id, nom}){
                         </div>
                         <input type="text" onChange={handleChange} name="metasSession.lieuRencontre" value={datas?.metasSession.lieuRencontre} className="input-text mTop10" placeholder="Adresse complète" />
                     </div>
+                </div>
+                <div className="w100 mTop20">
+                    <div className="flex aligncenter gap5 w50">
+                        <div className="w80">
+                            <span className={styles.dLabel}>E-mail du référent ADEME :</span>
+                        </div>
+                    </div>
+                    <input type="text" onChange={handleChange} name="metasSession.mail_referent" value={datas?.metasSession.mail_referent} className="input-text mTop10" placeholder="E-mail du référent ADEME" />
                 </div>
                 <div className="flex gap20 mTop20">
                     <div className="w50">

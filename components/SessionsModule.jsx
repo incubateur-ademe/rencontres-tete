@@ -82,6 +82,8 @@ export default function SessionsModule({ id, setOpen, open, nom }){
                                             action={() => deleteSession(session.id)}
                                             status={session.status}
                                             setActions={setActions}
+                                            session={session}
+                                            isModule="yes"
                                         />
                                     </div>                                     
                                 )

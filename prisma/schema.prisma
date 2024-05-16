@@ -81,6 +81,7 @@ model MetasSession {
   nombreJours           String?
   explications          String?
   optionjour            Boolean?
+  mail_referent         String?
   session               Session  @relation(fields: [sessionId], references: [id])
 }
 
