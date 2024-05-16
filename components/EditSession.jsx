@@ -262,6 +262,7 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'x-api-key': process.env.NEXT_PUBLIC_ADMIN_KEY
           },
           body: JSON.stringify({
             sessionData: sessionData,

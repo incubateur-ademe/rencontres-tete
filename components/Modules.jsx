@@ -25,6 +25,7 @@ export default function Modules(setPage){
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    'x-api-key': process.env.NEXT_PUBLIC_ADMIN_KEY
                 },
             });
     

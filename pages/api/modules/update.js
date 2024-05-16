@@ -16,7 +16,18 @@ function generateUniqueFileName(originalName) {
 }
 
 export default async function handle(req, res) {
-  if (req.method === 'POST') {
+  if (req.method !== 'POST') {
+      res.setHeader('Allow', ['POST']);
+      res.status(405).end(`Method ${req.method} Not Allowed`);
+      return;
+  }
+
+  const apiKey = req.headers['x-api-key'];
+  if (!apiKey || apiKey !== process.env.ADMIN_API_KEY) {
+      res.status(401).json({ error: 'Unauthorized: Invalid API key' });
+      return;
+  } 
+
     const form = new IncomingForm({
         uploadDir: path.join(process.cwd(), '/public/uploads'), // Définir le répertoire de téléchargement
         keepExtensions: true, // Conserver les extensions des fichiers
@@ -87,8 +98,4 @@ export default async function handle(req, res) {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  } else {
-    res.setHeader('Allow', ['POST']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
 }

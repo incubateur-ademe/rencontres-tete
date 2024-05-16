@@ -161,6 +161,7 @@ export default function EditModule({setOpen, id}){
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'x-api-key': process.env.NEXT_PUBLIC_ADMIN_KEY
           },
           body: JSON.stringify({
             id: moduleId,
@@ -215,6 +216,9 @@ export default function EditModule({setOpen, id}){
         try {
             const response = await fetch('/api/modules/update', {
               method: 'POST',
+              headers: {
+                'x-api-key': process.env.NEXT_PUBLIC_ADMIN_KEY
+              },
               body: formData,
             });
           

@@ -3,7 +3,8 @@ import prisma from '@/prisma';
 export default async function handle(req, res) {
     if (req.method !== 'POST') {
         res.setHeader('Allow', ['POST']);
-        return res.status(405).send(`Method ${req.method} Not Allowed`);
+        res.status(405).end(`Method ${req.method} Not Allowed`);
+        return;
     }
 
     const { userId, sessionId } = req.body;

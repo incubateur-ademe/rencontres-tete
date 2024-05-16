@@ -34,6 +34,7 @@ export default function SessionsModule({ id, setOpen, open, nom }){
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    'x-api-key': process.env.NEXT_PUBLIC_ADMIN_KEY
                 },
             });
     
