@@ -18,13 +18,14 @@ export default async function handle(req, res) {
                 data: userData,
             });
 
-            const sendMail = await fetch(`${process.env.WEBSITE_URL}/api/emails/welcome`, {
+            await fetch(`${process.env.WEBSITE_URL}/api/emails/welcome`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    prenom: userData.prenom
+                    prenom: userData.prenom,
+                    email: userData.email
                 })
             })
 

@@ -38,8 +38,7 @@ export default async function handler(req, res) {
   // Données pour le template
   const mailOptions = {
     from: '"ADEME" <contact@territoiresentransitions.fr>',
-    //to: data.email,
-    to: 'antony@innov-events.fr',
+    to: email,
     subject: "Bienvenue sur la plateforme des Rencontres Territoire Engagé Transition Ecologique !",
     template: 'welcome',
     context: {
