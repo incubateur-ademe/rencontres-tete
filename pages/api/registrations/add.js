@@ -1,4 +1,5 @@
 import prisma from '@/prisma'
+import fetch from 'node-fetch'
 
 export default async function handle(req, res) {
     if (req.method !== 'POST') {
@@ -37,7 +38,7 @@ export default async function handle(req, res) {
             }
         });
 
-        await fetch(`${process.env.WEBSITE_URL}/api/emails/sessionRegister`, {
+        const emailResponse = await fetch(`${process.env.WEBSITE_URL}/api/emails/sessionRegister`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -53,11 +54,17 @@ export default async function handle(req, res) {
             })
         });
 
+
+        if (!emailResponse.ok) {
+            throw new Error(`Email request failed with status ${emailResponse.status}`);
+        }
+
         res.json({
             registration: newRegistration,
             session: sessionData
         });
     } catch (error) {
+        console.error("Error creating registration: ", error);
         res.status(500).json({ error: `Impossible de créer l'enregistrement : ${error.message}` });
     }
 }
