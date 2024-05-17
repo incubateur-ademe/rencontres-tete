@@ -9,7 +9,7 @@ const httpsAgent = new https.Agent({
 
 export default async function handler(req, res) {
 
-  const { prenom, email, nomRencontre, dateRencontre, lieuRencontre, nbJours, mail_referent } = req.body
+  const { prenom, email, nomRencontre, dateRencontre, lieuRencontre, nbJours, mail_referent, firstDayStartTime } = req.body
 
   // Configuration de Nodemailer
   const transporter = nodemailer.createTransport({
@@ -48,7 +48,8 @@ export default async function handler(req, res) {
         lieuRencontre: lieuRencontre,
         nbJours: nbJours,
         dateRencontre: dateRencontre,
-        mail_referent: mail_referent
+        mail_referent: mail_referent,
+        firstDayStartTime: firstDayStartTime
     }
   };
 

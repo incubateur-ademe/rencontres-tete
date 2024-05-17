@@ -38,6 +38,16 @@ export default async function handle(req, res) {
             }
         });
 
+        const firstProgramme = sessionData.metasSession.programmeSession[0];
+        const firstDayStartTime = firstProgramme.horaires.split(' : ')[1].split(' - ')[0];
+
+        const dateDebut = new Date(sessionData.dateDebut);
+        const formattedDateDebut = dateDebut.toLocaleDateString('fr-FR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        });
+
         const emailResponse = await fetch(`${process.env.WEBSITE_URL}/api/emails/sessionRegister`, {
             method: 'POST',
             headers: {
@@ -47,10 +57,11 @@ export default async function handle(req, res) {
                 prenom: userData.prenom,
                 email: userData.mail,
                 nomRencontre: sessionData.module.nom,
-                dateRencontre: sessionData.dateDebut,
+                dateRencontre: formattedDateDebut,
                 lieuRencontre: sessionData.metasSession.lieuRencontre || 'Lieu',
                 nbJours: sessionData.metasSession.nombreJours,
-                mail_referent: sessionData.metasSession.mail_referent
+                mail_referent: sessionData.metasSession.mail_referent,
+                firstDayStartTime: firstDayStartTime
             })
         });
 
