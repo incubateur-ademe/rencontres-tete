@@ -46,17 +46,16 @@
     <div class="content">
         <img src="{{siteUrl}}/medias/email-top.jpg" style="width:100%;" alt="top email" />
         <div class="text">
-            <p>Bonjour [Prénom],</p>
+            <p>Bonjour {{prenom}},</p>
             <p>Plus que 3 jours avant votre Rencontre Territoire Engagé Transition Ecologique !</p>
             <p>Voici un récapitulatif des informations importantes :</p>
-            <p>Thématique de la Rencontre : [Nom de la Rencontre]<br />
-            Date de la Rencontre : [Date]<br />
-            Heure du début : [Heure de début] l’accueil se fera 30min avant l’heure de début de la Rencontre, merci de prévoir un peu d’avance !<br />
-            Durée : [Nb jour]<br />
-            Lieu de la Rencontre : [Lieu]</p>
-            <p>N'oubliez pas que des ressources ont été mises à disposition sur votre Espace personnel, elles vous permettront de vous préparer au mieux pour les échanges à venir. <br />Nous tenons également à vous rappeler qu'il est essentiel de générer votre badge sur votre espace personnel avant la rencontre et de l’imprimer pour permettre votre accès à l’évènement.</p>
+            <p>Thématique de la Rencontre : {{nomRencontre}}<br />
+            Date de la Rencontre : {{dateRencontre}}, {{firstDayStartTime}}<br />
+            Durée : {{nbJours}} jour(s)<br />
+            Lieu de la Rencontre : {{lieuRencontre}}</p>
+            <p>N'oubliez pas que des ressources ont été mises à disposition sur votre <a href="{{siteUrl}}/espace-personnel">Espace personnel</a>, elles vous permettront de vous préparer au mieux pour les échanges à venir. <br />Nous tenons également à vous rappeler qu'il est essentiel de générer votre badge sur votre espace personnel avant la rencontre et de l’imprimer pour permettre votre accès à l’évènement.</p>
             <p>Pour information, il est possible que des photos soient prises durant cette Rencontre afin que l’ADEME puisse communiquer sur ces événements.</p>
-            <p>Pour toute question supplémentaire, vous pouvez contacter le référent de cette rencontre : [Mail référent].</p>
+            <p>Pour toute question supplémentaire, vous pouvez contacter le référent de cette rencontre : {{mail_referent}}.</p>
             <p>Nous sommes impatients de vous y rencontrer !</p>
             <p>Bien cordialement,</p>
             <p>L'équipe des Rencontres Territoire Engagé Transition Ecologique</p>

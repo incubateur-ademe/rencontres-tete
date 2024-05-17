@@ -50,7 +50,7 @@ export default async function handle(req, res) {
             for (const registration of session.registrations) {
                 const userData = registration.user;
 
-                const emailResponse = await fetch(`${process.env.WEBSITE_URL}/api/emails/sessionRegister`, {
+                const emailResponse = await fetch(`${process.env.WEBSITE_URL}/api/emails/sessionWeeks`, {
                     method: 'POST',
                     headers: {
                         "Content-Type": "application/json",
