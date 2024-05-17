@@ -2,23 +2,21 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import styles from '@/styles/ModuleBox.module.css'
 
-export default function ModuleBox({title, link, theme, pilier, length}){
+export default function ModuleBox({title, link, theme, pilier, length, coming}){
    
     const [sess, setSess] = useState(0)
 
-    console.log("length => ", length)
-
     useEffect(() => {
-        if(length){
-            length.map((session, i) => {
-                if(session.status == 'publish'){
-                    setSess(prev => prev+1)
+        if(length && length.length > 0){
+            length.forEach((session) => {
+                let dateDebut = new Date(session.dateDebut);
+                let now = new Date();
+                if(session.status === 'publish' && dateDebut >= now){
+                    setSess(prev => prev + 1);
                 }
-            })
+            });
         }
-    }, [length])
-
-    console.log("sess => ", sess)
+    }, [length]);    
 
     return (
         <>
@@ -31,10 +29,12 @@ export default function ModuleBox({title, link, theme, pilier, length}){
                     <span className={styles.Theme}>{pilier}</span>
                 )}
                 <span className={`${styles.Icon} material-icons`}>add</span>
-                {(sess > 0 && length.length > 0) ? (
-                    <span className={styles.Dispos}>{length.length} rencontre{length.length > 1 ? 's' : ''} disponible{length.length > 1 ? 's' : ''}</span>
-                ) : (
-                    <span className={styles.Soon}>Rencontres à venir</span>
+                {(!coming == "not" || coming == undefined) && (
+                    (sess > 0 && length.length > 0) ? (
+                        <span className={styles.Dispos}>{length.length} rencontre{length.length > 1 ? 's' : ''} disponible{length.length > 1 ? 's' : ''}</span>
+                    ) : (
+                        <span className={styles.Soon}>Rencontres à venir</span>
+                    )
                 )}
             </Link>
         </>

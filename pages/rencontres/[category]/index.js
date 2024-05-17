@@ -254,7 +254,13 @@ export default function Module({ data }){
                     </div>
                     {sessions.length > 0 ? (
                     <div className="flex wrap gap15 mTop30">
-                        {sessions.map((session, index) => {
+                        {sessions
+                        .filter(session => {
+                            const dateDebut = new Date(session.dateDebut);
+                            const now = new Date();
+                            return session.status === 'publish' && dateDebut >= now;
+                        })
+                        .map((session, index) => {
                             return (
                                 <div key={index} className="w32 wm100">
                                     <SessionBox 
