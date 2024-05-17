@@ -122,7 +122,7 @@ export default function RencontreDetail({id, setOpen, userId, user}){
     }, [])
 
     const generateBadge = async () => {
-        const datas = { nom: userData.nom, prenom: userData.prenom, nomModule: data?.module?.nom, tarif: data?.module?.metasModule?.tarif, date: formatDate(data?.dateDebut), region: data?.metasSession?.lieuRencontre };
+        const datas = { nom: userData.nom, prenom: userData.prenom, program: data?.metasSession?.programmeSession, organisation: userData.organisation };
       
         const response = await fetch('/api/generate-badge', {
           method: 'POST',
@@ -239,7 +239,7 @@ export default function RencontreDetail({id, setOpen, userId, user}){
                 <div>
                     <span className={styles.Subtitle}>Ressources :</span>
                     <span className="block mTop20">Pas de ressources disponibles.</span>
-                    {data.metasSession.mail_referent != null && data.metasSession.mail_referent != undefined && (
+                    {data?.metasSession?.mail_referent != null && data.metasSession.mail_referent != undefined && (
                         <>
                             <span className={styles.Subtitle}>Contact du référent :</span>
                             <span className="block mTop20">{data.metasSession.mail_referent}</span>                        
