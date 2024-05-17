@@ -18,6 +18,7 @@ export default function RencontreDetail({id, setOpen, userId, user}){
     const [data, setData] = useState({})
     const [reviewDisabled, setReviewDisabled] = useState(false)
     const [userData, setUserData] = useState(null)
+    const [loading, setLoading] = useState(false)
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -122,6 +123,7 @@ export default function RencontreDetail({id, setOpen, userId, user}){
     }, [])
 
     const generateBadge = async () => {
+        setLoading(true)
         const datas = { nom: userData.nom, prenom: userData.prenom, program: data?.metasSession?.programmeSession, organisation: userData.organisation };
       
         const response = await fetch('/api/generate-badge', {
@@ -145,6 +147,7 @@ export default function RencontreDetail({id, setOpen, userId, user}){
         // Nettoyage: retire l'élément et libère l'URL du blob
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
+        setLoading(false)
       };
 
       const tryCancel = async () => {
@@ -276,6 +279,11 @@ export default function RencontreDetail({id, setOpen, userId, user}){
             {notif != null && (
                 <Notif datas={notif} setNotif={setNotif} />
             )} 
+            {loading && (
+                <div className={styles.Loading}>
+                    <img src="/medias/loading.gif" alt="loading" />
+                </div>
+            )}
         </>
     )
 }

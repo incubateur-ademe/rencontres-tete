@@ -66,6 +66,7 @@ export default function Session({ data, user }){
     const [nbInscrits, setNbInscrits] = useState(0)
     const [other, setOther] = useState(false)
     const [otherSave, setOtherSave] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const [inscription, setInscription] = useState({
         userId: '',
@@ -101,6 +102,7 @@ export default function Session({ data, user }){
     }
 
     const registerUser = async () => {
+        setLoading(true)
         let inscriptionData = {
             civilite: inscription.civilite,
             mail: inscription.mail,
@@ -162,6 +164,7 @@ export default function Session({ data, user }){
             rgpd: false,
             rgpd2: false
         })
+        setLoading(false)
     }
 
     const register = async () => {
@@ -736,6 +739,11 @@ export default function Session({ data, user }){
             )}  
             {notif != null && (
                 <Notif datas={notif} setNotif={setNotif} />
+            )}
+            {loading && (
+                <div className={styles.Loading}>
+                    <img src="/medias/loading.gif" alt="loading" />
+                </div>
             )}
         </>
     )
