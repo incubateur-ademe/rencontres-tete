@@ -9,7 +9,6 @@ export const config = {
   },
 };
 
-// Initialiser le client Supabase
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
@@ -48,7 +47,6 @@ export default async function handler(req, res) {
       const fileBuffer = fs.readFileSync(file.filepath);
       const filename = `uploads/${file.originalFilename}`;
 
-      // Vérifier si le fichier existe déjà
       const { data: existingFiles, error: listError } = await supabase
         .storage
         .from('ademe')
@@ -63,12 +61,10 @@ export default async function handler(req, res) {
 
       let uploadFilename = filename;
       if (existingFiles && existingFiles.length > 0) {
-        // Si le fichier existe, générer un nouveau nom de fichier
         const timestamp = Date.now();
         uploadFilename = `uploads/${timestamp}_${file.originalFilename}`;
       }
 
-      // Uploader le fichier sur Supabase Storage
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('ademe')
         .upload(uploadFilename, fileBuffer, {
@@ -80,7 +76,6 @@ export default async function handler(req, res) {
         continue;
       }
 
-      // Récupérer l'URL publique du fichier
       const { data: publicURL, error: urlError } = await supabase.storage
         .from('ademe')
         .getPublicUrl(uploadFilename);
@@ -90,11 +85,11 @@ export default async function handler(req, res) {
         continue;
       }
 
-      console.log('Public URL:', publicURL); // Ajout du log pour vérifier le contenu de publicURL
+      console.log('Public URL:', publicURL);
 
       urlsPDF.push({
         nom: file.originalFilename,
-        url: publicURL.publicUrl // Assurez-vous d'utiliser la propriété correcte
+        url: publicURL.publicUrl
       });
     }
   }
