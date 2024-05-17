@@ -9,7 +9,7 @@ const httpsAgent = new https.Agent({
 
 export default async function handler(req, res) {
 
-  //const { id, lang } = req.body
+  const { prenom, email } = req.body
 
   // Configuration de Nodemailer
   const transporter = nodemailer.createTransport({
@@ -43,7 +43,8 @@ export default async function handler(req, res) {
     subject: "Bienvenue sur la plateforme des Rencontres Territoire Engagé Transition Ecologique !",
     template: 'welcome',
     context: {
-  
+        prenom: prenom,
+        siteUrl: process.env.WEBSITE_URL,
     }
   };
 

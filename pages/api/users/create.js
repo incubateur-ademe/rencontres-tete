@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import prisma from '@/prisma';
+import fetch from 'node-fetch'
 
 const SALT_ROUNDS = 10;
 
@@ -16,6 +17,16 @@ export default async function handle(req, res) {
             const newUser = await prisma.user.create({
                 data: userData,
             });
+
+            const sendMail = await fetch(`${process.env.WEBSITE_URL}/api/emails/welcome`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    prenom: userData.prenom
+                })
+            })
 
             res.status(201).json(newUser);
         } catch (error) {
