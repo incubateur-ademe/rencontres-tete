@@ -113,6 +113,17 @@
     width: fit-content;
 }
 
+.Align{
+    list-style-position: inside;
+    margin:10px 0;
+    color: var(--secondary);
+}
+
+.Align ul li{
+    line-height: 2;
+    font-weight: 300;
+}
+
 @media(max-width:810px){
     .Box{
         padding:30px;

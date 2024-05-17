@@ -226,9 +226,11 @@ export default function RencontreDetail({id, setOpen, userId, user}){
             {data?.metasSession?.urlsPDF.length > 0 ? (
                 <>
                     <span className={styles.Subtitle}>Ressources :</span>
+                    <div className={styles.Align}>
                     {data?.metasSession?.explications && (
                         <div dangerouslySetInnerHTML={{ __html: data.metasSession.explications }}></div>
                     )}
+                    </div>
                     <ul className={styles.Ressources}>
                         {data?.metasSession?.urlsPDF.map((item, index) => {
                             return <li><Link target="_blank" href={item.url}>{item.nom}</Link></li>
