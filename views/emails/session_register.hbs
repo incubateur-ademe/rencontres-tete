@@ -44,16 +44,16 @@
 <body>
   <div class="container">
     <div class="content">
-        <img src="email-top.jpg" style="width:100%;" alt="top email" />
+        <img src="{{siteUrl}}/medias/email-top.jpg" style="width:100%;" alt="top email" />
         <div class="text">
-            <p>[Prénom], bienvenue sur la plateforme des Rencontres Territoire Engagé Transition Ecologique !</p>
+            <p>Bonjour {{prenom}},</p>
             <p>Vous venez de vous inscrire à une Rencontre Territoire Engagé Transition Ecologique et nous vous en remercions. Cette Rencontre représente une opportunité unique d’approfondir les enjeux et les solutions liés à la transition écologique de votre territoire et d'échanger avec d’autres collectivités de votre région.</p>
             <p>Voici les détails de votre inscription :</p>
-            <p>Thématique de la Rencontre : [Nom de la Rencontre]<br />
-            Date de la Rencontre : [Date], [Heure de début]<br />
-            Durée : [Nb jour]<br />
-            Lieu de la Rencontre : [Lieu]</p>
-            <p>Vous pourrez retrouver toutes les informations clés (le lieu, la programmation, les intervenants, ...) sur votre [Espace Personnel]. Vous recevrez par ailleurs plus de détails techniques sur l’organisation de cette rencontre par mail quelques semaines avant. En cas de question, n’hésitez pas à contacter le référent de cette rencontre : [Mail référent].</p>
+            <p>Thématique de la Rencontre : {{nomRencontre}}<br />
+            Date de la Rencontre : {{dateRencontre}}, [Heure de début]<br />
+            Durée : {{nbJours}}<br />
+            Lieu de la Rencontre : {{lieuRencontre}}</p>
+            <p>Vous pourrez retrouver toutes les informations clés (le lieu, la programmation, les intervenants, ...) sur votre <a href="{{siteUrl}}/espace-personnel"></a>. Vous recevrez par ailleurs plus de détails techniques sur l’organisation de cette rencontre par mail quelques semaines avant. En cas de question, n’hésitez pas à contacter le référent de cette rencontre : {{mail_referent}}.</p>
             <p>Pour ajouter cet événement à votre agenda, veuillez cliquer sur le lien suivant : [Insérer lien vers l'ajout à l'agenda]</p>
             <p>Nous vous encourageons à partager votre participation sur les réseaux sociaux pour inviter vos amis et collègues à rejoindre le réseau des Rencontres : [Insérer partage via RS]</p>
             <p>Merci pour votre inscription et pour les riches échanges à venir.</p>
@@ -61,8 +61,10 @@
             <p>L'équipe des Rencontres Territoire Engagé Transition Ecologique</p>
         </div>
         <div class="footer">
-            <span style="color:#274F98;display:block;">En savoir plus sur :</span>
-            <a style="text-decoration:none;color:#d13e2a;" href="https://admouv-transition-industrielle.ademe.fr">admouv-transition-industrielle.ademe.fr</a>
+            <p style="font-size:1rem;margin:0px !important">
+                <span style="color:#274F98;display:block;">En savoir plus sur :</span>
+                <a style="text-decoration:none;color:#d13e2a;" href="{{siteUrl}}">{{siteUrl}}</a>
+            </p>
         </div>
     </div>
   </div>

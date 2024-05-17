@@ -44,7 +44,7 @@
 <body>
   <div class="container">
     <div class="content">
-        <img src="email-top.jpg" style="width:100%;" alt="top email" />
+        <img src="{{siteUrl}}/medias/email-top.jpg" style="width:100%;" alt="top email" />
         <div class="text">
             <p>Bonjour [Prénom],</p>
             <p>La Rencontre Territoire Engagé à laquelle vous vous êtes inscrit.e aura lieu dans 2 semaines et nous sommes impatients de vous y retrouver !</p>
@@ -63,8 +63,10 @@
             <p>L'équipe des Rencontres Territoire Engagé Transition Ecologique</p>
         </div>
         <div class="footer">
-            <span style="color:#274F98;display:block;">En savoir plus sur :</span>
-            <a style="text-decoration:none;color:#d13e2a;" href="https://admouv-transition-industrielle.ademe.fr">admouv-transition-industrielle.ademe.fr</a>
+            <p style="font-size:1rem;margin:0px !important">
+                <span style="color:#274F98;display:block;">En savoir plus sur :</span>
+                <a style="text-decoration:none;color:#d13e2a;" href="{{siteUrl}}">{{siteUrl}}</a>
+            </p>
         </div>
     </div>
   </div>

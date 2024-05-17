@@ -12,6 +12,18 @@ export default async function handle(req, res) {
     try {
         const now = new Date();
 
+        const userData = await prisma.user.findUnique({
+            where: { id: parseInt(userId) },
+        });
+
+        const sessionData = await prisma.session.findUnique({
+            where: { id: parseInt(sessionId) },
+            include: {
+                metasSession: true,
+                module: true
+            }
+        });
+
         const newRegistration = await prisma.registration.create({
             data: {
                 ...inscriptionData,
@@ -25,7 +37,26 @@ export default async function handle(req, res) {
             }
         });
 
-        res.json(newRegistration);
+        await fetch(`${process.env.WEBSITE_URL}/api/emails/sessionRegister`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                prenom: userData.prenom,
+                email: userData.mail,
+                nomRencontre: sessionData.module.nom,
+                dateRencontre: sessionData.dateDebut,
+                lieuRencontre: sessionData.metasSession.lieuRencontre || 'Lieu',
+                nbJours: sessionData.metasSession.nombreJours,
+                mail_referent: sessionData.metasSession.mail_referent
+            })
+        });
+
+        res.json({
+            registration: newRegistration,
+            session: sessionData
+        });
     } catch (error) {
         res.status(500).json({ error: `Impossible de créer l'enregistrement : ${error.message}` });
     }
