@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    .container{
+        background:#F2F2F2;
+        padding:20px;
+        box-sizing: border-box;
+    }
+
+    .content{
+        background-color: #FFF;
+        padding:30px;
+        box-sizing: border-box;
+        max-width:900px;
+        margin-left:auto;
+        margin-right:auto;
+        font-family: "Outfit" ,sans-serif;
+    }
+
+    .text{
+        margin-top:20px;
+    }
+
+    .text p{
+        font-weight: 400;
+        font-size: 1rem;
+        line-height:1.5
+    }
+
+    .footer{
+        border-left:1px solid red;
+        padding:20px;
+        padding-left:40px;
+        box-sizing: border-box;
+        margin-top:50px;
+    }
+
+    @media(max-width:810px){
+        .btn{
+            margin-top:20px;
+            margin-left:0px !important;
+            font-weight:600 !important
+        }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="content">
+        <img src="{{siteUrl}}/medias/email-top.jpg" style="width:100%;" alt="top email" />
+        <div class="text">
+            {{{content}}}
+        </div>
+        <div class="footer">
+            <p style="font-size:1rem;margin:0px !important">
+                <span style="color:#274F98;display:block;">En savoir plus sur :</span>
+                <a style="text-decoration:none;color:#d13e2a;" href="{{siteUrl}}">{{siteUrl}}</a>
+            </p>
+        </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -73,6 +73,17 @@ export default function Participants({ session, setOpen }){
     const sendMail = async () => {
         console.log('envoi email')
         // fonction pour envoyer le mail uniquement aux NON ANNULÉS
+        const sendMail = await fetch(`/api/emails/toParticipants`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body:JSON.stringify({
+                sujet: subject,
+                content: editContent,
+                sessionId: session.id
+            })
+        })
         
         setAlert(null)
         setNotif({
