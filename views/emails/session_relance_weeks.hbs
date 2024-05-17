@@ -46,17 +46,16 @@
     <div class="content">
         <img src="{{siteUrl}}/medias/email-top.jpg" style="width:100%;" alt="top email" />
         <div class="text">
-            <p>Bonjour [Prénom],</p>
+            <p>Bonjour {{prenom}},</p>
             <p>La Rencontre Territoire Engagé à laquelle vous vous êtes inscrit.e aura lieu dans 2 semaines et nous sommes impatients de vous y retrouver !</p>
             <p>Cette Rencontre sera une occasion unique de plonger au cœur des enjeux et des solutions liés à la transition écologique de votre territoire et d'échanger avec d’autres collectivités de votre région.</p>
             <p>Voici un récapitulatif des informations importantes :</p>
-            <p>Thématique de la Rencontre : [Nom de la Rencontre]<br />
-            Date de la Rencontre : [Date]<br />
-            Heure de début : [Heure de début]<br />
-            Durée : [Nb jour]<br />
-            Lieu de la Rencontre : [Lieu]</p>
-            <p>Assurez-vous de bien bloquer cette Rencontre dans votre agenda : [Insérer lien vers l'ajout à l'agenda]<br />En cas de question, vous pouvez contacter le référent de cette rencontre : [Mail référent].</p>
-            <p>Si jamais vous ne pouvez plus participer, merci d'annuler au plus vite votre inscription dans votre espace personnel : [Insérer lien vers l’espace personnel]</p>
+            <p>Thématique de la Rencontre : {{nomRencontre}}<br />
+            Date de la Rencontre : {{dateRencontre}}, {{firstDayStartTime}}<br />
+            Durée : {{nbJours}} jour(s)<br />
+            Lieu de la Rencontre : {{lieuRencontre}}</p>
+            <p>Assurez-vous de bien bloquer cette Rencontre dans votre agenda.<br />En cas de question, vous pouvez contacter le référent de cette rencontre : {{mail_referent}}.</p>
+            <p>Si jamais vous ne pouvez plus participer, merci d'annuler au plus vite votre inscription dans votre espace personnel : <a href="{{siteUrl}}">{{siteUrl}}/espace-personnel</a></p>
             <p>Dans votre espace personnel, vous retrouverez également :<br />Toutes les informations pratiques relatives à la Rencontre<br />Des ressources pour vous préparer au mieux aux échanges à venir<br />Un badge à générer vous permettant d’accéder à l’événement le jour J</p>
             <p>Nous sommes impatients de vous retrouver lors de cette Rencontre !</p>
             <p>Bien cordialement,</p>

@@ -29,8 +29,8 @@ export default async function handler(req, res) {
   const mailOptions = {
     from: '"ADEME" <contact@territoiresentransitions.fr>',
     to: email,
-    subject: "Inscription à une Rencontre Territoire Engagé Transition Ecologique",
-    template: 'session_register',
+    subject: "[Rappel] : "+dateRencontre+" - Rencontre Territoire Engagé Transition Ecologique",
+    template: 'session_relance_weeks',
     context: {
       prenom: prenom,
       siteUrl: process.env.WEBSITE_URL,
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
       nbJours: nbJours,
       dateRencontre: dateRencontre,
       mail_referent: mail_referent,
-      firstDayStartTime: firstDayStartTime
+      firstDayStartTime: firstDayStartTime,
     }
   };
 
