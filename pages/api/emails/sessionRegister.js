@@ -33,7 +33,7 @@ export default async function handler(req, res) {
     extName: '.hbs',
   }));
 
-  // Format de la date pour l'ICS (ex: 20240517T080000Z)
+  // Formater la date et l'heure pour l'ICS (ex: 20240517T080000Z)
   const icsDateStart = `${dateRencontre.replace(/-/g, '')}T${firstDayStartTime.replace(/:/g, '')}00Z`;
   const icsDateEnd = `${dateRencontre.replace(/-/g, '')}T${(parseInt(firstDayStartTime.split(':')[0]) + 2).toString().padStart(2, '0')}${firstDayStartTime.split(':')[1]}00Z`;
 
@@ -50,7 +50,7 @@ END:VEVENT
 END:VCALENDAR`;
 
   // Encodage du contenu ICS pour utilisation dans une URL
-  const encodedIcsContent = encodeURIComponent(icsContent).replace(/%20/g, ' ');
+  const encodedIcsContent = encodeURIComponent(icsContent).replace(/%20/g, '%20').replace(/%0A/g, '%0A');
 
   // Données pour le template
   const mailOptions = {
