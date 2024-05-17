@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     secure: false, // Mettez à true pour le port 465, ou false pour les autres ports
     auth: {
       user: 'contact@territoiresentransitions.fr', // Remplacez par votre nom d'utilisateur SMTP
-      pass: '' // Remplacez par votre mot de passe SMTP
+      pass: process.env.BREVO_KEY
     },
     tls: {rejectUnauthorized: false}
   });
