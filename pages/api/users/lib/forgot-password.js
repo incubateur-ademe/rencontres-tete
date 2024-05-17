@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import prisma from '@/prisma';
 const crypto = require('crypto');
+import fetch from 'node-fetch'
 
 function generatePassword(length = 10) {
     return crypto.randomBytes(length)
@@ -29,6 +30,16 @@ export default async function handle(req, res) {
             });
 
             // envoyer mail avec le nouveau mdp : newPassword
+            await fetch(`${process.env.WEBSITE_URL}/api/emails/newPassword`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: mail,
+                    password: newPassword
+                })
+            })
 
             res.json(updatedUser);
         } catch (error) {
