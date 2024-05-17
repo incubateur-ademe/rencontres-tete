@@ -25,7 +25,7 @@ export default async function handle(req, res) {
                 },
                 body: JSON.stringify({
                     prenom: userData.prenom,
-                    email: userData.email
+                    email: userData.mail
                 })
             })
 
