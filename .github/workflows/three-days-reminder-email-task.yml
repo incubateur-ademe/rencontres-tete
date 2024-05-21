@@ -25,14 +25,4 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           WEBSITE_URL: ${{ secrets.WEBSITE_URL }}
-        run: |
-          node -e "
-          const fetch = require('node-fetch');
-          (async () => {
-            const res = await fetch(`${process.env.WEBSITE_URL}/api/workflow/workflowDays`, {
-              method: 'GET'
-            });
-            const data = await res.json();
-            console.log(data);
-          })();
-          "
+        run: node .github/scripts/fetchDataDays.js
