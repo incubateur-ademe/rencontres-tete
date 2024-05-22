@@ -25,4 +25,4 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           WEBSITE_URL: ${{ secrets.WEBSITE_URL }}
-        run: node .github/scripts/fetchDataDays.js
+        run: node .github/workflows/scripts/fetchDataDays.js
