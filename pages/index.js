@@ -104,7 +104,7 @@ export default function Home() {
               <span className={styles.legend}>Carte des régions de France</span>
             </div>
             <div className="w50 wm100">
-              <h2>Découvrez les rencontres à venir dans votre région</h2>
+              <h2>Découvrez les rencontres à venir dans votre région.</h2>
               <ul className={`${styles.Regions}`}>
                 <li><Link href={`/rencontres?region=Auvergne-Rhône-Alpes`} onMouseOver={() => setRegion('ARA')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Auvergne-Rhône-Alpes</Link></li>
                 <li><Link href={`/rencontres?region=Bourgogne-Franche-Comté`} onMouseOver={() => setRegion('BFC')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Bourgogne-Franche-Comté</Link></li>
