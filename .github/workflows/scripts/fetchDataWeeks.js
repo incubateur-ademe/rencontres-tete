@@ -1,7 +1,7 @@
 (async () => {
   const fetch = await import('node-fetch').then(module => module.default);
 
-  const res = await fetch(`${process.env.WEBSITE_URL}/api/workflow/workflowWeeks`, {
+  const res = await fetch(`https://rencontres.territoiresentransitions.fr/api/workflow/workflowWeeks`, {
     method: 'GET'
   });
   const data = await res.json();
