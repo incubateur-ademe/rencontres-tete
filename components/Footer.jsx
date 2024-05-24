@@ -26,12 +26,11 @@ export default function Footer(){
                     </div>
                     <div className={styles.Subfooter}>
                         <ul className="mwrap">
-                            <li><Link href="/">Mentions légales</Link></li>
+                            <li><Link href="https://www.territoiresentransitions.fr/mentions">Mentions légales</Link></li>
                             <li><Link href="https://www.ademe.fr/donnees-personnelles/" target="_blank">Données personnelles</Link></li>
-                            <li><Link href="/">Gestion des cookies</Link></li>
-                            <li><Link href="/">Code source</Link></li>
-                            <li><Link href="/">Conditions générales d'utilisation</Link></li>
-                            <li><Link href="/espace-personnel">Espace personnel</Link></li>
+                            <li><Link href="https://www.territoiresentransitions.fr/cookies">Gestion des cookies</Link></li>
+                            <li><Link href="https://www.territoiresentransitions.fr/cgu">Conditions générales d'utilisation</Link></li>
+                            <li><Link href="https://www.territoiresentransitions.fr/accessibilite">Accessibilité</Link></li>
                         </ul>
                     </div>
                 </div>

@@ -725,6 +725,7 @@ export default function Session({ data, user }){
                                 )}
                                 {data.metasSession.mail_referent != undefined && data.metasSession.mail_referent != null && (
                                     <>
+                                        <p><strong>Référent(e) DR Grand Est</strong></p>
                                         <p>Une question concernant cette Rencontre ? Contactez le référent sur l’adresse mail suivante :<br />{data.metasSession.mail_referent}</p>
                                     </>
                                 )}                               
