@@ -280,7 +280,6 @@ export default function AddModule({setOpen}){
     const [previewUrl, setPreviewUrl] = useState(null);
 
     const handleImageChange = async (event) => {
-    const handleImageChange = async (event) => {
         if (event.target.files && event.target.files[0]) {
           const file = event.target.files[0];
           setSelectedImage(file);
