@@ -5,7 +5,7 @@ import EditModule from '@/components/EditModule'
 import AddModule from '@/components/AddModule'
 import styles from '@/styles/Admin.module.css'
 
-export default function SessionsModule({ id, setOpen, open, nom }){
+export default function SessionsModule({ id, setOpen, open, nom, user }){
 
     const [nav, setNav] = useState(0)
     const [alert, setAlert] = useState(null)
@@ -60,7 +60,9 @@ export default function SessionsModule({ id, setOpen, open, nom }){
                 <>
                     <div className="flex aligncenter space-between w100 gap40 mBot15">
                         <span className={`${styles.Title} w65`}>Toutes les sessions pour le module :<br />{nom}</span>
-                        <button onClick={() => setOpen({ type: 'add', model: 'session', nom: nom, id: id })} className="btn__normal btn__dark">Ajouter une session</button>
+                        {user.type != 'DR' && (
+                            <button onClick={() => setOpen({ type: 'add', model: 'session', nom: nom, id: id })} className="btn__normal btn__dark">Ajouter une session</button>
+                        )}                  
                     </div>
                     <div className={styles.Menu}>
                         <button onClick={() => {setNav(0);setPassed('upcoming')}} className={nav == 0 ? styles.active : undefined}>Sessions programmées</button>
@@ -69,25 +71,28 @@ export default function SessionsModule({ id, setOpen, open, nom }){
                     <div className="mTop30">
                         {sessions.length > 0 ? (
                             sessions.map((session, index) => {
-                                return (
-                                    <div key={index} className="w100 mBot10">
-                                        <SessionsBack 
-                                            date={session.dateDebut}
-                                            region={session.region}
-                                            dept={session.departement}
-                                            title={nom}
-                                            id={session.id}
-                                            moduleId={id}
-                                            setOpen={setOpen}
-                                            setAlert={setAlert}
-                                            action={() => deleteSession(session.id)}
-                                            status={session.status}
-                                            setActions={setActions}
-                                            session={session}
-                                            isModule="yes"
-                                        />
-                                    </div>                                     
-                                )
+                                if(session.status == "publish" || user.type == 'Administrateur' || user.id == 10){
+                                    return (
+                                        <div key={index} className="w100 mBot10">
+                                            <SessionsBack 
+                                                date={session.dateDebut}
+                                                region={session.region}
+                                                dept={session.departement}
+                                                title={nom}
+                                                id={session.id}
+                                                moduleId={id}
+                                                setOpen={setOpen}
+                                                setAlert={setAlert}
+                                                action={() => deleteSession(session.id)}
+                                                status={session.status}
+                                                setActions={setActions}
+                                                session={session}
+                                                isModule="yes"
+                                                user={user}
+                                            />
+                                        </div>                                     
+                                    )
+                                }
                             })
                         ) : (
                             <>

@@ -14,38 +14,56 @@ export default function Login(){
     const router = useRouter();
 
     const handleChange = async (event) => {
-        const { name, type, value } = event.target
+        const { name, type, checked, value } = event.target
         setUserLogin(prev => {
             return {
                 ...prev,
-                [name]: value
+                [name]: type == 'checkbox' ? checked : value
             }
         })
     }
 
     const login = async () => {
-        const { mail, motDePasse } = userLogin;
+        const { mail, motDePasse, isAdmin } = userLogin;
         if (mail && motDePasse) {
-            const test = await fetch(`/api/users/lib/auth/?mail=${mail}&motDePasse=${motDePasse}`);
-            const json = await test.json();
-            if (json.success == true) {
-                    
+            if(isAdmin){
+                const test = await fetch(`/api/accounts/lib/auth/?mail=${mail}&motDePasse=${motDePasse}`);
+                const json = await test.json();
+                if (json.success == true) {                       
+                    const jwtResponse = await fetch(`/api/accounts/lib/jwt`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ id: json.account.id, mail: json.account.mail, type: json.account.type }),
+                    });
+                
+                    const jwtJson = await jwtResponse.json();
+                    if(jwtJson.success){
+                        router.push('/admin');                  
+                    }
+                } else {
+                    setNotif({
+                        text: 'Identifiant ou mot de passe invalide(s)',
+                        icon: 'close'
+                    });
+                }
+            }
+            else{
+                const test = await fetch(`/api/users/lib/auth/?mail=${mail}&motDePasse=${motDePasse}`);
+                const json = await test.json();
+                if (json.success == true) {                       
                     const jwtResponse = await fetch(`/api/users/lib/jwt`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ id: json.user.id, mail: json.user.mail }),
+                        body: JSON.stringify({ id: json.user.id, mail: json.user.mail, type: 'user' }),
                     });
                 
                     const jwtJson = await jwtResponse.json();
                     if(jwtJson){
-                        if(json.user.id == 10){
-                            router.push('/admin');
-                        }
-                        else{
-                            router.push('/espace-personnel');
-                        }                       
+                        router.push('/espace-personnel');                       
                     }
                     
                 } else {
@@ -54,8 +72,8 @@ export default function Login(){
                         icon: 'close'
                     });
                 }
-                
             }
+        }
         else {
             setNotif({
                 text: 'Veuillez remplir tous les champs !',
@@ -117,6 +135,16 @@ export default function Login(){
                                         </div>
                                         <div className="mBot20">
                                             <input type="password" name="motDePasse" onChange={handleChange} value={userLogin.motDePasse} className="input-text" placeholder="Mot de passe" />
+                                        </div>
+                                        <div className="mBot20">
+                                            <input 
+                                                type="checkbox" 
+                                                name="isAdmin" 
+                                                onChange={handleChange} 
+                                                checked={userLogin.isAdmin ? true : false} 
+                                            />
+                                            &nbsp;&nbsp;
+                                            <span>Je suis administrateur ou DR</span>
                                         </div>
                                         <div className="flex flex-end toColumn mCenter gap10">
                                             <Link href="/inscription" className="btn__normal btn__light">

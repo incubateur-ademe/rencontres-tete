@@ -119,3 +119,10 @@ model Review {
   session     Session @relation(fields: [sessionId], references: [id])
   user        User    @relation(fields: [userId], references: [id])
 }
+
+model Account {
+  id       Int     @id @default(autoincrement()) @db.SmallInt
+  email    String  @unique
+  password String?
+  type     String?
+}
