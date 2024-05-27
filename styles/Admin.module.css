@@ -283,3 +283,34 @@
     color:#FFF;
     font-size: 1.15rem;
 }
+
+.Subtitle{
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.acc{
+    border-bottom:1px solid rgba(0,0,0,.05)
+}
+
+.acc p{
+    width: 50%;
+}
+
+.acc span{
+    background-color: var(--primaryBack);
+    color: var(--primary);
+    display: inline-block;
+    padding:10px 15px;
+    border-radius: 8px;
+}
+
+.acc button{
+    color:#FFF;
+    background-color: var(--primary);
+    border:0px;
+    border-radius: 8px;
+    padding:10px 15px;
+    cursor:pointer;
+}

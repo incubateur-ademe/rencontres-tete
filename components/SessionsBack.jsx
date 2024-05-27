@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import styles from '@/styles/SessionsBack.module.css'
 
-export default function SessionsBack({isModule, date, session, code, region, title, id, setOpen, setAlert, setActions, action, status, moduleId, dept}){
+export default function SessionsBack({isModule, date, session, code, region, title, id, setOpen, setAlert, setActions, action, status, moduleId, dept, user}){
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -70,28 +70,32 @@ export default function SessionsBack({isModule, date, session, code, region, tit
                     </div>
                     <div className="w50">
                         <div className="w100 flex aligncend flex-end gap5">
-                            <button 
-                                onClick={() => setAlert({
-                                    icon: 'warning',
-                                    text: 'Êtes-vous sûr de vouloir supprimer cette session ?',
-                                    action: action,
-                                    setAlert: setAlert
-                                })}
-                                className={styles.Corb}>
-                                <span className="material-icons">delete</span>
-                            </button>
-                            <button onClick={() => setOpen({ id: id, type: 'edit', model: 'session', nom: title, moduleId: moduleId })} className={styles.Register}>Modifier la session</button>
-                            {status == 'brouillon' && (
-                                <button  
-                                    onClick={() => setAlert({
-                                        icon: 'warning',
-                                        text: 'Êtes-vous sûr de vouloir publier cette session ?',
-                                        action: publish,
-                                        setAlert: setAlert
-                                    })}
-                                    className={styles.Register}>
-                                    Publier
-                                </button>
+                            {user.type != 'DR' && (
+                                <>
+                                    <button 
+                                        onClick={() => setAlert({
+                                            icon: 'warning',
+                                            text: 'Êtes-vous sûr de vouloir supprimer cette session ?',
+                                            action: action,
+                                            setAlert: setAlert
+                                        })}
+                                        className={styles.Corb}>
+                                        <span className="material-icons">delete</span>
+                                    </button>
+                                    <button onClick={() => setOpen({ id: id, type: 'edit', model: 'session', nom: title, moduleId: moduleId })} className={styles.Register}>Modifier la session</button>
+                                    {status == 'brouillon' && (
+                                        <button  
+                                            onClick={() => setAlert({
+                                                icon: 'warning',
+                                                text: 'Êtes-vous sûr de vouloir publier cette session ?',
+                                                action: publish,
+                                                setAlert: setAlert
+                                            })}
+                                            className={styles.Register}>
+                                            Publier
+                                        </button>
+                                    )}                                
+                                </>
                             )}
                         </div>
                         {!isModule && (

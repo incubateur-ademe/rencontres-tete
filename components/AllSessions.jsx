@@ -11,7 +11,7 @@ import AddSession from '@/components/AddSession'
 import SessionsModule from '@/components/SessionsModule'
 import styles from '@/styles/Admin.module.css'
 
-export default function Modules({setPage, page}){
+export default function Modules({setPage, page, user}){
 
     const [open, setOpen] = useState(null)
     const [alert, setAlert] = useState(null)
@@ -107,7 +107,6 @@ export default function Modules({setPage, page}){
         getSessions(tri, status, region, codes);
     }
 
-    console.log(sessions)
 
     return (
         <>
@@ -169,25 +168,28 @@ export default function Modules({setPage, page}){
                     <div className="mTop30">
                         {sessions.length > 0 ? (
                             sessions.map((session, index) => {
-                                return (
-                                    <div key={index} className="w100 mBot10">
-                                        <SessionsBack 
-                                            date={session.dateDebut}
-                                            code={session.module.code}
-                                            region={session.region}
-                                            dept={session.departement}
-                                            title={session.moduleName}
-                                            id={session.id}
-                                            moduleId={session.moduleId}
-                                            setOpen={setOpen}
-                                            setAlert={setAlert}
-                                            action={() => deleteSession(session.id)}
-                                            status={session.status}
-                                            setActions={setActions}
-                                            session={session}
-                                        />
-                                    </div>                                     
-                                )
+                                if(session.status == 'publish' || user.type == 'Administrateur' || user.id == 10){
+                                    return (
+                                        <div key={index} className="w100 mBot10">
+                                            <SessionsBack 
+                                                date={session.dateDebut}
+                                                code={session.module.code}
+                                                region={session.region}
+                                                dept={session.departement}
+                                                title={session.moduleName}
+                                                id={session.id}
+                                                moduleId={session.moduleId}
+                                                setOpen={setOpen}
+                                                setAlert={setAlert}
+                                                action={() => deleteSession(session.id)}
+                                                status={session.status}
+                                                setActions={setActions}
+                                                session={session}
+                                                user={user}
+                                            />
+                                        </div>                                     
+                                    )
+                                }
                             })
                         ) : (
                             <>
@@ -229,7 +231,7 @@ export default function Modules({setPage, page}){
                             <div className="mBot30">
                                 <span onClick={() => setOpen(null)} className={styles.Back}>Retour aux modules</span>
                             </div>
-                            <SessionsModule setOpen={setOpen} id={open.id} nom={open.nom} />
+                            <SessionsModule setOpen={setOpen} id={open.id} nom={open.nom} user={user} />
                         </>
                     )}
                 </>

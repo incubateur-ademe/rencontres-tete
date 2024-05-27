@@ -8,7 +8,7 @@ import AddSession from '@/components/AddSession'
 import SessionsModule from '@/components/SessionsModule'
 import styles from '@/styles/Admin.module.css'
 
-export default function Modules(setPage){
+export default function Modules({setPage, user}){
 
     const [open, setOpen] = useState(null)
     const [alert, setAlert] = useState(null)
@@ -115,7 +115,9 @@ export default function Modules(setPage){
                 <>
                     <div className="flex aligncenter space-between w100 gap40">
                         <span className={`${styles.Title} w65`}>Tous les modules</span>
-                        <button onClick={() => setOpen({ type: 'add', model: 'module' })} className="btn__normal btn__dark">Ajouter un nouveau module</button>
+                        {user.type != 'DR' && (
+                            <button onClick={() => setOpen({ type: 'add', model: 'module' })} className="btn__normal btn__dark">Ajouter un nouveau module</button>
+                        )}                        
                     </div>
                     <div className="flex gap20 mTop30">
                         <div className="select w30">
@@ -159,6 +161,7 @@ export default function Modules(setPage){
                                             setAlert={setAlert}
                                             sessions={module.sessions}
                                             action={() => deleteModule(module.id)}
+                                            user={user}
                                         />
                                     </div>                                     
                                 )
@@ -197,7 +200,7 @@ export default function Modules(setPage){
                             <div className="mBot30">
                                 <span onClick={() => setOpen(null)} className={styles.Back}>Retour aux modules</span>
                             </div>
-                            <SessionsModule setOpen={setOpen} id={open.id} nom={open.nom} />
+                            <SessionsModule setOpen={setOpen} id={open.id} nom={open.nom} user={user} />
                         </>
                     )}
                 </>

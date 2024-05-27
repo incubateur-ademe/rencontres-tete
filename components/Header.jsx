@@ -45,7 +45,7 @@ export default function Header(){
                                 <li onClick={() => setActiveMenu(prev => !prev)}><Link href="/rencontres">Les Rencontres</Link></li>
                                 {user?.id ? (
                                     <>
-                                        {user.id == 10 ? (
+                                        {(user.id == 10 || user.type == 'Administrateur' || user.type == 'DR') ? (
                                             <li onClick={() => setActiveMenu(prev => !prev)} className={styles.pf}><Link href="/admin">Administration</Link></li>
                                         ) : (
                                             <li onClick={() => setActiveMenu(prev => !prev)} className={styles.pf}><Link href="/espace-personnel">Espace personnel</Link></li>
