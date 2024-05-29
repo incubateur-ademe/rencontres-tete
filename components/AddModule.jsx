@@ -279,18 +279,31 @@ export default function AddModule({setOpen}){
     const [selectedImage, setSelectedImage] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
 
-    const handleImageChange = (event) => {
+    const handleImageChange = async (event) => {
         if (event.target.files && event.target.files[0]) {
-            const file = event.target.files[0];
-            setSelectedImage(file); // Mettez à jour l'état avec le fichier sélectionné si vous l'utilisez
+          const file = event.target.files[0];
+          setSelectedImage(file);
+
+          const formData = new FormData();
+          formData.append('file', file);
     
-            // Créer une URL pour le fichier sélectionné
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                // Lorsque la lecture est terminée, stockez l'URL résultante dans l'état previewUrl
-                setPreviewUrl(reader.result);
-            };
-            reader.readAsDataURL(file); // Démarrez la lecture du fichier
+          try {
+            const response = await fetch('/api/uploadVisuel', {
+              method: 'POST',
+              body: formData,
+            });
+    
+            const data = await response.json();
+    
+            if (response.ok) {
+              const publicUrl = data.urlsPDF[0].url;
+              setPreviewUrl(publicUrl);
+            } else {
+              console.error('Erreur lors de l\'upload:', data.error);
+            }
+          } catch (error) {
+            console.error('Erreur lors de l\'upload:', error);
+          }
         }
     };
 

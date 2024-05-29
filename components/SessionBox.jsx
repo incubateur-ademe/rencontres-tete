@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import styles from '@/styles/SessionBox.module.css'
 
-export default function SessionBox({date, region, title, link, data, register, dept, see, detail}){
+export default function SessionBox({date, region, title, link, data, register, dept, see, detail, displayDept}){
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -11,14 +11,12 @@ export default function SessionBox({date, region, title, link, data, register, d
         return `${day}/${month}/${year}`;
     }
 
-    console.log(data)
-
     return (
         <>
             <div className={styles.SessionBox}>
                 <div className="flex aligncenter space-between">
                     <span className={styles.Date}>{date}</span>
-                    <span className={styles.Region}>{dept && `${dept} - `}{region}</span>
+                    <span className={styles.Region}>{displayDept != "no" ? dept && `${dept} - ` : ''}{region}</span>
                 </div>
                 <div className="flex alignend gap40 mTop20">
                     <div className="w70">

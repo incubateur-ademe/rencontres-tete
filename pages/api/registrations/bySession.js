@@ -14,6 +14,7 @@ export default async function handle(req, res) {
         session: {
           include: {
             reviews: true,
+            metasSession: true,
           }
         }
       },

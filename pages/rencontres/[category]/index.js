@@ -205,6 +205,9 @@ export default function Module({ data }){
                     <div className="flex wrap gap25 mTop40">
                         {Object.keys(groupedData).map(day => (
                             <div key={day}>
+                                {data.metasModule.duree == "2 jours" && (
+                                    <span className={styles.dayTitle}>Jour {day}</span>
+                                )}
                                 <div className="flex wrap gap25">
                                     {groupedData[day].map((programme, index) => (
                                         <div key={index} className="w23 wm100">
@@ -273,6 +276,7 @@ export default function Module({ data }){
                                         .replace(/\s+/g, '-')
                                         .toLowerCase()}`}
                                         dept={session.departement}
+                                        displayDept="no"
                                     />
                                 </div>
                             )
