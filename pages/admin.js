@@ -10,6 +10,7 @@ import styles from '@/styles/Admin.module.css'
 
 export async function getServerSideProps(context) {
     const { auth: token } = nextCookies(context);
+
     const user = verifyToken(token);
   
     if (!user || (user.id != 10 && user.type != 'Administrateur' && user.type != 'Moderateur')) {
