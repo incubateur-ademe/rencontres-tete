@@ -293,6 +293,8 @@ export default function AddModule({setOpen}){
               body: formData,
             });
     
+            // fin d'upload
+
             const data = await response.json();
     
             if (response.ok) {
