@@ -3,7 +3,7 @@ import Alert from '@/components/Alert'
 import { useState, useEffect } from 'react'
 import styles from '@/styles/Participants.module.css'
 
-export default function Participant({ data, setActions }){
+export default function Participant({ data, setActions, session }){
 
     const [alert, setAlert] = useState(null)
     const [notif, setNotif] = useState(null)
@@ -24,6 +24,8 @@ export default function Participant({ data, setActions }){
         });
     }
 
+    console.log(data.session.metasSession.nombreJours)
+
     return (
         <>
             <div className={`${styles.User} ${data.deleted ? styles.Canceled : undefined}`}>
@@ -43,7 +45,7 @@ export default function Participant({ data, setActions }){
                     <div className="w30"><span className={styles.Label}>Type de fonction</span>{data.typeFonction}</div>
                     <div className="w20"><span className={styles.Label}>Ville</span>{data.ville ? data.ville : '-'}</div>
                     <div className="w22"><span className={styles.Label}>Transport</span>{data.transport}</div>
-                    <div className="w22"><span className={styles.Label}>Repas</span>{data.repas ? 'J1 : Oui' : 'J1 : Non'}{data.repas2 ? ' / J2 : Oui' : ' / J2 : Non'}{data.regime ? ` (${data.regime})` : ''}</div>
+                    <div className="w22"><span className={styles.Label}>Repas</span>{data.repas ? 'J1 : Oui' : 'J1 : Non'}{data.session.metasSession.nombreJours == 2 ? data.repas2 ? ' / J2 : Oui' : ' / J2 : Non' : ''}{data.regime ? ` (${data.regime})` : ''}</div>
                     <div className="w30"><span className={styles.Label}>Besoin spécifique</span>{data.besoins != null ? data.besoins : '-'}</div>
                     <div className="w20"><span className={styles.Label}>Présence</span>{data.deleted ? 'Annulée' : data.days ? 'Complète' : '1/2'}</div>
                 </div>

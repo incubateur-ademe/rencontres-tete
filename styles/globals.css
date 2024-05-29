@@ -27,6 +27,10 @@ body{
   background:var(--primaryBack)
 }
 
+.noneall{
+  display: none !important;
+}
+
 h1, h2, h3, h4, h5{
   text-wrap:balance;
   letter-spacing: .5px;

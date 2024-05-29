@@ -169,7 +169,7 @@ export default function Session({ data, user }){
 
     const register = async () => {
         const { civilite, nom, prenom, mail, structure, fonction, type_fonction, ville, region, telephone, transport, besoins, hebergement, repas, rgpd, rgpd2 } = inscription
-        if(civilite && nom && prenom && mail && structure && fonction && type_fonction && region && transport && hebergement){
+        if(civilite && nom && prenom && mail && structure && fonction && type_fonction && region && transport){
             if(rgpd && rgpd2){
                 if(mail.includes('@') && mail.includes('.')){
                     setAlert({
@@ -255,7 +255,7 @@ export default function Session({ data, user }){
         const checker = async () => {
             const fetcher = await fetch(`/api/registrations/byUserSession?userId=${user.id}&sessionId=${data.id}`)
             const json = await fetcher.json()
-            if(json.length > 0){
+            if(json.length > 0 && json[0].deleted == false){
                 setCheck(true)
             }
         }
@@ -650,7 +650,7 @@ export default function Session({ data, user }){
                                                     </select>
                                                     <span className="material-icons">expand_more</span>
                                                 </div>
-                                                <div className="select w100 mTop20 mBot30">
+                                                <div className={`select w100 mTop20 mBot30 ${data.metasSession.nombreJours == 1 ? "noneall" : undefined}`}>
                                                     <select name="hebergement" onChange={handleChange} value={inscription.hebergement} className="input-select">
                                                         <option>Votre type d'hébergement*</option>
                                                         <option>Hôtel</option>

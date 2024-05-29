@@ -10,17 +10,16 @@ import styles from '@/styles/Admin.module.css'
 
 export async function getServerSideProps(context) {
     const { auth: token } = nextCookies(context);
-    console.log('Token:', token);
-    const user = verifyToken(token);
-    console.log('User:', user);
 
-    if (!user || (user.id != 10 && user.type != 'Administrateur' && user.type != 'DR')) {
-        return {
-            redirect: {
-                destination: '/connexion',
-                permanent: false,
-            },
-        };
+    const user = verifyToken(token);
+  
+    if (!user || (user.id != 10 && user.type != 'Administrateur' && user.type != 'Moderateur')) {
+      return {
+        redirect: {
+          destination: '/connexion',
+          permanent: false,
+        },
+      };
     }
 
     return { props: { user } };
