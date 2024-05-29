@@ -280,6 +280,7 @@ export default function AddModule({setOpen}){
     const [previewUrl, setPreviewUrl] = useState(null);
 
     const handleImageChange = async (event) => {
+    const handleImageChange = async (event) => {
         if (event.target.files && event.target.files[0]) {
           const file = event.target.files[0];
           setSelectedImage(file);
@@ -296,7 +297,29 @@ export default function AddModule({setOpen}){
             // fin d'upload
 
             const data = await response.json();
+          const file = event.target.files[0];
+          setSelectedImage(file);
+
+          const formData = new FormData();
+          formData.append('file', file);
     
+          try {
+            const response = await fetch('/api/uploadVisuel', {
+              method: 'POST',
+              body: formData,
+            });
+    
+            const data = await response.json();
+    
+            if (response.ok) {
+              const publicUrl = data.urlsPDF[0].url;
+              setPreviewUrl(publicUrl);
+            } else {
+              console.error('Erreur lors de l\'upload:', data.error);
+            }
+          } catch (error) {
+            console.error('Erreur lors de l\'upload:', error);
+          }
             if (response.ok) {
               const publicUrl = data.urlsPDF[0].url;
               setPreviewUrl(publicUrl);
