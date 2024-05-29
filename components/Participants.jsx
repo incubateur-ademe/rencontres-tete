@@ -143,7 +143,7 @@ export default function Participants({ session, setOpen }){
                     )}
 
                     {users.filter(user => selectedFonction === '' || user.fonction === selectedFonction).map((user, index) => {
-                        return <Participant key={index} data={user} setActions={setActions} />
+                        return <Participant key={index} data={user} setActions={setActions} session={session} />
                     })}
                     {users.length === 0 && <div><span>Pas de participant pour cette session.</span></div>}
                 </div>
