@@ -39,8 +39,12 @@ export default async function handle(req, res) {
         region: region,
       },
       include: {
-        module: true,
-        metasSession: true,
+        module: {
+          include: {
+            metasModule: true,
+          },
+        },
+        metasSession: true
       },
     });
 

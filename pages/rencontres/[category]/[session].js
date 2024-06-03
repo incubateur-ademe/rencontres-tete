@@ -353,6 +353,8 @@ export default function Session({ data, user }){
 
     const groupedData = groupByDay(data.metasSession.programmeSession);
 
+    console.log(data)
+
     return (
         <>
             <Head>
@@ -468,7 +470,7 @@ export default function Session({ data, user }){
                             <div className="flex wrap gap25 mTop40">
                                 {Object.keys(groupedData).map(day => (
                                     <div key={day}>
-                                        {data.metasModule.duree == "2 jours" && (
+                                        {data.module.metasModule.duree == "2 jours" && (
                                             <span className={styles.dayTitle}>Jour {day}</span>
                                         )}
                                         <div className="flex wrap gap25">
@@ -732,7 +734,7 @@ export default function Session({ data, user }){
                                 )}
                                 {data.metasSession.mail_referent != undefined && data.metasSession.mail_referent != null && (
                                     <>
-                                        <p><strong>Référent(e) DR Grand Est</strong></p>
+                                        <p><strong>Référent(e) DR {data.region}</strong></p>
                                         <p>Une question concernant cette Rencontre ? Contactez le référent sur l’adresse mail suivante :<br />{data.metasSession.mail_referent}</p>
                                     </>
                                 )}                               
