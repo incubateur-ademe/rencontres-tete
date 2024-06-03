@@ -157,3 +157,10 @@
 .Act{
     display: block;
 }
+
+.visu{
+    width: 100%;
+    aspect-ratio: 16/8;
+    object-fit: cover;
+    border-radius: 18px;
+}

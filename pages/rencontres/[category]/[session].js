@@ -382,6 +382,9 @@ export default function Session({ data, user }){
                                         </div>
                                     )}
                                 </div>
+                                {data.module.visuel != null && (
+                                    <img src={data.module.visuel} alt="visuel" className={styles.visu} />
+                                )}       
                             </div>
                             <div className="w30 wm100">
                                 <div className={styles.Box}>
