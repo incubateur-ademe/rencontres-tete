@@ -13,7 +13,7 @@ export async function getServerSideProps(context) {
 
     const user = verifyToken(token);
   
-    if (!user || (user.id != 10 && user.type != 'Administrateur' && user.type != 'Moderateur')) {
+    if (!user || (user.id != 10 && user.type != 'Administrateur' && user.type != 'DR')) {
       return {
         redirect: {
           destination: '/connexion',

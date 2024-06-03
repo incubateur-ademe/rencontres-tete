@@ -126,4 +126,6 @@ model Account {
   email    String  @unique
   password String?
   type     String?
+  regions  Json?
+  modules  Json?
 }
