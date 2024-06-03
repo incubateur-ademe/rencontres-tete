@@ -117,6 +117,7 @@ export default function Session({ data, user }){
             transport: inscription.transport,
             repas: inscription.repas,
             repas2: inscription.repas2,
+            besoins: inscription.besoins,
             regime: inscription.regime,
             days: inscription.days
         }
@@ -464,6 +465,9 @@ export default function Session({ data, user }){
                             <div className="flex wrap gap25 mTop40">
                                 {Object.keys(groupedData).map(day => (
                                     <div key={day}>
+                                        {data.metasModule.duree == "2 jours" && (
+                                            <span className={styles.dayTitle}>Jour {day}</span>
+                                        )}
                                         <div className="flex wrap gap25">
                                             {groupedData[day].map((programme, index) => (
                                                 <div key={index} className="w23 wm100">
@@ -690,7 +694,7 @@ export default function Session({ data, user }){
                                                     </>
                                                 )}
                                                 <span className={styles.Title}>Besoins spécifiques complémentaires</span>                           
-                                                <textarea className="textarea mBot20 mTop20" placeholder="Précisez-nous vos besoins (accès PMR, handicaps, allergies, …)"></textarea>
+                                                <textarea value={inscription.besoins} name="besoins" onChange={handleChange} className="textarea mBot20 mTop20" placeholder="Précisez-nous vos besoins (accès PMR, handicaps, allergies, …)"></textarea>
                                                 <div className="flex gap50 mBot30">
                                                     <div className={`w50 ${data.metasSession.optionjour == true ? undefined : 'disnone'}`}>
                                                         <span className={styles.Title}>Participerez vous les deux jours ?</span>
