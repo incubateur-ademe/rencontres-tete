@@ -47,6 +47,7 @@ model User {
   organisation  String?
   registrations Registration[]
   reviews       Review[]
+  Satisfaction  Satisfaction[]
   sessions      Session[]      @relation("UserSessions")
 }
 
@@ -62,6 +63,7 @@ model Session {
   metasSession    MetasSession?
   registrations   Registration[]
   reviews         Review[]
+  Satisfaction    Satisfaction[]
   module          Module         @relation(fields: [moduleId], references: [id])
   users           User[]         @relation("UserSessions")
 }
@@ -128,4 +130,15 @@ model Account {
   type     String?
   regions  Json?
   modules  Json?
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Satisfaction {
+  id         BigInt   @id @default(autoincrement())
+  userId     Int?
+  sessionId  Int?
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  responses  Json?
+  Session    Session? @relation(fields: [sessionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User       User?    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }

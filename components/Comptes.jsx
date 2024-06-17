@@ -334,7 +334,9 @@ export default function Comptes() {
                                     <div className="flex gap10 aligncenter">
                                         <span>{acc.type}</span>
                                         <button onClick={() => openAllSettings(acc)} className="btn__light">Modules/Régions</button>
-                                        <button onClick={() => preDeleteAccount(acc.id)}>Supprimer</button>
+                                        {acc.type != 'DR' && (
+                                            <button onClick={() => preDeleteAccount(acc.id)}>Supprimer</button>
+                                        )}                                       
                                     </div>
                                 </div>
                                 {openSettings && selectedAccount && selectedAccount.id === acc.id && (

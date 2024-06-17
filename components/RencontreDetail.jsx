@@ -1,24 +1,198 @@
-import Link from 'next/link'
-import { useState, useEffect } from 'react'
-import Alert from '@/components/Alert'
-import { Notif } from '@/components/Notif'
-import SessionBox from '@/components/SessionBox'
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import Alert from '@/components/Alert';
+import { Notif } from '@/components/Notif';
+import SessionBox from '@/components/SessionBox';
 import Rating from '@mui/material/Rating';
-import styles from '@/styles/Account.module.css'
+import styles from '@/styles/Account.module.css';
 
-export default function RencontreDetail({id, setOpen, userId, user}){
+export default function RencontreDetail({ id, setOpen, userId, user }) {
+    console.log(id, setOpen, userId, user);
 
-    console.log(id, setOpen, userId, user)
-
-    const [alert, setAlert] = useState(null)
-    const [notif, setNotif] = useState(null)
-    const [passed, setPassed] = useState(true)
+    const [alert, setAlert] = useState(null);
+    const [notif, setNotif] = useState(null);
+    const [passed, setPassed] = useState(true);
     const [rating, setRating] = useState(0);
-    const [commentaires, setCommentaires] = useState('')
-    const [data, setData] = useState({})
-    const [reviewDisabled, setReviewDisabled] = useState(false)
-    const [userData, setUserData] = useState(null)
-    const [loading, setLoading] = useState(false)
+    const [commentaires, setCommentaires] = useState('');
+    const [data, setData] = useState({});
+    const [reviewDisabled, setReviewDisabled] = useState(false);
+    const [userData, setUserData] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [otherInputs, setOtherInputs] = useState({});
+    const [responses, setResponses] = useState({});
+    const [hasResponded, setHasResponded] = useState(false);
+
+    const questions = [
+        {
+            id: 1,
+            text: "*De 1 à 5, comment évaluez-vous la qualité générale de la Rencontre ?",
+            options: [
+                { value: 5, label: "5/5 - Très satisfaisant" },
+                { value: 4, label: "4/5 - Satisfaisant" },
+                { value: 3, label: "3/5 - Moyennement satisfaisant" },
+                { value: 2, label: "2/5 - Peu satisfaisant" },
+                { value: 1, label: "1/5 - Pas du tout satisfaisant" },
+            ],
+        },
+        {
+            id: 2,
+            text: "*De 1 à 5, comment évaluez-vous la qualité du contenu technique partagé lors de la Rencontre ?",
+            options: [
+                { value: 5, label: "5/5 - Très satisfaisant" },
+                { value: 4, label: "4/5 - Satisfaisant" },
+                { value: 3, label: "3/5 - Moyennement satisfaisant" },
+                { value: 2, label: "2/5 - Peu satisfaisant" },
+                { value: 1, label: "1/5 - Pas du tout satisfaisant" },
+            ],
+        },
+        {
+            id: 3,
+            text: "*De 1 à 5, comment évaluez-vous la pertinence des intervenant.e.s (expertises, témoignages ...) présent.e.s à la Rencontre ?",
+            options: [
+                { value: 5, label: "5/5 - Très satisfaisant" },
+                { value: 4, label: "4/5 - Satisfaisant" },
+                { value: 3, label: "3/5 - Moyennement satisfaisant" },
+                { value: 2, label: "2/5 - Peu satisfaisant" },
+                { value: 1, label: "1/5 - Pas du tout satisfaisant" },
+            ],
+        },
+        {
+            id: 4,
+            text: "*De 1 à 5, comment évaluez-vous la qualité des formats participatifs qui ont eu lieu durant la Rencontre ?",
+            options: [
+                { value: 5, label: "5/5 - Très satisfaisant" },
+                { value: 4, label: "4/5 - Satisfaisant" },
+                { value: 3, label: "3/5 - Moyennement satisfaisant" },
+                { value: 2, label: "2/5 - Peu satisfaisant" },
+                { value: 1, label: "1/5 - Pas du tout satisfaisant" },
+            ],
+        },
+        {
+            id: 5,
+            text: "*De 1 à 5, comment évaluez-vous la richesse des échanges avec les autres participant.e.s durant la Rencontre ?",
+            options: [
+                { value: 5, label: "5/5 - Très satisfaisant" },
+                { value: 4, label: "4/5 - Satisfaisant" },
+                { value: 3, label: "3/5 - Moyennement satisfaisant" },
+                { value: 2, label: "2/5 - Peu satisfaisant" },
+                { value: 1, label: "1/5 - Pas du tout satisfaisant" },
+            ],
+        },
+        {
+            id: 6,
+            text: "*De 1 à 5, comment évaluez-vous la qualité de l’organisation de la Rencontre (inscription, communication, lieu, repas, etc.) ?",
+            options: [
+                { value: 5, label: "5/5 - Très satisfaisant" },
+                { value: 4, label: "4/5 - Satisfaisant" },
+                { value: 3, label: "3/5 - Moyennement satisfaisant" },
+                { value: 2, label: "2/5 - Peu satisfaisant" },
+                { value: 1, label: "1/5 - Pas du tout satisfaisant" },
+            ],
+        },
+        {
+            id: 7,
+            text: "Avez-vous d’autres commentaires, suggestions ou remarques à partager concernant cette Rencontre ?",
+            type: "textarea",
+        },
+        {
+            id: 8,
+            text: "*Comment avez-vous connu les Rencontres Territoire Engagé Transition Ecologique ?",
+            options: [
+                { value: "Via la Direction Régionale de l’ADEME", label: "Via la Direction Régionale de l’ADEME" },
+                { value: "Via un emailing ADEME", label: "Via un emailing ADEME" },
+                { value: "Via des articles de presse", label: "Via des articles de presse" },
+                { value: "Via des post sur les réseaux sociaux comme LinkedIn ou X", label: "Via des post sur les réseaux sociaux comme LinkedIn ou X" },
+                { value: "Via un des partenaires de l’ADEME", label: "Via un des partenaires de l’ADEME" },
+                { value: "Via un évènement (salon, forum, etc.)", label: "Via un évènement (salon, forum, etc.)" },
+                { value: "Via une autre collectivité qui a déjà participé à une Rencontre", label: "Via une autre collectivité qui a déjà participé à une Rencontre" },
+                { value: "autre", label: "Autre : à préciser" },
+            ],
+            type: 'radioWithText',
+        },
+        {
+            id: 9,
+            text: "*À combien de Rencontres avez-vous participé ?",
+            options: [
+                { value: "Il s'agit de la première", label: "Il s'agit de la première" },
+                { value: "2 à 3", label: "2 à 3" },
+                { value: "4 ou plus", label: "4 ou plus" },
+            ],
+        },
+        {
+            id: 10,
+            text: "Il existe d’autres Rencontres Territoire Engagé Transition Ecologique. Quelles sont les thématiques susceptibles de vous intéresser ?",
+            options: [
+                { value: "Climat", label: "Climat" },
+                { value: "Energie", label: "Energie" },
+                { value: "Mobilité", label: "Mobilité" },
+            ],
+        }
+    ];
+
+    const handleOptionChange = (questionId, value) => {
+        setOtherInputs(prevState => ({
+            ...prevState,
+            [questionId]: value === 'autre',
+        }));
+        setResponses(prevState => ({
+            ...prevState,
+            [questionId]: value,
+        }));
+    };
+
+    const handleTextareaChange = (questionId, value) => {
+        setResponses(prevState => ({
+            ...prevState,
+            [questionId]: value,
+        }));
+    };
+
+    const handleOtherInputChange = (questionId, value) => {
+        setResponses(prevState => ({
+            ...prevState,
+            [`${questionId}_autre`]: value,
+        }));
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        const requiredQuestions = questions.filter(q => q.id !== 7);
+        const unansweredQuestions = requiredQuestions.filter(q => !responses[q.id] || (q.type === 'radioWithText' && responses[q.id] === 'autre' && !responses[`${q.id}_autre`]));
+
+        if (unansweredQuestions.length > 0) {
+            setNotif({
+                icon: 'warning',
+                text: 'Veuillez répondre à toutes les questions obligatoires.',
+            });
+            return;
+        }
+
+        const response = await fetch('/api/satisfaction/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userId: userId,
+                sessionId: data.id,
+                responses: responses
+            }),
+        });
+
+        if (response.ok) {
+            setNotif({
+                icon: 'done',
+                text: 'Votre réponse a été enregistrée avec succès.',
+            });
+            setHasResponded(true);
+        } else {
+            setNotif({
+                icon: 'error',
+                text: 'Une erreur s\'est produite. Veuillez réessayer plus tard.',
+            });
+        }
+    };
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -29,74 +203,78 @@ export default function RencontreDetail({id, setOpen, userId, user}){
     }
 
     const getUserSession = async () => {
-        const fetcher = await fetch(`/api/sessions/${id}`)
-        const json = await fetcher.json()
-        setData(json[0])
-    }
+        const fetcher = await fetch(`/api/sessions/${id}`);
+        const json = await fetcher.json();
+        setData(json[0]);
+    };
 
     const registerReview = async () => {
-        setAlert(null)
+        setAlert(null);
         const fetcher = await fetch('/api/reviews/add', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 note: rating,
                 commentaire: commentaires,
                 userId: userId,
-                sessionId: data.id
-            })
-        })
-        const json = await fetcher.json()
-        if(json.id){
+                sessionId: data.id,
+            }),
+        });
+        const json = await fetcher.json();
+        if (json.id) {
             setNotif({
                 text: 'Votre avis a bien été enregistré !',
-                icon: 'done'
-            })   
-            setReviewDisabled(true)         
+                icon: 'done',
+            });
+            setReviewDisabled(true);
         }
-    }
-
+    };
+    
     const addReview = async () => {
-        if(commentaires != ''){
+        if (commentaires !== '') {
             setAlert({
                 icon: 'warning',
                 text: 'Une fois votre avis validé vous ne pourrez plus le modifier. Validez-vous votre avis ?',
-                // Supposons que `action` sera appelé si l'utilisateur confirme
-                action: () => registerReview()
+                action: () => registerReview(),
+            });
+        } else {
+            setNotif({
+                text: "Vous n'avez pas laissé de commentaires.",
+                icon: 'close',
             });
         }
-        else{
-            setNotif({
-                text: 'Vous n\'avez pas laissé de commentaires.',
-                icon: 'close'
-            })
-        }
-    }
-
+    };
+    
     const checkReview = async () => {
-        const fetcher = await fetch(`/api/reviews/check?userId=${userId}&sessionId=${data.id}`)
-        const json = await fetcher.json()
-        setReviewDisabled(true)
-        if(json.length > 0){
-            setRating(json[0].note)
-            setCommentaires(json[0].commentaire)
+        const fetcher = await fetch(`/api/reviews/check?userId=${userId}&sessionId=${data.id}`);
+        const json = await fetcher.json();
+        setReviewDisabled(true);
+        if (json.length > 0) {
+            setRating(json[0].note);
+            setCommentaires(json[0].commentaire);
+        } else {
+            setReviewDisabled(false);
         }
-        else{
-            setReviewDisabled(false)
-        }
-    }
+    };
+
+    const checkSatisfaction = async () => {
+        const fetcher = await fetch(`/api/satisfaction/checkSatisfaction?userId=${userId}&sessionId=${data.id}`);
+        const json = await fetcher.json();
+        setHasResponded(json.hasResponded);
+    };
 
     useEffect(() => {
-        getUserSession()
-    }, [])
+        getUserSession();
+    }, []);
 
     useEffect(() => {
-        if(data.id){
-            checkReview()
+        if (data.id) {
+            checkReview();
+            checkSatisfaction();
         }
-    }, [data])
+    }, [data]);
 
     useEffect(() => {
         if (data && data.dateDebut) {
@@ -112,55 +290,56 @@ export default function RencontreDetail({id, setOpen, userId, user}){
     }, [data]);
 
     useEffect(() => {
-        if(user){
+        if (user) {
             const getUserIn = async () => {
-                const fetcher = await fetch(`/api/users/${user.id}`)
-                const json = await fetcher.json()
-                setUserData(json[0])
-            }
-            getUserIn()
+                const fetcher = await fetch(`/api/users/${user.id}`);
+                const json = await fetcher.json();
+                setUserData(json[0]);
+            };
+            getUserIn();
         }
-    }, [])
+    }, [user]);
 
     const generateBadge = async () => {
-        setLoading(true)
-        const datas = { nom: userData.nom, prenom: userData.prenom, program: data?.metasSession?.programmeSession, organisation: userData.organisation };
-      
+        setLoading(true);
+        const datas = {
+            nom: userData.nom,
+            prenom: userData.prenom,
+            program: data?.metasSession?.programmeSession,
+            organisation: userData.organisation,
+        };
+
         const response = await fetch('/api/generate-badge', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(datas),
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(datas),
         });
-      
+
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
-      
-        // Crée un élément <a> pour le téléchargement
+
         const a = document.createElement('a');
         a.href = url;
-        a.download = "Badge de participation.pdf"; // Nom du fichier à télécharger
-        document.body.appendChild(a); // Ajoute l'élément à la page
-        a.click(); // Simule un clic sur l'élément
-      
-        // Nettoyage: retire l'élément et libère l'URL du blob
+        a.download = "Badge de participation.pdf";
+        document.body.appendChild(a);
+        a.click();
+
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
-        setLoading(false)
-      };
+        setLoading(false);
+    };
 
-      const tryCancel = async () => {
+    const tryCancel = async () => {
         setAlert({
             icon: 'warning',
             text: 'Êtes-vous sur de ne plus vouloir participer à cette rencontre ?',
-            // Supposons que `action` sera appelé si l'utilisateur confirme
-            action: () => cancel()
+            action: () => cancel(),
         });
-      }
+    };
 
-      const cancel = async () => {
-        id // userId
+    const cancel = async () => {
         const fetcher = await fetch('/api/registrations/cancel', {
             method: 'POST',
             headers: {
@@ -168,12 +347,12 @@ export default function RencontreDetail({id, setOpen, userId, user}){
             },
             body: JSON.stringify({
                 userId: userId,
-                sessionId: id
-            })
-        })
-        const json = await fetcher.json()
-        setOpen(null)
-      }
+                sessionId: id,
+            }),
+        });
+        const json = await fetcher.json();
+        setOpen(null);
+    };
 
     return (
         <>
@@ -183,7 +362,7 @@ export default function RencontreDetail({id, setOpen, userId, user}){
                 <button onClick={tryCancel} className="btn__normal btn__light">Je souhaite retirer mon inscription</button>
             </div>
             <div className="w100 mTop25">
-                <SessionBox 
+                <SessionBox
                     date={formatDate(data.dateDebut)}
                     region={data.region}
                     title={data?.module?.nom}
@@ -230,29 +409,29 @@ export default function RencontreDetail({id, setOpen, userId, user}){
                 <>
                     <span className={styles.Subtitle}>Ressources :</span>
                     <div className={styles.Align}>
-                    {data?.metasSession?.explications && (
-                        <div dangerouslySetInnerHTML={{ __html: data.metasSession.explications }}></div>
-                    )}
+                        {data?.metasSession?.explications && (
+                            <div dangerouslySetInnerHTML={{ __html: data.metasSession.explications }}></div>
+                        )}
                     </div>
                     <ul className={styles.Ressources}>
-                        {data?.metasSession?.urlsPDF.map((item, index) => {
-                            return <li><Link target="_blank" href={item.url}>{item.nom}</Link></li>
-                        })}
+                        {data?.metasSession?.urlsPDF.map((item, index) => (
+                            <li key={index}><Link target="_blank" href={item.url}>{item.nom}</Link></li>
+                        ))}
                     </ul>
                 </>
             ) : (
                 <div>
                     <span className={styles.Subtitle}>Ressources :</span>
                     <span className="block mTop20">Pas de ressources disponibles.</span>
-                    {data?.metasSession?.mail_referent != null && data.metasSession.mail_referent != undefined && (
+                    {data?.metasSession?.mail_referent != null && data.metasSession.mail_referent !== undefined && (
                         <>
                             <span className={styles.Subtitle}>Contact du référent :</span>
-                            <span className="block mTop20">{data.metasSession.mail_referent}</span>                        
+                            <span className="block mTop20">{data.metasSession.mail_referent}</span>
                         </>
                     )}
                 </div>
-            )}   
-            {passed && (
+            )}
+            {passed && !hasResponded && (
                 <>
                     <span className={styles.Subtitle}>Donnez votre avis sur la rencontre :</span>
                     <div className="mTop15">
@@ -261,7 +440,7 @@ export default function RencontreDetail({id, setOpen, userId, user}){
                             value={rating}
                             size="small"
                             onChange={(event, newValue) => {
-                            setRating(newValue);
+                                setRating(newValue);
                             }}
                         />
                     </div>
@@ -271,19 +450,75 @@ export default function RencontreDetail({id, setOpen, userId, user}){
                             <button onClick={addReview} className="btn__normal btn__dark">Valider mon avis</button>
                         </div>
                     )}
+
+                    <span className={styles.Subtitle}>Nous vous remercions de prendre 5 minutes pour répondre à ce questionnaire de satisfaction. Vos réponses permettront d’améliorer l’offre des Rencontres Territoire Engagé Transition Ecologique de l’ADEME.</span>
+                    <form onSubmit={handleSubmit}>
+                        {questions.map((question) => (
+                            <div key={question.id}>
+                                <span className={styles.askTitle}>{question.id}) {question.text}</span>
+                                {question.type === "textarea" ? (
+                                    <p className={styles.asker}>
+                                        <textarea
+                                            name={`question_${question.id}`}
+                                            id={`question_${question.id}`}
+                                            rows="4"
+                                            cols="50"
+                                            value={responses[question.id] || ''}
+                                            className={styles.textareaF}
+                                            onChange={(e) => handleTextareaChange(question.id, e.target.value)}
+                                        ></textarea>
+                                    </p>
+                                ) : (
+                                    question.options.map((option, index) => (
+                                        <div key={index}>
+                                            <p className={styles.asker}>
+                                                <input
+                                                    type="radio"
+                                                    name={`question_${question.id}`}
+                                                    id={`question_${question.id}_${option.value}`}
+                                                    value={option.value}
+                                                    onChange={() => handleOptionChange(question.id, option.value)}
+                                                />
+                                                <label htmlFor={`question_${question.id}_${option.value}`}>{option.label}</label>
+                                            </p>
+                                            {option.value === 'autre' && otherInputs[question.id] && (
+                                                <p className={styles.asker}>
+                                                    <input
+                                                        type="text"
+                                                        name={`question_${question.id}_autre`}
+                                                        id={`question_${question.id}_autre`}
+                                                        placeholder="Veuillez préciser"
+                                                        value={responses[`${question.id}_autre`] || ''}
+                                                        className={styles.textF}
+                                                        onChange={(e) => handleOtherInputChange(question.id, e.target.value)}
+                                                    />
+                                                </p>
+                                            )}
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        ))}
+                        <button className="btn__normal btn__dark mBot20 mTop10" type="submit">Soumettre</button>
+                    </form>
                 </>
-            )}    
+            )}
+            {hasResponded && (
+                <div className="mTop30 mBot20">
+                    <span className={styles.Subtitle}>Vous avez déjà répondu à ce questionnaire. Merci pour votre participation.</span>
+                </div>
+            )}
             {alert != null && (
                 <Alert datas={alert} setAlert={setAlert} />
-            )}  
+            )}
             {notif != null && (
                 <Notif datas={notif} setNotif={setNotif} />
-            )} 
+            )}
             {loading && (
                 <div className={styles.Loading}>
                     <img src="/medias/loading.gif" alt="loading" />
                 </div>
             )}
         </>
-    )
+    );
 }
