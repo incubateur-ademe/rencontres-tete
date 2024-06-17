@@ -7,6 +7,9 @@ export default function Reviews({ session, setOpen }){
     const [number, setNumber] = useState(0)
     const [reviews, setReviews] = useState([])
     const [moyenne, setMoyenne] = useState(0)
+    const [quizz, setQuizz] = useState([])
+
+    console.log(session)
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -28,11 +31,33 @@ export default function Reviews({ session, setOpen }){
         }
     }
 
+    const getQuizz = async () => {
+        const fetcher = await fetch(`/api/satisfaction/fromSession?sessionId=${session.id}`)
+        const json = await fetcher.json()
+        if(json.length > 0){
+            setQuizz(json)
+        }
+    }
+
+    const questionLabels = {
+        "1": "Qualité générale",
+        "2": "Qualité du contenu technique",
+        "3": "Pertinence des intervenant.e.s",
+        "4": "Qualité des formats participatifs",
+        "5": "Richesse des échanges",
+        "6": "Qualité de l'organisation",
+        "7": "Commentaires",
+        "8": "Comment avez-vous connu",
+        "9": "Nombre de participations",
+        "10": "Thématiques intéressantes"
+    };
+
     useEffect(() => {
         getParticipants()
+        getQuizz()
     }, [])
 
-    console.log(reviews)
+    console.log(quizz)
 
     return (
         <>  
@@ -55,6 +80,34 @@ export default function Reviews({ session, setOpen }){
                         </>
                     ) : (
                         <span>Aucun avis pour cette session.</span>
+                    )}
+
+                    <h3 className="mTop20">Questionnaires de satisfaction :</h3>
+                    
+                    {quizz.length > 0 ? (
+                        <>
+                            {quizz.map((question, index) => {
+                                const responses = question.responses;
+                                return (
+                                    <table className={styles.Quizzer} border="1" key={index}>
+                                        <tbody>
+                                            <tr>
+                                                <td>Participant</td>
+                                                <td>{question.User.nom} {question.User.prenom}</td>
+                                            </tr>
+                                            {Object.entries(responses).map(([questionId, response], idx) => (
+                                                <tr key={idx}>
+                                                    <td>{questionLabels[questionId] || `Question ${questionId}`}</td>
+                                                    <td>{response}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                );
+                            })}
+                        </>
+                    ) : (
+                        <span className="block mTop20">Aucun questionnaire de satisfaction.</span>
                     )}
                 </div>
             </div>

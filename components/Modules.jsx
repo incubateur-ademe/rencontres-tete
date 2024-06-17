@@ -10,6 +10,8 @@ import styles from '@/styles/Admin.module.css'
 
 export default function Modules({setPage, user}){
 
+    console.log(user)
+
     const [open, setOpen] = useState(null)
     const [alert, setAlert] = useState(null)
     const [notif, setNotif] = useState(null)
