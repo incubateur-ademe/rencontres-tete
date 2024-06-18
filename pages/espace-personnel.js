@@ -6,6 +6,7 @@ import Alert from '@/components/Alert'
 import { verifyToken } from '@/utils/auth';
 import { useState, useEffect } from 'react'
 import Rencontres from '/components/Rencontres'
+import RencontreDetail from '@/components/RencontreDetail';
 import Profil from '@/components/Profil'
 import styles from '@/styles/Account.module.css'
 
@@ -63,6 +64,7 @@ export default function Account({ user }){
                                 </ul>
                             </div>
                             <div className="w80 wm100">
+                            <RencontreDetail id={open} user={user} userId={user.id}  />
                                 <div className={styles.Dash}>
                                     {page == 0 && (
                                         <Rencontres user={user} />
