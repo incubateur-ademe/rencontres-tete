@@ -22,6 +22,7 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
     const [responses, setResponses] = useState({});
     const [hasResponded, setHasResponded] = useState(false);
 
+
     const [modules, setModules] = useState([])
 
     const getModules = async () => {
