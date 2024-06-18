@@ -27,6 +27,8 @@ export async function getServerSideProps(context) {
 
 export default function Account({ user }){
 
+    console.log("t")
+
     const [page, setPage] = useState(0)
     const [alert, setAlert] = useState(null)
 
