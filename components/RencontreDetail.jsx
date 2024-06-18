@@ -22,6 +22,18 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
     const [responses, setResponses] = useState({});
     const [hasResponded, setHasResponded] = useState(false);
 
+    const [modules, setModules] = useState([])
+
+    const getModules = async () => {
+        const geter = await fetch(`/api/modules`)
+        const json = await geter.json()
+        setModules(json)
+    }
+
+    useEffect(() => {
+        getModules()
+    }, [])
+
     const questions = [
         {
             id: 1,
@@ -121,11 +133,7 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
         {
             id: 10,
             text: "Il existe d’autres Rencontres Territoire Engagé Transition Ecologique. Quelles sont les thématiques susceptibles de vous intéresser ?",
-            options: [
-                { value: "Climat", label: "Climat" },
-                { value: "Energie", label: "Energie" },
-                { value: "Mobilité", label: "Mobilité" },
-            ],
+            options: modules.map(module => ({ value: module.nom, label: module.nom }))
         }
     ];
 

@@ -92,6 +92,12 @@ export default function Rencontres({ base, region, pilier, thematique }){
         return `${day}/${month}/${year}`;
     }
 
+    useEffect(() => {
+        if(region != ''){
+            setSwitcher(true)
+        }
+    }, [region])
+
     const getModules = async () => {
         const { pilier, nom, region, departement, thematique, dateDebut } = filtres
         let url = '/api/modules/?'
