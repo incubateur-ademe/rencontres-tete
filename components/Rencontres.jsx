@@ -11,7 +11,7 @@ export default function Rencontres({ user }){
     const [rencontres, setRencontres] = useState([])
     const [status, setStatus] = useState('upcoming')
     const [load, setLoad] = useState(false)
-    
+
 
     const getUserSessions = async () => {
         setLoad(true)
