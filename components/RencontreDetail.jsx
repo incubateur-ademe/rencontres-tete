@@ -7,7 +7,6 @@ import Rating from '@mui/material/Rating';
 import styles from '@/styles/Account.module.css';
 
 export default function RencontreDetail({ id, setOpen, userId, user }) {
-    console.log(id, setOpen, userId, user);
 
     const [alert, setAlert] = useState(null);
     const [notif, setNotif] = useState(null);
@@ -22,7 +21,6 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
     const [responses, setResponses] = useState({});
     const [hasResponded, setHasResponded] = useState(false);
 
-
     const [modules, setModules] = useState([])
 
     const getModules = async () => {
@@ -30,6 +28,8 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
         const json = await geter.json()
         setModules(json)
     }
+
+    console.log(responses)
 
     useEffect(() => {
         getModules()
@@ -134,20 +134,41 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
         {
             id: 10,
             text: "Il existe d’autres Rencontres Territoire Engagé Transition Ecologique. Quelles sont les thématiques susceptibles de vous intéresser ?",
-            options: modules.map(module => ({ value: module.nom, label: module.nom }))
+            options: modules.map(module => ({ value: module.nom, label: module.nom })),
+            type: "checkbox"
         }
     ];
 
-    const handleOptionChange = (questionId, value) => {
+    const handleOptionChange = (questionId, value, checked) => {
         setOtherInputs(prevState => ({
             ...prevState,
             [questionId]: value === 'autre',
         }));
-        setResponses(prevState => ({
-            ...prevState,
-            [questionId]: value,
-        }));
+    
+        if (questions.find(q => q.id === questionId).type === 'checkbox') {
+            setResponses(prevState => {
+                const newValues = prevState[questionId] ? [...prevState[questionId]] : [];
+                if (checked) {
+                    newValues.push(value);
+                } else {
+                    const index = newValues.indexOf(value);
+                    if (index > -1) {
+                        newValues.splice(index, 1);
+                    }
+                }
+                return {
+                    ...prevState,
+                    [questionId]: newValues,
+                };
+            });
+        } else {
+            setResponses(prevState => ({
+                ...prevState,
+                [questionId]: value,
+            }));
+        }
     };
+    
 
     const handleTextareaChange = (questionId, value) => {
         setResponses(prevState => ({
@@ -442,7 +463,7 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
             )}
             {passed && !hasResponded && (
                 <>
-                    <span className={styles.Subtitle}>Donnez votre avis sur la rencontre :</span>
+                    {/* <span className={styles.Subtitle}>Donnez votre avis sur la rencontre :</span>
                     <div className="mTop15">
                         <Rating
                             name="simple-controlled"
@@ -458,7 +479,7 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
                         <div className='mTop20 flex alignright'>
                             <button onClick={addReview} className="btn__normal btn__dark">Valider mon avis</button>
                         </div>
-                    )}
+                    )} */}
 
                     <span className={styles.Subtitle}>Nous vous remercions de prendre 5 minutes pour répondre à ce questionnaire de satisfaction. Vos réponses permettront d’améliorer l’offre des Rencontres Territoire Engagé Transition Ecologique de l’ADEME.</span>
                     <form onSubmit={handleSubmit}>
@@ -478,43 +499,62 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
                                         ></textarea>
                                     </p>
                                 ) : (
-                                    question.options.map((option, index) => (
-                                        <div key={index}>
-                                            <p className={styles.asker}>
-                                                <input
-                                                    type="radio"
-                                                    name={`question_${question.id}`}
-                                                    id={`question_${question.id}_${option.value}`}
-                                                    value={option.value}
-                                                    onChange={() => handleOptionChange(question.id, option.value)}
-                                                />
-                                                <label htmlFor={`question_${question.id}_${option.value}`}>{option.label}</label>
-                                            </p>
-                                            {option.value === 'autre' && otherInputs[question.id] && (
+                                    question.type === "checkbox" ? (
+                                        question.options.map((option, index) => (
+                                            <div key={index}>
                                                 <p className={styles.asker}>
                                                     <input
-                                                        type="text"
-                                                        name={`question_${question.id}_autre`}
-                                                        id={`question_${question.id}_autre`}
-                                                        placeholder="Veuillez préciser"
-                                                        value={responses[`${question.id}_autre`] || ''}
-                                                        className={styles.textF}
-                                                        onChange={(e) => handleOtherInputChange(question.id, e.target.value)}
+                                                        type="checkbox"
+                                                        name={`question_${question.id}`}
+                                                        id={`question_${question.id}_${option.value}`}
+                                                        value={option.value}
+                                                        checked={(responses[question.id] || []).includes(option.value)}
+                                                        onChange={(e) => handleOptionChange(question.id, option.value, e.target.checked)}
                                                     />
+                                                    <label htmlFor={`question_${question.id}_${option.value}`}>{option.label}</label>
                                                 </p>
-                                            )}
-                                        </div>
-                                    ))
+                                            </div>
+                                        ))
+                                    ) : (
+                                        question.options.map((option, index) => (
+                                            <div key={index}>
+                                                <p className={styles.asker}>
+                                                    <input
+                                                        type="radio"
+                                                        name={`question_${question.id}`}
+                                                        id={`question_${question.id}_${option.value}`}
+                                                        value={option.value}
+                                                        onChange={() => handleOptionChange(question.id, option.value)}
+                                                    />
+                                                    <label htmlFor={`question_${question.id}_${option.value}`}>{option.label}</label>
+                                                </p>
+                                                {option.value === 'autre' && otherInputs[question.id] && (
+                                                    <p className={styles.asker}>
+                                                        <input
+                                                            type="text"
+                                                            name={`question_${question.id}_autre`}
+                                                            id={`question_${question.id}_autre`}
+                                                            placeholder="Veuillez préciser"
+                                                            value={responses[`${question.id}_autre`] || ''}
+                                                            className={styles.textF}
+                                                            onChange={(e) => handleOtherInputChange(question.id, e.target.value)}
+                                                        />
+                                                    </p>
+                                                )}
+                                            </div>
+                                        ))
+                                    )
                                 )}
                             </div>
                         ))}
                         <button className="btn__normal btn__dark mBot20 mTop10" type="submit">Soumettre</button>
                     </form>
+
                 </>
             )}
             {hasResponded && (
                 <div className="mTop30 mBot20">
-                    <span className={styles.Subtitle}>Vous avez déjà répondu à ce questionnaire. Merci pour votre participation.</span>
+                    <span className={styles.Subtitle}>Merci pour votre participation.</span>
                 </div>
             )}
             {alert != null && (

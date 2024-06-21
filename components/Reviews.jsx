@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react' 
+import React, { useState, useEffect } from 'react' 
 import Review from '@/components/Review'
 import styles from '@/styles/Reviews.module.css'
 
@@ -57,7 +57,7 @@ export default function Reviews({ session, setOpen }){
         getQuizz()
     }, [])
 
-    console.log(quizz)
+
 
     return (
         <>  
@@ -65,14 +65,14 @@ export default function Reviews({ session, setOpen }){
                 <span onClick={() => setOpen(null)} className={styles.Back}>Retour aux sessions</span>
                 <div className="flex aligncenter space-between w100 gap40 mTop30">
                     <span className={`${styles.Title} w60`}>{session.moduleName} <br />Avis sur la session du {formatDate(session.dateDebut)}, {session.region}</span>
-                    <div className="flex aligncenter gap10">
+                    {/* <div className="flex aligncenter gap10">
                         <span className={styles.Number}><span className="material-icons">reviews</span>{number} avis</span>
                         <span className={styles.Number}><span className="material-icons">insights</span>{moyenne > 0 ? moyenne : '-'}/5 de moyenne</span>
                     </div>
-                    
+                     */}
                 </div>
                 <div className="mTop30">
-                    {reviews.length > 0 ? (
+                    {/* {reviews.length > 0 ? (
                         <>
                             {reviews.map((review, index) => {
                                 return <Review key={index} data={review} />
@@ -80,10 +80,9 @@ export default function Reviews({ session, setOpen }){
                         </>
                     ) : (
                         <span>Aucun avis pour cette session.</span>
-                    )}
+                    )} */}
 
                     <h3 className="mTop20">Questionnaires de satisfaction :</h3>
-                    
                     {quizz.length > 0 ? (
                         <>
                             {quizz.map((question, index) => {
@@ -96,10 +95,21 @@ export default function Reviews({ session, setOpen }){
                                                 <td>{question.User.nom} {question.User.prenom}</td>
                                             </tr>
                                             {Object.entries(responses).map(([questionId, response], idx) => (
-                                                <tr key={idx}>
-                                                    <td>{questionLabels[questionId] || `Question ${questionId}`}</td>
-                                                    <td>{response}</td>
-                                                </tr>
+                                                <React.Fragment key={idx}>
+                                                    {Array.isArray(response) ? (
+                                                        response.map((resp, respIdx) => (
+                                                            <tr key={respIdx}>
+                                                                <td>{questionLabels[questionId] || `Question ${questionId}`} ({respIdx + 1})</td>
+                                                                <td>{resp}</td>
+                                                            </tr>
+                                                        ))
+                                                    ) : (
+                                                        <tr>
+                                                            <td>{questionLabels[questionId] || `Question ${questionId}`}</td>
+                                                            <td>{response}</td>
+                                                        </tr>
+                                                    )}
+                                                </React.Fragment>
                                             ))}
                                         </tbody>
                                     </table>
@@ -109,6 +119,7 @@ export default function Reviews({ session, setOpen }){
                     ) : (
                         <span className="block mTop20">Aucun questionnaire de satisfaction.</span>
                     )}
+
                 </div>
             </div>
         </>
