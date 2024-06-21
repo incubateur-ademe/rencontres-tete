@@ -3,7 +3,7 @@ import Alert from '@/components/Alert'
 import { Notif } from '@/components/Notif'
 import styles from '@/styles/Admin.module.css'
 
-export default function Comptes() {
+export default function Comptes({ user }) {
 
     const [alert, setAlert] = useState(null)
     const [notif, setNotif] = useState(null)
@@ -179,6 +179,7 @@ export default function Comptes() {
         
     }
 
+
     const closeSettings = () => {
         setOpenSettings(false);
         setSelectedAccount(null);
@@ -334,7 +335,7 @@ export default function Comptes() {
                                     <div className="flex gap10 aligncenter">
                                         <span>{acc.type}</span>
                                         <button onClick={() => openAllSettings(acc)} className="btn__light">Modules/Régions</button>
-                                        {acc.type != 'DR' && (
+                                        {user.type == 'Administrateur' && (
                                             <button onClick={() => preDeleteAccount(acc.id)}>Supprimer</button>
                                         )}                                       
                                     </div>

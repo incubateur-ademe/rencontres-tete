@@ -62,7 +62,7 @@ export default function Admin({ user }){
                                             <Modules user={userInfo} setPage={setPage} />
                                         )}
                                         {page == 1 && (
-                                            <Comptes />
+                                            <Comptes user={userInfo} />
                                         )}
                                         {page == 2 && (
                                             <AllSessions user={userInfo} page={page} setPage={setPage} />
