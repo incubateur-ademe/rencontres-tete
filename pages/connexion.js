@@ -62,8 +62,11 @@ export default function Login(){
                     });
                 
                     const jwtJson = await jwtResponse.json();
-                    if(jwtJson){
+                    if(jwtJson && json.user.id != 115){
                         router.push('/espace-personnel');                       
+                    }
+                    else{
+                        router.push('/presence');
                     }
                     
                 } else {

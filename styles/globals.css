@@ -85,6 +85,10 @@ p{
   cursor:pointer;
 }
 
+.align-end{
+  align-items: end;
+}
+
 .media{
   object-fit: contain;
 }
