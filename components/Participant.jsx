@@ -24,7 +24,38 @@ export default function Participant({ data, setActions, session }){
         });
     }
 
-    console.log(data.session.metasSession.nombreJours)
+    const generateBadge = async () => {
+        setNotif({
+            text: 'Le badge se génère, veuillez patienter...',
+            icon: 'hourglass_top'
+        }) 
+        const datas = {
+            nom: data.nom,
+            prenom: data.prenom,
+            program: data.session.metasSession.programmeSession,
+            organisation: data.user.organisation || '',
+        };
+
+        const response = await fetch('/api/generate-badge', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(datas),
+        });
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `badge_${data.nom}_${data.prenom}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    };
 
     return (
         <>
@@ -33,7 +64,8 @@ export default function Participant({ data, setActions, session }){
                     <span className={styles.UserName}><span className="material-icons">{data.deleted ? 'cancel' : 'person'}</span>{data.nom} {data.prenom}</span>
                     {!data.deleted && (
                         <button onClick={preDeleteUser} className={styles.Corb}><span className="material-icons">delete</span></button>
-                    )}                   
+                    )}    
+                    <button onClick={generateBadge} className={styles.Corb}><span className="material-icons">picture_as_pdf</span></button>               
                 </div>               
                 <div className={styles.Table}>
                     <div className="w22"><span className={styles.Label}>Nom</span>{data.nom}</div>
