@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react' 
 import Review from '@/components/Review'
+import * as XLSX from 'xlsx';
 import styles from '@/styles/Reviews.module.css'
 
 export default function Reviews({ session, setOpen }){
@@ -8,6 +9,7 @@ export default function Reviews({ session, setOpen }){
     const [reviews, setReviews] = useState([])
     const [moyenne, setMoyenne] = useState(0)
     const [quizz, setQuizz] = useState([])
+    
 
     console.log(session)
 
@@ -57,6 +59,27 @@ export default function Reviews({ session, setOpen }){
         getQuizz()
     }, [])
 
+    const exportToExcel = () => {
+        const data = quizz.map((question) => {
+            const responses = question.responses;
+            const participant = `${question.User.nom} ${question.User.prenom}`;
+            const row = { Participant: participant };
+            Object.entries(responses).forEach(([questionId, response]) => {
+                if (Array.isArray(response)) {
+                    row[questionLabels[questionId] || `Question ${questionId}`] = response.join(', ');
+                } else {
+                    row[questionLabels[questionId] || `Question ${questionId}`] = response;
+                }
+            });
+            return row;
+        });
+
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Quizz');
+
+        XLSX.writeFile(workbook, `questionnaires_session_${session.id}.xlsx`);
+    };
 
 
     return (
@@ -85,6 +108,7 @@ export default function Reviews({ session, setOpen }){
                     <h3 className="mTop20">Questionnaires de satisfaction :</h3>
                     {quizz.length > 0 ? (
                         <>
+                            <button onClick={exportToExcel} className="exportButton btn__normal btn__light mTop15">Exporter en Excel</button>
                             {quizz.map((question, index) => {
                                 const responses = question.responses;
                                 return (
