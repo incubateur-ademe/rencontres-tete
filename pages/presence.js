@@ -78,7 +78,7 @@ export default function Presence() {
       const minDate = new Date(today);
       minDate.setDate(today.getDate() - 2);
       const maxDate = new Date(today);
-      maxDate.setDate(today.getDate() + 2);
+      maxDate.setDate(today.getDate() + 6);
 
       const filteredSessions = json.filter(session => {
         const sessionDate = new Date(session.dateDebut);
