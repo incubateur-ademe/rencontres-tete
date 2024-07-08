@@ -10,13 +10,21 @@ export default async function handle(req, res) {
     
     try {
         const today = new Date();
-        const oneDayBefore = new Date(today);
-        oneDayBefore.setDate(today.getDate() - 1);
-
+        const oneDayafter = new Date(today);
+        oneDayafter.setDate(today.getDate() - 1);
+        oneDayafter.setHours(0, 0, 0, 0);
+        
+        const startOfDay = new Date(oneDayafter);
+        startOfDay.setHours(0, 0, 0, 0);
+        
+        const endOfDay = new Date(oneDayafter);
+        endOfDay.setHours(23, 59, 59, 999);
+        
         const pastSessions = await prisma.session.findMany({
             where: {
-                dateFin: {
-                    equals: oneDayBefore,
+                dateDebut: {
+                    gte: startOfDay,
+                    lt: endOfDay,
                 },
             },
             include: {
