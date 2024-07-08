@@ -10,13 +10,21 @@ export default async function handle(req, res) {
     
     try {
         const today = new Date();
-        const twoWeeksLater = new Date(today);
-        twoWeeksLater.setDate(today.getDate() + 14);
-
+        const threeDaysLater = new Date(today);
+        threeDaysLater.setDate(today.getDate() + 14);
+        threeDaysLater.setHours(0, 0, 0, 0);
+        
+        const startOfDay = new Date(threeDaysLater);
+        startOfDay.setHours(0, 0, 0, 0);
+        
+        const endOfDay = new Date(threeDaysLater);
+        endOfDay.setHours(23, 59, 59, 999);
+        
         const upcomingSessions = await prisma.session.findMany({
             where: {
                 dateDebut: {
-                    equals: twoWeeksLater,
+                    gte: startOfDay,
+                    lt: endOfDay,
                 },
             },
             include: {
