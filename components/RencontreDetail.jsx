@@ -384,6 +384,28 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
         setOpen(null);
     };
 
+    const transformLinks = (html) => {
+        // Cette regex trouve les liens et capture l'URL
+        const urlRegex = /<a href="(http[s]?:\/\/.*?)".*?>(.*?)<\/a>/g;
+        
+        return html.replace(urlRegex, (match, url, linkText) => {
+          // Remplacez "Cliquez ici" par le texte que vous voulez montrer comme lien
+          const clickableText = "Lien externe";
+          
+          // Retourne le HTML modifié avec le texte cliquable qui garde l'URL comme destination
+          return `<a target="_blank" rel="noreferer noopener" href="${url}">${clickableText}</a>`;
+        });
+      };
+
+    const [transformedHTML, setTransformedHTML] = useState('')
+
+    useEffect(() => {
+        if(data?.metasSession?.explications){
+            setTransformedHTML(transformLinks(data?.metasSession?.explications))
+        }
+    }, [data])
+    
+
     return (
         <>
             <span onClick={() => setOpen(null)} className={styles.Back}>Retour à mes rencontres</span>
@@ -435,20 +457,22 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
             <span className={styles.Subtitle}>En savoir plus sur ce module :</span>
             <p>{data.module !== undefined ? data.module.description : 'Chargement...'}</p>
             
-            {data?.metasSession?.urlsPDF.length > 0 ? (
-                <>
+            {(data?.metasSession?.urlsPDF.length > 0 || data?.metasSession?.explications) ? (
+                <div className="mBot20">
                     <span className={styles.Subtitle}>Ressources :</span>
                     <div className={styles.Align}>
                         {data?.metasSession?.explications && (
                             <div dangerouslySetInnerHTML={{ __html: data.metasSession.explications }}></div>
                         )}
                     </div>
-                    <ul className={styles.Ressources}>
-                        {data?.metasSession?.urlsPDF.map((item, index) => (
-                            <li key={index}><Link target="_blank" href={item.url}>{item.nom}</Link></li>
-                        ))}
-                    </ul>
-                </>
+                    {data?.metasSession?.urlsPDF.length > 0 && (
+                        <ul className={styles.Ressources}>
+                            {data?.metasSession?.urlsPDF.map((item, index) => (
+                                <li key={index}><Link target="_blank" href={item.url}>{item.nom}</Link></li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
             ) : (
                 <div>
                     <span className={styles.Subtitle}>Ressources :</span>
