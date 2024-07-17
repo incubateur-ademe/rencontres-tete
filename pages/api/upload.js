@@ -10,7 +10,7 @@ export const config = {
 };
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
+const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default async function handler(req, res) {
@@ -94,5 +94,6 @@ export default async function handler(req, res) {
     }
   }
 
-  res.status(200).json({ urlsPDF, env1:supabaseUrl, env2:supabaseKey});
+  res.status(200).json({ urlsPDF, env1:supabaseUrl});
+
 }
