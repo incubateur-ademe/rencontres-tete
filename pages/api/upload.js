@@ -95,4 +95,5 @@ export default async function handler(req, res) {
   }
 
   res.status(200).json({ urlsPDF, env1:supabaseUrl});
+
 }
