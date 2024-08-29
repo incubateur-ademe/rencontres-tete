@@ -258,17 +258,42 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                 )}
                                 {modules.length > 0 ? (
                                 <div className="flex wrap gap15">
-                                    {modules.map((module, index) => (
-                                        <div key={index} className="w32 wm100">
-                                            <ModuleBox 
-                                                title={module.nom}
-                                                id={module.id}
-                                                link={`/rencontres/${module.slug}`}
-                                                theme={module.thematique}
-                                                length={module.sessions}
-                                            />
-                                        </div>
-                                    ))}
+                                    {!switcher ? 
+                                        modules.map((module, index) => (
+                                            <>
+                                                <div key={index} className="w32 wm100">
+                                                    <ModuleBox 
+                                                        title={module.nom}
+                                                        id={module.id}
+                                                        link={`/rencontres/${module.slug}`}
+                                                        theme={module.thematique}
+                                                        length={module.sessions}
+                                                    />
+                                                </div>
+                                            </>
+                                        )) : modules.map((module, index) => {
+                                            const publishedUpcomingSessions = module.sessions.filter(session => {
+                                                const isPublished = session.status === "publish";
+                                                const isUpcoming = new Date(session.dateDebut) > new Date();
+                                                return isPublished && isUpcoming;
+                                            });
+                                            
+                                            if (publishedUpcomingSessions.length > 0) {
+                                                return (
+                                                    <div key={index} className="w32 wm100">
+                                                        <ModuleBox 
+                                                            title={module.nom}
+                                                            id={module.id}
+                                                            link={`/rencontres/${module.slug}`}
+                                                            theme={module.thematique}
+                                                            length={publishedUpcomingSessions}
+                                                        />
+                                                    </div>
+                                                );
+                                            }
+                                            return null;                                            
+                                        })
+                                    }
                                 </div>
                                 ) : (
                                     <div className="mTop20">
