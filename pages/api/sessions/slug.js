@@ -14,6 +14,11 @@ const regionSlugs = {
   'nouvelle-aquitaine': 'Nouvelle-Aquitaine',
   'occitanie': 'Occitanie',
   'pays-de-la-loire': 'Pays de la Loire',
+  'guyane': 'Guyane',
+  'martinique': 'Martinique',
+  'reunion': 'La Reunion',
+  'guadeloupe': 'Guadeloupe',
+  'mayotte': 'Mayotte',
   'provence-alpes-cote-d-azur': 'Provence-Alpes-Côte d\'Azur'
 };
 
