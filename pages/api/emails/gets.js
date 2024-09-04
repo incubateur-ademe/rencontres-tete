@@ -1,3 +1,5 @@
+const nodemailer = require('nodemailer');
+
 export default async function handler(req, res) {
     try {
       // Retourner des informations dans la réponse pour les consulter
