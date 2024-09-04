@@ -97,6 +97,17 @@ export default async function handle(req, res) {
             year: 'numeric',
         });
 
+        const sending = {
+            prenom: type == 'special' ? inscriptionData.prenom : userData.prenom,
+            email: type == 'special' ? userData.email : userData.mail,
+            nomRencontre: sessionData.module.nom,
+            dateRencontre: formattedDateDebut,
+            lieuRencontre: sessionData.metasSession.lieuRencontre || 'Lieu',
+            nbJours: sessionData.metasSession.nombreJours,
+            mail_referent: sessionData.metasSession.mail_referent,
+            firstDayStartTime: firstDayStartTime
+        }
+
         // // Envoi d'email
         // const emailResponse = await fetch(`${process.env.WEBSITE_URL}/api/emails/sessionRegister`, {
         //     method: 'POST',
@@ -124,7 +135,8 @@ export default async function handle(req, res) {
 
         return res.status(200).json({
             registration: newRegistration,
-            session: sessionData
+            session: sessionData,
+            sending: sending
         });
 
     } catch (error) {
