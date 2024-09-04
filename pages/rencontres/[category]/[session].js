@@ -122,7 +122,11 @@ export default function Session({ data, user }){
             days: inscription.days
         }
 
-        const userType = user.type == "Administrateur" || user.type == "DR" ? "special" : "user"
+
+        const userType = (user.type == "Administrateur" || user.type == "DR") ? "special" : "user"
+
+        console.log("TYPE => ", userType)
+
 
         const registering = await fetch('/api/registrations/add', {
             method: 'POST',
