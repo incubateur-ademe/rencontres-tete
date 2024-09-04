@@ -1,5 +1,5 @@
-import prisma from '@/prisma'
-import fetch from 'node-fetch'
+import prisma from '@/prisma';
+import fetch from 'node-fetch';
 
 export default async function handle(req, res) {
     if (req.method !== 'POST') {
@@ -11,6 +11,7 @@ export default async function handle(req, res) {
     const { inscriptionData, userId, sessionId, type } = req.body;
 
     try {
+        console.log("Début de la requête");
         const now = new Date();
 
         const sessionData = await prisma.session.findUnique({
@@ -21,6 +22,12 @@ export default async function handle(req, res) {
             }
         });
 
+        if (!sessionData) {
+            throw new Error('Session non trouvée');
+        }
+
+        console.log("Session trouvée :", sessionData);
+
         let userData;
         let newRegistration;
 
@@ -29,6 +36,10 @@ export default async function handle(req, res) {
             userData = await prisma.account.findUnique({
                 where: { id: parseInt(userId) },
             });
+
+            if (!userData) {
+                throw new Error('Compte non trouvé');
+            }
 
             // Création de l'inscription dans accountRegistration
             newRegistration = await prisma.accountRegistration.create({
@@ -49,6 +60,10 @@ export default async function handle(req, res) {
                 where: { id: parseInt(userId) },
             });
 
+            if (!userData) {
+                throw new Error('Utilisateur non trouvé');
+            }
+
             // Création de l'inscription dans registration
             newRegistration = await prisma.registration.create({
                 data: {
@@ -63,6 +78,8 @@ export default async function handle(req, res) {
                 }
             });
         }
+
+        console.log("Nouvelle inscription créée :", newRegistration);
 
         const firstProgramme = sessionData.metasSession.programmeSession[0];
         let firstDayStartTime;
@@ -80,63 +97,38 @@ export default async function handle(req, res) {
             year: 'numeric',
         });
 
-        if(type == "special"){
-            const emailResponse = await fetch(`${process.env.WEBSITE_URL}/api/emails/sessionRegister`, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    prenom: inscriptionData.prenom,
-                    email: userData.email,
-                    nomRencontre: sessionData.module.nom,
-                    dateRencontre: formattedDateDebut,
-                    lieuRencontre: sessionData.metasSession.lieuRencontre || 'Lieu',
-                    nbJours: sessionData.metasSession.nombreJours,
-                    mail_referent: sessionData.metasSession.mail_referent,
-                    firstDayStartTime: firstDayStartTime
-                })
-            });
-    
-            if (!emailResponse.ok) {
-                throw new Error(`Email request failed with status ${emailResponse.status}`);
-            }
-    
-            res.json({
-                registration: newRegistration,
-                session: sessionData
-            });
-        }
-        else{
-            const emailResponse = await fetch(`${process.env.WEBSITE_URL}/api/emails/sessionRegister`, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    prenom: userData.prenom,
-                    email: userData.mail,
-                    nomRencontre: sessionData.module.nom,
-                    dateRencontre: formattedDateDebut,
-                    lieuRencontre: sessionData.metasSession.lieuRencontre || 'Lieu',
-                    nbJours: sessionData.metasSession.nombreJours,
-                    mail_referent: sessionData.metasSession.mail_referent,
-                    firstDayStartTime: firstDayStartTime
-                })
-            });
-    
-            if (!emailResponse.ok) {
-                throw new Error(`Email request failed with status ${emailResponse.status}`);
-            }
-    
-            res.json({
-                registration: newRegistration,
-                session: sessionData
-            });
+        // Envoi d'email
+        const emailResponse = await fetch(`${process.env.WEBSITE_URL}/api/emails/sessionRegister`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                prenom: type === 'special' ? inscriptionData.prenom : userData.prenom,
+                email: type === 'special' ? userData.email : userData.mail,
+                nomRencontre: sessionData.module.nom,
+                dateRencontre: formattedDateDebut,
+                lieuRencontre: sessionData.metasSession.lieuRencontre || 'Lieu',
+                nbJours: sessionData.metasSession.nombreJours,
+                mail_referent: sessionData.metasSession.mail_referent,
+                firstDayStartTime: firstDayStartTime
+            })
+        });
+
+        if (!emailResponse.ok) {
+            throw new Error(`Email request failed with status ${emailResponse.status}`);
         }
 
+        console.log("Email envoyé avec succès");
+
+        res.json({
+            registration: newRegistration,
+            session: sessionData
+        });
+
     } catch (error) {
-        console.error("Error creating registration: ", error);
+        console.error("Error creating registration:", error.message);
+        console.error("Stack trace:", error.stack);
         res.status(500).json({ error: `Impossible de créer l'enregistrement : ${error.message}` });
     }
 }
