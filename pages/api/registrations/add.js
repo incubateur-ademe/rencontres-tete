@@ -79,48 +79,48 @@ export default async function handle(req, res) {
             });
         }
 
-        console.log("Nouvelle inscription créée :", newRegistration);
+        // console.log("Nouvelle inscription créée :", newRegistration);
 
-        const firstProgramme = sessionData.metasSession.programmeSession[0];
-        let firstDayStartTime;
+        // const firstProgramme = sessionData.metasSession.programmeSession[0];
+        // let firstDayStartTime;
 
-        if (firstProgramme.horaires.includes('Jour')) {
-            firstDayStartTime = firstProgramme.horaires.split(' : ')[1].split(' - ')[0];
-        } else {
-            firstDayStartTime = firstProgramme.horaires.split(' - ')[0].trim();
-        }
+        // if (firstProgramme.horaires.includes('Jour')) {
+        //     firstDayStartTime = firstProgramme.horaires.split(' : ')[1].split(' - ')[0];
+        // } else {
+        //     firstDayStartTime = firstProgramme.horaires.split(' - ')[0].trim();
+        // }
 
-        const dateDebut = new Date(sessionData.dateDebut);
-        const formattedDateDebut = dateDebut.toLocaleDateString('fr-FR', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-        });
+        // const dateDebut = new Date(sessionData.dateDebut);
+        // const formattedDateDebut = dateDebut.toLocaleDateString('fr-FR', {
+        //     day: '2-digit',
+        //     month: '2-digit',
+        //     year: 'numeric',
+        // });
 
-        // Envoi d'email
-        const emailResponse = await fetch(`${process.env.WEBSITE_URL}/api/emails/sessionRegister`, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                prenom: type === 'special' ? inscriptionData.prenom : userData.prenom,
-                email: type === 'special' ? userData.email : userData.mail,
-                nomRencontre: sessionData.module.nom,
-                dateRencontre: formattedDateDebut,
-                lieuRencontre: sessionData.metasSession.lieuRencontre || 'Lieu',
-                nbJours: sessionData.metasSession.nombreJours,
-                mail_referent: sessionData.metasSession.mail_referent,
-                firstDayStartTime: firstDayStartTime
-            })
-        });
+        // // Envoi d'email
+        // const emailResponse = await fetch(`${process.env.WEBSITE_URL}/api/emails/sessionRegister`, {
+        //     method: 'POST',
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify({
+        //         prenom: type === 'special' ? inscriptionData.prenom : userData.prenom,
+        //         email: type === 'special' ? userData.email : userData.mail,
+        //         nomRencontre: sessionData.module.nom,
+        //         dateRencontre: formattedDateDebut,
+        //         lieuRencontre: sessionData.metasSession.lieuRencontre || 'Lieu',
+        //         nbJours: sessionData.metasSession.nombreJours,
+        //         mail_referent: sessionData.metasSession.mail_referent,
+        //         firstDayStartTime: firstDayStartTime
+        //     })
+        // });
 
-        if (!emailResponse.ok) {
-            const emailErrorText = await emailResponse.text();
-            return res.status(500).json({ error: `Échec de l'envoi de l'email`, details: emailErrorText });
-        }
+        // if (!emailResponse.ok) {
+        //     const emailErrorText = await emailResponse.text();
+        //     return res.status(500).json({ error: `Échec de l'envoi de l'email`, details: emailErrorText });
+        // }
 
-        console.log("Email envoyé avec succès");
+        // console.log("Email envoyé avec succès");
 
         return res.status(200).json({
             registration: newRegistration,
