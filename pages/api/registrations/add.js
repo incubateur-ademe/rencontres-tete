@@ -4,16 +4,19 @@ import fetch from 'node-fetch';
 export default async function handle(req, res) {
     if (req.method !== 'POST') {
         res.setHeader('Allow', ['POST']);
-        res.status(405).end(`Method ${req.method} Not Allowed`);
-        return;
+        return res.status(405).json({ error: `Method ${req.method} not allowed` });
     }
-    
+
     const { inscriptionData, userId, sessionId, type } = req.body;
+
+    if (!userId || !sessionId || !inscriptionData || !type) {
+        return res.status(400).json({ error: 'Missing required fields: userId, sessionId, inscriptionData, or type' });
+    }
 
     try {
         console.log("Début de la requête");
-        const now = new Date();
-
+        
+        // Récupérer les données de la session
         const sessionData = await prisma.session.findUnique({
             where: { id: parseInt(sessionId) },
             include: {
@@ -23,7 +26,7 @@ export default async function handle(req, res) {
         });
 
         if (!sessionData) {
-            throw new Error('Session non trouvée');
+            return res.status(404).json({ error: 'Session non trouvée' });
         }
 
         console.log("Session trouvée :", sessionData);
@@ -31,17 +34,16 @@ export default async function handle(req, res) {
         let userData;
         let newRegistration;
 
+        // Traiter en fonction du type (special ou normal)
         if (type === 'special') {
-            // Récupération des données du compte pour type "special"
             userData = await prisma.account.findUnique({
                 where: { id: parseInt(userId) },
             });
 
             if (!userData) {
-                throw new Error('Compte non trouvé');
+                return res.status(404).json({ error: 'Compte non trouvé' });
             }
 
-            // Création de l'inscription dans accountRegistration
             newRegistration = await prisma.accountRegistration.create({
                 data: {
                     ...inscriptionData,
@@ -55,16 +57,14 @@ export default async function handle(req, res) {
                 }
             });
         } else {
-            // Récupération des données de l'utilisateur pour les types autres que "special"
             userData = await prisma.user.findUnique({
                 where: { id: parseInt(userId) },
             });
 
             if (!userData) {
-                throw new Error('Utilisateur non trouvé');
+                return res.status(404).json({ error: 'Utilisateur non trouvé' });
             }
 
-            // Création de l'inscription dans registration
             newRegistration = await prisma.registration.create({
                 data: {
                     ...inscriptionData,
@@ -116,19 +116,22 @@ export default async function handle(req, res) {
         });
 
         if (!emailResponse.ok) {
-            throw new Error(`Email request failed with status ${emailResponse.status}`);
+            const emailErrorText = await emailResponse.text();
+            return res.status(500).json({ error: `Échec de l'envoi de l'email`, details: emailErrorText });
         }
 
         console.log("Email envoyé avec succès");
 
-        res.json({
+        return res.status(200).json({
             registration: newRegistration,
             session: sessionData
         });
 
     } catch (error) {
-        console.error("Error creating registration:", error.message);
-        console.error("Stack trace:", error.stack);
-        res.status(500).json({ error: `Impossible de créer l'enregistrement : ${error.message}` });
+        // Log plus détaillé dans la réponse JSON
+        return res.status(500).json({
+            error: `Impossible de créer l'enregistrement : ${error.message}`,
+            stack: error.stack, // Inclure la trace de l'erreur pour plus de détails
+        });
     }
 }
