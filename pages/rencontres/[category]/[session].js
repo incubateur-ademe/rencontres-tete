@@ -220,7 +220,7 @@ export default function Session({ data, user }){
 
     useEffect(() => {
         const getUserInfo = async () => {
-            if(user.type == "Administrateur" || user.type == "DR"){
+            if(user != null && (user.type == "Administrateur" || user.type == "DR")){
                 const fetcher = await fetch(`/api/accounts/${user.id}`)
                 const json = await fetcher.json()
                 let userDetail = await json[0]
@@ -273,7 +273,7 @@ export default function Session({ data, user }){
     }
 
     useEffect(() => {
-        if(user.type == "Administrateur" || user.type == "DR"){
+        if(user != null && (user.type == "Administrateur" || user.type == "DR")){
             const checker = async () => {
                 const fetcher = await fetch(`/api/registrations/byUserSession?userId=${user.id}&sessionId=${data.id}&specialAccount=true`)
                 const json = await fetcher.json()
