@@ -27,18 +27,20 @@ export default async function handler(req, res) {
     extName: '.hbs',
   }));
 
-  res.status(200).json({ prenom: prenom, maj: "ok" })
+  const mailOptions = {
+    from: '"ADEME" <contact@territoiresentransitions.fr>',
+    to: email,
+    subject: "Bienvenue sur la plateforme des Rencontres Territoire Engagé Transition Ecologique !",
+    template: 'welcome',
+    context: {
+        prenom: prenom,
+        siteUrl: process.env.WEBSITE_URL,
+    }
+  };
 
-//   const mailOptions = {
-//     from: '"ADEME" <contact@territoiresentransitions.fr>',
-//     to: email,
-//     subject: "Bienvenue sur la plateforme des Rencontres Territoire Engagé Transition Ecologique !",
-//     template: 'welcome',
-//     context: {
-//         prenom: prenom,
-//         siteUrl: process.env.WEBSITE_URL,
-//     }
-//   };
+  res.status(200).json({ prenom: prenom, mailOptions: mailOptions })
+
+
 
 //   transporter.sendMail(mailOptions, (error, info) => {
 //     if (error) {
