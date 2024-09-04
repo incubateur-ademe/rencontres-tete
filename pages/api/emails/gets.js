@@ -17,18 +17,17 @@ export default async function handler(req, res) {
     tls: {rejectUnauthorized: false}
   });
 
+  transporter.use('compile', hbs({
+    viewEngine: {
+      extName: '.hbs',
+      partialsDir: path.resolve('./views/emails'),
+      defaultLayout: false,
+    },
+    viewPath: path.resolve('./views/emails'),
+    extName: '.hbs',
+  }));
 
-  res.status(200).json({ prenom: prenom })
-
-//   transporter.use('compile', hbs({
-//     viewEngine: {
-//       extName: '.hbs',
-//       partialsDir: path.resolve('./views/emails'),
-//       defaultLayout: false,
-//     },
-//     viewPath: path.resolve('./views/emails'),
-//     extName: '.hbs',
-//   }));
+  res.status(200).json({ prenom: prenom, maj: "ok" })
 
 //   const mailOptions = {
 //     from: '"ADEME" <contact@territoiresentransitions.fr>',
