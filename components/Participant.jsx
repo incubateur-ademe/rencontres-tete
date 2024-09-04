@@ -10,7 +10,7 @@ export default function Participant({ data, setActions, session }){
 
     const deleteUser = async () => {
         setAlert(null)
-        const fetcher = await fetch(`/api/registrations/delete?userId=${data.userId}&sessionId=${data.sessionId}`, { method: 'DELETE' })
+        const fetcher = await fetch(`/api/registrations/delete?userId=${data.userId ? data.userId : data.accountId}&sessionId=${data.sessionId}&${!data.userId && 'specialAccount=true'}`, { method: 'DELETE' })
         // const json = await fetcher.json()
         setActions(prev => prev+1)
     }
@@ -33,7 +33,7 @@ export default function Participant({ data, setActions, session }){
             nom: data.nom,
             prenom: data.prenom,
             program: data.session.metasSession.programmeSession,
-            organisation: data.user.organisation || '',
+            organisation: data.user !== undefined && data.user.organisation || '',
         };
 
         const response = await fetch('/api/generate-badge', {

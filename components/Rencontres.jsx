@@ -14,11 +14,19 @@ export default function Rencontres({ user }){
 
 
     const getUserSessions = async () => {
-        setLoad(true)
-        const fetcher = await fetch(`/api/registrations/byUser/?userId=${user.id}&status=${status}`)
-        const json = await fetcher.json()
-        setRencontres(json)
-        setLoad(false)
+        if(user.type == "Administrateur" || user.type == "DR"){
+            setLoad(true)
+            const fetcher = await fetch(`/api/registrations/byUser/?userId=${user.id}&status=${status}&specialAccount=true`)
+            const json = await fetcher.json()
+            setRencontres(json)
+            setLoad(false)
+        } else {
+            setLoad(true)
+            const fetcher = await fetch(`/api/registrations/byUser/?userId=${user.id}&status=${status}`)
+            const json = await fetcher.json()
+            setRencontres(json)
+            setLoad(false)
+        }
     }
 
     useEffect(() => {

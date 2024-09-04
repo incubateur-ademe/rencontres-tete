@@ -198,6 +198,8 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
             return;
         }
 
+        const typeUser = user.type == "Administrateur" || user.type == "DR" ? "special" : "user"
+
         const response = await fetch('/api/satisfaction/add', {
             method: 'POST',
             headers: {
@@ -206,7 +208,8 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
             body: JSON.stringify({
                 userId: userId,
                 sessionId: data.id,
-                responses: responses
+                responses: responses,
+                type: typeUser
             }),
         });
 
@@ -240,6 +243,7 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
 
     const registerReview = async () => {
         setAlert(null);
+        const typeUser = user.type == "Administrateur" || user.type == "DR" ? "special" : "user"
         const fetcher = await fetch('/api/reviews/add', {
             method: 'POST',
             headers: {
@@ -250,6 +254,7 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
                 commentaire: commentaires,
                 userId: userId,
                 sessionId: data.id,
+                type: typeUser
             }),
         });
         const json = await fetcher.json();
@@ -278,21 +283,39 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
     };
     
     const checkReview = async () => {
-        const fetcher = await fetch(`/api/reviews/check?userId=${userId}&sessionId=${data.id}`);
-        const json = await fetcher.json();
-        setReviewDisabled(true);
-        if (json.length > 0) {
-            setRating(json[0].note);
-            setCommentaires(json[0].commentaire);
+        if(user.type == "Administrateur" || user.type == "DR") {
+            const fetcher = await fetch(`/api/reviews/check?userId=${userId}&sessionId=${data.id}&specialAccount=true`);
+            const json = await fetcher.json();
+            setReviewDisabled(true);
+            if (json.length > 0) {
+                setRating(json[0].note);
+                setCommentaires(json[0].commentaire);
+            } else {
+                setReviewDisabled(false);
+            }
         } else {
-            setReviewDisabled(false);
+            const fetcher = await fetch(`/api/reviews/check?userId=${userId}&sessionId=${data.id}`);
+            const json = await fetcher.json();
+            setReviewDisabled(true);
+            if (json.length > 0) {
+                setRating(json[0].note);
+                setCommentaires(json[0].commentaire);
+            } else {
+                setReviewDisabled(false);
+            }
         }
     };
 
     const checkSatisfaction = async () => {
-        const fetcher = await fetch(`/api/satisfaction/checkSatisfaction?userId=${userId}&sessionId=${data.id}`);
-        const json = await fetcher.json();
-        setHasResponded(json.hasResponded);
+        if(user.type == "Administrateur" || user.type == "DR"){
+            const fetcher = await fetch(`/api/satisfaction/checkSatisfaction?userId=${userId}&sessionId=${data.id}&specialAccount=true`);
+            const json = await fetcher.json();
+            setHasResponded(json.hasResponded);
+        } else {
+            const fetcher = await fetch(`/api/satisfaction/checkSatisfaction?userId=${userId}&sessionId=${data.id}`);
+            const json = await fetcher.json();
+            setHasResponded(json.hasResponded);
+        }
     };
 
     useEffect(() => {
@@ -321,12 +344,21 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
 
     useEffect(() => {
         if (user) {
-            const getUserIn = async () => {
-                const fetcher = await fetch(`/api/users/${user.id}`);
-                const json = await fetcher.json();
-                setUserData(json[0]);
-            };
-            getUserIn();
+            if(user.type == "Administrateur" || user.type == "DR"){
+                const getUserIn = async () => {
+                    const fetcher = await fetch(`/api/accounts/${user.id}`);
+                    const json = await fetcher.json();
+                    setUserData(json[0]);
+                };
+                getUserIn();
+            } else {
+                const getUserIn = async () => {
+                    const fetcher = await fetch(`/api/users/${user.id}`);
+                    const json = await fetcher.json();
+                    setUserData(json[0]);
+                };
+                getUserIn();
+            }
         }
     }, [user]);
 
@@ -370,18 +402,35 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
     };
 
     const cancel = async () => {
-        const fetcher = await fetch('/api/registrations/cancel', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                userId: userId,
-                sessionId: id,
-            }),
-        });
-        const json = await fetcher.json();
-        setOpen(null);
+        if(user.type == "Administrateur" || user.type == "DR"){
+            const fetcher = await fetch('/api/registrations/cancel', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    sessionId: id,
+                    type: "special"
+                }),
+            });
+            const json = await fetcher.json();
+            setOpen(null);
+        } else {
+            const fetcher = await fetch('/api/registrations/cancel', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    sessionId: id,
+                    type: "user"
+                }),
+            });
+            const json = await fetcher.json();
+            setOpen(null);
+        }
     };
 
     const transformLinks = (html) => {

@@ -122,6 +122,8 @@ export default function Session({ data, user }){
             days: inscription.days
         }
 
+        const userType = user.type == "Administrateur" || user.type == "DR" ? "special" : "user"
+
         const registering = await fetch('/api/registrations/add', {
             method: 'POST',
             headers: {
@@ -130,7 +132,8 @@ export default function Session({ data, user }){
             body: JSON.stringify({
                 inscriptionData: inscriptionData,
                 userId: inscription.userId,
-                sessionId: data.id
+                sessionId: data.id,
+                type: userType
             })
         })
 
@@ -213,20 +216,33 @@ export default function Session({ data, user }){
 
     useEffect(() => {
         const getUserInfo = async () => {
-            const fetcher = await fetch(`/api/users/${user.id}`)
-            const json = await fetcher.json()
-            let userDetail = await json[0]
-            setInscription(prev => {
-                return {
-                    ...prev,
-                    userId: userDetail.id,
-                    nom: userDetail.nom,
-                    prenom: userDetail.prenom,
-                    mail: userDetail.mail,
-                    telephone: userDetail.telephone,
-                    fonction:userDetail.fonction
-                }
-            })
+            if(user.type == "Administrateur" || user.type == "DR"){
+                const fetcher = await fetch(`/api/accounts/${user.id}`)
+                const json = await fetcher.json()
+                let userDetail = await json[0]
+                setInscription(prev => {
+                    return {
+                        ...prev,
+                        userId: userDetail.id,
+                        mail: userDetail.email,
+                    }
+                })
+            } else {
+                const fetcher = await fetch(`/api/users/${user.id}`)
+                const json = await fetcher.json()
+                let userDetail = await json[0]
+                setInscription(prev => {
+                    return {
+                        ...prev,
+                        userId: userDetail.id,
+                        nom: userDetail.nom,
+                        prenom: userDetail.prenom,
+                        mail: userDetail.mail,
+                        telephone: userDetail.telephone,
+                        fonction:userDetail.fonction
+                    }
+                })
+            }
         }
 
         if(user != null){
@@ -253,15 +269,28 @@ export default function Session({ data, user }){
     }
 
     useEffect(() => {
-        const checker = async () => {
-            const fetcher = await fetch(`/api/registrations/byUserSession?userId=${user.id}&sessionId=${data.id}`)
-            const json = await fetcher.json()
-            if(json.length > 0 && json[0].deleted == false){
-                setCheck(true)
+        if(user.type == "Administrateur" || user.type == "DR"){
+            const checker = async () => {
+                const fetcher = await fetch(`/api/registrations/byUserSession?userId=${user.id}&sessionId=${data.id}&specialAccount=true`)
+                const json = await fetcher.json()
+                if(json.length > 0 && json[0].deleted == false){
+                    setCheck(true)
+                }
             }
-        }
-        if(user != null){
-            checker()
+            if(user != null){
+                checker()
+            }
+        } else {
+            const checker = async () => {
+                const fetcher = await fetch(`/api/registrations/byUserSession?userId=${user.id}&sessionId=${data.id}`)
+                const json = await fetcher.json()
+                if(json.length > 0 && json[0].deleted == false){
+                    setCheck(true)
+                }
+            }
+            if(user != null){
+                checker()
+            }
         }
     }, [data, alert, user])
 
@@ -353,7 +382,6 @@ export default function Session({ data, user }){
 
     const groupedData = groupByDay(data.metasSession.programmeSession);
 
-    console.log(data)
 
     return (
         <>
