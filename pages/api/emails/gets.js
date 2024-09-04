@@ -38,17 +38,13 @@ export default async function handler(req, res) {
     }
   };
 
-  res.status(200).json({ prenom: prenom, mailOptions: mailOptions })
-
-
-
-//   transporter.sendMail(mailOptions, (error, info) => {
-//     if (error) {
-//       res.json(error)
-//       // return console.log(error);
-//     }
-//     console.log('Message sent: %s', info.messageId);
-//     res.status(200).json({ status: 'sended' })
-//   });
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      res.json(error)
+      // return console.log(error);
+    }
+    console.log('Message sent: %s', info.messageId);
+    res.status(200).json({ status: 'sended' })
+  });
 
 }
