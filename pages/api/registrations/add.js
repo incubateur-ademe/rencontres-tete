@@ -108,30 +108,30 @@ export default async function handle(req, res) {
             firstDayStartTime: firstDayStartTime
         }
 
-        // // Envoi d'email
-        // const emailResponse = await fetch(`${process.env.WEBSITE_URL}/api/emails/sessionRegister`, {
-        //     method: 'POST',
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify({
-        //         prenom: type == 'special' ? inscriptionData.prenom : userData.prenom,
-        //         email: type == 'special' ? userData.email : userData.mail,
-        //         nomRencontre: sessionData.module.nom,
-        //         dateRencontre: formattedDateDebut,
-        //         lieuRencontre: sessionData.metasSession.lieuRencontre || 'Lieu',
-        //         nbJours: sessionData.metasSession.nombreJours,
-        //         mail_referent: sessionData.metasSession.mail_referent,
-        //         firstDayStartTime: firstDayStartTime
-        //     })
-        // });
+        // Envoi d'email
+        const emailResponse = await fetch(`${process.env.WEBSITE_URL}/api/emails/sessionRegister`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                prenom: type == 'special' ? inscriptionData.prenom : userData.prenom,
+                email: type == 'special' ? userData.email : userData.mail,
+                nomRencontre: sessionData.module.nom,
+                dateRencontre: formattedDateDebut,
+                lieuRencontre: sessionData.metasSession.lieuRencontre || 'Lieu',
+                nbJours: sessionData.metasSession.nombreJours,
+                mail_referent: sessionData.metasSession.mail_referent,
+                firstDayStartTime: firstDayStartTime
+            })
+        });
 
-        // if (!emailResponse.ok) {
-        //     const emailErrorText = await emailResponse.text();
-        //     return res.status(500).json({ error: `Échec de l'envoi de l'email`, details: emailErrorText });
-        // }
+        if (!emailResponse.ok) {
+            const emailErrorText = await emailResponse.text();
+            return res.status(500).json({ error: `Échec de l'envoi de l'email`, details: emailErrorText });
+        }
 
-        // console.log("Email envoyé avec succès");
+        console.log("Email envoyé avec succès");
 
         return res.status(200).json({
             registration: newRegistration,
