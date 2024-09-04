@@ -98,6 +98,7 @@ export default async function handle(req, res) {
         });
 
         // Envoi d'email
+
         // const emailResponse = await fetch(`${process.env.WEBSITE_URL}/api/emails/sessionRegister`, {
         //     method: 'POST',
         //     headers: {
@@ -120,6 +121,14 @@ export default async function handle(req, res) {
         // }
 
         // console.log("Email envoyé avec succès");
+
+        res.json({
+            registration: newRegistration,
+            session: sessionData
+        });
+
+
+        console.log("Email envoyé avec succès");
 
         res.json({
             registration: newRegistration,
