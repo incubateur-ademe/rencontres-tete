@@ -81,8 +81,8 @@ export default async function handle(req, res) {
 
         console.log("Nouvelle inscription créée :", newRegistration);
 
-        const firstProgramme = sessionData.metasSession.programmeSession[0];
         let firstDayStartTime;
+        const firstProgramme = sessionData.metasSession.programmeSession[0];
 
         if (firstProgramme.horaires.includes('Jour')) {
             firstDayStartTime = firstProgramme.horaires.split(' : ')[1].split(' - ')[0];
