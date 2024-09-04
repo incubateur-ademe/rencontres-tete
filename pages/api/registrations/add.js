@@ -113,14 +113,13 @@ export default async function handle(req, res) {
                 mail_referent: sessionData.metasSession.mail_referent,
                 firstDayStartTime: firstDayStartTime
             })
+        })
 
 
         res.json({
             registration: newRegistration,
             session: sessionData
         });
-
-        console.log("Email envoyé avec succès");
 
 
     } catch (error) {
