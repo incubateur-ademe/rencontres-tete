@@ -1,22 +1,39 @@
-// pages/api/registrations/updatePresence.js
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
   if (req.method === 'PUT') {
-    const { userId, sessionId, presence } = req.body;
+    const { userId, accountId, sessionId, presence } = req.body;
 
     try {
-      const updatedRegistration = await prisma.registration.updateMany({
-        where: {
-          userId: userId,
-          sessionId: sessionId,
-        },
-        data: {
-          presence: presence,
-        },
-      });
+      let updatedRegistration;
+
+      if (userId) {
+        // Mettre à jour dans la table registration pour les utilisateurs standards
+        updatedRegistration = await prisma.registration.updateMany({
+          where: {
+            userId: parseInt(userId),
+            sessionId: parseInt(sessionId),
+          },
+          data: {
+            presence: presence,
+          },
+        });
+      } else if (accountId) {
+        // Mettre à jour dans la table accountRegistration pour les comptes spéciaux
+        updatedRegistration = await prisma.accountRegistration.updateMany({
+          where: {
+            accountId: parseInt(accountId),
+            sessionId: parseInt(sessionId),
+          },
+          data: {
+            presence: presence,
+          },
+        });
+      } else {
+        return res.status(400).json({ message: 'Either userId or accountId is required' });
+      }
 
       if (updatedRegistration.count === 0) {
         return res.status(404).json({ message: 'Registration not found' });

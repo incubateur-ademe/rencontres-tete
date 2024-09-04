@@ -116,7 +116,7 @@ export default function Reviews({ session, setOpen }){
                                         <tbody>
                                             <tr>
                                                 <td>Participant</td>
-                                                <td>{question.User.nom} {question.User.prenom}</td>
+                                                <td>{question.User.nom || question.Account.email} {question.User.prenom || question.Account.type}</td>
                                             </tr>
                                             {Object.entries(responses).map(([questionId, response], idx) => (
                                                 <React.Fragment key={idx}>

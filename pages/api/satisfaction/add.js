@@ -13,17 +13,32 @@ function serializeBigIntFields(data) {
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const { userId, sessionId, responses } = req.body;
+    const { userId, sessionId, responses, type } = req.body;
 
     try {
-      console.log('Creating new satisfaction with data:', { userId, sessionId, responses });
-      const newSatisfaction = await prisma.satisfaction.create({
-        data: {
-          userId: userId ? parseInt(userId) : null,
-          sessionId: sessionId ? parseInt(sessionId) : null,
-          responses: responses ? responses : null,
-        },
-      });
+      console.log('Creating new satisfaction with data:', { userId, sessionId, responses, type });
+      
+      let newSatisfaction;
+
+      if (type === 'special') {
+        // Création dans accountSatisfaction si type == "special"
+        newSatisfaction = await prisma.accountSatisfaction.create({
+          data: {
+            accountId: userId ? parseInt(userId) : null,
+            sessionId: sessionId ? parseInt(sessionId) : null,
+            responses: responses ? responses : null,
+          },
+        });
+      } else {
+        // Création dans satisfaction pour tous les autres types
+        newSatisfaction = await prisma.satisfaction.create({
+          data: {
+            userId: userId ? parseInt(userId) : null,
+            sessionId: sessionId ? parseInt(sessionId) : null,
+            responses: responses ? responses : null,
+          },
+        });
+      }
 
       // Utilisez la fonction serializeBigIntFields pour convertir correctement les BigInt
       res.status(201).json(serializeBigIntFields(newSatisfaction));

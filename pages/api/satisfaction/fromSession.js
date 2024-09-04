@@ -16,6 +16,7 @@ export default async function handler(req, res) {
     const { sessionId } = req.query;
 
     try {
+      // Récupération des satisfactions des utilisateurs
       const satisfaction = await prisma.satisfaction.findMany({
         where: {
           sessionId: sessionId ? parseInt(sessionId) : undefined,
@@ -29,13 +30,37 @@ export default async function handler(req, res) {
           },
         },
       });
-      if (satisfaction) {
-        // Utilisez la fonction serializeBigIntFields pour convertir correctement les BigInt
-        res.status(200).json(serializeBigIntFields(satisfaction));
-      } else {
-        res.status(404).json({ error: 'Satisfaction non trouvée.' });
-      }
-    } catch (error) {
+
+      // Récupération des satisfactions des comptes spéciaux
+      const accountSatisfaction = await prisma.accountSatisfaction.findMany({
+        where: {
+          sessionId: sessionId ? parseInt(sessionId) : undefined,
+        },
+        include: {
+          Account: {
+            select: {
+              email: true,
+              type: true,
+            },
+          },
+        },
+      });
+
+      // Combinaison des résultats
+      const combinedSatisfaction = [
+        ...satisfaction.map(item => ({
+          ...item,
+          source: 'user', // Identifier la source de la satisfaction
+        })),
+        ...accountSatisfaction.map(item => ({
+          ...item,
+          source: 'account', // Identifier la source de la satisfaction
+        })),
+      ];
+
+      // Utilisation de la fonction serializeBigIntFields pour convertir correctement les BigInt
+      res.status(200).json(serializeBigIntFields(combinedSatisfaction));
+    }  catch (error) {
       console.error('Error fetching satisfaction:', error);
       res.status(500).json({ error: 'Erreur lors de la récupération de la satisfaction.' });
     }

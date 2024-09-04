@@ -45,14 +45,14 @@ export default function Presence() {
     setFiche(0);
   };
 
-  const updatePresence = async (userId, sessionId, isPresent) => {
+  const updatePresence = async (id, sessionId, isPresent, idType) => {
     const response = await fetch(`/api/registrations/updatePresence`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userId,
+        [idType]: id, // Envoyer soit userId soit accountId
         sessionId,
         presence: isPresent,
       }),
@@ -63,9 +63,9 @@ export default function Presence() {
     }
   };
 
-  const handleCheckboxChange = (userId, sessionId, event) => {
+  const handleCheckboxChange = (id, sessionId, idType, event) => {
     const isPresent = event.target.checked;
-    updatePresence(userId, sessionId, isPresent);
+    updatePresence(id, sessionId, isPresent, idType); // Passer le type d'ID
   };
 
   useEffect(() => {
@@ -141,6 +141,8 @@ export default function Presence() {
                 {filteredUsers.length > 0 ? (
                     <>
                         {filteredUsers.map((u, i) => {
+                            const idType = u.userId ? 'userId' : 'accountId'; // Identifier le type d'ID
+                            const id = u.userId || u.accountId; // Récupérer l'ID correct
                             return (
                                 <div key={i} className={styles.user}>
                                     <div className="w80 flex aligncenter">
@@ -151,10 +153,10 @@ export default function Presence() {
                                       type="checkbox"
                                       name="participe"
                                       defaultChecked={u.presence}
-                                      onChange={(e) => handleCheckboxChange(u.userId, fiche, e)}
+                                      onChange={(e) => handleCheckboxChange(id, fiche, idType, e)} // Passer l'ID et le type d'ID
                                     />
                                 </div>
-                            )
+                            );
                         })}
                     </>
                 ) : (
