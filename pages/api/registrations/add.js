@@ -97,30 +97,29 @@ export default async function handle(req, res) {
             year: 'numeric',
         });
 
-        // Envoi d'email
 
-        // const emailResponse = await fetch(`${process.env.WEBSITE_URL}/api/emails/sessionRegister`, {
-        //     method: 'POST',
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify({
-        //         prenom: type === 'special' ? inscriptionData.prenom : userData.prenom,
-        //         email: type === 'special' ? userData.email : userData.mail,
-        //         nomRencontre: sessionData.module.nom,
-        //         dateRencontre: formattedDateDebut,
-        //         lieuRencontre: sessionData.metasSession.lieuRencontre || 'Lieu',
-        //         nbJours: sessionData.metasSession.nombreJours,
-        //         mail_referent: sessionData.metasSession.mail_referent,
-        //         firstDayStartTime: firstDayStartTime
-        //     })
-        // });
+        const emailResponse = await fetch(`${process.env.WEBSITE_URL}/api/emails/sessionRegister`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                prenom: type === 'special' ? inscriptionData.prenom : userData.prenom,
+                email: type === 'special' ? userData.email : userData.mail,
+                nomRencontre: sessionData.module.nom,
+                dateRencontre: formattedDateDebut,
+                lieuRencontre: sessionData.metasSession.lieuRencontre || 'Lieu',
+                nbJours: sessionData.metasSession.nombreJours,
+                mail_referent: sessionData.metasSession.mail_referent,
+                firstDayStartTime: firstDayStartTime
+            })
+        });
 
-        // if (!emailResponse.ok) {
-        //     throw new Error(`Email request failed with status ${emailResponse.status}`);
-        // }
+        if (!emailResponse.ok) {
+            throw new Error(`Email request failed with status ${emailResponse.status}`);
+        }
 
-        // console.log("Email envoyé avec succès");
+        console.log("Email envoyé avec succès");
 
         res.json({
             registration: newRegistration,
