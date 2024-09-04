@@ -97,7 +97,7 @@ export default async function handle(req, res) {
             year: 'numeric',
         });
 
-
+        // Envoi d'email
         const emailResponse = await fetch(`${process.env.WEBSITE_URL}/api/emails/sessionRegister`, {
             method: 'POST',
             headers: {
@@ -113,15 +113,18 @@ export default async function handle(req, res) {
                 mail_referent: sessionData.metasSession.mail_referent,
                 firstDayStartTime: firstDayStartTime
             })
+        });
 
+        if (!emailResponse.ok) {
+            throw new Error(`Email request failed with status ${emailResponse.status}`);
+        }
+
+        console.log("Email envoyé avec succès");
 
         res.json({
             registration: newRegistration,
             session: sessionData
         });
-
-        console.log("Email envoyé avec succès");
-
 
     } catch (error) {
         console.error("Error creating registration:", error.message);
