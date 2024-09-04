@@ -8,16 +8,16 @@ export default async function handler(req, res) {
 
   res.status(200).json({ prenom: prenom })
 
-//   const transporter = nodemailer.createTransport({
-//     host: 'smtp-relay.brevo.com',
-//     port: 587,
-//     secure: false,
-//     auth: {
-//       user: 'contact@territoiresentransitions.fr',
-//       pass: process.env.BREVO_KEY
-//     },
-//     tls: {rejectUnauthorized: false}
-//   });
+  const transporter = nodemailer.createTransport({
+    host: 'smtp-relay.brevo.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: 'contact@territoiresentransitions.fr',
+      pass: process.env.BREVO_KEY
+    },
+    tls: {rejectUnauthorized: false}
+  });
 
 //   transporter.use('compile', hbs({
 //     viewEngine: {
