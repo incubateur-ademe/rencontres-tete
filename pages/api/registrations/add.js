@@ -79,16 +79,16 @@ export default async function handle(req, res) {
             });
         }
 
-        // console.log("Nouvelle inscription créée :", newRegistration);
+        console.log("Nouvelle inscription créée :", newRegistration);
 
-        // const firstProgramme = sessionData.metasSession.programmeSession[0];
-        // let firstDayStartTime;
+        const firstProgramme = sessionData.metasSession.programmeSession[0];
+        let firstDayStartTime;
 
-        // if (firstProgramme.horaires.includes('Jour')) {
-        //     firstDayStartTime = firstProgramme.horaires.split(' : ')[1].split(' - ')[0];
-        // } else {
-        //     firstDayStartTime = firstProgramme.horaires.split(' - ')[0].trim();
-        // }
+        if (firstProgramme.horaires.includes('Jour')) {
+            firstDayStartTime = firstProgramme.horaires.split(' : ')[1].split(' - ')[0];
+        } else {
+            firstDayStartTime = firstProgramme.horaires.split(' - ')[0].trim();
+        }
 
         // const dateDebut = new Date(sessionData.dateDebut);
         // const formattedDateDebut = dateDebut.toLocaleDateString('fr-FR', {
