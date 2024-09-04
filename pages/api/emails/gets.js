@@ -6,8 +6,6 @@ export default async function handler(req, res) {
 
   const { prenom, email } = req.body
 
-  res.status(200).json({ prenom: prenom })
-
   const transporter = nodemailer.createTransport({
     host: 'smtp-relay.brevo.com',
     port: 587,
@@ -18,6 +16,9 @@ export default async function handler(req, res) {
     },
     tls: {rejectUnauthorized: false}
   });
+
+
+  res.status(200).json({ prenom: prenom })
 
 //   transporter.use('compile', hbs({
 //     viewEngine: {
