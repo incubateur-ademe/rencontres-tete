@@ -11,7 +11,7 @@ export default async function handle(req, res) {
     try {
         const today = new Date();
         const oneDayafter = new Date(today);
-        oneDayafter.setDate(today.getDate() - 1);
+        oneDayafter.setDate(today.getDate() - 2);
         oneDayafter.setHours(0, 0, 0, 0);
         
         const startOfDay = new Date(oneDayafter);
