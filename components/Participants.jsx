@@ -128,7 +128,7 @@ export default function Participants({ session, setOpen }){
                         </select>
                         <span className="material-icons">expand_more</span>
                     </div>
-                    <button className="btn__normal btn__dark" onClick={() => exportToExcel(users, `Participants Session ${session.region}`)}>Exporter la liste des participants</button>
+                    <button className="btn__normal btn__dark" onClick={() => exportToExcel(users, `Export liste des participants`)}>Exporter la liste des participants</button>
                     <button className="btn__normal btn__light" onClick={() => setIsMail(prev => !prev)}>{isMail ? "Fermer" : "Envoyer un mail"}</button>
                     </div>
                     {isMail && (
