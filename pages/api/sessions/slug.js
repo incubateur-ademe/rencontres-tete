@@ -16,7 +16,7 @@ const regionSlugs = {
   'pays-de-la-loire': 'Pays de la Loire',
   'guyane': 'Guyane',
   'martinique': 'Martinique',
-  'reunion': 'La Reunion',
+  'la-reunion': 'La Reunion',
   'guadeloupe': 'Guadeloupe',
   'mayotte': 'Mayotte',
   'polynesie-francaise': 'Polynésie Française',
