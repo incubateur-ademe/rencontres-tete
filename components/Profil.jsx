@@ -49,23 +49,24 @@ export default function Profil({ user }){
         if(motDePasse && motDePasse2){
             if(motDePasse.length > 5){
                 if(user.type == "Administrateur" || user.type == "DR"){
-                    // const fetcher = await fetch('/api/accounts/lib/update-password', {
-                    //     method: 'POST',
-                    //     headers: {
-                    //         'Content-Type': 'application/json'
-                    //     },
-                    //     body: JSON.stringify({
-                    //         motDePasse: motDePasse,
-                    //         userId: user.id
-                    //     })
-                    // })
-                    // const json = await fetcher.json();
-                    // if(json.id){
-                    //     setNotif({
-                    //         text: 'Le mot de passe a bien été modififé !',
-                    //         icon: 'done'
-                    //     })                      
-                    // }
+                    const fetcher = await fetch('/api/users/lib/update-password', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            motDePasse: motDePasse,
+                            userId: user.id,
+                            type: 'special'
+                        })
+                    })
+                    const json = await fetcher.json();
+                    if(json.id){
+                        setNotif({
+                            text: 'Le mot de passe a bien été modififé !',
+                            icon: 'done'
+                        })                      
+                    }
                 } else {
                     const fetcher = await fetch('/api/users/lib/update-password', {
                         method: 'POST',
@@ -74,7 +75,8 @@ export default function Profil({ user }){
                         },
                         body: JSON.stringify({
                             motDePasse: motDePasse,
-                            userId: user.id
+                            userId: user.id,
+                            type: 'user'
                         })
                     })
                     const json = await fetcher.json();
