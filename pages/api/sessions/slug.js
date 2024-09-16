@@ -19,6 +19,7 @@ const regionSlugs = {
   'reunion': 'La Reunion',
   'guadeloupe': 'Guadeloupe',
   'mayotte': 'Mayotte',
+  'polynesie-francaise': 'Polynésie Française',
   'provence-alpes-cote-d-azur': 'Provence-Alpes-Côte d\'Azur'
 };
 

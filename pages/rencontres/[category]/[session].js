@@ -664,6 +664,7 @@ export default function Session({ data, user }){
                                                             <option>Guyane</option>
                                                             <option>La Reunion</option>
                                                             <option>Mayotte</option>
+                                                            <option>Polynésie Française</option>
                                                         </select>
                                                         <span className="material-icons">expand_more</span>
                                                     </div>

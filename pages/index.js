@@ -30,6 +30,7 @@ export default function Home() {
   trad["GUY"] = "Guyane"
   trad["REU"] = "La Reunion"
   trad["MAY"] = "Mayotte"
+  trad["POL"] = "Polynésie Française"
 
   const getModules = async (nom) => {
     const fetcher = await fetch(`/api/modules/?nom=${nom}`)
@@ -124,6 +125,7 @@ export default function Home() {
                 <li><Link href={`/rencontres?region=Guyane`} onMouseOver={() => setRegion('GUY')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Guyane</Link></li>
                 <li><Link href={`/rencontres?region=La Reunion`} onMouseOver={() => setRegion('REU')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>La Reunion</Link></li>
                 <li><Link href={`/rencontres?region=Mayotte`} onMouseOver={() => setRegion('MAY')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Mayotte</Link></li>
+                <li><Link href={`/rencontres?region=Polynésie Française`} onMouseOver={() => setRegion('POL')} onMouseOut={() => setRegion('')}><span className="material-icons">room</span>Polynésie Française</Link></li>
               </ul>
               <Link href="/rencontres" className="btn__normal btn__dark">Voir toutes les rencontres</Link>
             </div>

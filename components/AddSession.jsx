@@ -459,6 +459,7 @@ export default function AddSession({setOpen, id, nom}){
                                 <option>Guyane</option>
                                 <option>La Reunion</option>
                                 <option>Mayotte</option>
+                                <option>Polynésie Française</option>
                             </select>
                             <span className="material-icons">expand_more</span>
                         </div>
@@ -636,6 +637,11 @@ export default function AddSession({setOpen, id, nom}){
                                 {datas?.region == "Mayotte" && (
                                     <>
                                         <option>976 - Mayotte</option>
+                                    </>
+                                )}
+                                {datas?.region == "Polynésie Française" && (
+                                    <>
+                                        <option>Polynésie Française</option>
                                     </>
                                 )}
                             </select>

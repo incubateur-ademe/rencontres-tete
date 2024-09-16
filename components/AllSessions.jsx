@@ -145,6 +145,7 @@ export default function Modules({setPage, page, user}){
                                 <option>Guyane</option>
                                 <option>La Reunion</option>
                                 <option>Mayotte</option>
+                                <option>Polynésie Française</option>
                             </select>
                             <span className="material-icons">expand_more</span>
                         </div>

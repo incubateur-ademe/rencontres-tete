@@ -305,6 +305,11 @@ export default function Comptes({ user }) {
                                         <input id="region_r" type="checkbox" onChange={handleChange} name="regions" value="Mayotte" checked={account.regions.includes("Mayotte")} />
                                         <label htmlFor="region_r">Mayotte</label>
                                     </div>
+
+                                    <div className="flex aligncenter gap5">
+                                        <input id="region_r" type="checkbox" onChange={handleChange} name="regions" value="Polynésie Française" checked={account.regions.includes("Polynésie Française")} />
+                                        <label htmlFor="region_r">Polynésie Française</label>
+                                    </div>
                                 </div>
                             </div>
                             <div className="w50">
@@ -452,6 +457,11 @@ export default function Comptes({ user }) {
                                                         <div className="flex aligncenter gap5">
                                                             <input id="region_r" type="checkbox" onChange={handleChange} name="regions" value="Mayotte" checked={account.regions.includes("Mayotte")} />
                                                             <label htmlFor="region_r">Mayotte</label>
+                                                        </div>
+
+                                                        <div className="flex aligncenter gap5">
+                                                            <input id="region_r" type="checkbox" onChange={handleChange} name="regions" value="Polynésie Française" checked={account.regions.includes("Polynésie Française")} />
+                                                            <label htmlFor="region_r">Polynésie Française</label>
                                                         </div>
                                                     </div>
                                                 </div>
