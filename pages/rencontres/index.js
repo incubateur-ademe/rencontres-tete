@@ -259,19 +259,27 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                 {modules.length > 0 ? (
                                 <div className="flex wrap gap15">
                                     {!switcher ? 
-                                        modules.map((module, index) => (
-                                            <>
+                                        modules.map((module, index) => {
+                                            
+                                            const publishedUpcomingSessions = module.sessions.filter(session => {
+                                                const isPublished = session.status === "publish";
+                                                const isUpcoming = new Date(session.dateDebut) > new Date();
+                                                return isPublished && isUpcoming;
+                                            });
+                        
+                                            return (
                                                 <div key={index} className="w32 wm100">
                                                     <ModuleBox 
                                                         title={module.nom}
                                                         id={module.id}
                                                         link={`/rencontres/${module.slug}`}
                                                         theme={module.thematique}
-                                                        length={module.sessions}
+                                                        length={publishedUpcomingSessions}
                                                     />
                                                 </div>
-                                            </>
-                                        )) : modules.map((module, index) => {
+                                            );
+                                            
+                                        }) : modules.map((module, index) => {
                                             const publishedUpcomingSessions = module.sessions.filter(session => {
                                                 const isPublished = session.status === "publish";
                                                 const isUpcoming = new Date(session.dateDebut) > new Date();
