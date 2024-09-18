@@ -165,6 +165,12 @@ export default function Register(){
                                                     <option>Occitanie</option>
                                                     <option>Pays de la Loire</option>
                                                     <option>Provence-Alpes-Côte d'Azur</option>
+                                                    <option>Guadeloupe</option>
+                                                    <option>Martinique</option>
+                                                    <option>Guyane</option>
+                                                    <option>La Reunion</option>
+                                                    <option>Mayotte</option>
+                                                    <option>Polynésie Française</option>
                                                 </select>
                                                 <span className="material-icons">expand_more</span>
                                             </div>
