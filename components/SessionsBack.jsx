@@ -5,13 +5,11 @@ import styles from '@/styles/SessionsBack.module.css'
 export default function SessionsBack({isModule, date, session, code, region, title, id, setOpen, setAlert, setActions, action, status, moduleId, dept, user}){
 
     function formatDate(dateString) {
-        const date = new Date(dateString);
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear();
+        const base = dateString.split('T');
+        const [year, month, day] = base[0].split('-')
         return `${day}/${month}/${year}`;
-    }
-
+    }    
+    
     const startDate = formatDate(date);
 
     const [number, setNumber] = useState(0)
