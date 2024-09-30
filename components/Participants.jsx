@@ -21,6 +21,10 @@ export default function Participants({ session, setOpen }){
     const [editContent, setEditContent] = useState('');
     const [subject, setSubject] = useState('')
     const [isMail, setIsMail] = useState(false)
+    const [openAdd, setOpenAdd] = useState(false)
+    const [openList, setOpenList] = useState(false)
+    const [searchUsers, setSearchUsers] = useState([])
+    const [userAdded, setUserAdded] = useState(null)
     const [loading, setLoading] = useState(false);
 
     const flattenJson = (jsonArray) => {
@@ -164,6 +168,75 @@ export default function Participants({ session, setOpen }){
         }
     }
 
+    const chercherInscrit = async (nom) => {
+        if(nom.length >= 3){
+            const getUsers = await fetch(`/api/users/findUser?search=${nom}`)
+            const get = await getUsers.json()
+            setSearchUsers(get)
+            setOpenList(true)
+        }
+        else{
+            setOpenList(false)
+        }
+    }
+
+    const addUserFromList = async (user) => {
+        setUserAdded(user)
+        setOpenList(false)
+        setSearchUsers([])
+    }
+
+    const ajouterInscrit = async () => {
+        let inscriptionData = {
+            civilite: '-',
+            mail: userAdded.mail,
+            nom: userAdded.nom,
+            prenom: userAdded.prenom,
+            structure: userAdded.organisation,
+            fonction: userAdded.fonction,
+            typeFonction: '-',
+            ville: '-',
+            region: userAdded.region,
+            telephone: '-',
+            transport: '-',
+            repas: false,
+            repas2: false,
+            besoins: null,
+            regime: 'Omnivore',
+            programmeTETE: null,
+            participationUlterieure: null,
+            days: false
+        }
+
+        const registering = await fetch('/api/registrations/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                inscriptionData: inscriptionData,
+                userId: userAdded.id,
+                sessionId: session.id,
+                type: 'user'
+            })
+        })
+
+        const json = await registering.json()
+
+        setUserAdded(null)
+        setOpenList(false)
+        setSearchUsers([])
+
+        setAlert(null)
+        setNotif({
+            text: 'Le nouveau participant a été ajouté !',
+            icon: 'done'
+        })
+
+        getParticipants()
+    }
+
+
     useEffect(() => {
         getParticipants()
     }, [actions])
@@ -187,9 +260,12 @@ export default function Participants({ session, setOpen }){
                     <button className="btn__normal btn__light" onClick={() => setIsMail(prev => !prev)}>{isMail ? "Fermer" : "Envoyer un mail"}</button>
                     </div>
                     <div class="mBot30">
-                        <button className="btn__normal btn__dark" onClick={downloadAllBadges} disabled={loading}>
-                            {loading ? 'Génération des badges, veuillez patienter...' : 'Télécharger tous les badges'}      
-                        </button>
+                        <div className="flex aligncenter gap10">
+                            <button className="btn__normal btn__light" onClick={() => setOpenAdd(prev => !prev)}>Ajouter un participant</button>
+                            <button className="btn__normal btn__dark" onClick={downloadAllBadges} disabled={loading}>
+                                {loading ? 'Génération des badges, veuillez patienter...' : 'Télécharger tous les badges'}      
+                            </button>
+                        </div>
                         {loading && <p class="mBot30">Le téléchargement peut prendre du temps si le nombre de participants est élevé, veuillez patienter...</p>}
                     </div>
                     {isMail && (
@@ -201,6 +277,31 @@ export default function Participants({ session, setOpen }){
                             </div>
                             <button onClick={preMail} className="btn__normal btn__dark mTop20">Envoyer l'e-mail</button>
                         </div>                        
+                    )}
+                    {openAdd && (
+                        <div className={styles.sendEmail}>
+                             <h2>Ajouter un participant</h2>
+                            {userAdded == null ? (
+                                <>
+                                    <input type="text" onChange={(event) => chercherInscrit(event.target.value)} name="rechercheInscrit" className="input-text" placeholder="Chercher un inscrit..." />
+                                    {openList && (
+                                        <>
+                                            <div className={styles.ListSearch}>
+                                                {searchUsers.map((user, i) => {
+                                                    return <button onClick={() => addUserFromList(user)} key={i}>{user.nom} {user.prenom} {user.mail}</button>
+                                                })}
+                                            </div>
+                                        </>
+                                    )}
+                                </>
+                            ) : (
+                                <div className="flex aligncenter">
+                                    <span>{userAdded.nom} {userAdded.prenom} - {userAdded.mail}</span>
+                                    <button onClick={ajouterInscrit} className={styles.toAdd}>Ajouter</button>
+                                    <button onClick={() => addUserFromList(null)} className={styles.toRem}><span className="material-icons">close</span></button>
+                                </div>
+                            )}
+                        </div>  
                     )}
 
                     {users.filter(user => selectedFonction === '' || user.fonction === selectedFonction).map((user, index) => {
