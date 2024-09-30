@@ -70,10 +70,48 @@ export default function Reviews({ session, setOpen }) {
     const exportToExcel = () => {
         const data = quizz.map((question) => {
             const responses = question.responses;
-            const participant = question.User
-                ? `${question.User.nom} ${question.User.prenom}` 
-                : `${question.Account.email} (${question.Account.type})`;
-            const row = { Participant: participant };
+            let participant;
+            let registrationData = {};
+    
+            // Identifier si c'est un utilisateur normal ou un compte spécial et inclure Registration ou AccountRegistration
+            if (question.User) {
+                participant = `${question.User.nom} ${question.User.prenom}`;
+    
+                // Inclure les informations de Registration s'il s'agit d'un User
+                const registration = question.User.registrations && question.User.registrations.length > 0
+                    ? question.User.registrations[0]  // Assume we take the first registration if multiple
+                    : null;
+    
+                if (registration) {
+                    registrationData = {
+                        Ville: registration.ville || '-',
+                        Structure: registration.structure || '-',
+                        Fonction: registration.fonction || '-',
+                        Type_Fonction: registration.typeFonction || '-',
+                    };
+                }
+            } else if (question.Account) {
+                participant = `${question.Account.email} (${question.Account.type})`;
+    
+                // Inclure les informations de AccountRegistration s'il s'agit d'un Account
+                const accountRegistration = question.Account.accountRegistrations && question.Account.accountRegistrations.length > 0
+                    ? question.Account.accountRegistrations[0]
+                    : null;
+    
+                if (accountRegistration) {
+                    registrationData = {
+                        Ville: accountRegistration.ville || '-',
+                        Structure: accountRegistration.structure || '-',
+                        Fonction: accountRegistration.fonction || '-',
+                        Type_Fonction: registration.typeFonction || '-',
+                    };
+                }
+            }
+    
+            // Créer une ligne avec toutes les données
+            const row = { Participant: participant, ...registrationData };
+    
+            // Ajouter les réponses aux questions dans la ligne
             Object.entries(responses).forEach(([questionId, response]) => {
                 if (Array.isArray(response)) {
                     row[questionLabels[questionId] || `Question ${questionId}`] = response.join(', ');
@@ -81,15 +119,19 @@ export default function Reviews({ session, setOpen }) {
                     row[questionLabels[questionId] || `Question ${questionId}`] = response;
                 }
             });
+    
             return row;
         });
-
+    
+        // Générer le fichier Excel
         const worksheet = XLSX.utils.json_to_sheet(data);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, 'Quizz');
-
+    
+        // Télécharger le fichier Excel
         XLSX.writeFile(workbook, `questionnaires_session_${session.id}.xlsx`);
     };
+    
 
     return (
         <>

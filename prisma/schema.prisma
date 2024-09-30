@@ -91,7 +91,7 @@ model MetasSession {
 }
 
 model Registration {
-  id                      Int      @id @default(autoincrement())
+  id                      Int            @id @default(autoincrement())
   civilite                String
   nom                     String
   prenom                  String
@@ -115,8 +115,9 @@ model Registration {
   presence                Boolean?
   programmeTETE           String?
   participationUlterieure Boolean?
-  session                 Session  @relation(fields: [sessionId], references: [id])
-  user                    User     @relation(fields: [userId], references: [id])
+  session                 Session        @relation(fields: [sessionId], references: [id])
+  user                    User           @relation(fields: [userId], references: [id])
+  Satisfaction            Satisfaction[]
 }
 
 model Review {
@@ -143,17 +144,19 @@ model Account {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Satisfaction {
-  id         BigInt   @id @default(autoincrement())
-  userId     Int?
-  sessionId  Int?
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  responses  Json?
-  Session    Session? @relation(fields: [sessionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  User       User?    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id             BigInt        @id @default(autoincrement())
+  userId         Int?
+  sessionId      Int?
+  created_at     DateTime      @default(now()) @db.Timestamptz(6)
+  responses      Json?
+  registrationId Int?
+  Registration   Registration? @relation(fields: [registrationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Session        Session?      @relation(fields: [sessionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User           User?         @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model AccountRegistration {
-  id                      Int      @id @default(autoincrement())
+  id                      Int                   @id @default(autoincrement())
   civilite                String?
   nom                     String?
   prenom                  String?
@@ -177,8 +180,9 @@ model AccountRegistration {
   presence                Boolean?
   programmeTETE           String?
   participationUlterieure Boolean?
-  account                 Account  @relation(fields: [accountId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  session                 Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  account                 Account               @relation(fields: [accountId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  session                 Session               @relation(fields: [sessionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  AccountSatisfaction     AccountSatisfaction[]
 }
 
 model AccountReview {
@@ -192,11 +196,13 @@ model AccountReview {
 }
 
 model AccountSatisfaction {
-  id         BigInt    @id @default(autoincrement())
-  accountId  Int?
-  sessionId  Int?
-  created_at DateTime? @default(now()) @db.Timestamptz(6)
-  responses  Json?
-  Account    Account?  @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Session    Session?  @relation(fields: [sessionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id                  BigInt               @id @default(autoincrement())
+  accountId           Int?
+  sessionId           Int?
+  created_at          DateTime?            @default(now()) @db.Timestamptz(6)
+  responses           Json?
+  registrationId      Int?
+  Account             Account?             @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  AccountRegistration AccountRegistration? @relation(fields: [registrationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Session             Session?             @relation(fields: [sessionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
