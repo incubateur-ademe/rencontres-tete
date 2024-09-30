@@ -8,8 +8,7 @@ export default function Reviews({ session, setOpen }) {
     const [reviews, setReviews] = useState([]);
     const [moyenne, setMoyenne] = useState(0);
     const [quizz, setQuizz] = useState([]);
-
-    console.log(session);
+    
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -31,6 +30,7 @@ export default function Reviews({ session, setOpen }) {
     //         console.log("JSON => ", json);
     //     }
     // };
+
 
     const getQuizz = async () => {
         try {
@@ -63,9 +63,9 @@ export default function Reviews({ session, setOpen }) {
     };
 
     useEffect(() => {
-        console.log("Session info: ", session); // Vérifie que la session est bien définie
-        getQuizz();
-    }, []);
+        getQuizz()
+    }, [])
+
 
     const exportToExcel = () => {
         const data = quizz.map((question) => {
