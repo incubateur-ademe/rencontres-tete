@@ -28,12 +28,22 @@ export default async function handler(req, res) {
             select: {
               nom: true,
               prenom: true,
+              registrations: true
             },
           },
           Session: true, // Inclure la session si nécessaire
+          // Registration: { // Inclure les informations de la registration
+          //   select: {
+          //     id: true,
+          //     mail: true,
+          //     structure: true,
+          //     fonction: true,
+          //     typeFonction: true, 
+          //     ville: true
+          //   },
+          // },
         },
       });
-
 
       // Récupération des satisfactions des comptes spéciaux
       const accountSatisfaction = await prisma.accountSatisfaction.findMany({
@@ -45,13 +55,23 @@ export default async function handler(req, res) {
             select: {
               email: true,
               type: true,
+              accountRegistrations: true,
             },
           },
           Session: true, // Inclure la session si nécessaire
+          // AccountRegistration: { // Inclure les informations de la registration
+          //   select: {
+          //     id: true,
+          //     nom: true,
+          //     prenom: true,
+          //     structure: true,
+          //     fonction: true,
+          //     typeFonction: true, 
+          //     ville: true
+          //   },
+          // },
         },
       });
-
-
 
       // Combinaison des résultats
       const combinedSatisfaction = [

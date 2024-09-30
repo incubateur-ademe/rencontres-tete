@@ -13,7 +13,7 @@ function serializeBigIntFields(data) {
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const { userId, sessionId, responses, type } = req.body;
+    const { userId, sessionId, registrationId, responses, type } = req.body;
 
     try {
       console.log('Creating new satisfaction with data:', { userId, sessionId, responses, type });
@@ -26,6 +26,7 @@ export default async function handler(req, res) {
           data: {
             accountId: userId ? parseInt(userId) : null,
             sessionId: sessionId ? parseInt(sessionId) : null,
+            registrationId: registrationId ? parseInt(registrationId) : null,
             responses: responses ? responses : null,
           },
         });
@@ -35,6 +36,7 @@ export default async function handler(req, res) {
           data: {
             userId: userId ? parseInt(userId) : null,
             sessionId: sessionId ? parseInt(sessionId) : null,
+            registrationId: registrationId ? parseInt(registrationId) : null,
             responses: responses ? responses : null,
           },
         });

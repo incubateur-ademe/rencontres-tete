@@ -198,6 +198,7 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
             body: JSON.stringify({
                 userId: userId,
                 sessionId: data.id,
+                registrationId: id,
                 responses: responses,
                 type: typeUser
             }),
