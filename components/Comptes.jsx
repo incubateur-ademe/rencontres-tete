@@ -310,6 +310,23 @@ export default function Comptes({ user }) {
                                         <input id="region_r" type="checkbox" onChange={handleChange} name="regions" value="Polynésie Française" checked={account.regions.includes("Polynésie Française")} />
                                         <label htmlFor="region_r">Polynésie Française</label>
                                     </div>
+
+
+                                    <div className="flex aligncenter gap5">
+                                        <input id="region_r" type="checkbox" onChange={handleChange} name="regions" value="Saint-Pierre et Miquelon" checked={account.regions.includes("Saint-Pierre et Miquelon")} />
+                                        <label htmlFor="region_r">Saint-Pierre et Miquelon</label>
+                                    </div>
+
+
+                                    <div className="flex aligncenter gap5">
+                                        <input id="region_r" type="checkbox" onChange={handleChange} name="regions" value="Océan Indien" checked={account.regions.includes("Océan Indien")} />
+                                        <label htmlFor="region_r">Océan Indien</label>
+                                    </div>
+
+                                    <div className="flex aligncenter gap5">
+                                        <input id="region_r" type="checkbox" onChange={handleChange} name="regions" value="Nouvelle Calédonie" checked={account.regions.includes("Nouvelle Calédonie")} />
+                                        <label htmlFor="region_r">Nouvelle Calédonie</label>
+                                    </div>
                                 </div>
                             </div>
                             <div className="w50">
@@ -462,6 +479,22 @@ export default function Comptes({ user }) {
                                                         <div className="flex aligncenter gap5">
                                                             <input id="region_r" type="checkbox" onChange={handleChange} name="regions" value="Polynésie Française" checked={account.regions.includes("Polynésie Française")} />
                                                             <label htmlFor="region_r">Polynésie Française</label>
+                                                        </div>
+
+                                                        <div className="flex aligncenter gap5">
+                                                            <input id="region_r" type="checkbox" onChange={handleChange} name="regions" value="Saint-Pierre et Miquelon" checked={account.regions.includes("Saint-Pierre et Miquelon")} />
+                                                            <label htmlFor="region_r">Saint-Pierre et Miquelon</label>
+                                                        </div>
+
+
+                                                        <div className="flex aligncenter gap5">
+                                                            <input id="region_r" type="checkbox" onChange={handleChange} name="regions" value="Océan Indien" checked={account.regions.includes("Océan Indien")} />
+                                                            <label htmlFor="region_r">Océan Indien</label>
+                                                        </div>
+
+                                                        <div className="flex aligncenter gap5">
+                                                            <input id="region_r" type="checkbox" onChange={handleChange} name="regions" value="Nouvelle Calédonie" checked={account.regions.includes("Nouvelle Calédonie")} />
+                                                            <label htmlFor="region_r">Nouvelle Calédonie</label>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -270,8 +270,9 @@ p{
 }
 
 .map__image{
-  width:100%;
+  width:91%;
   position: relative;
+  margin-left: auto;
 }
 
 .map__image .france{
@@ -421,7 +422,7 @@ p{
   display: flex;
   justify-content: center;
   flex-direction: column;
-  transform:translateY(-350px);
+  transform:scale(0.9) translateY(-100%);
   position: absolute;
 }
 

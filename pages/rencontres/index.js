@@ -414,6 +414,9 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                         <li className={filtres.region == "La Reunion" ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "La Reunion" } });setSwitcher(true)}}><span className="material-icons">room</span>La Reunion</li>
                                         <li className={filtres.region == "Mayotte" ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "Mayotte" } });setSwitcher(true)}}><span className="material-icons">room</span>Mayotte</li>
                                         <li className={filtres.region == "Polynésie Française" ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "Polynésie Française" } });setSwitcher(true)}}><span className="material-icons">room</span>Polynésie Française</li>
+                                        <li className={filtres.region == "Saint-Pierre et Miquelon" ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "Saint-Pierre et Miquelon" } });setSwitcher(true)}}><span className="material-icons">room</span>Saint-Pierre et Miquelon</li>
+                                        <li className={filtres.region == "Océan Indien" ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "Océan Indien" } });setSwitcher(true)}}><span className="material-icons">room</span>Océan Indien</li>
+                                        <li className={filtres.region == "Nouvelle Calédonie" ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "Nouvelle Calédonie" } });setSwitcher(true)}}><span className="material-icons">room</span>Nouvelle Calédonie</li>
                                     </ul>
                                 </div>
                                 <div className="mTop40">
@@ -523,6 +526,9 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                             <option>974 - La Reunion</option>
                                             <option>976 - Mayotte</option>
                                             <option>Polynésie Française</option>
+                                            <option>Saint-Pierre et Miquelon</option>
+                                            <option>Océan Indien</option>
+                                            <option>Nouvelle Calédonie</option>
                                         </select>
                                         <span className="material-icons">expand_more</span>
                                     </div>
