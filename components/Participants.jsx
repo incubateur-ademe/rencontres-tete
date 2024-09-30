@@ -20,10 +20,27 @@ export default function Participants({ session, setOpen }){
     const [subject, setSubject] = useState('')
     const [isMail, setIsMail] = useState(false)
 
-    const exportToExcel = (jsonArray, sheetName) => {
+    const flattenJson = (jsonArray) => {
+        return jsonArray.map(item => {
+          const flattenedItem = { ...item };
+          
+          if (item.user) {
+            flattenedItem.userOrganisation = item.user.organisation || '';
+            flattenedItem.userFonction = item.user.fonction || '';
+            delete flattenedItem.user;
+          }
+
+      
+          return flattenedItem;
+        });
+      };
+      
+      const exportToExcel = (jsonArray, sheetName) => {
+
+        const flattenedData = flattenJson(jsonArray);
+      
         const workbook = XLSX.utils.book_new();
-        
-        const worksheet = XLSX.utils.json_to_sheet(jsonArray);
+        const worksheet = XLSX.utils.json_to_sheet(flattenedData);
         
         XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
         
@@ -36,9 +53,10 @@ export default function Participants({ session, setOpen }){
         
         document.body.appendChild(link);
         link.click();
-
+        
         document.body.removeChild(link);
       };
+      
 
     function formatDate(dateString) {
         const date = new Date(dateString);
