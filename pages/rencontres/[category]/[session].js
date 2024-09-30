@@ -82,6 +82,8 @@ export default function Session({ data, user }){
         besoins: '',
         hebergement: '',
         regime: 'Omnivore',
+        programmeTETE: '',
+        participationUlterieure: false,
         days: true,
         repas: false,
         repas2: false,
@@ -117,6 +119,8 @@ export default function Session({ data, user }){
             repas2: inscription.repas2,
             besoins: inscription.besoins,
             regime: inscription.regime,
+            programmeTETE: inscription.programmeTETE,
+            participationUlterieure: inscription.participationUlterieure,
             days: inscription.days
         }
 
@@ -164,6 +168,8 @@ export default function Session({ data, user }){
             besoins: '',
             hebergement: '',
             regime: 'Omnivore',
+            programmeTETE: '',
+            participationUlterieure: false,
             repas: false,
             repas2: false,
             days: true,
@@ -174,8 +180,8 @@ export default function Session({ data, user }){
     }
 
     const register = async () => {
-        const { civilite, nom, prenom, mail, structure, fonction, type_fonction, ville, region, telephone, transport, besoins, hebergement, repas, rgpd, rgpd2 } = inscription
-        if(civilite && nom && prenom && mail && structure && fonction && type_fonction && region && transport){
+        const { civilite, nom, prenom, mail, structure, fonction, type_fonction, ville, region, telephone, transport, besoins, hebergement, programmeTETE, repas, rgpd, rgpd2 } = inscription
+        if(civilite && nom && prenom && mail && structure && fonction && type_fonction && region && programmeTETE && transport){
             if(rgpd && rgpd2){
                 if(mail.includes('@') && mail.includes('.')){
                     setAlert({
@@ -321,8 +327,8 @@ export default function Session({ data, user }){
       }, [data]);
 
       const nextStep = () => {
-        const { civilite, nom, prenom, mail, structure, fonction, type_fonction, ville, region, telephone } = inscription
-        if(civilite && nom && prenom && mail && structure && fonction && type_fonction && region){
+        const { civilite, nom, prenom, mail, structure, fonction, type_fonction, ville, region, programmeTETE, telephone } = inscription
+        if(civilite && nom && prenom && mail && structure && fonction && type_fonction && region && programmeTETE){
             setReg(1)
         }
         else{
@@ -611,20 +617,22 @@ export default function Session({ data, user }){
                                                 </div>
                                                 <div className="flex gap15 mTop20">
                                                     <input type="mail" name="mail" onChange={handleChange} value={inscription.mail} className="input-mail w50" placeholder="Adresse email professionnelle*" />
-                                                    <div className="select w50">
-                                                        <select name="structure" onChange={handleChange} value={inscription.structure} className="input-select">
-                                                            <option value=''>Structure / Organisme</option>
-                                                            <option>Collectivité territoriale</option>
-                                                            <option>Autre</option>
-                                                        </select>
-                                                        <span className="material-icons">expand_more</span>
+                                                    <input type="text" name="structure" onChange={handleChange} value={inscription.structure} className="input-mail w50" placeholder="Nom de votre structure*" />
+                                                </div>
+                                                <div className="mTop20">
+                                                    <div className="flex aligncenter gap10">
+                                                        <p className="w60">Votre organisation est-elle engagée dans le programme Territoire Engagé Transition Ecologique (TETE) de l’ADEME ?</p>
+                                                        <div className="select w40">
+                                                            <select name="programmeTETE" onChange={handleChange} value={inscription.programmeTETE} className="input-select">
+                                                                <option value="">-</option>
+                                                                <option>Oui</option>
+                                                                <option>Non</option>
+                                                                <option>Non concerné (je ne représente pas une collecitivté)</option>
+                                                            </select>
+                                                            <span className="material-icons">expand_more</span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                {other && (
-                                                    <div className="mTop20">
-                                                        <input type="text" onChange={(event) => setOtherSave(event.target.value)} value={otherSave} className="input-text" placeholder="Indiquez le type de structure" />
-                                                    </div>
-                                                )}
                                                 <div className="flex gap15 mTop20">
                                                     <input name="fonction" onChange={handleChange} value={inscription.fonction} type="text" className="input-text w50" placeholder="Poste" />
                                                     <div className="select w50">
@@ -734,13 +742,20 @@ export default function Session({ data, user }){
                                                 )}
                                                 <span className={styles.Title}>Besoins spécifiques complémentaires</span>                           
                                                 <textarea value={inscription.besoins} name="besoins" onChange={handleChange} className="textarea mBot20 mTop20" placeholder="Précisez-nous vos besoins (accès PMR, handicaps, allergies, …)"></textarea>
-                                                <div className="flex gap50 mBot30">
+                                                <div className="flex gap50 mBot10">
                                                     <div className={`w50 ${data.metasSession.optionjour == true ? undefined : 'disnone'}`}>
                                                         <span className={styles.Title}>Participerez vous les deux jours ?</span>
                                                         <div className="flex aligncenter gap10 mTop10">
                                                             <input name="days" checked={inscription.days} onChange={handleChange} value="true" type="radio" /> Oui
                                                             <input name="days" onChange={handleChange} value="false" type="radio" /> Non
                                                         </div>
+                                                    </div>
+                                                </div>
+                                                <div className="mBot30">
+                                                    <span className={styles.Title}>Avez-vous déjà participé à un événement organisé par l'ADEME ?</span>
+                                                    <div className="flex aligncenter gap10 mTop10">
+                                                        <input name="participationUlterieure" onChange={handleChange} value="true" type="radio" /> Oui
+                                                        <input name="participationUlterieure" onChange={handleChange} value="false" type="radio" /> Non
                                                     </div>
                                                 </div>
                                                 <div className="mBot10">
