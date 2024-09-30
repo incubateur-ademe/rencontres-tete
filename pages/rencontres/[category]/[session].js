@@ -432,8 +432,17 @@ export default function Session({ data, user }){
                                             <img src="/medias/icon-date.webp" alt="icon" className="w70" />
                                         </div>
                                         <div className="w80">
-                                            <span className={styles.dLabel}>Date et horaires :</span>
+                                            <span className={styles.dLabel}>Date :</span>
                                             <span className={styles.dValue}>{formatDate(data.metasSession.dateHoraires)}</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex alignstart gap10 mTop30">
+                                        <div className="w10">
+                                            <img src="/medias/icon-date.webp" alt="icon" className="w70" />
+                                        </div>
+                                        <div className="w80">
+                                            <span className={styles.dLabel}>Durée du module :</span>
+                                            <span className={styles.dValue}>{data.metasSession.nombreJours} jour{data.metasSession.nombreJour > 1 ? 's' : ''}</span>
                                         </div>
                                     </div>
                                     <div className="flex alignstart gap10 mTop20">
