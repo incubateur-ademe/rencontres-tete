@@ -153,6 +153,29 @@ export default function Profil({ user }){
         }
     }
 
+    const updateInfosUser = async () => {
+        const go = await fetch('/api/users/updateInfos', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                id: user.id,
+                telephone: userData.telephone,
+                fonction: userData.fonction,
+                organisation: userData.organisation,
+                region: userData.region
+            })
+        })
+        const json = await go.json()
+
+        setNotif({
+            text: 'Vos informations ont été modifiées !',
+            icon: 'done'
+        })  
+        setAlert(null)           
+    }
+
     useEffect(() => {
         getUserInfos()
     }, [])
@@ -170,7 +193,49 @@ export default function Profil({ user }){
                         </div>
                         <div className="flex gap20 mTop20 toColumn">
                             <input disabled type="mail" name="mail" onChange={handleChange} value={userData?.mail} className="input-mail w50 wm100" placeholder="Adresse e-mail" />
-                            <input disabled type="text" name="telephone" onChange={handleChange} value={userData?.telephone} className="input-text w50 wm100" placeholder="Numéro de téléphone" />
+                            <input type="text" name="telephone" onChange={handleChange} value={userData?.telephone} className="input-text w50 wm100" placeholder="Numéro de téléphone" />
+                        </div>
+                    </div>  
+                    <div className="mTop30">
+                        <div className="flex gap20 toColumn wm100">
+                            <input type="text" name="organisation" onChange={handleChange} value={userData?.organisation} className="input-text w50 wm100" placeholder="Organisation" />
+                            <div className="select w50">
+                                <select onChange={handleChange} name="fonction" value={userData?.fonction} className="input-select">
+                                    <option value=''>Type de fonction</option>
+                                    <option>Chargé de mission en collectivité</option>
+                                    <option>Directeur ou chef de service en collectivité</option>
+                                    <option>Élu en collectivité</option>
+                                    <option>Conseiller Territoire Engagé Transition écologique</option>
+                                    <option>Partenaire de la région</option>
+                                </select>
+                                <span className="material-icons">expand_more</span>
+                            </div>
+                        </div>
+                        <div className="flex gap20 mTop20 toColumn">
+                            <div className="select w50">
+                                <select name="region" value={userData?.region} onChange={handleChange} className="input-select">
+                                    <option value="">Filtrer par région</option>
+                                    <option>Auvergne-Rhône-Alpes</option>
+                                    <option>Bourgogne-Franche-Comté</option>
+                                    <option>Bretagne</option>
+                                    <option>Centre-Val de Loire</option>
+                                    <option>Corse</option>
+                                    <option>Normandie</option>
+                                    <option>Nouvelle-Aquitaine</option>
+                                    <option>Occitanie</option>
+                                    <option>Grand-Est</option>
+                                    <option>Hauts-de-France</option>
+                                    <option>Île-de-France</option>
+                                    <option>Pays de la Loire</option>
+                                    <option>Provence-Alpes-Côte d'Azur</option>
+                                    <option>Polynésie Française</option>
+                                    <option>Saint-Pierre et Miquelon</option>
+                                    <option>Océan Indien</option>
+                                    <option>Nouvelle Calédonie</option>
+                                </select>
+                                <span className="material-icons">expand_more</span>
+                            </div>
+                            <button onClick={updateInfosUser} className="btn__normal btn__dark">Modifier mes informations</button>
                         </div>
                     </div>                
                 </>
