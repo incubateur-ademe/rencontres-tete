@@ -71,7 +71,7 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
         },
         {
             id: 4,
-            text: "*De 1 à 5, comment évaluez-vous la qualité des formats participatifs qui ont eu lieu durant la Rencontre ?",
+            text: "*De 1 à 5, comment évaluez-vous la richesse des échanges avec les autres participant.e.s durant la Rencontre ?",
             options: [
                 { value: 5, label: "5/5 - Très satisfaisant" },
                 { value: 4, label: "4/5 - Satisfaisant" },
@@ -82,7 +82,7 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
         },
         {
             id: 5,
-            text: "*De 1 à 5, comment évaluez-vous la richesse des échanges avec les autres participant.e.s durant la Rencontre ?",
+            text: "*De 1 à 5, comment évaluez-vous la qualité de l’animation (formats participatifs, dynamisme de l’animateur, etc.) de la Rencontre ?",
             options: [
                 { value: 5, label: "5/5 - Très satisfaisant" },
                 { value: 4, label: "4/5 - Satisfaisant" },
@@ -111,8 +111,7 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
             id: 8,
             text: "*Comment avez-vous connu les Rencontres Territoire Engagé Transition Ecologique ?",
             options: [
-                { value: "Via la Direction Régionale de l’ADEME", label: "Via la Direction Régionale de l’ADEME" },
-                { value: "Via un emailing ADEME", label: "Via un emailing ADEME" },
+                { value: "Via un emailing de la Direction Régionale de l'ADEME", label: "Via un emailing de la Direction Régionale de l'ADEME" },
                 { value: "Via des articles de presse", label: "Via des articles de presse" },
                 { value: "Via des post sur les réseaux sociaux comme LinkedIn ou X", label: "Via des post sur les réseaux sociaux comme LinkedIn ou X" },
                 { value: "Via un des partenaires de l’ADEME", label: "Via un des partenaires de l’ADEME" },
@@ -124,16 +123,7 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
         },
         {
             id: 9,
-            text: "*À combien de Rencontres avez-vous participé ?",
-            options: [
-                { value: "Il s'agit de la première", label: "Il s'agit de la première" },
-                { value: "2 à 3", label: "2 à 3" },
-                { value: "4 ou plus", label: "4 ou plus" },
-            ],
-        },
-        {
-            id: 10,
-            text: "Il existe d’autres Rencontres Territoire Engagé Transition Ecologique. Quelles sont les thématiques susceptibles de vous intéresser ?",
+            text: "Il existe d’autres Rencontres Territoire Engagé Transition Ecologique. Quelles sont les thématiques susceptibles de vous intéresser ? (max. 5 réponses)",
             options: modules.map(module => ({ value: module.nom, label: module.nom })),
             type: "checkbox"
         }
