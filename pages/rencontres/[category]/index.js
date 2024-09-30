@@ -249,6 +249,9 @@ export default function Module({ data }){
                                     <option>La Reunion</option>
                                     <option>Mayotte</option>
                                     <option>Polynésie Française</option>
+                                    <option>Saint-Pierre et Miquelon</option>
+                                    <option>Océan Indien</option>
+                                    <option>Nouvelle Calédonie</option>
                                 </select>
                                 <span className="material-icons">expand_more</span>
                             </div>
