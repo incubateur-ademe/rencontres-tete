@@ -105,8 +105,6 @@ export default async function handler(req, res) {
         ...accountSatisfactionWithRegistration,
       ];
 
-      console.log("Satisfactions récupérées : ", satisfaction);
-
       // Utilisation de la fonction serializeBigIntFields pour convertir correctement les BigInt
       res.status(200).json(serializeBigIntFields(combinedSatisfaction));
     } catch (error) {
