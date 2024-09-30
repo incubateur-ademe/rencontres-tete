@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import Participant from '@/components/Participant'
 import * as XLSX from 'xlsx';
+import * as JSZip from 'jszip'; // Importer JSZip
+import { saveAs } from 'file-saver'; // Importer file-saver pour gérer le téléchargement
 import Alert from '@/components/Alert'
 import { Notif } from '@/components/Notif'
 import styles from '@/styles/Participants.module.css'
@@ -19,6 +21,7 @@ export default function Participants({ session, setOpen }){
     const [editContent, setEditContent] = useState('');
     const [subject, setSubject] = useState('')
     const [isMail, setIsMail] = useState(false)
+    const [loading, setLoading] = useState(false);
 
     const flattenJson = (jsonArray) => {
         return jsonArray.map(item => {
@@ -65,6 +68,40 @@ export default function Participants({ session, setOpen }){
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
     }
+
+      // Fonction pour télécharger tous les badges
+    const downloadAllBadges = async () => {
+        setLoading(true);
+        const zip = new JSZip();
+
+        for (const participant of users) {
+        const datas = {
+            nom: participant.nom,
+            prenom: participant.prenom,
+            program: participant.session.metasSession.programmeSession,
+            organisation: participant.organisation || '',
+        };
+
+        const response = await fetch('/api/generate-badge', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(datas),
+        });
+
+        const blob = await response.blob();
+        zip.file(`badge_${participant.nom}_${participant.prenom}.pdf`, blob);
+        }
+
+        zip.generateAsync({ type: 'blob' }).then((content) => {
+        saveAs(content, 'badges_participants.zip');
+        setLoading(false);
+        }).catch(error => {
+        console.error('Erreur lors de la génération du fichier ZIP:', error);
+        setLoading(false);
+        });
+    };
 
     const getParticipants = async () => {
         const fetcher = await fetch(`/api/registrations/bySession?sessionId=${session.id}`)
@@ -148,6 +185,12 @@ export default function Participants({ session, setOpen }){
                     </div>
                     <button className="btn__normal btn__dark" onClick={() => exportToExcel(users, `Export liste des participants`)}>Exporter la liste des participants</button>
                     <button className="btn__normal btn__light" onClick={() => setIsMail(prev => !prev)}>{isMail ? "Fermer" : "Envoyer un mail"}</button>
+                    </div>
+                    <div class="mBot30">
+                        <button className="btn__normal btn__dark" onClick={downloadAllBadges} disabled={loading}>
+                            {loading ? 'Génération des badges, veuillez patienter...' : 'Télécharger tous les badges'}      
+                        </button>
+                        {loading && <p class="mBot30">Le téléchargement peut prendre du temps si le nombre de participants est élevé, veuillez patienter...</p>}
                     </div>
                     {isMail && (
                         <div className={styles.sendEmail}>
