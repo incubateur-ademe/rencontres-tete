@@ -24,7 +24,7 @@ const regionSlugs = {
   'saint-pierre-et-miquelon': 'Saint-Pierre et Miquelon',
   'ocean-indien': 'Océan Indien',
   'nouvelle-caledonie': "Nouvelle Calédonie",
-  'provence-alpes-cote-d-azur': 'Provence-Alpes-Côte d\'Azur'
+  'provence-alpes-cote-dazur': 'Provence-Alpes-Côte d\'Azur'
 };
 
 export default async function handle(req, res) {
