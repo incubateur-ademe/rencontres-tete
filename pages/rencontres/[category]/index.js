@@ -274,7 +274,7 @@ export default function Module({ data }){
                                         title={session.module.nom}
                                         link={`/rencontres/${session.module.slug}/session-${formatDate(session.dateDebut).replaceAll('/', '-')}-${session.region.normalize("NFD")
                                         .replace(/[\u0300-\u036f]/g, "")
-                                        .replace(/[.,]/g, "")
+                                        .replace(/[.,']/g, "")
                                         .replace(/\s+/g, '-')
                                         .toLowerCase()}`}
                                         dept={session.departement}
