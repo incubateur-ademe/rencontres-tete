@@ -483,8 +483,6 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
                                 <option>Guadeloupe</option>
                                 <option>Martinique</option>
                                 <option>Guyane</option>
-                                <option>La Reunion</option>
-                                <option>Mayotte</option>
                                 <option>Polynésie Française</option>
                                 <option>Saint-Pierre et Miquelon</option>
                                 <option>Océan Indien</option>

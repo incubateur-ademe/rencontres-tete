@@ -442,7 +442,7 @@ export default function Session({ data, user }){
                                         </div>
                                         <div className="w80">
                                             <span className={styles.dLabel}>Durée du module :</span>
-                                            <span className={styles.dValue}>{data.metasSession.nombreJours} jour{data.metasSession.nombreJour > 1 ? 's' : ''}</span>
+                                            <span className={styles.dValue}>{data.metasSession.nombreJours} jour{data.metasSession.nombreJours > 1 ? 's' : ''}</span>
                                         </div>
                                     </div>
                                     <div className="flex alignstart gap10 mTop20">

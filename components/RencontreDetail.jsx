@@ -38,7 +38,7 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
     const questions = [
         {
             id: 1,
-            text: "*De 1 à 5, comment évaluez-vous la qualité générale de la Rencontre ?",
+            text: "De 1 à 5, comment évaluez-vous la qualité générale de la Rencontre ?",
             options: [
                 { value: 5, label: "5/5 - Très satisfaisant" },
                 { value: 4, label: "4/5 - Satisfaisant" },
@@ -49,7 +49,7 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
         },
         {
             id: 2,
-            text: "*De 1 à 5, comment évaluez-vous la qualité du contenu technique partagé lors de la Rencontre ?",
+            text: "De 1 à 5, comment évaluez-vous la qualité du contenu technique partagé lors de la Rencontre ?",
             options: [
                 { value: 5, label: "5/5 - Très satisfaisant" },
                 { value: 4, label: "4/5 - Satisfaisant" },
@@ -60,7 +60,7 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
         },
         {
             id: 3,
-            text: "*De 1 à 5, comment évaluez-vous la pertinence des intervenant.e.s (expertises, témoignages ...) présent.e.s à la Rencontre ?",
+            text: "De 1 à 5, comment évaluez-vous la pertinence des intervenants (expertises, témoignages ...) présents à la Rencontre ?",
             options: [
                 { value: 5, label: "5/5 - Très satisfaisant" },
                 { value: 4, label: "4/5 - Satisfaisant" },
@@ -71,7 +71,7 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
         },
         {
             id: 4,
-            text: "*De 1 à 5, comment évaluez-vous la richesse des échanges avec les autres participant.e.s durant la Rencontre ?",
+            text: "De 1 à 5, comment évaluez-vous la richesse des échanges avec les autres participants durant la Rencontre ?",
             options: [
                 { value: 5, label: "5/5 - Très satisfaisant" },
                 { value: 4, label: "4/5 - Satisfaisant" },
@@ -82,7 +82,7 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
         },
         {
             id: 5,
-            text: "*De 1 à 5, comment évaluez-vous la qualité de l’animation (formats participatifs, dynamisme de l’animateur, etc.) de la Rencontre ?",
+            text: "De 1 à 5, comment évaluez-vous la qualité de l’animation (formats participatifs, dynamisme de l’animateur, etc.) de la Rencontre ?",
             options: [
                 { value: 5, label: "5/5 - Très satisfaisant" },
                 { value: 4, label: "4/5 - Satisfaisant" },
@@ -93,7 +93,7 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
         },
         {
             id: 6,
-            text: "*De 1 à 5, comment évaluez-vous la qualité de l’organisation de la Rencontre (inscription, communication, lieu, repas, etc.) ?",
+            text: "De 1 à 5, comment évaluez-vous la qualité de l’organisation de la Rencontre (inscription, communication, lieu, repas, etc.) ?",
             options: [
                 { value: 5, label: "5/5 - Très satisfaisant" },
                 { value: 4, label: "4/5 - Satisfaisant" },
@@ -109,7 +109,7 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
         },
         {
             id: 8,
-            text: "*Comment avez-vous connu les Rencontres Territoire Engagé Transition Ecologique ?",
+            text: "Comment avez-vous connu les Rencontres Territoire Engagé Transition Ecologique ?",
             options: [
                 { value: "Via un emailing de la Direction Régionale de l'ADEME", label: "Via un emailing de la Direction Régionale de l'ADEME" },
                 { value: "Via des articles de presse", label: "Via des articles de presse" },
@@ -177,7 +177,7 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const requiredQuestions = questions.filter(q => q.id !== 7);
+        const requiredQuestions = questions.filter(q => q.id == 100000);
         const unansweredQuestions = requiredQuestions.filter(q => !responses[q.id] || (q.type === 'radioWithText' && responses[q.id] === 'autre' && !responses[`${q.id}_autre`]));
 
         if (unansweredQuestions.length > 0) {
