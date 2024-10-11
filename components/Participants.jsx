@@ -83,7 +83,7 @@ export default function Participants({ session, setOpen }){
             nom: participant.nom,
             prenom: participant.prenom,
             program: participant.session.metasSession.programmeSession,
-            organisation: participant.organisation || '',
+            organisation: participant.structure || '',
         };
 
         const response = await fetch('/api/generate-badge', {
