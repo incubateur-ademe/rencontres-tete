@@ -219,9 +219,13 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
     };
 
     function formatDate(dateString) {
-        const base = dateString.split('T');
-        const [year, month, day] = base[0].split('-')
-        return `${day}/${month}/${year}`;
+        if(dateString){
+            const base = dateString.split('T');
+            const [year, month, day] = base[0].split('-')
+            return `${day}/${month}/${year}`;
+        } else{
+            return '---'
+        }
     }    
 
     const getUserSession = async () => {
