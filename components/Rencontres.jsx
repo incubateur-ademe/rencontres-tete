@@ -60,7 +60,7 @@ export default function Rencontres({ user }){
                                 {rencontres.map((rencontre, index) => {
                                     if(rencontre.deleted == false || rencontre.deleted == undefined){
                                     return (
-                                        <div key={index} onClick={() => setOpen(rencontre.session.id)} className="w49 wm100">
+                                        <div key={index} onClick={() => setOpen({sessionId: rencontre.session.id, registrationId: rencontre.id})} className="w49 wm100">
                                             <SessionBox 
                                                 date={formatDate(rencontre.session.dateDebut)}
                                                 region={rencontre.session.region}
@@ -85,7 +85,7 @@ export default function Rencontres({ user }){
             </>
             ) : (
                 <div className="mTop20">
-                    <RencontreDetail id={open} setOpen={setOpen} user={user} userId={user.id}  />
+                    <RencontreDetail id={open.sessionId} setOpen={setOpen} user={user} userId={user.id} registrationId={open.registrationId}  />
                 </div>
             )}
         </div>

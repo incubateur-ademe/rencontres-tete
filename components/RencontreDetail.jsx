@@ -6,7 +6,9 @@ import SessionBox from '@/components/SessionBox';
 import Rating from '@mui/material/Rating';
 import styles from '@/styles/Account.module.css';
 
-export default function RencontreDetail({ id, setOpen, userId, user }) {
+export default function RencontreDetail({ id, registrationId, setOpen, userId, user }) {
+
+    console.log("ID =>", registrationId)
 
     const [alert, setAlert] = useState(null);
     const [notif, setNotif] = useState(null);
@@ -198,7 +200,7 @@ export default function RencontreDetail({ id, setOpen, userId, user }) {
             body: JSON.stringify({
                 userId: userId,
                 sessionId: data.id,
-                registrationId: id,
+                registrationId: registrationId,
                 responses: responses,
                 type: typeUser
             }),
