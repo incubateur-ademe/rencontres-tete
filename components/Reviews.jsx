@@ -53,13 +53,12 @@ export default function Reviews({ session, setOpen }) {
         "1": "Qualité générale",
         "2": "Qualité du contenu technique",
         "3": "Pertinence des intervenant.e.s",
-        "4": "Qualité des formats participatifs",
-        "5": "Richesse des échanges",
+        "4": "Richesse des échanges",
+        "5": "Qualité de l'animation",
         "6": "Qualité de l'organisation",
         "7": "Commentaires",
         "8": "Comment avez-vous connu",
-        "9": "Nombre de participations",
-        "10": "Thématiques intéressantes"
+        "9": "Thématique succeptible d'intéresser"
     };
 
     useEffect(() => {
