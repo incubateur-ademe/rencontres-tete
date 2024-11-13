@@ -337,7 +337,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                                 <option>Energie, eau et assainissement</option>
                                                 <option>Mobilité et qualité de l'air</option>
                                                 <option>Transition bas carbone</option>
-                                                <option>Prévention et gestion des déchêts</option>
+                                                <option>Prévention et gestion des déchets</option>
                                                 <option>Consommation responsable</option>
                                                 <option>Autres piliers de l'économie circulaire</option>
                                                 <option>Gouvernance et pilotage</option>

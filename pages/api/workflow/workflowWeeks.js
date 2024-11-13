@@ -33,6 +33,11 @@ export default async function handle(req, res) {
                         user: true,
                     },
                 },
+                accountRegistrations: {
+                    include: {
+                        account: true,
+                    },
+                },
                 metasSession: true,
                 module: true,
             },
@@ -79,6 +84,31 @@ export default async function handle(req, res) {
                     throw new Error(`Email request failed with status ${emailResponse.status}`);
                 }
             }
+
+            for (const accountRegistration of session.accountRegistrations) {
+                const accountData = accountRegistration.account;
+        
+                const emailResponse = await fetch(`${process.env.WEBSITE_URL}/api/emails/sessionWeeks`, {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        prenom: accountData.email.split('@')[0],
+                        email: accountData.email,
+                        nomRencontre: session.module.nom,
+                        dateRencontre: formattedDateDebut,
+                        lieuRencontre: session.metasSession.lieuRencontre || 'Lieu',
+                        nbJours: session.metasSession.nombreJours,
+                        mail_referent: session.metasSession.mail_referent,
+                        firstDayStartTime: firstDayStartTime
+                    })
+                });
+        
+                if (!emailResponse.ok) {
+                    throw new Error(`Email request failed with status ${emailResponse.status}`);
+                }
+            }  
         }
 
         res.status(200).json({ message: "Emails sent successfully" });
