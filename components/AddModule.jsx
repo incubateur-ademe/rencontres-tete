@@ -460,7 +460,7 @@ export default function AddModule({setOpen}){
                                     <option>Energie, eau et assainissement</option>
                                     <option>Mobilité et qualité de l'air</option>
                                     <option>Transition bas carbone</option>
-                                    <option>Prévention et gestion des déchêts</option>
+                                    <option>Prévention et gestion des déchets</option>
                                     <option>Consommation responsable</option>
                                     <option>Autres piliers de l'économie circulaire</option>
                                     <option>Gouvernance et pilotage</option>
@@ -476,7 +476,7 @@ export default function AddModule({setOpen}){
                             )}
                             {datas?.pilier == 'Economie circulaire' && (
                                 <>
-                                    <option>Prévention et gestion des déchêts</option>
+                                    <option>Prévention et gestion des déchets</option>
                                     <option>Consommation responsable</option>
                                     <option>Autres piliers de l'économie circulaire</option>
                                 </>                                
