@@ -106,7 +106,7 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
         },
         {
             id: 7,
-            text: "Avez-vous d’autres commentaires, suggestions ou remarques à partager concernant cette Rencontre ?",
+            text: "Avez-vous d’autres commentaires, suggestions ou remarques à partager concernant cette Rencontre ?*",
             type: "textarea",
         },
         {
@@ -179,17 +179,18 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
     const handleSubmit = async (event) => {
         event.preventDefault();
     
-        const requiredQuestions = questions.filter(q => q.id !== 7 && q.id !== 9);
-        const unansweredQuestions = requiredQuestions.filter(q => 
+        const requiredQuestions = questions;
+        const unansweredQuestions = requiredQuestions.filter((q) => 
             !responses[q.id] || 
             (q.type === 'radioWithText' && responses[q.id] === 'autre' && !responses[`${q.id}_autre`]) || 
-            (q.type === 'textarea' && !responses[q.id])
+            (q.type === 'textarea' && !responses[q.id]) ||
+            (q.type === 'checkbox' && (!responses[q.id] || responses[q.id].length === 0))
         );
     
         if (unansweredQuestions.length > 0) {
             setNotif({
                 icon: 'warning',
-                text: 'Veuillez répondre à toutes les questions obligatoires.',
+                text: 'Veuillez répondre à toutes les questions obligatoires avant de soumettre.',
             });
             return;
         }
@@ -223,6 +224,7 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
             });
         }
     };
+    
     
 
     function formatDate(dateString) {

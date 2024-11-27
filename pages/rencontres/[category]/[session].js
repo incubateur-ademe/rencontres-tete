@@ -596,7 +596,7 @@ export default function Session({ data, user }){
                                                 </div>
                                             ) : (
                                                 <>
-                                                    {!dispo && (
+                                                    {(data.metasSession.nombrePlaces-nbInscrits < 1) && (
                                                         <div className={styles.Already}>
                                                             <span className="material-icons">error_outline</span>
                                                             <div><strong>Il ne reste plus de place pour cette session.</strong> Les inscriptions sont fermées.</div>
