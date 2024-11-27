@@ -95,7 +95,7 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
         },
         {
             id: 6,
-            text: "De 1 à 5, comment évaluez-vous la qualité de l’organisation de la Rencontre (inscription, communication, lieu, repas, etc.) ?*",
+            text: "De 1 à 5 comment évaluez-vous la qualité de l’organisation de la Rencontre (inscription, communication, lieu, repas, etc.) ?*",
             options: [
                 { value: 5, label: "5/5 - Très satisfaisant" },
                 { value: 4, label: "4/5 - Satisfaisant" },
