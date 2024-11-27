@@ -9,7 +9,7 @@ export default async function handle(req, res) {
     }
 
     try {
-        // Heure actuelle en UTC (16:30)
+        // Heure actuelle en UTC (16:30) -
         const nowUTC = new Date();
         const today = new Date(Date.UTC(nowUTC.getUTCFullYear(), nowUTC.getUTCMonth(), nowUTC.getUTCDate(), 16, 30, 0));
 
