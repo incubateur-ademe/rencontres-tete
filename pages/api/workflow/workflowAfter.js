@@ -18,18 +18,12 @@ export default async function handle(req, res) {
             where: {
                 dateDebut: {
                     lte: today,
-                    lte: today,
                 },
             },
             include: {
                 registrations: {
                     include: {
                         user: true,
-                    },
-                },
-                accountRegistrations: {
-                    include: {
-                        account: true,
                     },
                 },
                 accountRegistrations: {
