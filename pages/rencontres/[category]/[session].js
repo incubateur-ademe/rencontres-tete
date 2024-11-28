@@ -214,13 +214,26 @@ export default function Session({ data, user }){
     }
 
     const getAvailable = async () => {
-        const fetcher = await fetch(`/api/registrations/bySession?sessionId=${data.id}`)
-        const json = await fetcher.json()
-        const max = parseInt(data.metasSession.nombrePlaces) || 0
-        if(json.length >= max){
-            setDispo(false)
+        try {
+            const fetcher = await fetch(`/api/registrations/bySession?sessionId=${data.id}`);
+            const json = await fetcher.json();
+    
+            const max = parseInt(data.metasSession.nombrePlaces) || 0;
+    
+            // Filtrer uniquement les inscriptions valides (non supprimées)
+            const validRegistrations = json.filter(registration => !registration.deleted);
+    
+            // Vérifier si le nombre de places disponibles est atteint
+            if (validRegistrations.length >= max) {
+                setDispo(false);
+            } else {
+                setDispo(true);
+            }
+        } catch (error) {
+            console.error('Erreur lors de la récupération des inscriptions :', error);
         }
-    }
+    };
+    
 
     useEffect(() => {
         const getUserInfo = async () => {
