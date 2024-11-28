@@ -478,7 +478,7 @@ export default function Session({ data, user }){
                                         </div>
                                         <div className="w80">
                                             <span className={styles.dLabel}>Nombre de places restantes :</span>
-                                            <span className={styles.dValue}>{data.metasSession.nombrePlaces-nbInscrits}</span>
+                                            <span className={styles.dValue}>{!dispo ? 0 : data.metasSession.nombrePlaces-nbInscrits}</span>
                                         </div>
                                     </div>
                                     {data.metasSession.infosTransport != '' && (
