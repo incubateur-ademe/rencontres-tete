@@ -104,7 +104,7 @@ export default function Reviews({ session, setOpen }) {
                         Ville: accountRegistration.ville || '-',
                         Structure: accountRegistration.structure || '-',
                         Fonction: accountRegistration.fonction || '-',
-                        Type_Fonction: registration.typeFonction || '-',
+                        Type_Fonction: accountRegistration.typeFonction || '-',
                     };
                 }
             }
