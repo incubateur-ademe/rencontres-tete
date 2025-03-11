@@ -26,7 +26,7 @@ export default function Footer(){
                     </div>
                     <div className={styles.Subfooter}>
                         <ul className="mwrap">
-                            <li><Link href="https://www.territoiresentransitions.fr/mentions">Mentions légales</Link></li>
+                            <li><Link href="https://www.territoiresentransitions.fr/mentions-legales">Mentions légales</Link></li>
                             <li><Link href="https://www.ademe.fr/donnees-personnelles/" target="_blank">Données personnelles</Link></li>
                             <li><Link href="https://www.territoiresentransitions.fr/cookies">Gestion des cookies</Link></li>
                             <li><Link href="https://www.territoiresentransitions.fr/cgu">Conditions générales d'utilisation</Link></li>
