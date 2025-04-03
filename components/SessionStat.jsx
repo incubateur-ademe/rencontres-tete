@@ -15,6 +15,29 @@ export default function SessionStat({ session, setOpen }){
         }
     }    
 
+    function formatDate2(dateString) {
+        if (!dateString) return '---';
+    
+        let date;
+        if (dateString.includes('/')) {
+            // Cas où la date est sous format "dd/mm/YYYY"
+            const [day, month, year] = dateString.split('/');
+            date = new Date(`${year}-${month}-${day}`); // Reformate en ISO
+        } else {
+            // Cas normal où la date est au format ISO
+            date = new Date(dateString);
+        }
+    
+        if (isNaN(date.getTime())) return 'Invalid Date';
+    
+        return date.toLocaleDateString('fr-FR', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        });
+    }
+
+
     const getParticipants = async () => {
         const fetcher = await fetch(`/api/registrations/bySession?sessionId=${session.id}`)
         const json = await fetcher.json()
@@ -37,7 +60,7 @@ export default function SessionStat({ session, setOpen }){
             <div className={`${styles.SessionStat} mBot10`}>
                 <div className="flex aligncenter space-between">
                     <div className="flex aligncenter gap15">
-                        <span className={styles.Date}>{formatDate(session.dateDebut)} - <span className={styles.Restant}>{joursRestants >= 0 ? `${joursRestants} jour${joursRestants > 1 ? 's': ''} restant${joursRestants > 1 ? 's': ''}` : 'Terminée'}</span></span>
+                        <span className={styles.Date}>{formatDate2(session.dateDebut)} - <span className={styles.Restant}>{joursRestants >= 0 ? `${joursRestants} jour${joursRestants > 1 ? 's': ''} restant${joursRestants > 1 ? 's': ''}` : 'Terminée'}</span></span>
                         <span className={styles.Region}>{session.region}</span>
                     </div>
                     <span className={styles.LastMaj}>{number} participant{number > 1 && 's'}</span>

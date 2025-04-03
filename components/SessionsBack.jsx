@@ -9,8 +9,33 @@ export default function SessionsBack({isModule, date, session, code, region, tit
         const [year, month, day] = base[0].split('-')
         return `${day}/${month}/${year}`;
     }    
+
+    function formatDate2(dateString) {
+        if (!dateString) return '---';
     
-    const startDate = formatDate(date);
+        let date;
+        if (dateString.includes('/')) {
+            // Cas où la date est sous format "dd/mm/YYYY"
+            const [day, month, year] = dateString.split('/');
+            date = new Date(`${year}-${month}-${day}`); // Reformate en ISO
+        } else {
+            // Cas normal où la date est au format ISO
+            date = new Date(dateString);
+        }
+    
+        if (isNaN(date.getTime())) return 'Invalid Date';
+    
+        return date.toLocaleDateString('fr-FR', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        });
+    }
+
+    
+
+    
+    const startDate = formatDate2(date);
 
     const [number, setNumber] = useState(0)
     const [presentNumber, setPresentNumber] = useState(0)

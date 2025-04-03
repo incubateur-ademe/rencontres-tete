@@ -1,23 +1,47 @@
 import Link from 'next/link'
 import styles from '@/styles/SessionBox.module.css'
 
-export default function SessionBox({date, region, title, link, data, register, dept, see, detail, displayDept}){
+export default function SessionBox({date, moduleDuree, region, title, link, data, register, dept, see, detail, displayDept}){
 
-    function formatDate(dateString) {
-        if(dateString){
-            const base = dateString.split('T');
-            const [year, month, day] = base[0].split('-')
-            return `${day}/${month}/${year}`;
-        } else{
-            return '---'
+    function formatDate(dateString, addDays = 0) {
+        if (!dateString) return '---';
+
+        let date;
+        if (dateString.includes('/')) {
+            // Gestion du format "dd/mm/YYYY"
+            const [day, month, year] = dateString.split('/');
+            date = new Date(`${year}-${month}-${day}`);
+        } else {
+            // Format ISO standard
+            date = new Date(dateString);
         }
-    }    
+
+        if (isNaN(date.getTime())) return 'Invalid Date';
+
+        // Ajout de jours si nécessaire (pour le 2ème jour)
+        if (addDays > 0) {
+            date.setDate(date.getDate() + addDays);
+        }
+
+        return date.toLocaleDateString('fr-FR', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        });
+    }
+
+    
+    
 
     return (
         <>
             <div className={styles.SessionBox}>
                 <div className="flex aligncenter space-between">
-                    <span className={styles.Date}>{date}</span>
+                    <span className={styles.Date}>
+                        {moduleDuree === '2 jours'
+                            ? `${formatDate(date)} / ${formatDate(date, 1)}` 
+                            : formatDate(date)}
+                    </span>
                     <span className={styles.Region}>{displayDept != "no" ? dept && `${dept} - ` : ''}{region}</span>
                 </div>
                 <div className="flex alignend gap40 mTop20">

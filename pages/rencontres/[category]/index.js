@@ -279,6 +279,7 @@ export default function Module({ data }){
                                         .toLowerCase()}`}
                                         dept={session.departement}
                                         displayDept="no"
+                                        moduleDuree={data.metasModule.duree}
                                     />
                                 </div>
                             )

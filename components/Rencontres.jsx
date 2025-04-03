@@ -39,6 +39,29 @@ export default function Rencontres({ user }){
         return `${day}/${month}/${year}`;
     }   
 
+    function formatDate2(dateString) {
+        if (!dateString) return '---';
+    
+        let date;
+        if (dateString.includes('/')) {
+            // Cas où la date est sous format "dd/mm/YYYY"
+            const [day, month, year] = dateString.split('/');
+            date = new Date(`${year}-${month}-${day}`); // Reformate en ISO
+        } else {
+            // Cas normal où la date est au format ISO
+            date = new Date(dateString);
+        }
+    
+        if (isNaN(date.getTime())) return 'Invalid Date';
+    
+        return date.toLocaleDateString('fr-FR', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        });
+    }
+
+
     return (
         <div className={styles.Rencontres}>
             <div className={styles.Menu}>
@@ -62,7 +85,7 @@ export default function Rencontres({ user }){
                                     return (
                                         <div key={index} onClick={() => setOpen({sessionId: rencontre.session.id, registrationId: rencontre.id})} className="w49 wm100">
                                             <SessionBox 
-                                                date={formatDate(rencontre.session.dateDebut)}
+                                                date={formatDate2(rencontre.session.dateDebut)}
                                                 region={rencontre.session.region}
                                                 dept={rencontre.session.departement}
                                                 title={rencontre.session.module.nom}

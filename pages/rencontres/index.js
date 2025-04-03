@@ -145,6 +145,12 @@ export default function Rencontres({ base, region, pilier, thematique }){
         }
     }, [filtres, switcher])
 
+    useEffect(() => {
+        if(!region){
+            setSwitcher(true)
+        }
+    }, [])
+
     
 
     // useEffect(() => {
@@ -205,7 +211,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                     <div className={`${styles.Switcher} ${switcher ? styles.On : undefined}`} onClick={() => setSwitcher(prev => !prev)}>
                                         <span className={switcher ? styles.Activate : undefined}></span>
                                     </div>
-                                    <span className={styles.FilterSwitch}>Afficher uniquement les thématiques avec des Rencontres programmées</span>
+                                    <span className={styles.FilterSwitch}>Afficher uniquement les Rencontres à venir</span>
                                 </div>
                                 {/* <h2>Tous les modules disponibles {(filtres.pilier != '' || filtres.nom != '' || filtres.dateDebut != '' || filtres.thematique != '' || filtres.departement != '' || filtres.region != '') && 'suivant vos critères'} :</h2> */}
                                 {(filtres.pilier != '' || filtres.nom != '' || filtres.dateDebut != '' || filtres.thematique != '' || filtres.departement != '' || filtres.region != '') && (
@@ -394,30 +400,38 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                 </div>
                                 <div className="mTop40">
                                     <span className={styles.Label}>Rechercher par région</span>
-                                    <ul className={styles.Regions}>
-                                        <li className={filtres.region == 'Auvergne-Rhône-Alpes' ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Auvergne-Rhône-Alpes' } });setSwitcher(true)}}><span className="material-icons">room</span>Auvergne-Rhône-Alpes</li>
-                                        <li className={filtres.region == 'Bourgogne-Franche-Comté' ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Bourgogne-Franche-Comté' } });setSwitcher(true)}}><span className="material-icons">room</span>Bourgogne-Franche-Comté</li>
-                                        <li className={filtres.region == 'Bretagne' ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Bretagne' } });setSwitcher(true)}}><span className="material-icons">room</span>Bretagne</li>
-                                        <li className={filtres.region == 'Centre-Val de Loire' ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Centre-Val de Loire' } });setSwitcher(true)}}><span className="material-icons">room</span>Centre-Val de Loire</li>
-                                        <li className={filtres.region == 'Corse' ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Corse' } });setSwitcher(true)}}><span className="material-icons">room</span>Corse</li>
-                                        <li className={filtres.region == 'Normandie' ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Normandie' } });setSwitcher(true)}}><span className="material-icons">room</span>Normandie</li>
-                                        <li className={filtres.region == 'Nouvelle-Aquitaine' ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Nouvelle-Aquitaine' } });setSwitcher(true)}}><span className="material-icons">room</span>Nouvelle-Aquitaine</li>
-                                        <li className={filtres.region == 'Occitanie' ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Occitanie' } });setSwitcher(true)}}><span className="material-icons">room</span>Occitanie</li>
-                                        <li className={filtres.region == 'Grand-Est' ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Grand-Est' } });setSwitcher(true)}}><span className="material-icons">room</span>Grand-Est</li>
-                                        <li className={filtres.region == 'Hauts-de-France' ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Hauts-de-France' } });setSwitcher(true)}}><span className="material-icons">room</span>Hauts-de-France</li>
-                                        <li className={filtres.region == 'Île-de-France' ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Île-de-France' } });setSwitcher(true)}}><span className="material-icons">room</span>Île-de-France</li>
-                                        <li className={filtres.region == 'Pays de la Loire' ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: 'Pays de la Loire' } });setSwitcher(true)}}><span className="material-icons">room</span>Pays de la Loire</li>
-                                        <li className={filtres.region == "Provence-Alpes-Côte d'Azur" ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "Provence-Alpes-Côte d'Azur" } });setSwitcher(true)}}><span className="material-icons">room</span>Provence-Alpes-Côte d'Azur</li>
-                                        <li className={filtres.region == "Guadeloupe" ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "Guadeloupe" } });setSwitcher(true)}}><span className="material-icons">room</span>Guadeloupe</li>
-                                        <li className={filtres.region == "Martinique" ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "Martinique" } });setSwitcher(true)}}><span className="material-icons">room</span>Martinique</li>
-                                        <li className={filtres.region == "Guyane" ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "Guyane" } });setSwitcher(true)}}><span className="material-icons">room</span>Guyane</li>
-                                        <li className={filtres.region == "Polynésie Française" ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "Polynésie Française" } });setSwitcher(true)}}><span className="material-icons">room</span>Polynésie Française</li>
-                                        <li className={filtres.region == "Saint-Pierre et Miquelon" ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "Saint-Pierre et Miquelon" } });setSwitcher(true)}}><span className="material-icons">room</span>Saint-Pierre et Miquelon</li>
-                                        <li className={filtres.region == "Océan Indien" ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "Océan Indien" } });setSwitcher(true)}}><span className="material-icons">room</span>Océan Indien</li>
-                                        <li className={filtres.region == "Nouvelle Calédonie" ? styles.RegionActive : undefined} onClick={(event) => {setFiltres(prev => { return { ...prev, nom: '', departement: '', region: "Nouvelle Calédonie" } });setSwitcher(true)}}><span className="material-icons">room</span>Nouvelle Calédonie</li>
-                                    </ul>
+                                    <select 
+                                    className={styles.RegionsSelect} 
+                                    value={filtres.region} 
+                                    onChange={(event) => {
+                                        setFiltres(prev => ({ ...prev, nom: '', departement: '', region: event.target.value }));
+                                        setSwitcher(true);
+                                    }}
+                                    >
+                                    <option value="">Sélectionner une région</option>
+                                    <option value="Auvergne-Rhône-Alpes">Auvergne-Rhône-Alpes</option>
+                                    <option value="Bourgogne-Franche-Comté">Bourgogne-Franche-Comté</option>
+                                    <option value="Bretagne">Bretagne</option>
+                                    <option value="Centre-Val de Loire">Centre-Val de Loire</option>
+                                    <option value="Corse">Corse</option>
+                                    <option value="Normandie">Normandie</option>
+                                    <option value="Nouvelle-Aquitaine">Nouvelle-Aquitaine</option>
+                                    <option value="Occitanie">Occitanie</option>
+                                    <option value="Grand-Est">Grand-Est</option>
+                                    <option value="Hauts-de-France">Hauts-de-France</option>
+                                    <option value="Île-de-France">Île-de-France</option>
+                                    <option value="Pays de la Loire">Pays de la Loire</option>
+                                    <option value="Provence-Alpes-Côte d'Azur">Provence-Alpes-Côte d'Azur</option>
+                                    <option value="Guadeloupe">Guadeloupe</option>
+                                    <option value="Martinique">Martinique</option>
+                                    <option value="Guyane">Guyane</option>
+                                    <option value="Polynésie Française">Polynésie Française</option>
+                                    <option value="Saint-Pierre et Miquelon">Saint-Pierre et Miquelon</option>
+                                    <option value="Océan Indien">Océan Indien</option>
+                                    <option value="Nouvelle Calédonie">Nouvelle Calédonie</option>
+                                    </select>
                                 </div>
-                                <div className="mTop40">
+                                {/* <div className="mTop40">
                                     <span className={styles.Label}>Rechercher par département</span>
                                     <div className="select">
                                         <select name="departement" value={filtres.departement} onChange={(event) => setFiltres(prev => { return { ...prev, departement: event.target.value, region: '', nom: '' } })} className="input-select">
@@ -530,7 +544,7 @@ export default function Rencontres({ base, region, pilier, thematique }){
                                         </select>
                                         <span className="material-icons">expand_more</span>
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="mTop40">
                                     <span className={styles.Label}>Rechercher par date de début</span>
                                     <div className="flex aligncenter gap10">
