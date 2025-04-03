@@ -12,8 +12,31 @@ export default function ModulesBack({date, code, lastUpdate, category, title, id
         return `${day}/${month}/${year}`;
     }
 
-    const publicationDate = formatDate(date);
-    const lastUpdateDate = formatDate(lastUpdate);
+    function formatDate2(dateString) {
+        if (!dateString) return '---';
+    
+        let date;
+        if (dateString.includes('/')) {
+            // Cas où la date est sous format "dd/mm/YYYY"
+            const [day, month, year] = dateString.split('/');
+            date = new Date(`${year}-${month}-${day}`); // Reformate en ISO
+        } else {
+            // Cas normal où la date est au format ISO
+            date = new Date(dateString);
+        }
+    
+        if (isNaN(date.getTime())) return 'Invalid Date';
+    
+        return date.toLocaleDateString('fr-FR', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        });
+    }
+
+
+    const publicationDate = formatDate2(date);
+    const lastUpdateDate = formatDate2(lastUpdate);
 
     const now = new Date();
 

@@ -237,6 +237,30 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
         }
     }    
 
+
+    function formatDate2(dateString) {
+        if (!dateString) return '---';
+    
+        let date;
+        if (dateString.includes('/')) {
+            // Cas où la date est sous format "dd/mm/YYYY"
+            const [day, month, year] = dateString.split('/');
+            date = new Date(`${year}-${month}-${day}`); // Reformate en ISO
+        } else {
+            // Cas normal où la date est au format ISO
+            date = new Date(dateString);
+        }
+    
+        if (isNaN(date.getTime())) return 'Invalid Date';
+    
+        return date.toLocaleDateString('fr-FR', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        });
+    }
+
+
     const getUserSession = async () => {
         const fetcher = await fetch(`/api/sessions/${id}`);
         const json = await fetcher.json();
@@ -466,7 +490,7 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
             </div>
             <div className="w100 mTop25">
                 <SessionBox
-                    date={formatDate(data.dateDebut)}
+                    date={formatDate2(data.dateDebut)}
                     region={data.region}
                     title={data?.module?.nom}
                     dept={data?.departement}
@@ -492,7 +516,7 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
                     </div>
                     <div className="w80">
                         <span className={styles.dLabel}>Date :</span>
-                        <span className={styles.dValue}>{data !== undefined ? formatDate(data?.dateDebut) : 'Chargement...'}</span>
+                        <span className={styles.dValue}>{data !== undefined ? formatDate2(data?.dateDebut) : 'Chargement...'}</span>
                     </div>
                 </div>
                 <div className="flex alignstart gap10 w20">

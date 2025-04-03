@@ -24,6 +24,18 @@
     cursor:pointer;
 }
 
+.RegionsSelect{
+    width: 100%;
+    height: 45px;
+    border:0px;
+    border-bottom: 2px solid var(--primary);
+    padding-left: 12px;
+    background-color: #F2F2F2;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
+}
+
 .Regions{
     list-style:none;
     gap:10px;

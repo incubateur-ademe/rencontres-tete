@@ -55,6 +55,33 @@ export default function Session({ data, user }){
         return `${day}/${month}/${year}`;
     }    
 
+    function formatDate2(dateString, addDays = 0) {
+        if (!dateString) return '---';
+
+        let date;
+        if (dateString.includes('/')) {
+            // Gestion du format "dd/mm/YYYY"
+            const [day, month, year] = dateString.split('/');
+            date = new Date(`${year}-${month}-${day}`);
+        } else {
+            // Format ISO standard
+            date = new Date(dateString);
+        }
+
+        if (isNaN(date.getTime())) return 'Invalid Date';
+
+        // Ajout de jours si nécessaire (pour le 2ème jour)
+        if (addDays > 0) {
+            date.setDate(date.getDate() + addDays);
+        }
+
+        return date.toLocaleDateString('fr-FR', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        });
+    }
+
     const [alert, setAlert] = useState(null)
     const [notif, setNotif] = useState(null)
     const [check, setCheck] = useState(false)
@@ -407,19 +434,19 @@ export default function Session({ data, user }){
     return (
         <>
             <Head>
-                <title>{data.module.nom} | Session du {formatDate(data.dateDebut)} - {data.region}</title>
+                <title>{data.module.nom} | Session du {formatDate2(data.dateDebut)} - {data.region}</title>
             </Head>
             <div className={styles.Session}>
                 <div className="section">
                     <div className="boxed">
                         <div className="flex gap30">
                             <div className={`${styles.Header} w70`}>
-                                <h1>{formatDate(data.dateDebut)} : {data.module.nom}</h1>
+                                <h1>{data.metasSession.nombreJours == '2' ? `${formatDate2(data.dateDebut)} - ${formatDate2(data.dateDebut,1)}` : formatDate2(data.dateDebut)} : {data.module.nom}</h1>
                                 <p className={styles.Breadcrump}>
                                     <Link href="/">Accueil</Link> /
                                     <Link href="/rencontres">Toutes les rencontres</Link> /
                                     <Link href={`/rencontres/${data.module.slug}`}>{data.module.nom}</Link> /
-                                    <span>Rencontre du {formatDate(data.dateDebut)}</span>
+                                    <span>Rencontre du {data.metasSession.nombreJours == '2' ? `${formatDate2(data.dateDebut)} - ${formatDate2(data.dateDebut,1)}` : formatDate2(data.dateDebut)}</span>
                                 </p>
                                 <div className="flex aligncenter gap10">
                                     <span className={styles.Region}>{data.departement+' - '+data.region}</span>
@@ -446,7 +473,7 @@ export default function Session({ data, user }){
                                         </div>
                                         <div className="w80">
                                             <span className={styles.dLabel}>Date :</span>
-                                            <span className={styles.dValue}>{formatDate(data.metasSession.dateHoraires)}</span>
+                                            <span className={styles.dValue}>{data.metasSession.nombreJours == '2' ? `${formatDate2(data.dateDebut)} - ${formatDate2(data.dateDebut,1)}` : formatDate2(data.dateDebut)}</span>
                                         </div>
                                     </div>
                                     <div className="flex alignstart gap10 mTop30">
@@ -464,7 +491,7 @@ export default function Session({ data, user }){
                                         </div>
                                         <div className="w80">
                                             <span className={styles.dLabel}>Date limite d'inscription :</span>
-                                            <span className={styles.dValue}>{formatDate(data.metasSession.dateLimiteInscription)}</span>
+                                            <span className={styles.dValue}>{formatDate2(data.metasSession.dateLimiteInscription)}</span>
                                         </div>
                                     </div>
                                     <div className="flex alignstart gap10 mTop20">
@@ -639,7 +666,7 @@ export default function Session({ data, user }){
                                                 </div>
                                                 <div className="flex gap15 mTop20">
                                                     <input type="mail" name="mail" onChange={handleChange} value={inscription.mail} className="input-mail w50" placeholder="Adresse email professionnelle*" />
-                                                    <input type="text" name="structure" onChange={handleChange} value={inscription.structure} className="input-mail w50" placeholder="Nom de votre structure*" />
+                                                    <input type="text" name="structure" onChange={handleChange} value={inscription.structure} className="input-mail w50" placeholder="Nom de votre collectivité (ou organisation)*" />
                                                 </div>
                                                 <div className="mTop20">
                                                     <div className="flex aligncenter gap10">
