@@ -579,31 +579,36 @@ export default function Session({ data, user }){
                         )}
                     </div>
                 </div>
-                <div className="section whited mTop100">
-                    <div className="boxed">
-                        <h2>Les intervenants</h2>
-                        {data.metasSession.intervenants.length > 0 ? (
-                            <div className="flex wrap gap25 mTop40">
-                                {data.metasSession.intervenants.map((inter, index) => {
-                                    return (
-                                        <div key={index} className="w32 wm100">
-                                            <Team
-                                                img="/medias/user.webp"
-                                                name={inter.nom}
-                                                description={`${inter.fonction} - ${inter.structure}`}
-                                                linkedin={inter.linkedin}
-                                            />
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        ) : (
-                            <div className="mTop40">
-                                <span>À venir.</span>
-                            </div>                        
-                        )}
+                {data.metasSession.intervenants.length === 0 ? (
+                    <></>
+                ) : (
+                    <div className="section whited mTop100">
+                        <div className="boxed">
+                            <h2>Les intervenants</h2>
+                            {data.metasSession.intervenants.length > 0 ? (
+                                <div className="flex wrap gap25 mTop40">
+                                    {data.metasSession.intervenants.map((inter, index) => {
+                                        return (
+                                            <div key={index} className="w32 wm100">
+                                                <Team
+                                                    img="/medias/user.webp"
+                                                    name={inter.nom}
+                                                    description={`${inter.fonction} - ${inter.structure}`}
+                                                    linkedin={inter.linkedin}
+                                                />
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            ) : (
+                                <div className="mTop40">
+                                    <span>À venir.</span>
+                                </div>                        
+                            )}
+                        </div>
                     </div>
-                </div>
+                )}
+
                 <div className="section">
                     <div className="boxed">
                         <h2 className="text-center">Inscription à cette rencontre</h2>
