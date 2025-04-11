@@ -13,7 +13,7 @@ export async function getServerSideProps(context) {
     // Préparation des filtres Prisma
     const whereClause = {
       status: 'publish',
-      ...(region && { region }),
+      ...(region && { region: { contains: region, mode: 'insensitive' } }),
       ...(departement && { departement }),
       ...(dateDebut && { dateDebut: { gte: new Date(dateDebut) } }),
       module: {
