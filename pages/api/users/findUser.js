@@ -37,7 +37,7 @@ export default async function handle(req, res) {
     });
 
     if (users.length === 0 && usersAdmins.length === 0) {
-      return res.json([]);
+      return res.status(404).json({ message: 'Aucun utilisateur trouvé' });
     }
 
     res.json([...users, ...usersAdmins]);
