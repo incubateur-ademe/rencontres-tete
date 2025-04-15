@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Alert from '@/components/Alert'
 import Reviews from '@/components/Reviews'
+import Backs from '@/components/Backs'
 import Participants from '@/components/Participants'
 import ModulesBack from '@/components/ModulesBack'
 import SessionsBack from '@/components/SessionsBack'
@@ -252,6 +253,9 @@ export default function Modules({setPage, page, user}){
                     )}
                     {open.type == 'reviews' && (
                         <Reviews session={open.session} setOpen={setOpen}  />
+                    )}
+                    {open.type == 'retours' && (
+                        <Backs session={open.session} setOpen={setOpen}  />
                     )}
                     {open.type == 'edit' && (
                         <>
