@@ -139,6 +139,7 @@ export default function SessionsBack({isModule, date, session, code, region, tit
                         </div>
                         {!isModule && (
                             <div className="w100 flex aligncend flex-end gap5 mTop10">
+                                <button onClick={() => {setOpen({ type: 'retours', session: session })}} className={styles.Register}>Retours</button>
                                 <button onClick={() => {setOpen({ type: 'reviews', session: session })}} className={styles.Register}>Voir les avis</button>
                                 <button onClick={() => {setOpen({ type: 'check', session: session })}} className={styles.Register}>Voir les participants</button>
                             </div>
