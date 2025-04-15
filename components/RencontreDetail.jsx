@@ -228,26 +228,31 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
     
 
     function formatDate(dateString) {
-        if(dateString){
-            const base = dateString.split('T');
-            const [year, month, day] = base[0].split('-')
-            return `${day}/${month}/${year}`;
-        } else{
-            return '---'
-        }
-    }    
-
+        if (!dateString) return '---';
+    
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return 'Invalid Date';
+    
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+    
+        return `${day}/${month}/${year}`;
+    }
+    
+    
 
     function formatDate2(dateString) {
         if (!dateString) return '---';
     
         let date;
+    
         if (dateString.includes('/')) {
-            // Cas où la date est sous format "dd/mm/YYYY"
+            // Format "dd/mm/yyyy"
             const [day, month, year] = dateString.split('/');
-            date = new Date(`${year}-${month}-${day}`); // Reformate en ISO
+            date = new Date(`${year}-${month}-${day}T00:00:00`);
         } else {
-            // Cas normal où la date est au format ISO
+            // Format ISO standard
             date = new Date(dateString);
         }
     
@@ -259,6 +264,7 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
             year: 'numeric'
         });
     }
+    
 
 
     const getUserSession = async () => {

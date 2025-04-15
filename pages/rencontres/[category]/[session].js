@@ -48,39 +48,49 @@ export async function getServerSideProps(context) {
 }
 
 export default function Session({ data, user }){
-
+    
     function formatDate(dateString) {
-        const base = dateString.split('T');
-        const [year, month, day] = base[0].split('-')
+        if (!dateString) return '---';
+    
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return 'Invalid Date';
+    
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+    
         return `${day}/${month}/${year}`;
-    }    
+    }
+     
 
     function formatDate2(dateString, addDays = 0) {
         if (!dateString) return '---';
-
+    
         let date;
+    
         if (dateString.includes('/')) {
-            // Gestion du format "dd/mm/YYYY"
+            // Format "dd/mm/YYYY"
             const [day, month, year] = dateString.split('/');
-            date = new Date(`${year}-${month}-${day}`);
+            date = new Date(`${year}-${month}-${day}T00:00:00`);
         } else {
-            // Format ISO standard
+            // Format ISO ou autre format valide
             date = new Date(dateString);
         }
-
+    
         if (isNaN(date.getTime())) return 'Invalid Date';
-
-        // Ajout de jours si nécessaire (pour le 2ème jour)
+    
+        // Ajout de jours si nécessaire
         if (addDays > 0) {
             date.setDate(date.getDate() + addDays);
         }
-
+    
         return date.toLocaleDateString('fr-FR', {
             day: '2-digit',
             month: 'long',
             year: 'numeric'
         });
     }
+    
 
     const [alert, setAlert] = useState(null)
     const [notif, setNotif] = useState(null)
