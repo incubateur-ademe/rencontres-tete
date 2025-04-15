@@ -5,30 +5,32 @@ export default function SessionBox({date, moduleDuree, region, title, link, data
 
     function formatDate(dateString, addDays = 0) {
         if (!dateString) return '---';
-
+    
         let date;
         if (dateString.includes('/')) {
             // Gestion du format "dd/mm/YYYY"
             const [day, month, year] = dateString.split('/');
-            date = new Date(`${year}-${month}-${day}`);
+            date = new Date(`${year}-${month}-${day}T00:00:00`);
         } else {
             // Format ISO standard
             date = new Date(dateString);
         }
-
+    
         if (isNaN(date.getTime())) return 'Invalid Date';
-
-        // Ajout de jours si nécessaire (pour le 2ème jour)
+    
+        // Ajout de jours si nécessaire
         if (addDays > 0) {
             date.setDate(date.getDate() + addDays);
         }
-
+    
+        // Formatage selon le fuseau horaire local du navigateur
         return date.toLocaleDateString('fr-FR', {
             day: '2-digit',
             month: 'long',
             year: 'numeric'
         });
     }
+    
 
     
     
