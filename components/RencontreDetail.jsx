@@ -20,8 +20,12 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [otherInputs, setOtherInputs] = useState({});
+    const [otherInputs2, setOtherInputs2] = useState({});
     const [responses, setResponses] = useState({});
+    const [responses2, setResponses2] = useState({});
     const [hasResponded, setHasResponded] = useState(false);
+    const [hasResponded2, setHasResponded2] = useState(false);
+    const [after4month, setAfter4Month] = useState(false)
 
     const [modules, setModules] = useState([])
 
@@ -131,6 +135,39 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
         }
     ];
 
+
+    const questions2 = [
+        {
+            id: 1,
+            text: "La Rencontre Territoire Engagé de l’ADEME a-t-elle eu un impact sur vos missions au quotidien ?",
+            options: [
+                { value: "4/4 – Très fort impact (changement d’une pratique, début d’un nouveau projet, ...)", label: "4/4 – Très fort impact (changement d’une pratique, début d’un nouveau projet, ...)" },
+                { value: "3/4 – Fort impact (aide dans un projet en cours, utilisation d’un nouvel outil, ...)", label: "3/4 – Fort impact (aide dans un projet en cours, utilisation d’un nouvel outil, ...)" },
+                { value: "2/4 – Impact relatif (prise de conscience, renforcement de connaissances, ...)", label: "2/4 – Impact relatif (prise de conscience, renforcement de connaissances, ...)" },
+                { value: "1/4 – Aucun impact", label: "1/4 – Aucun impact" }
+            ]
+        },
+        {
+            id: 2,
+            text: "Grâce à la Rencontre, avez-vous pu établir ou renforcer des collaborations avec d’autres participants ?",
+            options: [
+                { value: "Oui, une ou plusieurs collaborations", label: "Oui, une ou plusieurs collaborations" },
+                { value: "J’ai pris des contacts lors de la Rencontre mais je n’ai pas encore donné suite", label: "J’ai pris des contacts lors de la Rencontre mais je n’ai pas encore donné suite" },
+                { value: "Non, aucune collaboration", label: "Non, aucune collaboration" }
+            ]
+        },
+        {
+            id: 3,
+            text: "Quels aspects de la Rencontre vous ont semblé particulièrement utiles pour vos missions au sein de votre collectivité ? (Exemples : nouvelles connaissances, découverte d’outils, ateliers thématiques, échanges avec les experts, retours d’expérience d’autres territoires, etc.)",
+            type: "textarea",
+        },
+        {
+            id: 4,
+            text: "Identifiez-vous des pistes d’amélioration pour augmenter l’impact des prochaines Rencontres ? (Exemples : les thématiques abordées, le format des sessions, les retours d’expérience, etc.)",
+            type: "textarea",
+        },
+    ];
+
     const handleOptionChange = (questionId, value, checked) => {
         setOtherInputs(prevState => ({
             ...prevState,
@@ -160,6 +197,37 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
             }));
         }
     };
+
+
+    const handleOptionChange2 = (questionId, value, checked) => {
+        setOtherInputs2(prevState => ({
+            ...prevState,
+            [questionId]: value === 'autre',
+        }));
+    
+        if (questions.find(q => q.id === questionId).type === 'checkbox') {
+            setResponses2(prevState => {
+                const newValues = prevState[questionId] ? [...prevState[questionId]] : [];
+                if (checked) {
+                    newValues.push(value);
+                } else {
+                    const index = newValues.indexOf(value);
+                    if (index > -1) {
+                        newValues.splice(index, 1);
+                    }
+                }
+                return {
+                    ...prevState,
+                    [questionId]: newValues,
+                };
+            });
+        } else {
+            setResponses2(prevState => ({
+                ...prevState,
+                [questionId]: value,
+            }));
+        }
+    };
     
 
     const handleTextareaChange = (questionId, value) => {
@@ -171,6 +239,20 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
 
     const handleOtherInputChange = (questionId, value) => {
         setResponses(prevState => ({
+            ...prevState,
+            [`${questionId}_autre`]: value,
+        }));
+    };
+
+    const handleTextareaChange2 = (questionId, value) => {
+        setResponses2(prevState => ({
+            ...prevState,
+            [questionId]: value,
+        }));
+    };
+
+    const handleOtherInputChange2 = (questionId, value) => {
+        setResponses2(prevState => ({
             ...prevState,
             [`${questionId}_autre`]: value,
         }));
@@ -225,7 +307,54 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
         }
     };
     
+    const handleSubmit2 = async (event) => {
+        event.preventDefault();
     
+        const requiredQuestions = questions2;
+        const unansweredQuestions = requiredQuestions.filter((q) => 
+            !responses2[q.id] || 
+            (q.type === 'radioWithText' && responses2[q.id] === 'autre' && !responses2[`${q.id}_autre`]) || 
+            (q.type === 'textarea' && !responses2[q.id]) ||
+            (q.type === 'checkbox' && (!responses2[q.id] || responses2[q.id].length === 0))
+        );
+    
+        if (unansweredQuestions.length > 0) {
+            setNotif({
+                icon: 'warning',
+                text: 'Veuillez répondre à toutes les questions obligatoires avant de soumettre.',
+            });
+            return;
+        }
+    
+        const typeUser = user.type == "Administrateur" || user.type == "DR" ? "special" : "user";
+    
+        const response = await fetch('/api/satisfaction-after/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userId: userId,
+                sessionId: data.id,
+                registrationId: registrationId,
+                responses: responses2,
+                type: typeUser,
+            }),
+        });
+    
+        if (response.ok) {
+            setNotif({
+                icon: 'done',
+                text: 'Votre réponse a été enregistrée avec succès.',
+            });
+            setHasResponded2(true);
+        } else {
+            setNotif({
+                icon: 'error',
+                text: 'Une erreur s\'est produite. Veuillez réessayer plus tard.',
+            });
+        }
+    };
 
     function formatDate(dateString) {
         if (!dateString) return '---';
@@ -350,6 +479,18 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
         }
     };
 
+    const checkSatisfactionAfter = async () => {
+        if(user.type == "Administrateur" || user.type == "DR"){
+            const fetcher = await fetch(`/api/satisfaction-after/checkSatisfaction?userId=${userId}&sessionId=${data.id}&specialAccount=true`);
+            const json = await fetcher.json();
+            setHasResponded2(json.hasResponded);
+        } else {
+            const fetcher = await fetch(`/api/satisfaction-after/checkSatisfaction?userId=${userId}&sessionId=${data.id}`);
+            const json = await fetcher.json();
+            setHasResponded2(json.hasResponded);
+        }
+    };
+
     useEffect(() => {
         getUserSession();
     }, []);
@@ -358,6 +499,7 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
         if (data.id) {
             checkReview();
             checkSatisfaction();
+            checkSatisfactionAfter();
         }
     }, [data]);
 
@@ -373,6 +515,23 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
             }
         }
     }, [data]);
+
+    useEffect(() => {
+        if (data && data.dateDebut) {
+            const now = new Date();
+            const dateDebut = new Date(data.dateDebut);
+    
+            const fourMonthsAgo = new Date();
+            fourMonthsAgo.setMonth(fourMonthsAgo.getMonth() - 4);
+    
+            if (dateDebut < fourMonthsAgo) {
+                setAfter4Month(true); // La session est passée depuis plus de 4 mois
+            } else {
+                setAfter4Month(false); // Moins de 4 mois
+            }
+        }
+    }, [data]);
+    
 
     useEffect(() => {
         if (user) {
@@ -665,6 +824,89 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
                     <span className={styles.Subtitle}>Merci pour votre participation.</span>
                 </div>
             )}
+
+            {(after4month && !hasResponded2) && (
+                <>
+                    <span className={styles.Subtitle}>Il y 3 mois, vous avez participé à une Rencontre Territoire Engagé de l’ADEME sur la thématique : {data?.module?.nom}. Afin d’évaluer l’impact que cette Rencontre a eu sur vos missions et vos projets, nous vous invitons à répondre à ce questionnaire. Cela ne vous demandera que quelques minutes !</span>
+                
+                    <form onSubmit={handleSubmit2}>
+                        {questions2.map((question) => (
+                            <div key={question.id}>
+                                <span className={styles.askTitle}>{question.id}) {question.text}</span>
+                                {question.type === "textarea" ? (
+                                    <p className={styles.asker}>
+                                        <textarea
+                                            name={`question_${question.id}`}
+                                            id={`question_${question.id}`}
+                                            rows="4"
+                                            cols="50"
+                                            value={responses2[question.id] || ''}
+                                            className={styles.textareaF}
+                                            onChange={(e) => handleTextareaChange2(question.id, e.target.value)}
+                                        ></textarea>
+                                    </p>
+                                ) : (
+                                    question.type === "checkbox" ? (
+                                        question.options.map((option, index) => (
+                                            <div key={index}>
+                                                <p className={styles.asker}>
+                                                    <input
+                                                        type="checkbox"
+                                                        name={`question_${question.id}`}
+                                                        id={`question_${question.id}_${option.value}`}
+                                                        value={option.value}
+                                                        checked={(responses[question.id] || []).includes(option.value)}
+                                                        onChange={(e) => handleOptionChange2(question.id, option.value, e.target.checked)}
+                                                    />
+                                                    <label htmlFor={`question_${question.id}_${option.value}`}>{option.label}</label>
+                                                </p>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        question.options.map((option, index) => (
+                                            <div key={index}>
+                                                <p className={styles.asker}>
+                                                    <input
+                                                        type="radio"
+                                                        name={`question_${question.id}`}
+                                                        id={`question_${question.id}_${option.value}`}
+                                                        value={option.value}
+                                                        onChange={() => handleOptionChange2(question.id, option.value)}
+                                                    />
+                                                    <label htmlFor={`question_${question.id}_${option.value}`}>{option.label}</label>
+                                                </p>
+                                                {option.value === 'autre' && otherInputs[question.id] && (
+                                                    <p className={styles.asker}>
+                                                        <input
+                                                            type="text"
+                                                            name={`question_${question.id}_autre`}
+                                                            id={`question_${question.id}_autre`}
+                                                            placeholder="Veuillez préciser"
+                                                            value={responses2[`${question.id}_autre`] || ''}
+                                                            className={styles.textF}
+                                                            onChange={(e) => handleOtherInputChange2(question.id, e.target.value)}
+                                                        />
+                                                    </p>
+                                                )}
+                                            </div>
+                                        ))
+                                    )
+                                )}
+                            </div>
+                        ))}
+                        <button className="btn__normal btn__dark mBot20 mTop10" type="submit">Soumettre</button>
+                    </form>
+                </>
+            )}
+
+            {hasResponded2 && (
+                <div className="mTop30 mBot20">
+                    <span className={styles.Subtitle}>Retour sur la rencontre :</span>
+                    <p>Il y 3 mois, vous avez participé à une Rencontre Territoire Engagé de l’ADEME sur la thématique : {data?.module?.nom}. Afin d’évaluer l’impact que cette Rencontre a eu sur vos missions et vos projets, nous vous invitons à répondre à ce questionnaire. Cela ne vous demandera que quelques minutes !</p>
+                    <span className={styles.Subtitle}>Nous vous remercions d’avoir pris le temps de répondre à ce questionnaire. Vos retours sont essentiels pour faire évoluer les Rencontres Territoire Engagé et répondre aux mieux à vos besoins.</span>
+                </div>
+            )}
+
             {alert != null && (
                 <Alert datas={alert} setAlert={setAlert} />
             )}
