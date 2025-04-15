@@ -396,11 +396,14 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
 
     const generateBadge = async () => {
         setLoading(true);
+
+        console.log("userData", userData)
+
         const datas = {
-            nom: userData.nom,
-            prenom: userData.prenom,
+            nom: (data.nom !== undefined && data.nom !== null && data.nom !== "") ? data.nom : userData.email,
+            prenom: data.prenom || '[ADMIN / DR]',
             program: data?.metasSession?.programmeSession,
-            organisation: userData.organisation,
+            organisation: userData.organisation || "",
         };
 
         const response = await fetch('/api/generate-badge', {
@@ -496,7 +499,7 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
             </div>
             <div className="w100 mTop25">
                 <SessionBox
-                    date={formatDate2(data.dateDebut)}
+                    date={data.dateDebut}
                     region={data.region}
                     title={data?.module?.nom}
                     dept={data?.departement}

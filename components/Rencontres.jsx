@@ -48,6 +48,7 @@ export default function Rencontres({ user }){
     
 
     function formatDate2(dateString) {
+
         if (!dateString) return '---';
     
         let date;
@@ -60,6 +61,8 @@ export default function Rencontres({ user }){
             // Format ISO ou autre
             date = new Date(dateString);
         }
+
+   
     
         if (isNaN(date.getTime())) return 'Invalid Date';
     
@@ -95,7 +98,7 @@ export default function Rencontres({ user }){
                                     return (
                                         <div key={index} onClick={() => setOpen({sessionId: rencontre.session.id, registrationId: rencontre.id})} className="w49 wm100">
                                             <SessionBox 
-                                                date={formatDate2(rencontre.session.dateDebut)}
+                                                date={rencontre.session.dateDebut}
                                                 region={rencontre.session.region}
                                                 dept={rencontre.session.departement}
                                                 title={rencontre.session.module.nom}
