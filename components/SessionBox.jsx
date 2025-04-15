@@ -7,6 +7,8 @@ export default function SessionBox({date, moduleDuree, region, title, link, data
         if (!dateString) return '---';
     
         let date;
+        console.log("date =>", dateString)
+
         if (dateString.includes('/')) {
             // Gestion du format "dd/mm/YYYY"
             const [day, month, year] = dateString.split('/');

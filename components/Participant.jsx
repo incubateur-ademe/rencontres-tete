@@ -30,8 +30,8 @@ export default function Participant({ data, setActions, session }){
             icon: 'hourglass_top'
         }) 
         const datas = {
-            nom: data.nom,
-            prenom: data.prenom,
+            nom: data.nom || data.mail,
+            prenom: data.prenom || '[ADMIN / DR]',
             program: data.session.metasSession.programmeSession,
             organisation: data.user !== undefined && data.user.organisation || '',
         };
@@ -68,20 +68,29 @@ export default function Participant({ data, setActions, session }){
                     <button onClick={generateBadge} className={styles.Corb}><span className="material-icons">picture_as_pdf</span></button>               
                 </div>               
                 <div className={styles.Table}>
-                    <div className="w22"><span className={styles.Label}>Nom</span>{data.nom}</div>
-                    <div className="w22"><span className={styles.Label}>Prénom</span>{data.prenom}</div>
-                    <div className="w30"><span className={styles.Label}>E-mail</span>{data.mail}</div>
-                    <div className="w20"><span className={styles.Label}>Téléphone</span>{data.telephone ? data.telephone : '-'}</div>
-                    <div className="w22"><span className={styles.Label}>Structure</span>{data.structure}</div>
-                    <div className="w22"><span className={styles.Label}>Fonction</span>{data.fonction}</div>
-                    <div className="w30"><span className={styles.Label}>Type de fonction</span>{data.typeFonction}</div>
-                    <div className="w20"><span className={styles.Label}>Ville</span>{data.ville ? data.ville : '-'}</div>
-                    <div className="w22"><span className={styles.Label}>Région</span>{data.region}</div>
-                    <div className="w22"><span className={styles.Label}>Transport</span>{data.transport}</div>
-                    <div className="w20"><span className={styles.Label}>Repas</span>{data.repas ? 'J1 : Oui' : 'J1 : Non'}{data.session.metasSession.nombreJours == 2 ? data.repas2 ? ' / J2 : Oui' : ' / J2 : Non' : ''}{data.regime ? ` (${data.regime})` : ''}</div>
-                    <div className="w30"><span className={styles.Label}>Besoin spécifique</span>{data.besoins != null ? data.besoins : '-'}</div>
-                    <div className="w20 mTop10"><span className={styles.Label}>Présence</span>{data.deleted ? 'Annulée' : data.days ? 'Complète' : '1/2'}</div>
-                    
+                    {data.nom ? (
+                        <>
+                            <div className="w22"><span className={styles.Label}>Nom</span>{data.nom}</div>
+                            <div className="w22"><span className={styles.Label}>Prénom</span>{data.prenom}</div>
+                            <div className="w30"><span className={styles.Label}>E-mail</span>{data.mail}</div>
+                            <div className="w20"><span className={styles.Label}>Téléphone</span>{data.telephone ? data.telephone : '-'}</div>
+                            <div className="w22"><span className={styles.Label}>Structure</span>{data.structure}</div>
+                            <div className="w22"><span className={styles.Label}>Fonction</span>{data.fonction}</div>
+                            <div className="w30"><span className={styles.Label}>Type de fonction</span>{data.typeFonction}</div>
+                            <div className="w20"><span className={styles.Label}>Ville</span>{data.ville ? data.ville : '-'}</div>
+                            <div className="w22"><span className={styles.Label}>Région</span>{data.region}</div>
+                            <div className="w22"><span className={styles.Label}>Transport</span>{data.transport}</div>
+                            <div className="w20"><span className={styles.Label}>Repas</span>{data.repas ? 'J1 : Oui' : 'J1 : Non'}{data.session.metasSession.nombreJours == 2 ? data.repas2 ? ' / J2 : Oui' : ' / J2 : Non' : ''}{data.regime ? ` (${data.regime})` : ''}</div>
+                            <div className="w30"><span className={styles.Label}>Besoin spécifique</span>{data.besoins != null ? data.besoins : '-'}</div>
+                            <div className="w20 mTop10"><span className={styles.Label}>Présence</span>{data.deleted ? 'Annulée' : data.days ? 'Complète' : '1/2'}</div>
+                        </>
+                    ) : (
+                        <>
+                            <div className="w30"><span className={styles.Label}>E-mail</span>{data.mail}</div>
+                            <div className="w30"><span className={styles.Label}>Type</span>Admin/DR</div>
+                            <div className="w20"><span className={styles.Label}>Présence</span>Complète</div>                        
+                        </>
+                    )} 
                 </div>
             </div>
 

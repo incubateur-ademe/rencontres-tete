@@ -187,9 +187,13 @@ export default function Participants({ session, setOpen }){
     }
 
     const ajouterInscrit = async () => {
+        if (!userAdded) return;
+    
+        const isAccount = !!userAdded.email; // S'il a un "email" → c'est un account (DR/Admin)
+    
         let inscriptionData = {
             civilite: '-',
-            mail: userAdded.mail,
+            mail: isAccount ? userAdded.email : userAdded.mail,
             nom: userAdded.nom,
             prenom: userAdded.prenom,
             structure: userAdded.organisation,
@@ -206,8 +210,8 @@ export default function Participants({ session, setOpen }){
             programmeTETE: null,
             participationUlterieure: null,
             days: false
-        }
-
+        };
+    
         const registering = await fetch('/api/registrations/add', {
             method: 'POST',
             headers: {
@@ -217,24 +221,25 @@ export default function Participants({ session, setOpen }){
                 inscriptionData: inscriptionData,
                 userId: userAdded.id,
                 sessionId: session.id,
-                type: 'user'
+                type: isAccount ? 'special' : 'user'
             })
-        })
-
-        const json = await registering.json()
-
+        });
+    
+        const json = await registering.json();
+    
         setUserAdded(null)
         setOpenList(false)
         setSearchUsers([])
-
+    
         setAlert(null)
         setNotif({
             text: 'Le nouveau participant a été ajouté !',
             icon: 'done'
-        })
-
-        getParticipants()
-    }
+        });
+    
+        getParticipants();
+    };
+    
 
 
     useEffect(() => {
@@ -288,7 +293,7 @@ export default function Participants({ session, setOpen }){
                                         <>
                                             <div className={styles.ListSearch}>
                                                 {searchUsers.map((user, i) => {
-                                                    return <button onClick={() => addUserFromList(user)} key={i}>{user.nom} {user.prenom} {user.mail}</button>
+                                                    return <button onClick={() => addUserFromList(user)} key={i}>{user.nom ? `${user.nom} ${user.prenom} ${user.mail}` : `[${user.type}] ${user.email}`}</button>
                                                 })}
                                             </div>
                                         </>
@@ -296,7 +301,7 @@ export default function Participants({ session, setOpen }){
                                 </>
                             ) : (
                                 <div className="flex aligncenter">
-                                    <span>{userAdded.nom} {userAdded.prenom} - {userAdded.mail}</span>
+                                    <span>{userAdded.nom ? `${userAdded.nom} ${userAdded.prenom} ${userAdded.mail}` : `[${userAdded.type}] ${userAdded.email}`}</span>
                                     <button onClick={ajouterInscrit} className={styles.toAdd}>Ajouter</button>
                                     <button onClick={() => addUserFromList(null)} className={styles.toRem}><span className="material-icons">close</span></button>
                                 </div>

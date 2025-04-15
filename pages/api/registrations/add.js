@@ -98,7 +98,7 @@ export default async function handle(req, res) {
         });
 
         const sending = {
-            prenom: type == 'special' ? inscriptionData.prenom : userData.prenom,
+            prenom: type == 'special' ? (inscriptionData.prenom !== null && inscriptionData.prenom != undefined) ? inscriptionData.prenom : inscriptionData.email : userData.prenom,
             email: type == 'special' ? userData.email : userData.mail,
             nomRencontre: sessionData.module.nom,
             dateRencontre: formattedDateDebut,
@@ -115,7 +115,7 @@ export default async function handle(req, res) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                prenom: type == 'special' ? inscriptionData.prenom : userData.prenom,
+                prenom: type == 'special' ? (inscriptionData.prenom !== null && inscriptionData.prenom != undefined) ? inscriptionData.prenom : inscriptionData.email : userData.prenom,
                 email: type == 'special' ? userData.email : userData.mail,
                 nomRencontre: sessionData.module.nom,
                 dateRencontre: formattedDateDebut,
