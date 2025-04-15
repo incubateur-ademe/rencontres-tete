@@ -27,20 +27,11 @@ export default async function handle(req, res) {
       },
     });
 
-    const usersAdmin = await prisma.account.findMany({
-      where: {
-          email: {
-            contains: search, // Recherche partielle sur l'email
-            mode: 'insensitive', // Recherche insensible à la casse
-          }
-        }
-    });
-
-    if (users.length === 0 && usersAdmin.length === 0) {
+    if (users.length === 0) {
       return res.status(404).json({ message: 'Aucun utilisateur trouvé' });
     }
 
-    res.json({users});
+    res.json(users);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Erreur du serveur' });
