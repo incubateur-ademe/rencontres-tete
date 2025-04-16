@@ -67,13 +67,14 @@ export default function Session({ data, user }){
         if (!dateString) return '---';
     
         let date;
-    
+        console.log("date =>", dateString)
+
         if (dateString.includes('/')) {
-            // Format "dd/mm/YYYY"
+            // Gestion du format "dd/mm/YYYY"
             const [day, month, year] = dateString.split('/');
             date = new Date(`${year}-${month}-${day}T00:00:00`);
         } else {
-            // Format ISO ou autre format valide
+            // Format ISO standard
             date = new Date(dateString);
         }
     
@@ -84,12 +85,14 @@ export default function Session({ data, user }){
             date.setDate(date.getDate() + addDays);
         }
     
+        // Formatage selon le fuseau horaire local du navigateur
         return date.toLocaleDateString('fr-FR', {
             day: '2-digit',
             month: 'long',
             year: 'numeric'
         });
     }
+    
     
 
     const [alert, setAlert] = useState(null)
@@ -449,8 +452,8 @@ export default function Session({ data, user }){
             <div className={styles.Session}>
                 <div className="section">
                     <div className="boxed">
-                        <div className="flex gap30">
-                            <div className={`${styles.Header} w70`}>
+                        <div className="flex gap30 toColumn">
+                            <div className={`${styles.Header} w70 wm100`}>
                                 <h1>{data.metasSession.nombreJours == '2' ? `${formatDate2(data.dateDebut)} - ${formatDate2(data.dateDebut,1)}` : formatDate2(data.dateDebut)} : {data.module.nom}</h1>
                                 <p className={styles.Breadcrump}>
                                     <Link href="/">Accueil</Link> /
@@ -458,7 +461,7 @@ export default function Session({ data, user }){
                                     <Link href={`/rencontres/${data.module.slug}`}>{data.module.nom}</Link> /
                                     <span>Rencontre du {data.metasSession.nombreJours == '2' ? `${formatDate2(data.dateDebut)} - ${formatDate2(data.dateDebut,1)}` : formatDate2(data.dateDebut)}</span>
                                 </p>
-                                <div className="flex aligncenter gap10">
+                                <div className="flex aligncenter toColumn gap10 wm100">
                                     <span className={styles.Region}>{data.departement+' - '+data.region}</span>
                                     <span className={styles.Tag}>{data.module.nom}</span>
                                 </div>                            
