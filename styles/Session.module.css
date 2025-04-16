@@ -164,3 +164,17 @@
     object-fit: cover;
     border-radius: 18px;
 }
+
+@media(max-width:810px){
+    .Header h1{
+        font-size: 1.5rem;
+    }
+
+    .Breadcrump{
+        font-size: .8rem;
+    }
+
+    .Region, .Tag{
+        width: 100%;
+    }
+}
