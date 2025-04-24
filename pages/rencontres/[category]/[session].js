@@ -478,7 +478,7 @@ export default function Session({ data, user }){
                                         </div>
                                         <div className="w80">
                                             <span className={styles.dLabel}>Date :</span>
-                                            <span className={styles.dValue}>{data.metasSession.nombreJours == '2' ? `${formatDate(formatDate2(data.dateDebut))} - ${formatDate(formatDate2(data.dateDebut),1)}` : formatDate2(formatDate(data.dateDebut))}</span>
+                                            <span className={styles.dValue}>{data.metasSession.nombreJours == '2' ? `${formatDate2(formatDate(data.dateDebut))} - ${formatDate2(formatDate(data.dateDebut),1)}` : formatDate2(formatDate(data.dateDebut))}</span>
                                         </div>
                                     </div>
                                     <div className="flex alignstart gap10 mTop30">
