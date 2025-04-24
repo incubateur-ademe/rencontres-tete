@@ -50,18 +50,10 @@ export async function getServerSideProps(context) {
 export default function Session({ data, user }){
     
     function formatDate(dateString) {
-        if (!dateString) return '---';
-    
-        const date = new Date(dateString);
-        if (isNaN(date.getTime())) return 'Invalid Date';
-    
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear();
-    
+        const base = dateString.split('T');
+        const [year, month, day] = base[0].split('-')
         return `${day}/${month}/${year}`;
-    }
-     
+    }    
 
     function formatDate2(dateString, addDays = 0) {
         if (!dateString) return '---';
@@ -447,19 +439,19 @@ export default function Session({ data, user }){
     return (
         <>
             <Head>
-                <title>{data.module.nom} | Session du {formatDate2(data.dateDebut)} - {data.region}</title>
+                <title>{data.module.nom} | Session du {formatDate2(formatDate(data.dateDebut))} - {data.region}</title>
             </Head>
             <div className={styles.Session}>
                 <div className="section">
                     <div className="boxed">
                         <div className="flex gap30 toColumn">
                             <div className={`${styles.Header} w70 wm100`}>
-                                <h1>{data.metasSession.nombreJours == '2' ? `${formatDate2(data.dateDebut)} - ${formatDate2(data.dateDebut,1)}` : formatDate2(data.dateDebut)} : {data.module.nom}</h1>
+                                <h1>{data.metasSession.nombreJours == '2' ? `${formatDate2(formatDate(data.dateDebut))} - ${formatDate2(formatDate(data.dateDebut),1)}` : formatDate2(formatDate(data.dateDebut))} : {data.module.nom}</h1>
                                 <p className={styles.Breadcrump}>
                                     <Link href="/">Accueil</Link> /
                                     <Link href="/rencontres">Toutes les rencontres</Link> /
                                     <Link href={`/rencontres/${data.module.slug}`}>{data.module.nom}</Link> /
-                                    <span>Rencontre du {data.metasSession.nombreJours == '2' ? `${formatDate2(data.dateDebut)} - ${formatDate2(data.dateDebut,1)}` : formatDate2(data.dateDebut)}</span>
+                                    <span>Rencontre du {data.metasSession.nombreJours == '2' ? `${formatDate2(formatDate(data.dateDebut))} - ${formatDate2(formatDate(data.dateDebut),1)}` : formatDate2(formatDate(data.dateDebut))}</span>
                                 </p>
                                 <div className="flex aligncenter toColumn gap10 wm100">
                                     <span className={styles.Region}>{data.departement+' - '+data.region}</span>
@@ -486,7 +478,7 @@ export default function Session({ data, user }){
                                         </div>
                                         <div className="w80">
                                             <span className={styles.dLabel}>Date :</span>
-                                            <span className={styles.dValue}>{data.metasSession.nombreJours == '2' ? `${formatDate2(data.dateDebut)} - ${formatDate2(data.dateDebut,1)}` : formatDate2(data.dateDebut)}</span>
+                                            <span className={styles.dValue}>{data.metasSession.nombreJours == '2' ? `${formatDate(formatDate2(data.dateDebut))} - ${formatDate(formatDate2(data.dateDebut),1)}` : formatDate2(formatDate(data.dateDebut))}</span>
                                         </div>
                                     </div>
                                     <div className="flex alignstart gap10 mTop30">
