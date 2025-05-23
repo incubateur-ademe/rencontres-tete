@@ -29,11 +29,21 @@ export default async function handle(req, res) {
             },
             include: {
                 registrations: {
+                    where: {
+                      user: {
+                        presence: true,
+                      },
+                    },
                     include: {
-                        user: true,
+                      user: true,
                     },
                 },
                 accountRegistrations: {
+                    where: {
+                        account: {
+                          presence: true,
+                        },
+                    },
                     include: {
                         account: true,
                     },

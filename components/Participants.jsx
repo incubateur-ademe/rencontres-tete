@@ -26,6 +26,11 @@ export default function Participants({ session, setOpen }){
     const [searchUsers, setSearchUsers] = useState([])
     const [userAdded, setUserAdded] = useState(null)
     const [loading, setLoading] = useState(false);
+    const [filterPresence, setFilterPresence] = useState('all');
+    const [filterRegion, setFilterRegion] = useState('all'); // 'all' | 'hors'
+    const [filterRole, setFilterRole] = useState('all'); // 'all' | 'intervenants'
+
+
 
     const flattenJson = (jsonArray) => {
         return jsonArray.map(item => {
@@ -77,8 +82,13 @@ export default function Participants({ session, setOpen }){
     const downloadAllBadges = async () => {
         setLoading(true);
         const zip = new JSZip();
+        
+        console.log("all users => ", users)
 
         for (const participant of users) {
+
+        if (participant.deleted === true) continue;
+
         const datas = {
             nom: participant.nom,
             prenom: participant.prenom,
@@ -114,7 +124,8 @@ export default function Participants({ session, setOpen }){
             setNumber(json.length)
             setUsers(json)
             updateFonctions(json)
-        }
+            setStats(computeStats(json, session))
+          }          
     }
 
     const updateFonctions = (participants) => {
@@ -241,6 +252,27 @@ export default function Participants({ session, setOpen }){
     };
     
 
+    const computeStats = (participants, session) => {
+        const maxPlaces = session.metasSession.nombrePlaces || 0;
+        const totalParticipants = participants.filter(p => !p.deleted).length;
+        const intervenants = participants.filter(p => p.role === 'intervenant' && !p.deleted).length;
+        const horsRegion = participants.filter(p => p.region !== session.region && !p.deleted).length;
+      
+        return {
+          maxPlaces,
+          totalParticipants,
+          intervenants,
+          horsRegion,
+        };
+      };
+
+      const [stats, setStats] = useState({
+        maxPlaces: 0,
+        totalParticipants: 0,
+        intervenants: 0,
+        horsRegion: 0
+      });
+      
 
     useEffect(() => {
         getParticipants()
@@ -250,9 +282,44 @@ export default function Participants({ session, setOpen }){
         <>
             <div className={styles.Participants}>
                 <span onClick={() => setOpen(null)} className={styles.Back}>Retour aux sessions</span>
+                <div className="mTop20 flex gap20">
+                    <div className="card w25">
+                        <strong>Places max ouvertes</strong>
+                        <div>{stats.maxPlaces}</div>
+                    </div>
+                    <div className="card w25">
+                        <strong>Participants inscrits</strong>
+                        <div>{stats.totalParticipants}</div>
+                    </div>
+                    <div className="card w25">
+                        <strong>Intervenants inscrits</strong>
+                        <div>{stats.intervenants}</div>
+                    </div>
+                    <div className="card w25">
+                        <strong>Hors région</strong>
+                        <div>{stats.horsRegion}</div>
+                    </div>
+                </div>
+
                 <div className="mTop30">
-                    <div className="flex gap20 aligncenter mBot30">                   
-                    <div className="select w40">
+                    <div className="flex gap20 aligncenter mBot30">
+                        <div className="select w25">
+                        <select value={filterRegion} onChange={(e) => setFilterRegion(e.target.value)} className="input-select">
+                            <option value="all">Tous (régions)</option>
+                            <option value="hors">Participants hors région</option>
+                        </select>
+                        <span className="material-icons">expand_more</span>
+                        </div>
+
+                        <div className="select w25">
+                        <select value={filterRole} onChange={(e) => setFilterRole(e.target.value)} className="input-select">
+                            <option value="all">Tous les rôles</option>
+                            <option value="intervenants">Intervenants / Organisateurs</option>
+                        </select>
+                        <span className="material-icons">expand_more</span>
+                        </div>
+
+                        <div className="select w25">
                         <select value={selectedFonction} onChange={(e) => setSelectedFonction(e.target.value)} className="input-select">
                             <option value="">Toutes les fonctions</option>
                             {fonctions.map((fonctionObj, index) => (
@@ -261,12 +328,26 @@ export default function Participants({ session, setOpen }){
                         </select>
                         <span className="material-icons">expand_more</span>
                     </div>
-                    <button className="btn__normal btn__dark" onClick={() => exportToExcel(users, `Export liste des participants`)}>Exporter la liste des participants</button>
+
+
+                    <div className="select w25">
+                    <select value={filterPresence} onChange={(e) => setFilterPresence(e.target.value)} className="input-select">
+                        <option value="all">Tous les participants</option>
+                        <option value="present">Présents uniquement</option>
+                        <option value="absent">Désinscrits uniquement</option>
+                    </select>
+                    <span className="material-icons">expand_more</span>
+                    </div>
+
+                    </div>
+                    <div className="flex gap20 aligncenter mBot30">     
+                    <button className="btn__normal btn__light" onClick={() => setOpenAdd(prev => !prev)}>Ajouter un participant</button>              
                     <button className="btn__normal btn__light" onClick={() => setIsMail(prev => !prev)}>{isMail ? "Fermer" : "Envoyer un mail"}</button>
+                    <button className="btn__normal btn__dark" onClick={() => exportToExcel(users, `Export liste des participants`)}>Exporter la liste des participants</button>
                     </div>
                     <div class="mBot30">
                         <div className="flex aligncenter gap10">
-                            <button className="btn__normal btn__light" onClick={() => setOpenAdd(prev => !prev)}>Ajouter un participant</button>
+                            
                             <button className="btn__normal btn__dark" onClick={downloadAllBadges} disabled={loading}>
                                 {loading ? 'Génération des badges, veuillez patienter...' : 'Télécharger tous les badges'}      
                             </button>
@@ -309,9 +390,28 @@ export default function Participants({ session, setOpen }){
                         </div>  
                     )}
 
-                    {users.filter(user => selectedFonction === '' || user.fonction === selectedFonction).map((user, index) => {
-                        return <Participant key={index} data={user} setActions={setActions} session={session} />
-                    })}
+
+
+                    {users
+                        .filter(user => {
+                            if (selectedFonction && user.fonction !== selectedFonction) return false;
+                            if (filterPresence === 'present' && user.deleted === true) return false;
+                            if (filterPresence === 'absent' && user.deleted !== true) return false;
+                            if (filterRegion === 'hors' && user.region === session.region) return false;
+                            if (filterRole === 'intervenants' && !['intervenant', 'organisateur'].includes(user.role)) return false;
+                            return true;
+                        })
+                        .sort((a, b) => {
+                            const nameA = `${a.nom || ''} ${a.prenom || ''}`.toLowerCase();
+                            const nameB = `${b.nom || ''} ${b.prenom || ''}`.toLowerCase();
+                            return nameA.localeCompare(nameB);
+                        })
+                        .map((user, index) => (
+                            <Participant key={index} data={user} setActions={setActions} session={session} />
+                        ))
+                    }
+
+
                     {users.length === 0 && <div><span>Pas de participant pour cette session.</span></div>}
                 </div>
             </div>

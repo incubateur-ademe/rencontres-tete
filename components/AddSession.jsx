@@ -31,7 +31,8 @@ export default function AddSession({setOpen, id, nom}){
           intervenants: [],
           programmeSession: [],
           urlsPDF: [],
-          selectedFiles: []
+          selectedFiles: [],
+          lien_covoit: ''
         }
     });
 
@@ -287,7 +288,8 @@ export default function AddSession({setOpen, id, nom}){
             mail_referent: datas.metasSession.mail_referent,
             optionjour: datas.metasSession.optionjour,
             programmeSession: datas.metasSession.programmeSession,
-            urlsPDF: [...datas.metasSession.urlsPDF, ...uploadedUrlsPDF]
+            urlsPDF: [...datas.metasSession.urlsPDF, ...uploadedUrlsPDF],
+            lien_covoit: datas.metasSession.lien_covoit
         }
 
         if(sessionData.moduleId != '' 
@@ -845,6 +847,10 @@ export default function AddSession({setOpen, id, nom}){
                         Ajouter une tranche horaire
                     </button>
                 </div>
+
+                <span className={styles.Subtitle}>Lien pour covoiturage</span>
+
+                <input type="text" onChange={handleChange} name="metasSession.lien_covoit" value={datas?.metasSession.lien_covoit} className="input-text mTop10" placeholder="URL..." />
 
                 <span className={styles.Subtitle}>Ressources à lire avant la rencontre</span>
                 <div>

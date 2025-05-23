@@ -22,59 +22,58 @@ export default function Modules({setPage, page, user}){
     const [currentStatus, setCurrentStatus] = useState('')
     const [sessions, setSessions] = useState([])
     const [currentRegion, setCurrentRegion] = useState('')
+    const [nav, setNav] = useState(0)
+    const [status, setStatus] = useState('upcoming')
+    const [filterStatus, setFilterStatus] = useState('');
+    const [passedFilter, setPassedFilter] = useState('upcoming'); // old ou upcoming
 
-    const getSessions = async (tri, status, region, codes) => {
-        let url = '/api/sessions/'
+
+    const getSessions = async (tri, status, region, codes, passed) => {
+        let url = '/api/sessions/?';
+      
         if (tri) {
-            url += `?tri=${encodeURIComponent(tri)}`;
+          url += `tri=${encodeURIComponent(tri)}&`;
         }
-
+      
         if (codes) {
-            url += `?tricodes=${encodeURIComponent(codes)}`;
+          url += `tricodes=${encodeURIComponent(codes)}&`;
         }
-
+      
         if (status) {
-            url += `&status=${encodeURIComponent(status)}`;
+          url += `status=${encodeURIComponent(status)}&`;
         }
-        if(region) {
-            url += `&region=${encodeURIComponent(region)}`
+      
+        if (region) {
+          url += `region=${encodeURIComponent(region)}&`;
         }
-        const fetcher = await fetch(url)
-        const json = await fetcher.json()
-        setSessions(json)
-    }
+      
+        if (passed) {
+          url += `passed=${passed}`;
+        }
+      
+        const fetcher = await fetch(url);
+        const json = await fetcher.json();
+        setSessions(json);
+      };
+      
+      useEffect(() => {
+        getSessions(currentTri, filterStatus, currentRegion, currentCodes, passedFilter);
+      }, [passedFilter, filterStatus, currentTri, currentRegion, currentCodes]);
+      
 
-    useEffect(() => {
-        getSessions()
-    }, [])
-  
-    const trierSessions = async (event) => {
-        const tri = event.target.value;
-        const codes = ''
-        setCurrentCodes('')
-        const status = currentStatus
-        const region = currentRegion
-        setCurrentTri(tri)
-        getSessions(tri, status, region, codes);
-    }
 
-    const trierStatus = async (event) => {
-        const status = event.target.value;
-        const tri = currentTri
-        const codes = currentCodes
-        const region = currentRegion
-        setCurrentStatus(status)
-        getSessions(tri, status, region, codes);
-    }
+    const trierStatus = (event) => {
+        setFilterStatus(event.target.value);
+      };
 
-    const trierRegion = async (event) => {
-        const region = event.target.value;
-        const tri = currentTri
-        const codes = currentCodes
-        const status = currentStatus
-        setCurrentRegion(region)
-        getSessions(tri, status, region, codes);
-    }
+    const trierRegion = (event) => {
+        setCurrentRegion(event.target.value);
+      };
+    
+    const trierSessions = (event) => {
+        setCurrentTri(event.target.value);
+    };
+    
 
     const deleteSession = async (sessionId) => {
         try {
@@ -109,12 +108,17 @@ export default function Modules({setPage, page, user}){
     }
 
 
+
     return (
         <>
             {open == null ? (
                 <>
                     <div className="flex aligncenter space-between w100 gap40">
                         <span className={`${styles.Title} w65`}>Toutes les sessions</span>
+                    </div>
+                    <div className={styles.Menu} style={{ marginTop: '15px' }}>
+                        <button onClick={() => {setNav(0);setPassedFilter('upcoming');}} className={nav == 0 ? styles.active : undefined}>Rencontres à venir</button>
+                        <button onClick={() => {setNav(1);setPassedFilter('old');}} className={nav == 1 ? styles.active : undefined}>Rencontres passées</button>
                     </div>
                     <div className="flex gap20 mTop30">
                         <div className="select w20">
