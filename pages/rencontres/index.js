@@ -69,6 +69,10 @@ export default function Rencontres({ sessions, region, pilier, thematique }) {
   const [displaySessions, setDisplaySessions] = useState(sessions);
   const [filtres, setFiltres] = useState({ pilier, nom: '', region, departement: '', thematique, dateDebut: '' });
 
+  const [email, setEmail] = useState('');
+  const [regionSelected, setRegionSelected] = useState('');
+  const [message, setMessage] = useState('');
+
   useEffect(() => {
     const fetchFilteredSessions = async () => {
       let url = '/api/sessions?status=publish&passed=upcoming&';
@@ -92,7 +96,38 @@ export default function Rencontres({ sessions, region, pilier, thematique }) {
     return date.toLocaleDateString('fr-FR');
   }
 
-  console.log(displaySessions)
+  const handleSubmitAlert = async (e) => {
+    e.preventDefault();
+  
+    if (!email || !regionSelected) {
+      setMessage("Merci de remplir tous les champs.");
+      return;
+    }
+  
+    try {
+      const res = await fetch('/api/alertes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, region: regionSelected }),
+      });
+  
+      const data = await res.json();
+  
+      if (res.ok) {
+        setMessage("✅ Alerte activée avec succès !");
+        setEmail('');
+        setRegionSelected('');
+      } else {
+        setMessage(data.error || "❌ Une erreur est survenue.");
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage("❌ Impossible de se connecter au serveur.");
+    }
+  };
+  
 
   return (
     <>
@@ -110,6 +145,53 @@ export default function Rencontres({ sessions, region, pilier, thematique }) {
           <div className="boxed">
             <div className="flex toColumn gap50">
               <div className="w70 wm100">
+              <div style={{ border: '1px solid #ccc', padding: '1rem', borderRadius: '8px', width: '100%' }} className="w100 mBot20">
+              <span>
+                Vous souhaitez être informé des prochaines Rencontres dans votre Région ?
+                Activez l’alerte mail ci-dessous :
+              </span>
+              <form onSubmit={handleSubmitAlert} style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <div className="flex gap10 toColumn">
+                  <input
+                    type="email"
+                    placeholder="Votre adresse email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w50 wm100 input-text"
+                    required
+                  />
+
+                  <div className="select w50 wm100">
+                  <select className="wm100 input-select" value={regionSelected} onChange={(e) => setRegionSelected(e.target.value)} required>
+                    <option value="">Sélectionnez votre région</option>
+                    <option value="Auvergne-Rhône-Alpes">Auvergne-Rhône-Alpes</option>
+                      <option value="Bourgogne-Franche-Comté">Bourgogne-Franche-Comté</option>
+                      <option value="Bretagne">Bretagne</option>
+                      <option value="Centre-Val de Loire">Centre-Val de Loire</option>
+                      <option value="Corse">Corse</option>
+                      <option value="Normandie">Normandie</option>
+                      <option value="Nouvelle-Aquitaine">Nouvelle-Aquitaine</option>
+                      <option value="Occitanie">Occitanie</option>
+                      <option value="Grand-Est">Grand-Est</option>
+                      <option value="Hauts-de-France">Hauts-de-France</option>
+                      <option value="Île-de-France">Île-de-France</option>
+                      <option value="Pays de la Loire">Pays de la Loire</option>
+                      <option value="Provence-Alpes-Côte d'Azur">Provence-Alpes-Côte d'Azur</option>
+                      <option value="Guadeloupe">Guadeloupe</option>
+                      <option value="Martinique">Martinique</option>
+                      <option value="Guyane">Guyane</option>
+                      <option value="Polynésie Française">Polynésie Française</option>
+                      <option value="Saint-Pierre et Miquelon">Saint-Pierre et Miquelon</option>
+                      <option value="Océan Indien">Océan Indien</option>
+                      <option value="Nouvelle Calédonie">Nouvelle Calédonie</option>
+                  </select>
+                    <span className="material-icons">expand_more</span>
+                  </div>
+                  <button className="btn__normal btn__dark" type="submit">Activer</button>
+                </div>
+                {message && <p style={{ marginTop: '10px', marginBottom: '0px' }}>{message}</p>}
+              </form>
+            </div>
                 {displaySessions.length > 0 ? (
                   <div className="flex wrap gap15">
                     {displaySessions.map((session, index) => (

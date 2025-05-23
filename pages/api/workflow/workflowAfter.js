@@ -16,24 +16,35 @@ export default async function handle(req, res) {
         // Récupérer toutes les sessions pertinentes
         const sessions = await prisma.session.findMany({
             where: {
-                dateDebut: {
-                    lte: today,
-                },
+              dateDebut: {
+                lte: today,
+              },
             },
             include: {
-                registrations: {
-                    include: {
-                        user: true,
+              registrations: {
+                where: {
+                  user: {
+                    presence: true,
+                  },
+                },
+                include: {
+                  user: true,
+                },
+              },
+              accountRegistrations: {
+                where: {
+                    account: {
+                      presence: true,
                     },
                 },
-                accountRegistrations: {
-                    include: {
-                        account: true,
-                    },
+                include: {
+                  account: true,
                 },
-                metasSession: true,
+              },
+              metasSession: true,
             },
-        });
+          });
+          
 
         for (const session of sessions) {
             const dateDebut = new Date(session.dateDebut);

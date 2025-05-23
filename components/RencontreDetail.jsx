@@ -653,8 +653,8 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
         <>
             <span onClick={() => setOpen(null)} className={styles.Back}>Retour à mes rencontres</span>
             <div className="mTop20 flex aligncenter toColumn gap10">
-                <button onClick={generateBadge} className="btn__normal btn__dark">Générer mon badge</button>
-                <button onClick={tryCancel} className="btn__normal btn__light">Je souhaite retirer mon inscription</button>
+                {/* <button onClick={generateBadge} className="btn__normal btn__dark">Générer mon badge</button> */}
+                <button onClick={tryCancel} className="btn__normal btn__dark">Je souhaite retirer mon inscription</button>
             </div>
             <div className="w100 mTop25">
                 <SessionBox
@@ -702,6 +702,7 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
             
             {(data?.metasSession?.urlsPDF.length > 0 || data?.metasSession?.explications) ? (
                 <div className="mBot20">
+                    <h3 style={{ fontWeight: '500' }}>Ressources en amont de la Rencontre</h3>
                     <span className={styles.Subtitle}>Ressources :</span>
                     <div className={styles.Align}>
                         {data?.metasSession?.explications && (
@@ -747,7 +748,7 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
                             <button onClick={addReview} className="btn__normal btn__dark">Valider mon avis</button>
                         </div>
                     )} */}
-
+                    <h3 style={{ fontWeight: '500' }}>Questionnaire de satisfaction :</h3>
                     <span className={styles.Subtitle}>Nous vous remercions de prendre 5 minutes pour répondre à ce questionnaire de satisfaction. Vos réponses permettront d’améliorer l’offre des Rencontres Territoire Engagé Transition Ecologique de l’ADEME.</span>
                     <form onSubmit={handleSubmit}>
                         {questions.map((question) => (
@@ -827,7 +828,8 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
 
             {(after4month && !hasResponded2) && (
                 <>
-                    <span className={styles.Subtitle}>Il y 3 mois, vous avez participé à une Rencontre Territoire Engagé de l’ADEME sur la thématique : {data?.module?.nom}. Afin d’évaluer l’impact que cette Rencontre a eu sur vos missions et vos projets, nous vous invitons à répondre à ce questionnaire. Cela ne vous demandera que quelques minutes !</span>
+                    <h3 style={{ fontWeight: '500' }}>Questionnaire d'Impact :</h3>
+                    <span className={styles.Subtitle}>Vous avez participé à une Rencontre Territoire Engagé de l’ADEME sur la thématique : {data?.module?.nom}. Afin d’évaluer l’impact que cette Rencontre a eu sur vos missions et vos projets, nous vous invitons à répondre à ce questionnaire. Cela ne vous demandera que quelques minutes !</span>
                 
                     <form onSubmit={handleSubmit2}>
                         {questions2.map((question) => (

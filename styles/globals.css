@@ -208,6 +208,21 @@ p{
   font-weight: 300;
 }
 
+.input-selector{
+  height:45px;
+  border:0px;
+  text-indent: 7px;
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: 'Outfit', sans-serif;
+  background:#F2F2F2;
+  border-bottom:2px solid var(--primary);
+  font-size: 1rem;
+  color:var(--secondary);
+  position: relative;
+  font-weight: 300;
+}
+
 .select{
   position: relative;
   font-weight: 300;

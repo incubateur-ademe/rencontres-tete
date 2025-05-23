@@ -1,4 +1,4 @@
-import prisma from '@/prisma';
+import prisma from '@/lib/prisma';
 
 export default async function handle(req, res) {
   const {
@@ -16,29 +16,46 @@ export default async function handle(req, res) {
     dateDebut
   } = req.query;
 
-  let queryOptions = {
-    where: {
-      ...(status === 'publish' && { status: { not: 'brouillon' } }),
-      ...(status === 'brouillon' && { status: { not: 'publish' } }),
-      ...(departement && { departement }),
-      ...(region && { region }),
-      ...(dateDebut && { dateDebut: { gte: new Date(dateDebut) } }),
-      ...(passed === 'old' && { dateDebut: { lt: new Date() } }),
-      ...(passed === 'upcoming' && { dateDebut: { gte: new Date() } }),
-      ...(id && { moduleId: parseInt(id) }),
-      module: {
-        ...(pilier && { pilier }),
-        ...(thematique && { thematique }),
-        ...(nom && { nom: { contains: nom, mode: 'insensitive' } })
-      }
-    },
-    orderBy: [{ dateDebut: 'asc' }],
+  const now = new Date();
+
+  // Préparation du filtre par date
+  const dateConditions = {};
+
+  if (passed === 'old') {
+    dateConditions.lt = now;
+  } else if (passed === 'upcoming') {
+    dateConditions.gte = now;
+  }
+
+  if (dateDebut) {
+    // On ajoute la condition du query string
+    dateConditions.gte = new Date(dateDebut);
+  }
+
+  const whereClause = {
+    ...(status && { status }), // 'publish' ou 'brouillon'
+    ...(departement && { departement }),
+    ...(region && { region }),
+    ...(id && { moduleId: parseInt(id) }),
+    ...(module && { moduleId: parseInt(module) }),
+    ...(Object.keys(dateConditions).length > 0 && { dateDebut: dateConditions }),
+    module: {
+      ...(pilier && { pilier }),
+      ...(thematique && { thematique }),
+      ...(nom && { nom: { contains: nom, mode: 'insensitive' } })
+    }
+  };
+
+  const queryOptions = {
+    where: whereClause,
+    orderBy: [{ dateDebut: tri === 'asc' ? 'asc' : 'desc' }],
     include: {
       module: {
         include: {
           metasModule: true
         }
-      }
+      },
+      metasSession: true
     }
   };
 

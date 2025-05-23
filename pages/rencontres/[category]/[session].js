@@ -458,16 +458,23 @@ export default function Session({ data, user }){
                                     <span className={styles.Tag}>{data.module.nom}</span>
                                 </div>                            
                                 <p>{data.module.description}</p>
+                                
                                 {/* <p>Code rencontre : #{data.module.code} - Dernière mise à jour : {formatDate(data.lastUpdate)}</p> */}
                                 <div className={styles.additional}>
                                     {data.metasSession.explications && (
+                                        <>
+                                        <h3 style={{ fontWeight: '500' }}>Ressources en amont de la Rencontre</h3>
                                         <div dangerouslySetInnerHTML={{ __html: transformedHTML }}>
                                         </div>
+                                        </>
                                     )}
                                 </div>
                                 {data.module.visuel != null && (
                                     <img src={data.module.visuel} alt="visuel" className={styles.visu} />
-                                )}       
+                                )}      
+                                {data.metasSession.lien_covoit && (
+                                    <a className="btn__normal btn__light" target="_blank" href={data.metasSession.lien_covoit}>Accéder au covoiturage</a>
+                                )} 
                             </div>
                             <div className="w30 wm100">
                                 <div className={styles.Box}>

@@ -1,9 +1,7 @@
 const nodemailer = require('nodemailer');
 const hbs = require('nodemailer-express-handlebars');
 const path = require('path');
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient();
+import prisma from '@/lib/prisma';
 
 export default async function handler(req, res) {
   const { sujet, content, sessionId } = req.body;

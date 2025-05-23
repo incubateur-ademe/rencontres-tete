@@ -7,6 +7,8 @@ export default function Participant({ data, setActions, session }){
 
     const [alert, setAlert] = useState(null)
     const [notif, setNotif] = useState(null)
+    const [role, setRole] = useState(data.role);
+
 
     const deleteUser = async () => {
         setAlert(null)
@@ -57,6 +59,23 @@ export default function Participant({ data, setActions, session }){
         window.URL.revokeObjectURL(url);
     };
 
+
+    const updateRole = async (registrationId, newRole, type) => {
+        const res = await fetch('/api/registrations/updateRole', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ registrationId, role: newRole, type }),
+        });
+      
+        if (res.ok) {
+          setRole(newRole); // local update
+          // 🔥 Ne pas appeler setActions ici
+        } else {
+          console.error('Erreur lors de la mise à jour du rôle');
+        }
+      };
+      
+
     return (
         <>
             <div className={`${styles.User} ${data.deleted ? styles.Canceled : undefined}`}>
@@ -66,7 +85,37 @@ export default function Participant({ data, setActions, session }){
                         <button onClick={preDeleteUser} className={styles.Corb}><span className="material-icons">delete</span></button>
                     )}    
                     <button onClick={generateBadge} className={styles.Corb}><span className="material-icons">picture_as_pdf</span></button>               
-                </div>               
+                </div>      
+                <div className="mBot20">
+                    <label>
+                        <input
+                        type="radio"
+                        name={`role-${data.id}`}
+                        value="participant"
+                        checked={role === 'participant'}
+                        onChange={() => updateRole(data.id, 'participant', !data.userId ? 'account' : 'user')}
+                        /> Participant
+                    </label>
+                    <label style={{ marginLeft: '1rem' }}>
+                        <input
+                        type="radio"
+                        name={`role-${data.id}`}
+                        value="intervenant"
+                        checked={role === 'intervenant'}
+                        onChange={() => updateRole(data.id, 'intervenant', !data.userId ? 'account' : 'user')}
+                        /> Intervenant
+                    </label>
+                    <label style={{ marginLeft: '1rem' }}>
+                        <input
+                        type="radio"
+                        name={`role-${data.id}`}
+                        value="organisateur"
+                        checked={role === 'organisateur'}
+                        onChange={() => updateRole(data.id, 'organisateur', !data.userId ? 'account' : 'user')}
+                        /> Organisateur
+                    </label>
+                    </div>
+         
                 <div className={styles.Table}>
                     {data.nom ? (
                         <>
