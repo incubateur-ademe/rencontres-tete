@@ -94,6 +94,7 @@ export default function Participants({ session, setOpen }){
             prenom: participant.prenom,
             program: participant.session.metasSession.programmeSession,
             organisation: participant.structure || '',
+            role: participant.role || 'participant'
         };
 
         const response = await fetch('/api/generate-badge', {
