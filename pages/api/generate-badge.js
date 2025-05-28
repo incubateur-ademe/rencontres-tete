@@ -5,7 +5,7 @@ import path from 'path';
 export default async (req, res) => {
   if (req.method === 'POST') {
     try {
-      const { nom, prenom, program, organisation } = req.body
+      const { nom, prenom, program, organisation, role } = req.body
 
       function wrapText(text, font, fontSize, maxWidth) {
         const words = text.split(' ');
@@ -44,7 +44,7 @@ export default async (req, res) => {
       const lightBlueColor = rgb(0.9, 0.94, 1); // Light blue background color
 
       // Read the background image from file
-      const backgroundBytes = fs.readFileSync(path.resolve('public/medias/background-pdf.png'));
+      const backgroundBytes = fs.readFileSync(path.resolve(`public/medias/background-pdf-${role}.png`));
 
       // Embed the background image into the PDF
       const backgroundImage = await pdfDoc.embedPng(backgroundBytes);
