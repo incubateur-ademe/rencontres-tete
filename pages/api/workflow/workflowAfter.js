@@ -24,7 +24,7 @@ export default async function handle(req, res) {
               registrations: {
                 where: {
                   user: {
-                    presence: true,
+                    delete: false,
                   },
                 },
                 include: {
@@ -34,7 +34,7 @@ export default async function handle(req, res) {
               accountRegistrations: {
                 where: {
                     account: {
-                      presence: true,
+                      deleted: false,
                     },
                 },
                 include: {
