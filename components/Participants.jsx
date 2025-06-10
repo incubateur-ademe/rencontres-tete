@@ -289,15 +289,15 @@ export default function Participants({ session, setOpen }){
                         <div>{stats.maxPlaces}</div>
                     </div>
                     <div className="card w25">
-                        <strong>Participants inscrits</strong>
+                        <strong>Nombre d'inscrits</strong>
                         <div>{stats.totalParticipants}</div>
                     </div>
                     <div className="card w25">
-                        <strong>Intervenants inscrits</strong>
+                        <strong>dont Intervenants / Organisateurs</strong>
                         <div>{stats.intervenants}</div>
                     </div>
                     <div className="card w25">
-                        <strong>Hors région</strong>
+                        <strong>dont hors région</strong>
                         <div>{stats.horsRegion}</div>
                     </div>
                 </div>
