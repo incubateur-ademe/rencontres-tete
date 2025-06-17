@@ -1,15 +1,14 @@
 import Router, { useRouter } from 'next/router';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
-import Head from 'next/head'
+import Head from 'next/head';
 import Script from 'next/script';
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import '@/styles/responsify-min.css'
-import '@/styles/globals.css'
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import '@/styles/responsify-min.css';
+import '@/styles/globals.css';
 
 export default function App({ Component, pageProps }) {
-
   NProgress.configure({ showSpinner: false });
 
   Router.events.on('routeChangeStart', () => NProgress.start());
@@ -22,8 +21,15 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <link rel="icon" href="favicon.ico" />
-        <Script id="gtm-script" strategy="afterInteractive">
+        <link rel="icon" href="/favicon.ico" />
+        <link
+          href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet"
+        />
+      </Head>
+
+      {/* Google Tag Manager */}
+      <Script id="gtm-script" strategy="afterInteractive">
         {`
           (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -32,14 +38,26 @@ export default function App({ Component, pageProps }) {
           })(window,document,'script','dataLayer','GTM-TB396KTB');
         `}
       </Script>
-      </Head>
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet" />
+
+      {/* Google Analytics (gtag.js) */}
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-WPGHVL1EMV"
+        strategy="afterInteractive"
+      />
+      <Script id="gtag-init" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-WPGHVL1EMV');
+        `}
+      </Script>
+
       {!isPresencePage && <Header />}
       <div className="page">
         <Component {...pageProps} />
       </div>
       {!isPresencePage && <Footer />}
     </>
-  )
+  );
 }
