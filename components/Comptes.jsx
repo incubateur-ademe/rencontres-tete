@@ -9,7 +9,7 @@ export default function Comptes({ user }) {
     const [notif, setNotif] = useState(null)
     const [create, setCreate] = useState(false)
     const [actions, setActions] = useState(1)
-    const [account, setAccount] = useState({ regions: [], modules: [] })
+    const [account, setAccount] = useState({ regions: [], modules: [], prenom: '', nom: '' })
     const [modules, setModules] = useState([])
     const [listAccount, setListAccount] = useState([])
     const [openSettings, setOpenSettings] = useState(false)
@@ -56,7 +56,8 @@ export default function Comptes({ user }) {
     };
 
     const createAccount = async () => {
-        const { email, type, modules, regions } = account
+        const { email, type, modules, regions, prenom, nom } = account;
+
         if (email && type) {
             const add = await fetch(`/api/accounts/create`, {
                 method: 'POST',
@@ -64,11 +65,13 @@ export default function Comptes({ user }) {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    email: email,
-                    type: type,
+                    email,
+                    type,
+                    prenom,
+                    nom,
                     modules: modules || [],
                     regions: regions || []
-                })
+                })                
             })
             const json = await add.json()
             if (json.status == "success") {
@@ -134,7 +137,8 @@ export default function Comptes({ user }) {
     }
 
     const updateAccount = async () => {
-        const { email, type, modules, regions, id } = account;
+        const { email, type, modules, regions, id, prenom, nom } = account;
+
         if (email && type) {
             const update = await fetch(`/api/accounts/update`, {
                 method: 'PUT',
@@ -142,12 +146,14 @@ export default function Comptes({ user }) {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    id: id,
-                    email: email,
-                    type: type,
+                    id,
+                    email,
+                    type,
+                    prenom,
+                    nom,
                     modules: modules || [],
                     regions: regions || []
-                })
+                })                
             })
             const json = await update.json()
             if (json.status == "success") {
@@ -194,6 +200,16 @@ export default function Comptes({ user }) {
             </div>
             {create && (
                 <div>
+                    <div className="flex gap15">
+                        <div className="w50 wm100">
+                            <span className={styles.Subtitle}>Prénom</span>
+                            <input type="text" name="prenom" onChange={handleChange} value={account.prenom || ''} className="input-text w100 wm100" placeholder="Prénom" />
+                        </div>
+                        <div className="w50 wm100">
+                            <span className={styles.Subtitle}>Nom</span>
+                            <input type="text" name="nom" onChange={handleChange} value={account.nom || ''} className="input-text w100 wm100" placeholder="Nom" />
+                        </div>
+                    </div>
                     <div className="flex gap15">
                         <div className="w50 wm100">
                             <span className={styles.Subtitle}>Adresse e-mail du compte</span>
@@ -364,6 +380,16 @@ export default function Comptes({ user }) {
                                 </div>
                                 {openSettings && selectedAccount && selectedAccount.id === acc.id && (
                                     <div className={styles.accountSettings}>
+                                        <div class="flex gap15">
+                                            <div className="w50 wm100">
+                                                <span className={styles.Subtitle}>Prénom</span>
+                                                <input type="text" name="prenom" onChange={handleChange} value={account.prenom || ''} className="input-text w100 wm100" placeholder="Prénom" />
+                                            </div>
+                                            <div className="w50 wm100">
+                                                <span className={styles.Subtitle}>Nom</span>
+                                                <input type="text" name="nom" onChange={handleChange} value={account.nom || ''} className="input-text w100 wm100" placeholder="Nom" />
+                                            </div>
+                                        </div>
                                         <div className="flex gap15">
                                             <div className="w50 wm100">
                                                 <span className={styles.Subtitle}>Adresse e-mail du compte</span>

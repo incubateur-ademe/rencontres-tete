@@ -8,6 +8,7 @@ export default function Reviews({ session, setOpen }) {
     const [reviews, setReviews] = useState([]);
     const [moyenne, setMoyenne] = useState(0);
     const [quizz, setQuizz] = useState([]);
+    const [quizz2, setQuizz2] = useState([])
     
 
     function formatDate(dateString) {
@@ -52,6 +53,22 @@ export default function Reviews({ session, setOpen }) {
             console.error("Erreur lors de la récupération des questionnaires : ", error);
         }
     };
+
+    const getQuizz2 = async () => {
+        try {
+            const fetcher = await fetch(`/api/satisfaction-after/fromSession?sessionId=${session.id}`);
+            const json = await fetcher.json();
+            console.log("Récupéré depuis l'API: ", json); // Vérifier les données
+    
+            if (json.length > 0) {
+                setQuizz2(json);
+            } else {
+                console.log("Aucune donnée de satisfaction récupérée.");
+            }
+        } catch (error) {
+            console.error("Erreur lors de la récupération des questionnaires : ", error);
+        }
+    };
     
 
     const questionLabels = {
@@ -66,26 +83,29 @@ export default function Reviews({ session, setOpen }) {
         "9": "Thématique succeptible d'intéresser"
     };
 
+    const questionLabels2 = {
+        "1": "Impact sur vos missions au quotidien",
+        "2": "Collaborations avec d’autres participants",
+        "3": "Aspects de la Rencontre pertinents",
+        "4": "Pistes d’amélioration",
+        "5": "Votre collectivité s'est-elle engagée"
+    };
+
     useEffect(() => {
         getQuizz()
+        getQuizz2()
     }, [])
 
 
     const exportToExcel = () => {
-        const data = quizz.map((question) => {
+        const dataQuizz = quizz.map((question) => {
             const responses = question.responses;
             let participant;
             let registrationData = {};
     
-            // Identifier si c'est un utilisateur normal ou un compte spécial et inclure Registration ou AccountRegistration
             if (question.User) {
                 participant = `${question.User.nom} ${question.User.prenom}`;
-    
-                // Inclure les informations de Registration s'il s'agit d'un User
-                const registration = question.User.registrations && question.User.registrations.length > 0
-                    ? question.User.registrations[0]  // Assume we take the first registration if multiple
-                    : null;
-    
+                const registration = question.User.registrations?.[0];
                 if (registration) {
                     registrationData = {
                         Ville: registration.ville || '-',
@@ -96,12 +116,7 @@ export default function Reviews({ session, setOpen }) {
                 }
             } else if (question.Account) {
                 participant = `${question.Account.email} (${question.Account.type})`;
-    
-                // Inclure les informations de AccountRegistration s'il s'agit d'un Account
-                const accountRegistration = question.Account.accountRegistrations && question.Account.accountRegistrations.length > 0
-                    ? question.Account.accountRegistrations[0]
-                    : null;
-    
+                const accountRegistration = question.Account.accountRegistrations?.[0];
                 if (accountRegistration) {
                     registrationData = {
                         Ville: accountRegistration.ville || '-',
@@ -112,29 +127,64 @@ export default function Reviews({ session, setOpen }) {
                 }
             }
     
-            // Créer une ligne avec toutes les données
             const row = { Participant: participant, ...registrationData };
     
-            // Ajouter les réponses aux questions dans la ligne
             Object.entries(responses).forEach(([questionId, response]) => {
-                if (Array.isArray(response)) {
-                    row[questionLabels[questionId] || `Question ${questionId}`] = response.join(', ');
-                } else {
-                    row[questionLabels[questionId] || `Question ${questionId}`] = response;
-                }
+                row[questionLabels[questionId] || `Question ${questionId}`] = Array.isArray(response) ? response.join(', ') : response;
             });
     
             return row;
         });
     
-        // Générer le fichier Excel
-        const worksheet = XLSX.utils.json_to_sheet(data);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Quizz');
+        const dataQuizz2 = quizz2.map((question) => {
+            const responses = question.responses;
+            let participant;
+            let registrationData = {};
     
-        // Télécharger le fichier Excel
+            if (question.User) {
+                participant = `${question.User.nom} ${question.User.prenom}`;
+                const registration = question.User.registrations?.[0];
+                if (registration) {
+                    registrationData = {
+                        Ville: registration.ville || '-',
+                        Structure: registration.structure || '-',
+                        Fonction: registration.fonction || '-',
+                        Type_Fonction: registration.typeFonction || '-',
+                    };
+                }
+            } else if (question.Account) {
+                participant = `${question.Account.email} (${question.Account.type})`;
+                const accountRegistration = question.Account.accountRegistrations?.[0];
+                if (accountRegistration) {
+                    registrationData = {
+                        Ville: accountRegistration.ville || '-',
+                        Structure: accountRegistration.structure || '-',
+                        Fonction: accountRegistration.fonction || '-',
+                        Type_Fonction: accountRegistration.typeFonction || '-',
+                    };
+                }
+            }
+    
+            const row = { Participant: participant, ...registrationData };
+    
+            Object.entries(responses).forEach(([questionId, response]) => {
+                row[questionLabels2[questionId] || `Question ${questionId}`] = Array.isArray(response) ? response.join(', ') : response;
+            });
+    
+            return row;
+        });
+    
+        const workbook = XLSX.utils.book_new();
+    
+        const worksheet1 = XLSX.utils.json_to_sheet(dataQuizz);
+        XLSX.utils.book_append_sheet(workbook, worksheet1, 'Satisfaction');
+    
+        const worksheet2 = XLSX.utils.json_to_sheet(dataQuizz2);
+        XLSX.utils.book_append_sheet(workbook, worksheet2, 'Impact');
+    
         XLSX.writeFile(workbook, `questionnaires_session_${session.id}.xlsx`);
     };
+    
     
 
     return (
@@ -189,6 +239,49 @@ export default function Reviews({ session, setOpen }) {
                         </>
                     ) : (
                         <span className="block mTop20">Aucun questionnaire de satisfaction.</span>
+                    )}
+                </div>
+                <div className="mTop30">
+                    <h3 className="mTop20">Questionnaires d'impact :</h3>
+                    {quizz2.length > 0 ? (
+                        <>
+                            {quizz2.map((question, index) => {
+                                const responses = question.responses;
+                                const participant = question.User
+                                    ? `${question.User.nom} ${question.User.prenom}`
+                                    : `${question.Account.email} (${question.Account.type})`;
+
+                                return (
+                                    <table className={styles.Quizzer} border="1" key={index}>
+                                        <tbody>
+                                            <tr>
+                                                <td>Participant</td>
+                                                <td>{participant}</td>
+                                            </tr>
+                                            {Object.entries(responses).map(([questionId, response], idx) => (
+                                                <React.Fragment key={idx}>
+                                                    {Array.isArray(response) ? (
+                                                        response.map((resp, respIdx) => (
+                                                            <tr key={respIdx}>
+                                                                <td>{questionLabels[questionId] || `Question ${questionId}`} ({respIdx + 1})</td>
+                                                                <td>{resp}</td>
+                                                            </tr>
+                                                        ))
+                                                    ) : (
+                                                        <tr>
+                                                            <td>{questionLabels[questionId] || `Question ${questionId}`}</td>
+                                                            <td>{response}</td>
+                                                        </tr>
+                                                    )}
+                                                </React.Fragment>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                );
+                            })}
+                        </>
+                    ) : (
+                        <span className="block mTop20">Aucun questionnaire d'impact pour le moment.</span>
                     )}
                 </div>
             </div>

@@ -256,7 +256,9 @@ export default function Participants({ session, setOpen }){
     const computeStats = (participants, session) => {
         const maxPlaces = session.metasSession.nombrePlaces || 0;
         const totalParticipants = participants.filter(p => !p.deleted).length;
-        const intervenants = participants.filter(p => p.role === 'intervenant' && !p.deleted).length;
+        const intervenants = participants.filter(p =>
+            ['intervenant', 'organisateur'].includes((p.role || '').toLowerCase()) && !p.deleted
+        ).length;        
         const horsRegion = participants.filter(p => p.region !== session.region && !p.deleted).length;
       
         return {
@@ -399,7 +401,12 @@ export default function Participants({ session, setOpen }){
                             if (filterPresence === 'present' && user.deleted === true) return false;
                             if (filterPresence === 'absent' && user.deleted !== true) return false;
                             if (filterRegion === 'hors' && user.region === session.region) return false;
-                            if (filterRole === 'intervenants' && !['intervenant', 'organisateur'].includes(user.role)) return false;
+                        
+                            if (filterRole === 'intervenants') {
+                            const role = (user.role || '').toLowerCase();
+                            if (!['intervenant', 'organisateur'].includes(role)) return false;
+                            }
+                        
                             return true;
                         })
                         .sort((a, b) => {

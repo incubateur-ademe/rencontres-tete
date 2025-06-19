@@ -12,6 +12,10 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
     const [indexToDelete, setIndexToDelete] = useState(null);
     const [indexToDeleteI, setIndexToDeleteI] = useState(null);
     const [editContent, setEditContent] = useState('');
+    const [editContentAval, setEditContentAval] = useState('');
+    const [selectedFilesAval, setSelectedFilesAval] = useState([]);
+    
+
     const [importing, setImporting] = useState('Importer le programme du module')
     const [datas, setDatas] = useState({
         moduleId: id,
@@ -31,6 +35,7 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
           intervenants: [],
           programmeSession: [],
           urlsPDF: [],
+          urlsPDFAval: [],
           selectedFiles: [],
           lien_covoit: ''
         }
@@ -125,16 +130,97 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
         const fetcher = await fetch(`/api/sessions/${id}`)
         const json = await fetcher.json()
         setEditContent(json[0].metasSession.explications)
+        setEditContentAval(json[0].metasSession.explicationsAval || '');
+
         setDatas(prevDatas => ({
             ...prevDatas,
             ...json[0],
             metasSession: {
                 ...prevDatas.metasSession,
                 ...json[0].metasSession,
-                selectedFiles: []
+                selectedFiles: [],
+                selectedFilesAval: []
             }
         }))
     }
+
+    useEffect(() => {
+        setDatas(prev => ({
+          ...prev,
+          metasSession: {
+            ...prev.metasSession,
+            explicationsAval: editContentAval
+          }
+        }));
+      }, [editContentAval]);
+      
+
+      const handleFilesAval = (e) => {
+        const files = Array.from(e.target.files);
+        const newFiles = files.map(file => ({ file }));
+        setSelectedFilesAval(prev => [...prev, ...newFiles]);
+      
+        setDatas(prev => ({
+          ...prev,
+          metasSession: {
+            ...prev.metasSession,
+            selectedFilesAval: [...(prev.metasSession.selectedFilesAval || []), ...newFiles]
+          }
+        }));
+      };
+      
+    
+      const deleteFileAval = (index, type) => {
+        if (type === 'uploaded') {
+          const updated = [...(datas.metasSession.urlsPDFAval || [])];
+          updated.splice(index, 1);
+          setDatas(prev => ({
+            ...prev,
+            metasSession: {
+              ...prev.metasSession,
+              urlsPDFAval: updated
+            }
+          }));
+        } else if (type === 'selected') {
+          const updated = [...selectedFilesAval];
+          updated.splice(index, 1);
+          setSelectedFilesAval(updated);
+          setDatas(prev => ({
+            ...prev,
+            metasSession: {
+              ...prev.metasSession,
+              selectedFilesAval: updated
+            }
+          }));
+        }
+      };
+      
+    
+      const uploadFilesAval = async () => {
+        const files = selectedFilesAval.map(f => f.file);
+        if (files.length === 0) return [];
+      
+        const formData = new FormData();
+        files.forEach(file => {
+          formData.append("files", file); // ← assure-toi que c’est bien "files"
+        });
+      
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+      
+        const result = await response.json();
+      
+        if (result?.urlsPDF) {
+          return result.urlsPDF;
+        } else {
+          console.error("Erreur upload aval:", result);
+          return [];
+        }
+      };
+      
+      
 
     const handleChange = (event) => {
         const { name, value, dataset } = event.target;
@@ -260,17 +346,18 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
     async function updateSession(sessionData, metasSessionData, sessionId) {
 
         const response = await fetch('/api/sessions/update', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': process.env.NEXT_PUBLIC_ADMIN_KEY
-          },
-          body: JSON.stringify({
-            sessionData: sessionData,
-            metasSessionData: metasSessionData,
-            sessionId: sessionId
-          }),
-        });
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-api-key': process.env.ADMIN_API_KEY
+            },
+            body: JSON.stringify({
+              sessionId,
+              sessionData,
+              metasSessionData
+            })
+          });
+          
       
         if (!response.ok) {
           const errorMessage = await response.text();
@@ -289,6 +376,10 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
         };
 
         const uploadedUrlsPDF = await uploadFiles();
+        const uploadedUrlsPDFAval = await uploadFilesAval();
+
+        console.log("uploadedUrlsPDFAval =>", uploadedUrlsPDFAval);
+
     
         const metasSessionData = {
             dateHoraires: datas.metasSession.dateHoraires,
@@ -304,6 +395,8 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
             intervenants: datas.metasSession.intervenants,
             programmeSession: datas.metasSession.programmeSession,
             urlsPDF: [...datas.metasSession.urlsPDF, ...uploadedUrlsPDF],
+            explicationsAval: editContentAval,
+            urlsPDFAval: [...(datas.metasSession.urlsPDFAval || []), ...uploadedUrlsPDFAval],
             lien_covoit: datas.metasSession.lien_covoit
         };
 
@@ -925,6 +1018,73 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
                         </div>
                     </div>
                 </div>
+
+                <span className={styles.Subtitle}>Ressources à lire après la rencontre</span>
+                <div>
+                <div className={`mTop20 ${styles.Quill}`}>
+                    <DynamicQuill
+                    theme="snow"
+                    value={editContentAval}
+                    onChange={setEditContentAval}
+                    />
+                </div>
+
+                <div className="flex wrap gap20 mTop20">
+                    <div className="w48 text-left">
+                    <div>
+                        <input
+                        type="file"
+                        id="doc-aval"
+                        multiple
+                        onChange={handleFilesAval}
+                        style={{ display: 'none' }}
+                        />
+                        <button
+                        className={styles.Fichier}
+                        onClick={() => document.getElementById('doc-aval').click()}
+                        >
+                        + Ajouter des documents
+                        </button>
+
+                        <div>
+                        {/* Fichiers déjà uploadés */}
+                        {datas.metasSession.urlsPDFAval?.map((file, index) => (
+                            <div className={styles.Filer} key={`uploaded-aval-${index}`}>
+                            {file.nom}
+                            <button onClick={() => deleteFileAval(index, 'uploaded')}>
+                                <span className="material-icons">delete</span>
+                            </button>
+                            </div>
+                        ))}
+
+                        {/* Fichiers ajoutés en attente d'upload */}
+                        {datas.metasSession.selectedFilesAval?.map((fileObj, index) => {
+                            const fileName = fileObj.file?.name || fileObj.name;
+                            const isUploaded = datas.metasSession.urlsPDFAval?.some(
+                            uploadedFile => uploadedFile.nom === fileName
+                            );
+
+                            if (!isUploaded) {
+                            return (
+                                <div className={styles.Filer} key={`selected-aval-${index}`}>
+                                {fileName}
+                                <button onClick={() => deleteFileAval(index, 'selected')}>
+                                    <span className="material-icons">delete</span>
+                                </button>
+                                </div>
+                            );
+                            } else {
+                            return null;
+                            }
+                        })}
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+
+
                 <div className="mTop25">
                     <button onClick={saveModifs} className="btn__normal btn__dark">Enregistrer la session</button>
                 </div>

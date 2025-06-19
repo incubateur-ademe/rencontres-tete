@@ -543,6 +543,14 @@ p{
   color:var(--primary);
 }
 
+.editt p{
+ margin-bottom: 20px !important;
+}
+
+.editt p strong{
+  font-weight: 600;
+}
+
 @media(max-width:1280px){
   p{
     font-size:0.95rem;

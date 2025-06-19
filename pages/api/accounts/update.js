@@ -6,7 +6,7 @@ const SALT_ROUNDS = 10;
 
 export default async function handle(req, res) {
     if (req.method === 'PUT') {
-        const { id, email, type, modules, regions } = req.body;
+        const { id, email, type, modules, regions, nom, prenom } = req.body;
 
         try {
             // Vérifier si un compte avec cet email existe déjà et ne pas autoriser la mise à jour si l'email appartient à un autre compte
@@ -25,7 +25,9 @@ export default async function handle(req, res) {
                     email,
                     type,
                     modules,
-                    regions
+                    regions,
+                    nom,
+                    prenom
                 },
             });
 

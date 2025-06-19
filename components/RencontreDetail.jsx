@@ -166,6 +166,17 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
             text: "Identifiez-vous des pistes d’amélioration pour augmenter l’impact des prochaines Rencontres ? (Exemples : les thématiques abordées, le format des sessions, les retours d’expérience, etc.)",
             type: "textarea",
         },
+        {
+            id: 5,
+            text: "Depuis votre participation à la Rencontre, votre collectivité s'est-elle engagée (ou davantage engagée) dans le programme Territoire Engagé Transition Écologique (TETE) ? (T.E.T.E.) ?",
+            options: [
+                { value: "La collectivité était déjà engagée dans le programme avant la Rencontre", label: "La collectivité était déjà engagée dans le programme avant la Rencontre" },
+                { value: "Oui, la collectivité s'est engagé dans le programme après la Rencontre", label: "Oui, la collectivité s'est engagé dans le programme après la Rencontre" },
+                { value: "Non, mais la collectivité envisage de s'engager dans le programme", label: "Non, mais la collectivité envisage de s'engager dans le programme" },
+                { value: "Non, la collectivité ne prévoit pas de s'engager dans le programme pour le moment", label: "Non, la collectivité ne prévoit pas de s'engager dans le programme pour le moment" },
+                { value: "Non concerné (je ne suis pas une collectivité)", label: "Non concerné (je ne suis pas une collectivité)" },
+            ]
+        },
     ];
 
     const handleOptionChange = (questionId, value, checked) => {
@@ -719,8 +730,8 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
                 </div>
             ) : (
                 <div>
-                    <span className={styles.Subtitle}>Ressources :</span>
-                    <span className="block mTop20">Pas de ressources disponibles.</span>
+                    <span className={styles.Subtitle}>Ressources en amont de la rencontre :</span>
+                    <span className="block mTop20">Pas de ressources en amont de la rencontre disponibles.</span>
                     {data?.metasSession?.mail_referent != null && data.metasSession.mail_referent !== undefined && (
                         <>
                             <span className={styles.Subtitle}>Contact du référent :</span>
@@ -729,6 +740,28 @@ export default function RencontreDetail({ id, registrationId, setOpen, userId, u
                     )}
                 </div>
             )}
+
+            {((Array.isArray(data?.metasSession?.urlsPDFAval) && data.metasSession.urlsPDFAval.length > 0) 
+            || data?.metasSession?.explicationsAval) && (
+            <div className="mBot20">
+                <h3 style={{ fontWeight: '500' }}>Ressources post-rencontre</h3>
+                <span className={styles.Subtitle}>Ressources :</span>
+                <div className={styles.Align}>
+                {data.metasSession.explicationsAval && (
+                    <div dangerouslySetInnerHTML={{ __html: data.metasSession.explicationsAval }}></div>
+                )}
+                </div>
+                {Array.isArray(data.metasSession.urlsPDFAval) && (
+                <ul className={styles.Ressources}>
+                    {data.metasSession.urlsPDFAval.map((item, index) => (
+                    <li key={index}><Link target="_blank" href={item.url}>{item.nom}</Link></li>
+                    ))}
+                </ul>
+                )}
+            </div>
+            )}
+
+
             {passed && !hasResponded && (
                 <>
                     {/* <span className={styles.Subtitle}>Donnez votre avis sur la rencontre :</span>

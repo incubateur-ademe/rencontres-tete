@@ -91,6 +91,8 @@ model MetasSession {
   optionjour            Boolean?
   mail_referent         String?
   lien_covoit           String?
+  explicationsAval      String?
+  urlsPDFAval           Json?
   session               Session  @relation(fields: [sessionId], references: [id])
 }
 
@@ -143,6 +145,8 @@ model Account {
   type                     String?
   regions                  Json?
   modules                  Json?
+  nom                      String?
+  prenom                   String?
   accountRegistrations     AccountRegistration[]
   AccountReview            AccountReview[]
   AccountSatisfaction      AccountSatisfaction[]
@@ -247,4 +251,18 @@ model Alerte {
   region     String?
 
   @@map("alertes")
+}
+
+model Faq {
+  id       Int    @id @default(autoincrement())
+  question String
+  reponse  String
+}
+
+model Avis {
+  id         Int      @id @default(autoincrement())
+  prenom     String
+  thematique String
+  date       DateTime
+  contenu    String
 }

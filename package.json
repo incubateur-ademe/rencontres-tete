@@ -20,6 +20,7 @@
     "file-saver": "^2.0.5",
     "formidable": "^3.5.1",
     "fs": "^0.0.1-security",
+    "js-beautify": "^1.15.4",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "jszip": "^3.10.1",

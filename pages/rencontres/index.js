@@ -7,67 +7,85 @@ import ModuleBox from '@/components/ModuleBox'
 import styles from '@/styles/Rencontres.module.css'
 
 export async function getServerSideProps(context) {
-    const { query } = context;
-    const { pilier, nom, region, departement, thematique, dateDebut } = query;
-  
-    // Préparation des filtres Prisma
-    const whereClause = {
-      status: 'publish',
-      ...(region && { region: { contains: region, mode: 'insensitive' } }),
-      ...(departement && { departement }),
-      ...(dateDebut && { dateDebut: { gte: new Date(dateDebut) } }),
+  const { query } = context;
+  const { pilier, nom, region, departement, thematique } = query;
+
+  // Construction du whereClause pour filtrer
+  const whereClause = {
+    status: 'publish',
+    ...(region && { region: { contains: region, mode: 'insensitive' } }),
+    ...(departement && { departement }),
+    module: {
+      ...(pilier && { pilier }),
+      ...(thematique && { thematique }),
+      ...(nom && { nom: { contains: nom, mode: 'insensitive' } }),
+    },
+  };
+
+  // Récupération de TOUTES les sessions (passées et futures)
+  const sessions = await prisma.session.findMany({
+    where: whereClause,
+    include: {
       module: {
-        ...(pilier && { pilier }),
-        ...(thematique && { thematique }),
-        ...(nom && { nom: { contains: nom, mode: 'insensitive' } }),
-      },
-    };
-  
-    const sessions = await prisma.session.findMany({
-      where: whereClause,
-      include: {
-        module: {
-          include: {
-            metasModule: true,
-          },
+        include: {
+          metasModule: true,
         },
       },
-      orderBy: [
-        { dateDebut: 'asc' },
-      ],
-    });
-  
-    const serializedSessions = sessions.map(session => {
-      const safeSession = { ...session };
-      const safeModule = { ...session.module };
-  
-      if (safeSession.dateDebut instanceof Date) safeSession.dateDebut = safeSession.dateDebut.toISOString();
-      if (safeSession.datePublication instanceof Date) safeSession.datePublication = safeSession.datePublication.toISOString();
-      if (safeSession.lastUpdate instanceof Date) safeSession.lastUpdate = safeSession.lastUpdate.toISOString();
-  
-      if (safeModule.datePublication instanceof Date) safeModule.datePublication = safeModule.datePublication.toISOString();
-      if (safeModule.lastUpdate instanceof Date) safeModule.lastUpdate = safeModule.lastUpdate.toISOString();
-  
-      return {
-        ...safeSession,
-        module: safeModule,
-      };
-    });
-  
+      metasSession: true,
+    },
+    orderBy: [
+      { dateDebut: 'asc' }, // tri croissant : les futures en premier
+    ],
+  });
+
+  // Sérialisation des dates pour éviter les erreurs de format côté client
+  const serializedSessions = sessions.map((session) => {
+    const safeSession = { ...session };
+    const safeModule = { ...session.module };
+
+    if (safeSession.dateDebut instanceof Date)
+      safeSession.dateDebut = safeSession.dateDebut.toISOString();
+    if (safeSession.datePublication instanceof Date)
+      safeSession.datePublication = safeSession.datePublication.toISOString();
+    if (safeSession.lastUpdate instanceof Date)
+      safeSession.lastUpdate = safeSession.lastUpdate.toISOString();
+
+    if (safeModule.datePublication instanceof Date)
+      safeModule.datePublication = safeModule.datePublication.toISOString();
+    if (safeModule.lastUpdate instanceof Date)
+      safeModule.lastUpdate = safeModule.lastUpdate.toISOString();
+
     return {
-      props: {
-        sessions: serializedSessions,
-        region: region || '',
-        pilier: pilier || '',
-        thematique: thematique || '',
-      },
+      ...safeSession,
+      module: safeModule,
     };
-  }
+  });
+
+  return {
+    props: {
+      sessions: serializedSessions,
+      region: region || '',
+      pilier: pilier || '',
+      thematique: thematique || '',
+    },
+  };
+}
   
 
 export default function Rencontres({ sessions, region, pilier, thematique }) {
   const [displaySessions, setDisplaySessions] = useState(sessions);
   const [filtres, setFiltres] = useState({ pilier, nom: '', region, departement: '', thematique, dateDebut: '' });
+
+  const now = new Date();
+  const upcomingSessions = displaySessions
+  .filter(s => new Date(s.dateDebut) >= now)
+  .sort((a, b) => new Date(a.dateDebut) - new Date(b.dateDebut));
+
+  const pastSessions = displaySessions
+  .filter(s => new Date(s.dateDebut) < now)
+  .sort((a, b) => new Date(b.dateDebut) - new Date(a.dateDebut));
+
+  const [view, setView] = useState('upcoming');
 
   const [email, setEmail] = useState('');
   const [regionSelected, setRegionSelected] = useState('');
@@ -75,21 +93,22 @@ export default function Rencontres({ sessions, region, pilier, thematique }) {
 
   useEffect(() => {
     const fetchFilteredSessions = async () => {
-      let url = '/api/sessions?status=publish&passed=upcoming&';
+      let url = `/api/sessions?status=publish&passed=${view}&`;
       if (filtres.pilier) url += `pilier=${encodeURIComponent(filtres.pilier)}&`;
       if (filtres.nom) url += `nom=${encodeURIComponent(filtres.nom)}&`;
       if (filtres.region) url += `region=${encodeURIComponent(filtres.region)}&`;
       if (filtres.departement) url += `departement=${encodeURIComponent(filtres.departement)}&`;
       if (filtres.thematique) url += `thematique=${encodeURIComponent(filtres.thematique)}&`;
       if (filtres.dateDebut) url += `dateDebut=${encodeURIComponent(filtres.dateDebut)}&`;
-
+  
       const res = await fetch(url);
       const data = await res.json();
       setDisplaySessions(data);
     };
-
+  
     fetchFilteredSessions();
-  }, [filtres]);
+  }, [filtres, view]);
+  
 
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -192,32 +211,44 @@ export default function Rencontres({ sessions, region, pilier, thematique }) {
                 {message && <p style={{ marginTop: '10px', marginBottom: '0px' }}>{message}</p>}
               </form>
             </div>
-                {displaySessions.length > 0 ? (
-                  <div className="flex wrap gap15">
-                    {displaySessions.map((session, index) => (
-                      <div key={index} className="w100 wm100">
-                        <SessionBox 
-                            date={formatDate(session.dateDebut)}
-                            region={session.region}
-                            title={session.module.nom}
-                            link={`/rencontres/${session.module.slug}/session-${formatDate(session.dateDebut).replaceAll('/', '-')}-${session.region.normalize("NFD")
-                            .replace(/[\u0300-\u036f]/g, "")
-                            .replace(/[.,']/g, "")
-                            .replace(/\s+/g, '-')
-                            .toLowerCase()}`}
-                            dept={session.departement}
-                            displayDept="no"
-                            moduleDuree={session.module.metasModule.duree}
-                            model="full"
-                        />
-                      </div>
-                    ))}
+            <div className="flex gap10 mBot20">
+              <button
+                onClick={() => setView('upcoming')}
+                className={`btn__normal ${view === 'upcoming' ? 'btn__dark' : 'btn__light'}`}
+              >
+                Sessions à venir
+              </button>
+              <button
+                onClick={() => setView('past')}
+                className={`btn__normal ${view === 'past' ? 'btn__dark' : 'btn__light'}`}
+              >
+                Sessions passées
+              </button>
+            </div>
+
+            {(view === 'upcoming' ? upcomingSessions : pastSessions).length > 0 ? (
+              <div className="flex wrap gap15">
+                {(view === 'upcoming' ? upcomingSessions : pastSessions).map((session, index) => (
+                  <div key={index} className="w100 wm100" style={view === 'past' ? { opacity: 0.5, pointerEvents: 'none' } : {}}>
+                    <SessionBox 
+                      date={formatDate(session.dateDebut)}
+                      region={session.region}
+                      title={session.module.nom}
+                      link={view === 'past' ? '' : `/rencontres/${session.module.slug}/session-${formatDate(session.dateDebut).replaceAll('/', '-')}-${session.region.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[.,']/g, "").replace(/\s+/g, '-').toLowerCase()}`}
+                      dept={session.departement}
+                      displayDept="no"
+                      moduleDuree={session.module.metasModule.duree}
+                      model="full"
+                    />
                   </div>
-                ) : (
-                  <div className="mTop20">
-                    <span>Aucune session disponible avec les filtres activés.</span>
-                  </div>
-                )}
+                ))}
+              </div>
+            ) : (
+              <div className="mTop20">
+                <span>Aucune session {view === 'upcoming' ? 'à venir' : 'passée'} avec les filtres activés.</span>
+              </div>
+            )}
+
               </div>
               <div className="w30 wm100">
                 <div>
