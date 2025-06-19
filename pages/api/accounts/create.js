@@ -15,7 +15,8 @@ function generatePassword(length) {
 
 export default async function handle(req, res) {
     if (req.method === 'POST') {
-        const { email, type, modules, regions } = req.body;
+        const { email, type, modules, regions, prenom, nom } = req.body;
+
 
         try {
             // Vérifier si un compte avec cet email existe déjà
@@ -34,13 +35,16 @@ export default async function handle(req, res) {
 
             const newAccount = await prisma.account.create({
                 data: {
-                    email,
-                    type,
-                    password: hashedPassword,
-                    modules,
-                    regions
+                  email,
+                  type,
+                  password: hashedPassword,
+                  modules,
+                  regions,
+                  nom,
+                  prenom
                 },
-            });
+              });
+              
 
             await fetch(`${process.env.WEBSITE_URL}/api/emails/newAccount`, {
                 method: 'POST',
@@ -52,8 +56,10 @@ export default async function handle(req, res) {
                     type,
                     password,
                     modules,
-                    regions
-                }),
+                    regions,
+                    prenom,
+                    nom
+                  })                  
             });
 
             res.status(201).json({ status: 'success' });
