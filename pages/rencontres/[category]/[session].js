@@ -7,6 +7,7 @@ import { Notif } from '@/components/Notif'
 import { useState, useEffect } from 'react'
 import nextCookies from 'next-cookies';
 import { verifyToken } from '@/utils/auth';
+import Verbatims from '@/components/Verbatims'
 import styles from '@/styles/Session.module.css'
 
 export async function getServerSideProps(context) {
@@ -857,6 +858,8 @@ export default function Session({ data, user }){
                         </div>
                     </div>
                 </div>
+
+                <Verbatims />
             </div>
 
             {alert != null && (

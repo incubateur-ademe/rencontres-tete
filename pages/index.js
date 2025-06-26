@@ -6,6 +6,7 @@ import PilierBox from '@/components/PilierBox'
 import styles from '@/styles/Home.module.css'
 import ModuleBox from '@/components/ModuleBox'
 import MapFrance from '@/components/MapFrance'
+import Verbatims from '@/components/Verbatims'
 
 export default function Home() {
 
@@ -373,6 +374,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Verbatims />
       <div className="section-top border-top">
         <div className="boxed">
           <div className="flex toColumn">

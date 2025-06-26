@@ -13,6 +13,7 @@ export default async function handler(req, res) {
     { filename: 'session_relance_days.hbs', subject: 'Relance - Session dans quelques jours' },
     { filename: 'session_relance_weeks.hbs', subject: 'Relance - Session dans quelques semaines' },
     { filename: 'welcome.hbs', subject: 'Bienvenue à votre première connexion' },
+    { filename: 'questionnaire_impact.hbs', subject: "Questionnaire d'impact" },
   ]  
 
   try {

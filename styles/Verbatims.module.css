@@ -1,0 +1,154 @@
+.box {
+    padding-block: 60px;
+    background: #f7f8fc;
+  }
+  
+  .wrapper {
+    max-width: 1280px;
+    margin: 0 auto;
+    position: relative;
+  }
+  
+  .sliderWrapper {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-inline: 30px;
+  }
+  
+  .slider {
+    display: flex;
+    gap: 1rem;
+    scroll-snap-align: start;
+  }
+  
+  .card {
+    flex: 0 0 calc(33.33% - 1rem);
+    scroll-snap-align: start;
+    background: #fff;
+    border-radius: 12px;
+    padding: 1rem 1rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 220px;
+    max-height: 320px;
+  }
+  
+  .thematique {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--primary);
+    line-height: 1.5;
+  }
+  
+  .texte {
+    font-size: 0.95rem;
+    color: #333;
+    line-height: 1.4;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Limite à 3 lignes */
+    -webkit-box-orient: vertical;
+    margin-bottom: 0.75rem;
+    margin-top: 0;
+  }
+  
+  .texte.expanded {
+    -webkit-line-clamp: unset;
+    max-height: none;
+  }
+  
+  .prenom {
+    font-style: italic;
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .readMoreBtn {
+    font-size: 0.85rem;
+    color: #0070f3;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    align-self: flex-start;
+  }
+  
+  .navLeft,
+  .navRight {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--primary);
+    border:0px;
+    color:#FFF;
+    border-radius: 10px;
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+    transition: background 0.2s ease;
+  }
+  
+  .navLeft:hover,
+  .navRight:hover {
+    background: #f0f0f0;
+  }
+  
+  .navLeft {
+    left: -30px;
+  }
+  
+  .navRight {
+    right: -30px;
+  }
+  
+
+
+  /* Mobile : 1 card */
+@media (max-width: 640px) {
+    .card {
+      flex: 0 0 100%;
+    }
+  
+    .navLeft,
+    .navRight {
+      display: none; /* on masque les flèches sur mobile */
+    }
+  
+    .sliderWrapper {
+      padding-inline: 20px;
+    }
+  }
+  
+  /* Tablette : 2 cards */
+  @media (max-width:810px) {
+    .card {
+      flex: 0 0 calc(100% - 0.5rem);
+    }
+
+    .wrapper{
+        max-width: 90%;
+    }
+  
+    .navLeft {
+      left: -20px;
+    }
+  
+    .navRight {
+      right: -20px;
+    }
+  
+    .sliderWrapper {
+      padding-inline: 25px;
+    }
+  }
+  
+  /* Desktop : 3 cards (déjà défini, on le garde par défaut) */
+  
