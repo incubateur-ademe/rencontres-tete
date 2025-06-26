@@ -1,0 +1,16 @@
+.Rencontres h1{
+    color:var(--primary);
+    font-weight: 600;
+    font-size: 3rem;
+}
+
+.faqList{
+    list-style-position: inside;
+    list-style: none;
+}
+
+.faqList strong{
+    font-weight: 600;
+    font-size: 1.25rem;
+    color:var(--primary)
+}

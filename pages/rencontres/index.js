@@ -4,6 +4,7 @@ import prisma from '@/prisma';
 import { useState, useEffect } from 'react'
 import SessionBox from '@/components/SessionBox';
 import ModuleBox from '@/components/ModuleBox'
+import Verbatims from '@/components/Verbatims';
 import styles from '@/styles/Rencontres.module.css'
 
 export async function getServerSideProps(context) {
@@ -322,6 +323,8 @@ export default function Rencontres({ sessions, region, pilier, thematique }) {
             </div>
           </div>
         </div>
+
+        <Verbatims />
 
         <div className="section-top border-top">
           <div className="boxed">

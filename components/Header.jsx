@@ -43,6 +43,7 @@ export default function Header(){
                             <ul>
                                 <li onClick={() => setActiveMenu(prev => !prev)}><Link href="/">Accueil</Link></li>
                                 <li onClick={() => setActiveMenu(prev => !prev)}><Link href="/rencontres">Les Rencontres</Link></li>
+                                <li onClick={() => setActiveMenu(prev => !prev)}><Link href="/faq" className="mRight15">FAQ</Link></li>
                                 {user?.id ? (
                                     <>
                                         {(user.id == 10 || user.type == 'Administrateur' || user.type == 'DR') ? (
