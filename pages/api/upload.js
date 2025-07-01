@@ -12,7 +12,7 @@ export const config = {
 const supabaseUrl = "https://eazuwwpllqueujyivlce.supabase.co"; //process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
-d
+
 export default async function handler(req, res) {
   const uploadDir = path.resolve('/tmp/uploads');
   if (!fs.existsSync(uploadDir)) {
