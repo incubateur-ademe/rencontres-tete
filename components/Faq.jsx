@@ -31,8 +31,10 @@ export default function Faq({ setOpen, id, nom }) {
         const res = await fetch('/api/faq/list')
         const data = await res.json()
 
+        console.log(data)
+
         // On remplit les 10 champs avec les données récupérées (s’il y en a)
-        const filledList = Array.from({ length: 10 }, (_, i) => data[i] || { question: '', reponse: '' })
+        const filledList = Array.from({ length: 10 }, (_, i) => data.faqs[i] || { question: '', reponse: '' })
         setFaqList(filledList)
       } catch (err) {
         console.error('Erreur lors du chargement des FAQs:', err)
@@ -41,6 +43,7 @@ export default function Faq({ setOpen, id, nom }) {
 
     fetchFaqs()
   }, [])
+
 
   return (
     <>
