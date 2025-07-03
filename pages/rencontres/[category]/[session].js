@@ -467,6 +467,13 @@ export default function Session({ data, user }){
                                         <h3 style={{ fontWeight: '500' }}>Ressources en amont de la Rencontre</h3>
                                         <div dangerouslySetInnerHTML={{ __html: transformedHTML }}>
                                         </div>
+                                        {data.metasSession?.urlsPDF?.length > 0 && (
+                                            <>
+                                                {data.metasSession.urlsPDF.map((doc) => {
+                                                    return <a href={doc.url} target="_blank">{doc.nom}</a>
+                                                })}
+                                            </>
+                                        )}
                                         </>
                                     )}
                                 </div>

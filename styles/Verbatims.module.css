@@ -1,6 +1,6 @@
 .box {
     padding-block: 60px;
-    background: #f7f8fc;
+    background: #F28E4017;
   }
   
   .wrapper {
@@ -38,7 +38,7 @@
   .thematique {
     font-weight: 600;
     margin-bottom: 0.75rem;
-    color: var(--primary);
+    color: var(--orange);
     line-height: 1.5;
   }
   
@@ -67,7 +67,7 @@
   
   .readMoreBtn {
     font-size: 0.85rem;
-    color: #0070f3;
+    color: var(--orange);
     background: none;
     border: none;
     cursor: pointer;
@@ -80,7 +80,7 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: var(--primary);
+    background: var(--orange);
     border:0px;
     color:#FFF;
     border-radius: 10px;

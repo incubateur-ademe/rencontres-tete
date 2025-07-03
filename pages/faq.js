@@ -35,7 +35,7 @@ export default function Faq() {
                 {faqs.map((faq) => (
                 <li key={faq.id}>
                     <strong>{faq.question}</strong>
-                    <p>{faq.reponse}</p>
+                    <p style={{ whiteSpace: 'pre-line' }}>{faq.reponse}</p>
                 </li>
                 ))}
             </ul>
