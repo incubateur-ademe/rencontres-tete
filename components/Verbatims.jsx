@@ -29,7 +29,7 @@ export default function Verbatims() {
         <button className={styles.navLeft} onClick={() => scroll('left')}><span className="material-icons">chevron_left</span></button>
         <div className={styles.sliderWrapper} ref={sliderRef}>
           <div className={styles.slider}>
-            {avis.map((item) => (
+            {avis?.map((item) => (
               <div key={item.id} className={styles.card}>
                 <p className={styles.thematique}>{item.thematique}</p>
                 <p className={`${styles.texte} ${expanded[item.id] ? styles.expanded : ''}`}>

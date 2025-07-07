@@ -26,9 +26,10 @@ export default function Footer(){
                     </div>
                     <div className={styles.Subfooter}>
                         <ul className="mwrap">
-                            <li><Link href="https://www.territoiresentransitions.fr/mentions-legales">Mentions légales</Link></li>
-                            <li><Link href="https://www.ademe.fr/donnees-personnelles/" target="_blank">Données personnelles</Link></li>
-                            <li><Link href="https://www.territoiresentransitions.fr/cookies">Gestion des cookies</Link></li>
+                            <li><Link href="https://rencontres.territoiresentransitions.fr/mentions-legales">Mentions légales</Link></li>
+                            <li><Link href="https://rencontres.territoiresentransitions.fr/politique-donnees-personnelles/">Données personnelles</Link></li>
+                            <li><a id="tarteaucitron" href="#tarteaucitron">Gestion des cookies</a></li>
+                            <li><Link href="https://rencontres.territoiresentransitions.fr/politique-des-cookies">Politique des cookies</Link></li>
                             <li><Link href="https://www.territoiresentransitions.fr/cgu">Conditions générales d'utilisation</Link></li>
                             <li><Link href="https://www.territoiresentransitions.fr/accessibilite">Accessibilité</Link></li>
                         </ul>
