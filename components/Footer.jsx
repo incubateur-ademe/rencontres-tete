@@ -28,7 +28,7 @@ export default function Footer(){
                         <ul className="mwrap">
                             <li><Link href="https://rencontres.territoiresentransitions.fr/mentions-legales">Mentions légales</Link></li>
                             <li><Link href="https://rencontres.territoiresentransitions.fr/politique-donnees-personnelles/">Données personnelles</Link></li>
-                            <li><a id="tarteaucitron" href="#tarteaucitron">Gestion des cookies</a></li>
+                            <li><a href="#tarteaucitron">Gestion des cookies</a></li>
                             <li><Link href="https://rencontres.territoiresentransitions.fr/politique-des-cookies">Politique des cookies</Link></li>
                             <li><Link href="https://www.territoiresentransitions.fr/cgu">Conditions générales d'utilisation</Link></li>
                             <li><Link href="https://www.territoiresentransitions.fr/accessibilite">Accessibilité</Link></li>
