@@ -2,7 +2,7 @@ import { Html, Head, Main, NextScript } from 'next/document'
 
 export default function Document() {
   return (
-    <Html lang="en">
+    <Html lang="fr">
       <Head>
           {/* 1. TarteauCitron — juste après <head> */}
                   <script

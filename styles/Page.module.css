@@ -1,0 +1,35 @@
+.Page ul{
+    list-style-position: inside;
+    line-height: 1.5;
+}
+
+.Page ul li{
+    line-height: 1.75em;
+    color: var(--secondary);
+    letter-spacing: .5px;
+    margin: 20px 0;
+    font-weight: 300;
+    text-wrap: balance;
+}
+
+.Page a {
+    color:var(--primary)
+}
+
+.Page h3{
+    font-weight: 600;
+}
+
+.btn{
+    padding:10px 18px;
+    border-radius:10px;
+    font-weight: 500;
+    display:inline-block;
+    text-decoration: none;
+    appearance: none;
+    -webkit-appearance: none;
+    border:0px;
+    cursor:pointer;
+    color:#FFF;
+    background: var(--primary) !important;
+  }
