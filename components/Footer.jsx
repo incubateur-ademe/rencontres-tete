@@ -17,7 +17,7 @@ export default function Footer(){
                             </div>                          
                         </div>
                         <div className="w50 wm100">
-                            <p className={styles.MentionText}>Territoires en Transitions est une startup d'État portée par l'Agence de la Transition Écologique (ADEME) avec le soutien de l'Agence nationale de la Cohésion des Territoires.</p>
+                            <p className={styles.MenqtionText}>Territoires en Transitions est une startup d'État portée par l'Agence de la Transition Écologique (ADEME) avec le soutien de l'Agence nationale de la Cohésion des Territoires.</p>
                             <div className="mTop30 flex gap30">
                                 <Link href="https://www.ademe.fr/" target="_blank" className={styles.Link}>ademe.fr<span className="material-icons">open_in_new</span></Link>
                                 <Link href="https://beta.gouv.fr/" target="_blank" className={styles.Link}>beta.gouv.fr<span className="material-icons">open_in_new</span></Link>
