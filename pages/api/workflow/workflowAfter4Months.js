@@ -22,7 +22,7 @@ export default async function handle(req, res) {
                 registrations: {
                     where: {
                         user: {
-                            delete: false,
+                            deleted: false,
                         },
                     },
                     include: {
