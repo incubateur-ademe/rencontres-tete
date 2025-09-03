@@ -65,24 +65,26 @@ export default function Session({ data, user }){
         if (dateString.includes('/')) {
             // Gestion du format "dd/mm/YYYY"
             const [day, month, year] = dateString.split('/');
-            date = new Date(`${year}-${month}-${day}T00:00:00`);
+            date = new Date(`${year}-${month}-${day}T12:00:00Z`);
         } else {
-            // Format ISO standard
-            date = new Date(dateString);
+            // Format ISO standard - force UTC à midi pour éviter les décalages
+            const isoDate = new Date(dateString);
+            date = new Date(Date.UTC(isoDate.getFullYear(), isoDate.getMonth(), isoDate.getDate(), 12, 0, 0));
         }
     
         if (isNaN(date.getTime())) return 'Invalid Date';
     
         // Ajout de jours si nécessaire
         if (addDays > 0) {
-            date.setDate(date.getDate() + addDays);
+            date.setUTCDate(date.getUTCDate() + addDays);
         }
     
-        // Formatage selon le fuseau horaire local du navigateur
+        // Formatage uniforme en UTC pour tous les fuseaux horaires
         return date.toLocaleDateString('fr-FR', {
             day: '2-digit',
             month: 'long',
-            year: 'numeric'
+            year: 'numeric',
+            timeZone: 'UTC'
         });
     }
     
