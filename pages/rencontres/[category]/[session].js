@@ -59,33 +59,65 @@ export default function Session({ data, user }){
     function formatDate2(dateString, addDays = 0) {
         if (!dateString) return '---';
     
-        let date;
-        console.log("date =>", dateString)
+        let year, month, day;
+        
+        // Si c'est au format DD/MM/YYYY
+        if (dateString.includes('/') && dateString.split('/').length === 3) {
+            [day, month, year] = dateString.split('/');
+        }
+        // Si c'est au format YYYY-MM-DD
+        else if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            [year, month, day] = dateString.split('-');
+        }
+        // Si c'est une date ISO avec heure
+        else if (dateString.includes('T') || dateString.match(/^\d{4}-\d{2}-\d{2}/)) {
+            const isoDate = new Date(dateString + (dateString.includes('T') ? '' : 'T12:00:00Z'));
+            year = isoDate.getUTCFullYear();
+            month = (isoDate.getUTCMonth() + 1).toString().padStart(2, '0');
+            day = isoDate.getUTCDate().toString().padStart(2, '0');
+        }
+        else {
+            return dateString; // Retourne le texte original si format non reconnu
+        }
 
-        if (dateString.includes('/')) {
-            // Gestion du format "dd/mm/YYYY"
-            const [day, month, year] = dateString.split('/');
-            date = new Date(`${year}-${month}-${day}T12:00:00Z`);
-        } else {
-            // Format ISO standard - force UTC à midi pour éviter les décalages
-            const isoDate = new Date(dateString);
-            date = new Date(Date.UTC(isoDate.getFullYear(), isoDate.getMonth(), isoDate.getDate(), 12, 0, 0));
-        }
-    
-        if (isNaN(date.getTime())) return 'Invalid Date';
-    
-        // Ajout de jours si nécessaire
+        // Ajout de jours si nécessaire (conversion manuelle pour éviter les problèmes de fuseau horaire)
         if (addDays > 0) {
-            date.setUTCDate(date.getUTCDate() + addDays);
+            let dayNum = parseInt(day, 10);
+            let monthNum = parseInt(month, 10);
+            let yearNum = parseInt(year, 10);
+            
+            // Jours par mois (en tenant compte des années bissextiles)
+            const daysInMonth = [31, (yearNum % 4 === 0 && (yearNum % 100 !== 0 || yearNum % 400 === 0)) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+            
+            dayNum += addDays;
+            
+            // Gestion du changement de mois
+            if (dayNum > daysInMonth[monthNum - 1]) {
+                dayNum -= daysInMonth[monthNum - 1];
+                monthNum++;
+                
+                // Gestion du changement d'année
+                if (monthNum > 12) {
+                    monthNum = 1;
+                    yearNum++;
+                }
+            }
+            
+            day = dayNum.toString().padStart(2, '0');
+            month = monthNum.toString().padStart(2, '0');
+            year = yearNum.toString();
         }
     
-        // Formatage uniforme en UTC pour tous les fuseaux horaires
-        return date.toLocaleDateString('fr-FR', {
-            day: '2-digit',
-            month: 'long',
-            year: 'numeric',
-            timeZone: 'UTC'
-        });
+        // Conversion manuelle pour éviter COMPLÈTEMENT les problèmes de fuseau horaire
+        const monthNames = [
+            '', 'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+            'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'
+        ];
+        
+        const monthIndex = parseInt(month, 10);
+        const dayNum = parseInt(day, 10);
+        
+        return `${dayNum.toString().padStart(2, '0')} ${monthNames[monthIndex]} ${year}`;
     }
     
     
