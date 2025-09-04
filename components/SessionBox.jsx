@@ -56,12 +56,11 @@ export default function SessionBox({date, moduleDuree, region, title, link, data
                 const firstDate = formatDateToFrench(dateHoraires);
                 const dateObj = new Date(session.dateDebut);
                 dateObj.setUTCDate(dateObj.getUTCDate() + 1);
-                const secondDate = dateObj.toLocaleDateString('fr-FR', {
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric',
-                    timeZone: 'UTC'
-                });
+                // Format manuel pour la deuxième date
+                const year = dateObj.getUTCFullYear();
+                const month = (dateObj.getUTCMonth() + 1).toString().padStart(2, '0');
+                const day = dateObj.getUTCDate().toString().padStart(2, '0');
+                const secondDate = formatDateToFrench(`${year}-${month}-${day}`);
                 return `${firstDate} - ${secondDate}`;
             }
             
@@ -109,9 +108,11 @@ export default function SessionBox({date, moduleDuree, region, title, link, data
         
         if (isNaN(dateObj.getTime())) return '';
         
-        // Utilise la même logique que formatDate dans index.js pour assurer la cohérence
-        const frenchDate = dateObj.toLocaleDateString('fr-FR', { timeZone: 'UTC' });
-        return frenchDate.replaceAll('/', '-'); // DD/MM/YYYY -> DD-MM-YYYY
+        // Format manuel pour éviter les problèmes de timezone
+        const day = dateObj.getUTCDate().toString().padStart(2, '0');
+        const month = (dateObj.getUTCMonth() + 1).toString().padStart(2, '0');
+        const year = dateObj.getUTCFullYear();
+        return `${day}-${month}-${year}`; // DD-MM-YYYY
     }
     
 

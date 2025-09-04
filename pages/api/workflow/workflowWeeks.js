@@ -53,6 +53,31 @@ export default async function handle(req, res) {
             },
         });
 
+        // Fonction pour formater les dates en évitant les problèmes de timezone
+        function formatDateFromSession(session) {
+            // Priorité au champ dateHoraires si disponible
+            if (session?.metasSession?.dateHoraires) {
+                const dateHoraires = session.metasSession.dateHoraires;
+                
+                // Si c'est au format YYYY-MM-DD, on le convertit au format DD/MM/YYYY
+                if (dateHoraires.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                    const [year, month, day] = dateHoraires.split('-');
+                    return `${day}/${month}/${year}`;
+                }
+                // Si c'est déjà au format DD/MM/YYYY ou autre texte, on le retourne tel quel
+                else if (dateHoraires.includes('/') && dateHoraires.split('/').length === 3) {
+                    return dateHoraires;
+                }
+            }
+            
+            // Fallback : formatage manuel sans timezone
+            const dateDebut = new Date(session.dateDebut);
+            const day = dateDebut.getUTCDate().toString().padStart(2, '0');
+            const month = (dateDebut.getUTCMonth() + 1).toString().padStart(2, '0');
+            const year = dateDebut.getUTCFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
         for (const session of upcomingSessions) {
             const firstProgramme = session.metasSession.programmeSession[0];
             let firstDayStartTime;
@@ -63,12 +88,7 @@ export default async function handle(req, res) {
                 firstDayStartTime = firstProgramme.horaires.split(' - ')[0].trim();
             }
 
-            const dateDebut = new Date(session.dateDebut);
-            const formattedDateDebut = dateDebut.toLocaleDateString('fr-FR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-            });
+            const formattedDateDebut = formatDateFromSession(session);
 
             for (const registration of session.registrations) {
                 const userData = registration.user;
