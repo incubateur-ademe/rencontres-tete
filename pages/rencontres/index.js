@@ -111,6 +111,31 @@ export default function Rencontres({ sessions, region, pilier, thematique }) {
   }, [filtres, view]);
   
 
+  // Format date pour les URLs - utilise la même logique que SessionBox
+  function formatDateForUrl(session) {
+    // Priorité au champ dateHoraires si disponible
+    if (session?.metasSession?.dateHoraires) {
+      const dateHoraires = session.metasSession.dateHoraires;
+      
+      // Si c'est au format YYYY-MM-DD, on le convertit au format DD/MM/YYYY
+      if (dateHoraires.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        const [year, month, day] = dateHoraires.split('-');
+        return `${day}/${month}/${year}`;
+      }
+      // Si c'est déjà au format DD/MM/YYYY ou autre texte, on le retourne tel quel
+      else if (dateHoraires.includes('/') && dateHoraires.split('/').length === 3) {
+        return dateHoraires;
+      }
+    }
+    
+    // Fallback : formatage manuel sans timezone
+    const dateDebut = new Date(session.dateDebut);
+    const day = dateDebut.getUTCDate().toString().padStart(2, '0');
+    const month = (dateDebut.getUTCMonth() + 1).toString().padStart(2, '0');
+    const year = dateDebut.getUTCFullYear();
+    return `${day}/${month}/${year}`;
+  }
+
   function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString('fr-FR');
@@ -232,10 +257,10 @@ export default function Rencontres({ sessions, region, pilier, thematique }) {
                 {(view === 'upcoming' ? upcomingSessions : pastSessions).map((session, index) => (
                   <div key={index} className="w100 wm100" style={view === 'past' ? { opacity: 0.5, pointerEvents: 'none' } : {}}>
                     <SessionBox 
-                      date={formatDate(session.dateDebut)}
+                      date={formatDateForUrl(session)}
                       region={session.region}
                       title={session.module.nom}
-                      link={view === 'past' ? '' : `/rencontres/${session.module.slug}/session-${formatDate(session.dateDebut).replaceAll('/', '-')}-${session.region.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[.,']/g, "").replace(/\s+/g, '-').toLowerCase()}`}
+                      link={view === 'past' ? '' : `/rencontres/${session.module.slug}/session-${formatDateForUrl(session).replaceAll('/', '-')}-${session.region.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[.,']/g, "").replace(/\s+/g, '-').toLowerCase()}`}
                       dept={session.departement}
                       displayDept="no"
                       moduleDuree={session.module.metasModule.duree}

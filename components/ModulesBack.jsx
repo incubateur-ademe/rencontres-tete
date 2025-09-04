@@ -12,6 +12,43 @@ export default function ModulesBack({date, code, lastUpdate, category, title, id
         return `${day}/${month}/${year}`;
     }
 
+    // Parse et formate une date en français en évitant COMPLÈTEMENT les problèmes de fuseau horaire
+    function formatDateToFrench(dateString) {
+        if (!dateString) return '---';
+
+        let year, month, day;
+        
+        // Si c'est au format YYYY-MM-DD (cas des dateHoraires en BDD)
+        if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            [year, month, day] = dateString.split('-');
+        }
+        // Si c'est au format DD/MM/YYYY
+        else if (dateString.includes('/') && dateString.split('/').length === 3) {
+            [day, month, year] = dateString.split('/');
+        }
+        // Si c'est une date ISO avec heure
+        else if (dateString.includes('T') || dateString.match(/^\d{4}-\d{2}-\d{2}/)) {
+            const isoDate = new Date(dateString + (dateString.includes('T') ? '' : 'T12:00:00Z'));
+            year = isoDate.getUTCFullYear();
+            month = (isoDate.getUTCMonth() + 1).toString().padStart(2, '0');
+            day = isoDate.getUTCDate().toString().padStart(2, '0');
+        }
+        else {
+            return dateString; // Retourne le texte original si format non reconnu
+        }
+
+        // Conversion manuelle pour éviter tout problème de fuseau horaire
+        const monthNames = [
+            '', 'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+            'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'
+        ];
+        
+        const monthIndex = parseInt(month, 10);
+        const dayNum = parseInt(day, 10);
+        
+        return `${dayNum.toString().padStart(2, '0')} ${monthNames[monthIndex]} ${year}`;
+    }
+
     function formatDate2(dateString) {
         if (!dateString) return '---';
     
@@ -35,8 +72,8 @@ export default function ModulesBack({date, code, lastUpdate, category, title, id
     }
 
 
-    const publicationDate = formatDate2(date);
-    const lastUpdateDate = formatDate2(lastUpdate);
+    const publicationDate = formatDateToFrench(date);
+    const lastUpdateDate = formatDateToFrench(lastUpdate);
 
     const now = new Date();
 

@@ -47,6 +47,60 @@ export default function Rencontres({ user }){
     }
     
 
+    // Parse et formate une date en français en évitant COMPLÈTEMENT les problèmes de fuseau horaire
+    function formatDateToFrench(dateString) {
+        if (!dateString) return '---';
+
+        let year, month, day;
+        
+        // Si c'est au format YYYY-MM-DD (cas des dateHoraires en BDD)
+        if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            [year, month, day] = dateString.split('-');
+        }
+        // Si c'est au format DD/MM/YYYY
+        else if (dateString.includes('/') && dateString.split('/').length === 3) {
+            [day, month, year] = dateString.split('/');
+        }
+        // Si c'est une date ISO avec heure
+        else if (dateString.includes('T') || dateString.match(/^\d{4}-\d{2}-\d{2}/)) {
+            const isoDate = new Date(dateString + (dateString.includes('T') ? '' : 'T12:00:00Z'));
+            year = isoDate.getUTCFullYear();
+            month = (isoDate.getUTCMonth() + 1).toString().padStart(2, '0');
+            day = isoDate.getUTCDate().toString().padStart(2, '0');
+        }
+        else {
+            return dateString; // Retourne le texte original si format non reconnu
+        }
+
+        // Conversion manuelle pour éviter tout problème de fuseau horaire
+        const monthNames = [
+            '', 'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+            'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'
+        ];
+        
+        const monthIndex = parseInt(month, 10);
+        const dayNum = parseInt(day, 10);
+        
+        return `${dayNum.toString().padStart(2, '0')} ${monthNames[monthIndex]} ${year}`;
+    }
+
+    // Utilise le texte des dates depuis la BDD mais les formate en français
+    function getDateText(session) {
+        // Si on a les données complètes de la session avec metasSession
+        if (session?.metasSession?.dateHoraires) {
+            const dateHoraires = session.metasSession.dateHoraires;
+            // Formate la date en français
+            return formatDateToFrench(dateHoraires);
+        }
+        
+        // Fallback sur la date dateDebut si pas de dateHoraires
+        if (session?.dateDebut) {
+            return formatDateToFrench(session.dateDebut);
+        }
+        
+        return '---';
+    }
+
     function formatDate2(dateString) {
 
         if (!dateString) return '---';
