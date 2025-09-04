@@ -240,6 +240,7 @@ export default function Rencontres({ sessions, region, pilier, thematique }) {
                       displayDept="no"
                       moduleDuree={session.module.metasModule.duree}
                       model="full"
+                      data={session}
                     />
                   </div>
                 ))}
