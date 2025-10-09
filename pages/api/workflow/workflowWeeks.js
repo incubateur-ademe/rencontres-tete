@@ -30,9 +30,7 @@ export default async function handle(req, res) {
             include: {
                 registrations: {
                     where: {
-                      user: {
-                        deleted: false,
-                      },
+                      deleted: false,
                     },
                     include: {
                       user: true,
@@ -40,9 +38,7 @@ export default async function handle(req, res) {
                 },
                 accountRegistrations: {
                     where: {
-                        account: {
-                          deleted: false,
-                        },
+                        deleted: false,
                     },
                     include: {
                         account: true,
