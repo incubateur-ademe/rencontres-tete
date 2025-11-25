@@ -29,7 +29,8 @@ export default async function handler(req, res) {
   }));
 
   const mailOptions = {
-    from: '"ADEME" <contact@territoiresentransitions.fr>',
+    from: '"ADEME" <no-reply@territoiresentransitions.fr>',
+    replyTo: "Rencontres ADEME <rencontres.ademe@i-care-consult.com>",
     to: email,
     subject: "Votre nouveau mot de passe !",
     template: 'newpassword',
