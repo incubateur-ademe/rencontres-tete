@@ -1,5 +1,9 @@
 name: Four Month After Impact Email Task
 
+permissions:
+  contents: read
+  pull-requests: read
+
 on:
   schedule:
     - cron: "30 17 * * *"

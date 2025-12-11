@@ -1,5 +1,9 @@
 name: One Day After Reminder Email Task
 
+permissions:
+  contents: read
+  pull-requests: read
+
 on:
   schedule:
     - cron: "30 16 * * *"
