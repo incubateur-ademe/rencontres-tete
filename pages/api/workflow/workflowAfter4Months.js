@@ -57,8 +57,10 @@ export default async function handle(req, res) {
     }
 }
 
-// Fonction d’envoi inchangée
+// Fonction d'envoi avec gestion BCC pour le premier email
 async function sendEmails(session) {
+    let isFirstEmail = true;
+
     for (const registration of session.registrations) {
         const userData = registration.user;
 
@@ -70,8 +72,11 @@ async function sendEmails(session) {
             body: JSON.stringify({
                 prenom: userData.prenom,
                 email: userData.mail,
+                isFirstEmailInLoop: isFirstEmail
             }),
         });
+
+        isFirstEmail = false;
 
         if (!emailResponse.ok) {
             throw new Error(`Email request failed for user with status ${emailResponse.status}`);
@@ -89,8 +94,11 @@ async function sendEmails(session) {
             body: JSON.stringify({
                 prenom: accountData.email.split('@')[0],
                 email: accountData.email,
+                isFirstEmailInLoop: isFirstEmail
             }),
         });
+
+        isFirstEmail = false;
 
         if (!emailResponse.ok) {
             throw new Error(`Email request failed for account with status ${emailResponse.status}`);
