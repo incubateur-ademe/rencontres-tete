@@ -73,6 +73,8 @@ export default async function handle(req, res) {
 
 // Fonction pour envoyer les emails aux participants (utilisateurs et comptes)
 async function sendEmails(session) {
+    let isFirstEmail = true;
+
     // Envoi aux utilisateurs inscrits
     for (const registration of session.registrations) {
         const userData = registration.user;
@@ -85,8 +87,11 @@ async function sendEmails(session) {
             body: JSON.stringify({
                 prenom: userData.prenom,
                 email: userData.mail,
+                isFirstEmailInLoop: isFirstEmail
             }),
         });
+
+        isFirstEmail = false;
 
         if (!emailResponse.ok) {
             throw new Error(`Email request failed for user with status ${emailResponse.status}`);
@@ -105,8 +110,11 @@ async function sendEmails(session) {
             body: JSON.stringify({
                 prenom: accountData.email.split('@')[0], // Prénom basé sur l'email
                 email: accountData.email,
+                isFirstEmailInLoop: isFirstEmail
             }),
         });
+
+        isFirstEmail = false;
 
         if (!emailResponse.ok) {
             throw new Error(`Email request failed for account with status ${emailResponse.status}`);

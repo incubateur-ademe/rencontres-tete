@@ -86,6 +86,7 @@ export default async function handle(req, res) {
             }
 
             const formattedDateDebut = formatDateFromSession(session);
+            let isFirstEmail = true;
 
             for (const registration of session.registrations) {
                 const userData = registration.user;
@@ -103,9 +104,12 @@ export default async function handle(req, res) {
                         lieuRencontre: session.metasSession.lieuRencontre || 'Lieu',
                         nbJours: session.metasSession.nombreJours,
                         mail_referent: session.metasSession.mail_referent,
-                        firstDayStartTime: firstDayStartTime
+                        firstDayStartTime: firstDayStartTime,
+                        isFirstEmailInLoop: isFirstEmail
                     })
                 });
+
+                isFirstEmail = false;
 
                 if (!emailResponse.ok) {
                     throw new Error(`Email request failed with status ${emailResponse.status}`);
@@ -128,9 +132,12 @@ export default async function handle(req, res) {
                         lieuRencontre: session.metasSession.lieuRencontre || 'Lieu',
                         nbJours: session.metasSession.nombreJours,
                         mail_referent: session.metasSession.mail_referent,
-                        firstDayStartTime: firstDayStartTime
+                        firstDayStartTime: firstDayStartTime,
+                        isFirstEmailInLoop: isFirstEmail
                     })
                 });
+
+                isFirstEmail = false;
         
                 if (!emailResponse.ok) {
                     throw new Error(`Email request failed with status ${emailResponse.status}`);

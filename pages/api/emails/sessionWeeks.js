@@ -1,9 +1,10 @@
 import nodemailer from 'nodemailer';
 import hbs from 'nodemailer-express-handlebars';
 import path from 'path';
+import { createMailOptions } from '../../../utils/emailUtils.js';
 
 export default async function handler(req, res) {
-  const { prenom, email, nomRencontre, dateRencontre, lieuRencontre, nbJours, mail_referent, firstDayStartTime } = req.body;
+  const { prenom, email, nomRencontre, dateRencontre, lieuRencontre, nbJours, mail_referent, firstDayStartTime, isFirstEmailInLoop } = req.body;
 
   const startTime = firstDayStartTime.split('-')[0].trim();
 
@@ -28,9 +29,8 @@ export default async function handler(req, res) {
     extName: '.hbs',
   }));
 
-  const mailOptions = {
-    from: '"ADEME" <no-reply@territoiresentransitions.fr>',
-    replyTo: "Rencontres ADEME <rencontres.ademe@i-care-consult.com>",
+  const baseMailOptions = {
+    from: '"ADEME" <contact@territoiresentransitions.fr>',
     to: email,
     subject: "[Rappel] : "+dateRencontre+" - Rencontre Territoire Engagé Transition Ecologique",
     template: 'session_relance_weeks',
@@ -45,6 +45,8 @@ export default async function handler(req, res) {
       firstDayStartTime: startTime,
     }
   };
+
+  const mailOptions = createMailOptions(baseMailOptions, isFirstEmailInLoop);
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {

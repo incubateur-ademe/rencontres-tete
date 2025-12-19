@@ -1,9 +1,10 @@
 import nodemailer from 'nodemailer';
 import hbs from 'nodemailer-express-handlebars';
 import path from 'path';
+import { createMailOptions } from '../../../utils/emailUtils.js';
 
 export default async function handler(req, res) {
-  const { prenom, email } = req.body;
+  const { prenom, email, isFirstEmailInLoop } = req.body;
 
   const transporter = nodemailer.createTransport({
     host: 'smtp-relay.brevo.com',
@@ -26,9 +27,8 @@ export default async function handler(req, res) {
     extName: '.hbs',
   }));
 
-  const mailOptions = {
-    from: '"ADEME" <no-reply@territoiresentransitions.fr>',
-    replyTo: "Rencontres ADEME <rencontres.ademe@i-care-consult.com>",
+  const baseMailOptions = {
+    from: '"ADEME" <contact@territoiresentransitions.fr>',
     to: email,
     subject: "Vous avez participé à une Rencontre Territoire Engagé il y a quelques mois ... Quel impact sur votre métier ?",
     template: 'questionnaire_impact',
@@ -37,6 +37,8 @@ export default async function handler(req, res) {
       siteUrl: process.env.WEBSITE_URL,
     }
   };
+
+  const mailOptions = createMailOptions(baseMailOptions, isFirstEmailInLoop);
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
