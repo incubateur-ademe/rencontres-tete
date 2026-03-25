@@ -102,7 +102,7 @@ export default function Home() {
   return (
     <div className={styles.Home}>
       <Head>
-        <title>Les Rencontres des Territoires Engagés</title>
+        <title>Rencontres Territoire Engagé Transition Ecologique</title>
       </Head>
       <div className="section">
         <div className="boxed">
