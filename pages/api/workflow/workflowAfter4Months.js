@@ -36,6 +36,7 @@ export default async function handle(req, res) {
                     },
                 },
                 metasSession: true,
+                module: true,
             },
         });
 
@@ -57,8 +58,34 @@ export default async function handle(req, res) {
     }
 }
 
+// Fonction pour formater les dates en évitant les problèmes de timezone
+function formatDateFromSession(session) {
+    // Priorité au champ dateHoraires si disponible
+    if (session?.metasSession?.dateHoraires) {
+        const dateHoraires = session.metasSession.dateHoraires;
+
+        // Si c'est au format YYYY-MM-DD, on le convertit au format DD/MM/YYYY
+        if (dateHoraires.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            const [year, month, day] = dateHoraires.split('-');
+            return `${day}/${month}/${year}`;
+        }
+        // Si c'est déjà au format DD/MM/YYYY ou autre texte, on le retourne tel quel
+        else if (dateHoraires.includes('/') && dateHoraires.split('/').length === 3) {
+            return dateHoraires;
+        }
+    }
+
+    // Fallback : formatage manuel sans timezone
+    const dateDebut = new Date(session.dateDebut);
+    const day = dateDebut.getUTCDate().toString().padStart(2, '0');
+    const month = (dateDebut.getUTCMonth() + 1).toString().padStart(2, '0');
+    const year = dateDebut.getUTCFullYear();
+    return `${day}/${month}/${year}`;
+}
+
 // Fonction d'envoi avec gestion BCC pour le premier email
 async function sendEmails(session) {
+    const formattedDateDebut = formatDateFromSession(session);
     let isFirstEmail = true;
 
     for (const registration of session.registrations) {
@@ -72,6 +99,11 @@ async function sendEmails(session) {
             body: JSON.stringify({
                 prenom: userData.prenom,
                 email: userData.mail,
+                nomRencontre: session.module.nom,
+                dateRencontre: formattedDateDebut,
+                lieuRencontre: session.metasSession.lieuRencontre || 'Lieu',
+                nbJours: session.metasSession.nombreJours,
+                mail_referent: session.metasSession.mail_referent,
                 isFirstEmailInLoop: isFirstEmail
             }),
         });
@@ -94,6 +126,11 @@ async function sendEmails(session) {
             body: JSON.stringify({
                 prenom: accountData.email.split('@')[0],
                 email: accountData.email,
+                nomRencontre: session.module.nom,
+                dateRencontre: formattedDateDebut,
+                lieuRencontre: session.metasSession.lieuRencontre || 'Lieu',
+                nbJours: session.metasSession.nombreJours,
+                mail_referent: session.metasSession.mail_referent,
                 isFirstEmailInLoop: isFirstEmail
             }),
         });

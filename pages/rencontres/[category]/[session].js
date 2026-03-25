@@ -145,6 +145,7 @@ export default function Session({ data, user }){
         ville: '',
         region: '',
         telephone: '',
+        niveauConnaissance: '',
         transport: '',
         besoins: '',
         hebergement: '',
@@ -181,6 +182,7 @@ export default function Session({ data, user }){
             ville: inscription.ville,
             region: inscription.region,
             telephone: inscription.telephone,
+            niveauConnaissance: inscription.niveauConnaissance,
             transport: inscription.transport,
             repas: inscription.repas,
             repas2: inscription.repas2,
@@ -231,6 +233,7 @@ export default function Session({ data, user }){
             ville: '',
             region: '',
             telephone: '',
+            niveauConnaissance: '',
             transport: '',
             besoins: '',
             hebergement: '',
@@ -407,15 +410,15 @@ export default function Session({ data, user }){
       }, [data]);
 
       const nextStep = () => {
-        const { civilite, nom, prenom, mail, structure, fonction, type_fonction, ville, region, programmeTETE, telephone } = inscription
-        if(civilite && nom && prenom && mail && structure && fonction && type_fonction && region && programmeTETE){
+        const { civilite, nom, prenom, mail, structure, fonction, type_fonction, ville, region, programmeTETE, telephone, niveauConnaissance } = inscription
+        if(civilite && nom && prenom && mail && structure && fonction && type_fonction && region && programmeTETE && niveauConnaissance){
             setReg(1)
         }
         else{
             setNotif({
                 text: 'Veuillez remplir tous les champs',
                 icon: 'close'
-            })            
+            })
         }
       }
 
@@ -787,7 +790,20 @@ export default function Session({ data, user }){
                                                     </div>
                                                     <input name="telephone" onChange={handleChange} value={inscription.telephone} type="text" className="input-text" placeholder="Numéro de téléphone" />
                                                 </div>
-                                                <div className="text-right">
+                                                <div className="mTop20">
+                                                    <span className={styles.Title}>Quel est votre niveau de connaissance sur la thématique de la Rencontre ?</span>
+                                                    <div className="select w100 mTop10">
+                                                        <select name="niveauConnaissance" onChange={handleChange} value={inscription.niveauConnaissance} className="input-select">
+                                                            <option value="">-</option>
+                                                            <option>Débutant (Je connais quelques notions générales, mais je n'ai jamais approfondi la thématique)</option>
+                                                            <option>Elémentaire (je maîtrise les connaissances de base de la thématique)</option>
+                                                            <option>Intermédiaire (je suis bien informé et comprend les enjeux de la thématique)</option>
+                                                            <option>Avancé (je suis expert de la thématique)</option>
+                                                        </select>
+                                                        <span className="material-icons">expand_more</span>
+                                                    </div>
+                                                </div>
+                                                <div className="text-right mTop20">
                                                     <button onClick={() => nextStep()} className="btn__normal btn__dark">Continuer</button>
                                                 </div>
                                             </div>

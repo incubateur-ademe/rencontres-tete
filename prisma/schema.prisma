@@ -107,6 +107,7 @@ model Registration {
   typeFonction            String
   ville                   String?
   telephone               String?
+  niveauConnaissance      String?
   transport               String?
   besoins                 String?
   repas                   Boolean
@@ -177,6 +178,7 @@ model AccountRegistration {
   typeFonction             String?
   ville                    String?
   telephone                String?
+  niveauConnaissance       String?
   transport                String?
   besoins                  String?
   repas                    Boolean?

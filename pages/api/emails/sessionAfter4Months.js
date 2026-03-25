@@ -4,7 +4,7 @@ import path from 'path';
 import { createMailOptions } from '../../../utils/emailUtils.js';
 
 export default async function handler(req, res) {
-  const { prenom, email, isFirstEmailInLoop } = req.body;
+  const { prenom, email, nomRencontre, dateRencontre, lieuRencontre, nbJours, mail_referent, isFirstEmailInLoop } = req.body;
 
   const transporter = nodemailer.createTransport({
     host: 'smtp-relay.brevo.com',
@@ -35,6 +35,11 @@ export default async function handler(req, res) {
     context: {
       prenom: prenom,
       siteUrl: process.env.WEBSITE_URL,
+      nomRencontre: nomRencontre,
+      dateRencontre: dateRencontre,
+      lieuRencontre: lieuRencontre,
+      nbJours: nbJours,
+      mail_referent: mail_referent,
     }
   };
 
