@@ -2,6 +2,7 @@ const nodemailer = require('nodemailer');
 const hbs = require('nodemailer-express-handlebars');
 const path = require('path');
 import prisma from '@/lib/prisma';
+const { BREVO_SMTP_USER, EMAIL_FROM, EMAIL_REPLY_TO } = require('../../../utils/emailUtils');
 
 export default async function handler(req, res) {
   const { sujet, content, sessionId } = req.body;
@@ -39,7 +40,7 @@ export default async function handler(req, res) {
       port: 587,
       secure: false,
       auth: {
-        user: 'contact@territoiresentransitions.fr',
+        user: BREVO_SMTP_USER,
         pass: process.env.BREVO_KEY,
       },
       tls: { rejectUnauthorized: false },
@@ -58,8 +59,8 @@ export default async function handler(req, res) {
     // Envoyer un email à chaque participant
     for (const email of emails) {
       const mailOptions = {
-        from: '"ADEME" <no-reply@territoiresentransitions.fr>',
-        replyTo: "Rencontres ADEME <rencontres.ademe@i-care-consult.com>",
+        from: EMAIL_FROM,
+        replyTo: EMAIL_REPLY_TO,
         to: email,
         subject: sujet,
         template: 'base',
