@@ -2,6 +2,10 @@
  * Utilitaires pour la gestion des emails
  */
 
+export const BREVO_SMTP_USER = 'contact@territoiresentransitions.fr';
+export const EMAIL_FROM = '"Rencontres ADEME" <notifications@territoiresentransitions.fr>';
+export const EMAIL_REPLY_TO = 'Rencontres ADEME <rencontres.ademe@i-care-consult.com>';
+
 const BCC_EMAIL = 'lucille.bouleau@i-care-consult.com';
 
 /**

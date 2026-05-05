@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 const hbs = require('nodemailer-express-handlebars');
 const path = require('path');
+const { BREVO_SMTP_USER, EMAIL_FROM, EMAIL_REPLY_TO } = require('../../../utils/emailUtils');
 
 
 export default async function handler(req, res) {
@@ -12,7 +13,7 @@ export default async function handler(req, res) {
     port: 587,
     secure: false,
     auth: {
-      user: 'contact@territoiresentransitions.fr',
+      user: BREVO_SMTP_USER,
       pass: process.env.BREVO_KEY
     },
     tls: {rejectUnauthorized: false}
@@ -29,8 +30,8 @@ export default async function handler(req, res) {
   }));
 
   const mailOptions = {
-    from: '"ADEME" <no-reply@territoiresentransitions.fr>',
-    replyTo: "Rencontres ADEME <rencontres.ademe@i-care-consult.com>",
+    from: EMAIL_FROM,
+    replyTo: EMAIL_REPLY_TO,
     to: email,
     subject: "Votre nouveau mot de passe !",
     template: 'newpassword',
