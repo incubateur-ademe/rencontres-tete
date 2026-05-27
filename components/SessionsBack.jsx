@@ -122,27 +122,30 @@ export default function SessionsBack({isModule, date, session, code, region, tit
     const differenceEnMs = dateDebut - maintenant;
     const joursRestants = Math.ceil(differenceEnMs / (1000 * 60 * 60 * 24));
 
-    const publish = async () => {
+    const changeStatus = async (newStatus) => {
         try {
             const response = await fetch(`/api/sessions/publish`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id: id })
+                body: JSON.stringify({ id: id, status: newStatus })
             });
-    
+
             if (!response.ok) {
                 throw new Error(`Erreur HTTP: ${response.status}`);
             }
-    
+
             const result = await response.json();
             setAlert(null)
             setActions(prev => prev+1)
         } catch (error) {
-            console.error('Erreur lors de la suppression du module:', error.message);
+            console.error('Erreur lors du changement de statut de la session:', error.message);
         }
     }
+
+    const publish = () => changeStatus('publish');
+    const closeRegistrations = () => changeStatus('closed');
 
     return (
         <>
@@ -155,13 +158,13 @@ export default function SessionsBack({isModule, date, session, code, region, tit
                 </div>
                 <div className="flex alignend space-between gap40 mTop20 w100">
                     <div className="w50">
-                        <span className={styles.Title}><span>Module #{code} :</span>{status == 'brouillon' && '(Brouillon)'} {title}</span>
+                        <span className={styles.Title}><span>Module #{code} :</span>{status == 'brouillon' && ' (Brouillon)'}{status == 'closed' && ' (Inscriptions fermées)'} {title}</span>
                     </div>
                     <div className="w50">
                         <div className="w100 flex aligncend flex-end gap5">
                             {user.type != 'DR' && (
                                 <>
-                                    <button 
+                                    <button
                                         onClick={() => setAlert({
                                             icon: 'warning',
                                             text: 'Êtes-vous sûr de vouloir supprimer cette session ?',
@@ -173,7 +176,7 @@ export default function SessionsBack({isModule, date, session, code, region, tit
                                     </button>
                                     <button onClick={() => setOpen({ id: id, type: 'edit', model: 'session', nom: title, moduleId: moduleId })} className={styles.Register}>Modifier la session</button>
                                     {status == 'brouillon' && (
-                                        <button  
+                                        <button
                                             onClick={() => setAlert({
                                                 icon: 'warning',
                                                 text: 'Êtes-vous sûr de vouloir publier cette session ?',
@@ -183,7 +186,31 @@ export default function SessionsBack({isModule, date, session, code, region, tit
                                             className={styles.Register}>
                                             Publier
                                         </button>
-                                    )}                                
+                                    )}
+                                    {status == 'publish' && (
+                                        <button
+                                            onClick={() => setAlert({
+                                                icon: 'warning',
+                                                text: 'Fermer les inscriptions ? La page restera visible mais le formulaire d\'inscription sera masqué.',
+                                                action: closeRegistrations,
+                                                setAlert: setAlert
+                                            })}
+                                            className={styles.Register}>
+                                            Fermer les inscriptions
+                                        </button>
+                                    )}
+                                    {status == 'closed' && (
+                                        <button
+                                            onClick={() => setAlert({
+                                                icon: 'warning',
+                                                text: 'Rouvrir les inscriptions pour cette session ?',
+                                                action: publish,
+                                                setAlert: setAlert
+                                            })}
+                                            className={styles.Register}>
+                                            Rouvrir les inscriptions
+                                        </button>
+                                    )}
                                 </>
                             )}
                         </div>

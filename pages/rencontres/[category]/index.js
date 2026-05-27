@@ -48,7 +48,7 @@ export default function Module({ data }){
     const [region, setRegion] = useState('')
 
     const getSessions = async (departement) => {
-        const fetcher = await fetch(`/api/sessions?id=${data.id}&region=${region}&status=publish`)
+        const fetcher = await fetch(`/api/sessions?id=${data.id}&region=${region}&status=publish,closed`)
         const json = await fetcher.json()
         setSessions(json)
     }
@@ -263,7 +263,7 @@ export default function Module({ data }){
                         .filter(session => {
                             const dateDebut = new Date(session.dateDebut);
                             const now = new Date();
-                            return session.status === 'publish' && dateDebut >= now;
+                            return (session.status === 'publish' || session.status === 'closed') && dateDebut >= now;
                         })
                         .map((session, index) => {
                             return (

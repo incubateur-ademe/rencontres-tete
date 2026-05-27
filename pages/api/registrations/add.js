@@ -29,6 +29,10 @@ export default async function handle(req, res) {
             return res.status(404).json({ error: 'Session non trouvée' });
         }
 
+        if (sessionData.status === 'closed' || sessionData.status === 'brouillon') {
+            return res.status(403).json({ error: 'Les inscriptions sont fermées pour cette session.' });
+        }
+
         console.log("Session trouvée :", sessionData);
 
         let userData;

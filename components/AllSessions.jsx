@@ -58,7 +58,7 @@ export default function Modules({setPage, page, user}){
       
       useEffect(() => {
         getSessions(currentTri, filterStatus, currentRegion, currentCodes, passedFilter);
-      }, [passedFilter, filterStatus, currentTri, currentRegion, currentCodes]);
+      }, [passedFilter, filterStatus, currentTri, currentRegion, currentCodes, actions]);
       
 
 
@@ -126,6 +126,7 @@ export default function Modules({setPage, page, user}){
                                 <option value="">Filtrer par statut</option>
                                 <option value="brouillon">Brouillons</option>
                                 <option value="publish">Publiés</option>
+                                <option value="closed">Inscriptions fermées</option>
                             </select>
                             <span className="material-icons">expand_more</span>
                         </div>
@@ -179,7 +180,7 @@ export default function Modules({setPage, page, user}){
                             <>
                                 {sessions.length > 0 ? (
                                     sessions.map((session, index) => {
-                                        if(session.status == 'publish' || user.type == 'Administrateur' || user.id == 10){
+                                        if(session.status == 'publish' || session.status == 'closed' || user.type == 'Administrateur' || user.id == 10){
                                             return (
                                                 <div key={index} className="w100 mBot10">
                                                     <SessionsBack 
@@ -218,7 +219,7 @@ export default function Modules({setPage, page, user}){
                                         user.modules.includes(session.module.code) && 
                                         user.regions.includes(session.region)
                                     ).map((session, index) => {
-                                        if(session.status == 'publish' || user.type == 'Administrateur' || user.id == 10){
+                                        if(session.status == 'publish' || session.status == 'closed' || user.type == 'Administrateur' || user.id == 10){
                                             return (
                                                 <div key={index} className="w100 mBot10">
                                                     <SessionsBack 
