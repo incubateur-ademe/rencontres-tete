@@ -673,14 +673,23 @@ export default function Session({ data, user }){
                             <div className={`w70 wm100 ${styles.Box}`}>
                                 {user == null ? (
                                     <>
-                                        <div className={styles.Already}>
-                                            <span className="material-icons">error_outline</span>
-                                            <div>Vous devez vous connecter à la plateforme pour pouvoir vous inscrire aux différentes sessions proposées.</div>
-                                        </div>                                    
-                                        <div className="flex toColumn gap10 justicenter mTop15">
-                                            <Link className="btn__normal btn__dark" href="/inscription">Créer un compte</Link>
-                                            <Link className="btn__normal btn__light" href="/connexion">Se connecter</Link>
-                                        </div>
+                                        {data.status === 'closed' ? (
+                                            <div className={styles.Already}>
+                                                <span className="material-icons">error_outline</span>
+                                                <div><strong>Les inscriptions sont fermées pour le moment.</strong> Revenez plus tard pour vous inscrire à cette rencontre.</div>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <div className={styles.Already}>
+                                                    <span className="material-icons">error_outline</span>
+                                                    <div>Vous devez vous connecter à la plateforme pour pouvoir vous inscrire aux différentes sessions proposées.</div>
+                                                </div>
+                                                <div className="flex toColumn gap10 justicenter mTop15">
+                                                    <Link className="btn__normal btn__dark" href="/inscription">Créer un compte</Link>
+                                                    <Link className="btn__normal btn__light" href="/connexion">Se connecter</Link>
+                                                </div>
+                                            </>
+                                        )}
                                     </>
                                 ) : (
                                     <>
@@ -691,7 +700,12 @@ export default function Session({ data, user }){
                                         </div>
                                     ) : (
                                         <>
-                                            {inscriptionPasse ? (
+                                            {data.status === 'closed' ? (
+                                                <div className={styles.Already}>
+                                                    <span className="material-icons">error_outline</span>
+                                                    <div><strong>Les inscriptions sont fermées pour le moment.</strong> Revenez plus tard pour vous inscrire à cette rencontre.</div>
+                                                </div>
+                                            ) : inscriptionPasse ? (
                                                 <div className={styles.Already}>
                                                     <span className="material-icons">error_outline</span>
                                                     <div><strong>Date limite d'inscription atteinte.</strong> Les inscriptions sont fermées pour cette session !</div>
@@ -702,13 +716,13 @@ export default function Session({ data, user }){
                                                         <div className={styles.Already}>
                                                             <span className="material-icons">error_outline</span>
                                                             <div><strong>Il ne reste plus de place pour cette session.</strong> Les inscriptions sont fermées.</div>
-                                                        </div>                                                    
+                                                        </div>
                                                     )}
                                                 </>
                                             )}
                                         </>
                                     )}
-                                    {(!check && dispo) && (
+                                    {(!check && dispo && data.status !== 'closed') && (
                                         <>
                                         <div className={`regbox ${reg == 0 ? styles.Act : undefined}`}>
                                             <span className={styles.Title}>Vos informations personnelles</span>
@@ -754,6 +768,7 @@ export default function Session({ data, user }){
                                                             <option>Élu en collectivité</option>
                                                             <option>Conseiller Territoire Engagé Transition écologique</option>
                                                             <option>Partenaire de la région</option>
+                                                            <option>ADEME</option>
                                                         </select>
                                                         <span className="material-icons">expand_more</span>
                                                     </div>

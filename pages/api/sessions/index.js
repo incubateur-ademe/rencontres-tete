@@ -32,8 +32,15 @@ export default async function handle(req, res) {
     dateConditions.gte = new Date(dateDebut);
   }
 
+  // status accepte une valeur unique ('publish') ou plusieurs séparées par une virgule ('publish,closed')
+  const statusFilter = status
+    ? (status.includes(',')
+        ? { in: status.split(',').map(s => s.trim()).filter(Boolean) }
+        : status)
+    : undefined;
+
   const whereClause = {
-    ...(status && { status }), // 'publish' ou 'brouillon'
+    ...(statusFilter !== undefined && { status: statusFilter }), // 'publish', 'brouillon', 'closed' ou liste
     ...(departement && { departement }),
     ...(region && { region }),
     ...(id && { moduleId: parseInt(id) }),

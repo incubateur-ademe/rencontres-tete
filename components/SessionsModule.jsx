@@ -73,7 +73,7 @@ export default function SessionsModule({ id, setOpen, open, nom, user }){
                             <>
                                 {sessions.length > 0 ? (
                                     sessions.map((session, index) => {
-                                        if(session.status == "publish" || user.type == 'Administrateur' || user.id == 10){
+                                        if(session.status == "publish" || session.status == "closed" || user.type == 'Administrateur' || user.id == 10){
                                             return (
                                                 <div key={index} className="w100 mBot10">
                                                     <SessionsBack 
@@ -106,7 +106,7 @@ export default function SessionsModule({ id, setOpen, open, nom, user }){
                             <>
                                 {sessions.filter(session => user.regions.includes(session.region)).length > 0 ? (
                                     sessions.filter(session => user.regions.includes(session.region)).map((session, index) => {
-                                        if(session.status == "publish" || user.type == 'Administrateur' || user.id == 10){
+                                        if(session.status == "publish" || session.status == "closed" || user.type == 'Administrateur' || user.id == 10){
                                             return (
                                                 <div key={index} className="w100 mBot10">
                                                     <SessionsBack 

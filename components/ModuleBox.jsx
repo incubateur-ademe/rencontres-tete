@@ -11,7 +11,7 @@ export default function ModuleBox({title, link, theme, pilier, length, coming}){
             length.forEach((session) => {
                 let dateDebut = new Date(session.dateDebut);
                 let now = new Date();
-                if(session.status === 'publish' && dateDebut >= now){
+                if((session.status === 'publish' || session.status === 'closed') && dateDebut >= now){
                     setSess(prev => prev + 1);
                 }
             });

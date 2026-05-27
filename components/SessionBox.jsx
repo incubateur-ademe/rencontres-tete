@@ -134,7 +134,7 @@ export default function SessionBox({date, moduleDuree, region, title, link, data
                     </div>
                     {(register != 'false' && register != 'true') && (
                     <div className={`w30 ${model == "full" && "text-right"}`}>
-                        <Link className={styles.Register} href={link}>S'inscrire</Link>
+                        <Link className={styles.Register} href={link}>{data?.status === 'closed' ? 'En savoir plus' : "S'inscrire"}</Link>
                     </div>
                     )}
                     {(see == 'true' && detail != "yes") && (

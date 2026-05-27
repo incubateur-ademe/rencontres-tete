@@ -2,15 +2,18 @@ import prisma from '@/prisma'
 
 export default async function handle(req, res) {
     if (req.method === 'POST') {
-        const { id } = req.body;
+        const { id, status } = req.body;
+
+        const allowedStatuses = ['publish', 'brouillon', 'closed'];
+        const targetStatus = allowedStatuses.includes(status) ? status : 'publish';
 
         try {
             const now = new Date()
-            
+
             const updatedSession = await prisma.session.update({
                 where: { id: parseInt(id) },
                 data: {
-                    status: 'publish',
+                    status: targetStatus,
                     lastUpdate: now
                 }
             });

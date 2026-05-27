@@ -13,7 +13,7 @@ export async function getServerSideProps(context) {
 
   // Construction du whereClause pour filtrer
   const whereClause = {
-    status: 'publish',
+    status: { in: ['publish', 'closed'] },
     ...(region && { region: { contains: region, mode: 'insensitive' } }),
     ...(departement && { departement }),
     module: {
@@ -94,7 +94,7 @@ export default function Rencontres({ sessions, region, pilier, thematique }) {
 
   useEffect(() => {
     const fetchFilteredSessions = async () => {
-      let url = `/api/sessions?status=publish&passed=${view}&`;
+      let url = `/api/sessions?status=publish,closed&passed=${view}&`;
       if (filtres.pilier) url += `pilier=${encodeURIComponent(filtres.pilier)}&`;
       if (filtres.nom) url += `nom=${encodeURIComponent(filtres.nom)}&`;
       if (filtres.region) url += `region=${encodeURIComponent(filtres.region)}&`;
