@@ -45,9 +45,15 @@ export default function SessionBox({date, moduleDuree, region, title, link, data
         // Si on a les données complètes de la session avec metasSession
         if (session?.metasSession?.dateHoraires) {
             const dateHoraires = session.metasSession.dateHoraires;
-            
+
+            // Priorité au nombreJours spécifique à la session, fallback sur la durée du module
+            const nombreJours = session?.metasSession?.nombreJours;
+            const isTwoDays = nombreJours
+                ? String(nombreJours) === '2'
+                : moduleDuree === '2 jours';
+
             // Si c'est une session de 2 jours, essaye de détecter s'il y a déjà deux dates
-            if (moduleDuree === '2 jours') {
+            if (isTwoDays) {
                 // Si le champ contient déjà les deux dates séparées par des séparateurs
                 if (dateHoraires.includes(' - ') || dateHoraires.includes(' / ') || dateHoraires.includes(' au ')) {
                     return dateHoraires; // Utilise le texte tel quel s'il est déjà formaté
@@ -63,11 +69,11 @@ export default function SessionBox({date, moduleDuree, region, title, link, data
                 const secondDate = formatDateToFrench(`${year}-${month}-${day}`);
                 return `${firstDate} - ${secondDate}`;
             }
-            
+
             // Pour une session d'un jour, formate la date en français
             return formatDateToFrench(dateHoraires);
         }
-        
+
         // Fallback sur la date passée en paramètre
         return formatDateToFrench(date);
     }
