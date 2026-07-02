@@ -610,10 +610,18 @@ export default function Session({ data, user }){
                         <h2>Découvrez le programme de la session</h2>
                         {data.metasSession.programmeSession.length > 0 ? (
                             <div className="flex wrap gap25 mTop40">
-                                {Object.keys(groupedData).map(day => (
+                                {Object.keys(groupedData).map(day => {
+                                    const sessionJours = data?.metasSession?.nombreJours;
+                                    const isTwoDays = sessionJours
+                                        ? String(sessionJours) === '2'
+                                        : data.module.metasModule.duree === '2 jours';
+                                    const dayLabel = day === 'Non spécifié' ? '1' : day;
+                                    return (
                                     <div key={day}>
-                                        {data.module.metasModule.duree == "2 jours" && (
-                                            <span className={styles.dayTitle}>Jour {day}</span>
+                                        {isTwoDays ? (
+                                            <span className={styles.dayTitle}>Jour {dayLabel}</span>
+                                        ) : (
+                                            <span className={styles.dayTitle}>Jour 1</span>
                                         )}
                                         <div className="flex wrap gap25">
                                             {groupedData[day].map((programme, index) => (
@@ -627,12 +635,13 @@ export default function Session({ data, user }){
                                             ))}
                                         </div>
                                     </div>
-                                ))}
+                                    );
+                                })}
                             </div>
                         ) : (
                             <div className="mTop40">
                                 <span>À venir.</span>
-                            </div>       
+                            </div>
                         )}
                     </div>
                 </div>
@@ -799,6 +808,8 @@ export default function Session({ data, user }){
                                                             <option>Polynésie Française</option>
                                                             <option>Saint-Pierre et Miquelon</option>
                                                             <option>Océan Indien</option>
+                                                            <option>Océan Indien - Mayotte</option>
+                                                            <option>Océan Indien - La Réunion</option>
                                                             <option>Nouvelle Calédonie</option>
                                                         </select>
                                                         <span className="material-icons">expand_more</span>

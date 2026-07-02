@@ -535,6 +535,8 @@ export default function AddSession({setOpen, id, nom}){
                                 <option>Polynésie Française</option>
                                 <option>Saint-Pierre et Miquelon</option>
                                 <option>Océan Indien</option>
+                                <option>Océan Indien - Mayotte</option>
+                                <option>Océan Indien - La Réunion</option>
                                 <option>Nouvelle Calédonie</option>
                             </select>
                             <span className="material-icons">expand_more</span>
@@ -728,6 +730,16 @@ export default function AddSession({setOpen, id, nom}){
                                 {datas?.region == "Océan Indien" && (
                                     <>
                                         <option>Océan Indien</option>
+                                    </>
+                                )}
+                                {datas?.region == "Océan Indien - Mayotte" && (
+                                    <>
+                                        <option>Mayotte</option>
+                                    </>
+                                )}
+                                {datas?.region == "Océan Indien - La Réunion" && (
+                                    <>
+                                        <option>La Réunion</option>
                                     </>
                                 )}
                                 {datas?.region == "Nouvelle Calédonie" && (

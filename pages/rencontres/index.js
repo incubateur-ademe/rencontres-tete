@@ -228,6 +228,8 @@ export default function Rencontres({ sessions, region, pilier, thematique }) {
                       <option value="Polynésie Française">Polynésie Française</option>
                       <option value="Saint-Pierre et Miquelon">Saint-Pierre et Miquelon</option>
                       <option value="Océan Indien">Océan Indien</option>
+                      <option value="Océan Indien - Mayotte">Océan Indien - Mayotte</option>
+                      <option value="Océan Indien - La Réunion">Océan Indien - La Réunion</option>
                       <option value="Nouvelle Calédonie">Nouvelle Calédonie</option>
                   </select>
                     <span className="material-icons">expand_more</span>
@@ -337,6 +339,8 @@ export default function Rencontres({ sessions, region, pilier, thematique }) {
                     <option value="Polynésie Française">Polynésie Française</option>
                     <option value="Saint-Pierre et Miquelon">Saint-Pierre et Miquelon</option>
                     <option value="Océan Indien">Océan Indien</option>
+                    <option value="Océan Indien - Mayotte">Océan Indien - Mayotte</option>
+                    <option value="Océan Indien - La Réunion">Océan Indien - La Réunion</option>
                     <option value="Nouvelle Calédonie">Nouvelle Calédonie</option>
                   </select>
                 </div>
