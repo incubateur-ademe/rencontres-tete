@@ -2,6 +2,7 @@ import nodemailer from 'nodemailer';
 import hbs from 'nodemailer-express-handlebars';
 import path from 'path';
 import { createMailOptions } from '../../../utils/emailUtils.js';
+import { BREVO_SMTP_USER, EMAIL_FROM, EMAIL_REPLY_TO } from '../../../utils/emailUtils';
 
 export default async function handler(req, res) {
   const { prenom, email, isFirstEmailInLoop } = req.body;
@@ -11,7 +12,7 @@ export default async function handler(req, res) {
     port: 587,
     secure: false,
     auth: {
-      user: 'contact@territoiresentransitions.fr',
+      user: BREVO_SMTP_USER,
       pass: process.env.BREVO_KEY
     },
     tls: { rejectUnauthorized: false }
@@ -28,7 +29,8 @@ export default async function handler(req, res) {
   }));
 
   const baseMailOptions = {
-    from: '"ADEME" <contact@territoiresentransitions.fr>',
+    from: EMAIL_FROM,
+    replyTo: EMAIL_REPLY_TO,
     to: email,
     subject: "Merci pour votre présence à la Rencontre Territoire Engagé Transition Ecologique",
     template: 'session_after_day',
