@@ -154,6 +154,7 @@ export default function SessionBox({date, moduleDuree, region, title, link, data
                                         .replace(/[\u0300-\u036f]/g, "")
                                         .replace(/[.,]/g, "")
                                         .replace(/\s+/g, '-')
+                                        .replace(/-+/g, '-')
                                         .toLowerCase()}`}>Voir plus</Link>
                         </div>                        
                     )}

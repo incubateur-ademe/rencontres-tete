@@ -227,7 +227,6 @@ export default function Rencontres({ sessions, region, pilier, thematique }) {
                       <option value="Guyane">Guyane</option>
                       <option value="Polynésie Française">Polynésie Française</option>
                       <option value="Saint-Pierre et Miquelon">Saint-Pierre et Miquelon</option>
-                      <option value="Océan Indien">Océan Indien</option>
                       <option value="Océan Indien - Mayotte">Océan Indien - Mayotte</option>
                       <option value="Océan Indien - La Réunion">Océan Indien - La Réunion</option>
                       <option value="Nouvelle Calédonie">Nouvelle Calédonie</option>
@@ -262,7 +261,7 @@ export default function Rencontres({ sessions, region, pilier, thematique }) {
                       date={formatDateForUrl(session)}
                       region={session.region}
                       title={session.module.nom}
-                      link={view === 'past' ? '' : `/rencontres/${session.module.slug}/session-${formatDateForUrl(session).replaceAll('/', '-')}-${session.region.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[.,']/g, "").replace(/\s+/g, '-').toLowerCase()}`}
+                      link={view === 'past' ? '' : `/rencontres/${session.module.slug}/session-${formatDateForUrl(session).replaceAll('/', '-')}-${session.region.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[.,']/g, "").replace(/\s+/g, '-').replace(/-+/g, '-').toLowerCase()}`}
                       dept={session.departement}
                       displayDept="no"
                       moduleDuree={session.module.metasModule.duree}
@@ -338,7 +337,6 @@ export default function Rencontres({ sessions, region, pilier, thematique }) {
                     <option value="Guyane">Guyane</option>
                     <option value="Polynésie Française">Polynésie Française</option>
                     <option value="Saint-Pierre et Miquelon">Saint-Pierre et Miquelon</option>
-                    <option value="Océan Indien">Océan Indien</option>
                     <option value="Océan Indien - Mayotte">Océan Indien - Mayotte</option>
                     <option value="Océan Indien - La Réunion">Océan Indien - La Réunion</option>
                     <option value="Nouvelle Calédonie">Nouvelle Calédonie</option>

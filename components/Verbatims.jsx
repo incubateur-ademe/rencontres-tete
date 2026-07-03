@@ -9,7 +9,7 @@ export default function Verbatims() {
   useEffect(() => {
     fetch('/api/avis/list')
       .then((res) => res.json())
-      .then((data) => setAvis(data))
+      .then((data) => setAvis(Array.isArray(data) ? data : []))
       .catch((err) => console.error('Erreur FAQ:', err))
   }, [])
 
