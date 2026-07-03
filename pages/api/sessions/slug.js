@@ -23,6 +23,8 @@ const regionSlugs = {
   'provence-alpes-cote-d-azur': 'Provence-Alpes-Côte d\'Azur',
   'saint-pierre-et-miquelon': 'Saint-Pierre et Miquelon',
   'ocean-indien': 'Océan Indien',
+  'ocean-indien-mayotte': 'Océan Indien - Mayotte',
+  'ocean-indien-la-reunion': 'Océan Indien - La Réunion',
   'nouvelle-caledonie': "Nouvelle Calédonie",
   'provence-alpes-cote-dazur': 'Provence-Alpes-Côte d\'Azur'
 };

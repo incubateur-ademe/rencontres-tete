@@ -246,11 +246,9 @@ export default function Module({ data }){
                                     <option>Guadeloupe</option>
                                     <option>Martinique</option>
                                     <option>Guyane</option>
-                                    <option>La Reunion</option>
                                     <option>Mayotte</option>
                                     <option>Polynésie Française</option>
                                     <option>Saint-Pierre et Miquelon</option>
-                                    <option>Océan Indien</option>
                                     <option>Océan Indien - Mayotte</option>
                                     <option>Océan Indien - La Réunion</option>
                                     <option>Nouvelle Calédonie</option>
@@ -278,6 +276,7 @@ export default function Module({ data }){
                                         .replace(/[\u0300-\u036f]/g, "")
                                         .replace(/[.,']/g, "")
                                         .replace(/\s+/g, '-')
+                                        .replace(/-+/g, '-')
                                         .toLowerCase()}`}
                                         dept={session.departement}
                                         displayDept="no"

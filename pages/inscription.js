@@ -168,11 +168,9 @@ export default function Register(){
                                                     <option>Guadeloupe</option>
                                                     <option>Martinique</option>
                                                     <option>Guyane</option>
-                                                    <option>La Reunion</option>
                                                     <option>Mayotte</option>
                                                     <option>Polynésie Française</option>
                                                     <option>Saint-Pierre et Miquelon</option>
-                                                    <option>Océan Indien</option>
                                                     <option>Océan Indien - Mayotte</option>
                                                     <option>Océan Indien - La Réunion</option>
                                                     <option>Nouvelle Calédonie</option>
