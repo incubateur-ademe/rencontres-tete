@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
   const { filename, content } = req.body
 
-  if (!filename || !filename.endsWith('.hbs')) {
+  if (!filename || !/^[\w-]+\.hbs$/.test(filename)) {
     return res.status(400).json({ error: 'Nom de fichier invalide' })
   }
 

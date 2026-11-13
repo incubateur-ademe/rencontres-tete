@@ -9,7 +9,8 @@ export default async function handler(req, res) {
   const emailTemplates = [
     { filename: 'newaccount.hbs', subject: 'Bienvenue sur la plateforme' },
     { filename: 'newaccountdr.hbs', subject: 'Création de compte - animateur/DR' },
-    { filename: 'newpassword.hbs', subject: 'Réinitialisation de votre mot de passe' },
+    { filename: 'resetpassword.hbs', subject: 'Réinitialisation de votre mot de passe' },
+    { filename: 'newpassword.hbs', subject: 'Votre nouveau mot de passe !' },
     { filename: 'session_after_day.hbs', subject: 'Merci pour votre participation' },
     { filename: 'session_register.hbs', subject: 'Confirmation d’inscription à une session' },
     { filename: 'session_relance_days.hbs', subject: 'Relance - Session dans quelques jours' },
