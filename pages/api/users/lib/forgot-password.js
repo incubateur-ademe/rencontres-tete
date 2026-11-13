@@ -27,7 +27,9 @@ export default async function handle(req, res) {
 
             if (target) {
                 const token = signResetToken(target);
-                await fetch(`${process.env.WEBSITE_URL}/api/emails/newPassword`, {
+                // Sans attendre l'envoi : le temps de réponse ne doit pas dire
+                // si l'adresse a un compte.
+                fetch(`${process.env.WEBSITE_URL}/api/emails/newPassword`, {
                     method: 'POST',
                     headers: {
                         "Content-Type": "application/json",
@@ -37,7 +39,7 @@ export default async function handle(req, res) {
                         email: mail,
                         resetUrl: `${process.env.WEBSITE_URL}/api/users/lib/reset-password?token=${encodeURIComponent(token)}`,
                     })
-                });
+                }).catch((error) => console.error(error));
             }
         }
     } catch (error) {
