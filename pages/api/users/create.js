@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import prisma from '@/prisma';
 import fetch from 'node-fetch'
+import { internalHeaders, stripPasswords } from '@/utils/auth';
 
 const SALT_ROUNDS = 10;
 
@@ -22,6 +23,7 @@ export default async function handle(req, res) {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
+                    ...internalHeaders(),
                 },
                 body: JSON.stringify({
                     prenom: userData.prenom,
@@ -29,7 +31,7 @@ export default async function handle(req, res) {
                 })
             })
 
-            res.status(201).json(newUser);
+            res.status(201).json(stripPasswords(newUser));
         } catch (error) {
             res.status(500).json({ error: `Impossible de créer le compte: ${error.message}` });
         }

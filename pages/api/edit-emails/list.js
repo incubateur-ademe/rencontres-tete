@@ -1,7 +1,9 @@
 import fs from 'fs'
 import path from 'path'
+import { requireAdmin } from '@/utils/auth';
 
 export default async function handler(req, res) {
+  if (!requireAdmin(req, res)) return;
   const dir = path.join(process.cwd(), 'views/emails')
 
   const emailTemplates = [
