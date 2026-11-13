@@ -10,7 +10,9 @@ export const config = {
   },
 };
 
-const supabaseUrl = "https://eazuwwpllqueujyivlce.supabase.co"; //process.env.NEXT_PUBLIC_SUPABASE_URL;
+// URL publique du projet Supabase (Storage), pas un secret : en dur, comme
+// la base qu'elle accompagne. Une NEXT_PUBLIC_* serait figée au build.
+const supabaseUrl = "https://eazuwwpllqueujyivlce.supabase.co";
 const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
