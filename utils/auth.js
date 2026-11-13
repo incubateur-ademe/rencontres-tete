@@ -24,9 +24,11 @@ export const isAdmin = (user) =>
   (user.id == 10 || user.type == 'Administrateur' || user.type == 'DR');
 
 // Admin, ou la session elle-même : même id ET même table (`special` = Account).
+// L'id doit être un entier décimal canonique : les routes le relisent avec
+// parseInt, qui ne lit pas « 1e1 » ou « 0x5 » comme Number/== (10, 5).
 export const canActAs = (session, id, special) =>
   isAdmin(session) ||
-  (!!session && id != null && session.id == id && !!session.account === !!special);
+  (!!session && /^\d+$/.test(String(id)) && session.id === Number(id) && !!session.account === !!special);
 
 // Borne de pointage de pages/presence.js : participant (table User) id 115.
 export const isPresenceKiosk = (session) =>
