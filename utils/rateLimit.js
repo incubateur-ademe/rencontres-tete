@@ -4,20 +4,20 @@
 const hits = new Map();
 
 // Le proxy (Traefik) ajoute l'IP du client en DERNIER dans X-Forwarded-For :
-// les entrées précédentes viennent du client et ne sont pas fiables. Suppose
-// que le conteneur n'est joignable qu'à travers ce proxy, ce qui est le cas
-// sur Coolify comme sur Koyeb.
+// les entrées précédentes viennent du client et ne sont pas fiables.
+// Suppose que le conteneur n'est joignable qu'à travers ce proxy (Coolify,
+// Koyeb). Pas de limite par compte : elle permettrait de bloquer la connexion
+// d'un tiers, et ne compter que les échecs ne freine plus la force brute.
 const clientIp = (req) =>
   (req.headers['x-forwarded-for'] || '').split(',').pop().trim() || req.socket?.remoteAddress || '';
 
-// Renvoie false (et répond 429) si la limite est dépassée. Compté par IP, ou
-// par `subject` s'il est fourni (ex. l'adresse email visée).
-export const rateLimit = (req, res, name, max, windowMs, subject = clientIp(req)) => {
+// Renvoie false (et répond 429) si la limite est dépassée.
+export const rateLimit = (req, res, name, max, windowMs) => {
   const now = Date.now();
   if (hits.size > 10000) {
     for (const [k, e] of hits) if (e.reset < now) hits.delete(k);
   }
-  const key = `${name}:${subject}`;
+  const key = `${name}:${clientIp(req)}`;
   const entry = hits.get(key);
   if (!entry || entry.reset < now) {
     hits.set(key, { count: 1, reset: now + windowMs });

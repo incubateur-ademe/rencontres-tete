@@ -10,12 +10,9 @@ export default async function handle(req, res) {
         return;
     }
 
-    const { mail, motDePasse } = req.body;
-
-    // Par IP, et par compte visé : une attaque répartie sur plusieurs IP
-    // reste limitée. Contrepartie : un compte attaqué est bloqué 15 min.
     if (!rateLimit(req, res, 'login', 10, 15 * 60 * 1000)) return;
-    if (!rateLimit(req, res, 'login-mail', 20, 15 * 60 * 1000, String(mail).toLowerCase())) return;
+
+    const { mail, motDePasse } = req.body;
     const account = mail && motDePasse
         ? await prisma.account.findUnique({ where: { email: mail } })
         : null;
