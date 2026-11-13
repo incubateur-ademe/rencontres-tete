@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 export const verifyToken = (token) => {
+  if (!token) return null; // visiteur anonyme, pas de cookie `auth`
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     return decoded ? decoded : null;
