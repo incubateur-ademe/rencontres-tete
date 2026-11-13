@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 
   const transporter = nodemailer.createTransport({
     host: 'smtp-relay.brevo.com',
-    port: 587,
+    port: 2525, // 587 est bloqué en sortie des Instances Scaleway
     secure: false,
     auth: {
       user: BREVO_SMTP_USER,
