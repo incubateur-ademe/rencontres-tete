@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import prisma from '@/prisma';
 const crypto = require('crypto');
 import fetch from 'node-fetch';
+import { internalHeaders } from '@/utils/auth';
 
 function generatePassword(length = 10) {
     return crypto.randomBytes(length)
@@ -40,6 +41,7 @@ export default async function handle(req, res) {
                     method: 'POST',
                     headers: {
                         "Content-Type": "application/json",
+                        ...internalHeaders(),
                     },
                     body: JSON.stringify({
                         email: mail,
@@ -47,7 +49,7 @@ export default async function handle(req, res) {
                     })
                 });
 
-                return res.json(updatedUser);
+                return res.json({ success: true });
             } else {
                 // Si l'utilisateur n'existe pas dans `user`, chercher dans `account`
                 const account = await prisma.account.findUnique({
@@ -68,6 +70,7 @@ export default async function handle(req, res) {
                         method: 'POST',
                         headers: {
                             "Content-Type": "application/json",
+                            ...internalHeaders(),
                         },
                         body: JSON.stringify({
                             email: mail,
@@ -75,7 +78,7 @@ export default async function handle(req, res) {
                         })
                     });
 
-                    return res.json(updatedAccount);
+                    return res.json({ success: true });
                 } else {
                     // Si aucun utilisateur ou compte n'est trouvé
                     throw new Error('Email not found in both user and account.');

@@ -1,11 +1,14 @@
 import bcrypt from 'bcrypt';
 import prisma from '@/prisma';
+import { requireActAs, stripPasswords } from '@/utils/auth';
 
 const SALT_ROUNDS = 10;
 
 export default async function handle(req, res) {
     if (req.method === 'POST') {
         const { motDePasse, userId, type } = req.body;
+
+        if (!requireActAs(req, res, userId, type == "special")) return;
 
         try {
 
@@ -19,7 +22,7 @@ export default async function handle(req, res) {
                     },
                 });
     
-                res.json(updatedUser);
+                res.json(stripPasswords(updatedUser));
             } else {
                 const updatedUser = await prisma.user.update({
                     where: { id: parseInt(userId) },
@@ -28,7 +31,7 @@ export default async function handle(req, res) {
                     },
                 });
     
-                res.json(updatedUser);
+                res.json(stripPasswords(updatedUser));
             }
             
         } catch (error) {

@@ -1,5 +1,6 @@
 import prisma from '@/prisma';
 import fetch from 'node-fetch';
+import { internalHeaders, requireActAs } from '@/utils/auth';
 
 export default async function handle(req, res) {
     if (req.method !== 'POST') {
@@ -12,6 +13,8 @@ export default async function handle(req, res) {
     if (!userId || !sessionId || !inscriptionData || !type) {
         return res.status(400).json({ error: 'Missing required fields: userId, sessionId, inscriptionData, or type' });
     }
+
+    if (!requireActAs(req, res, userId, type === 'special')) return;
 
     try {
         console.log("Début de la requête");
@@ -137,6 +140,7 @@ export default async function handle(req, res) {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
+                ...internalHeaders(),
             },
             body: JSON.stringify({
                 prenom: type == 'special' ? (inscriptionData.prenom !== null && inscriptionData.prenom != undefined) ? inscriptionData.prenom : inscriptionData.email : userData.prenom,
