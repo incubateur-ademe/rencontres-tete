@@ -1,24 +1,13 @@
 import { IncomingForm } from 'formidable';
 import fs from 'fs';
 import path from 'path';
-import { createClient } from '@supabase/supabase-js';
+import { uploadPublic } from '@/lib/storage';
 import { requireAdmin } from '@/utils/auth';
 
 export const config = {
   api: {
     bodyParser: false,
   },
-};
-
-// URL publique du projet Supabase (Storage), pas un secret : en dur, comme
-// la base qu'elle accompagne. Une NEXT_PUBLIC_* serait figée au build.
-const supabaseUrl = "https://eazuwwpllqueujyivlce.supabase.co";
-const supabaseKey = process.env.SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-// Fonction utilitaire pour nettoyer et encoder le nom de fichier
-const sanitizeFilename = (filename) => {
-  return filename.replace(/[^a-z0-9_.-]/gi, '_').toLowerCase();
 };
 
 export default async function handler(req, res) {
@@ -52,53 +41,18 @@ export default async function handler(req, res) {
   for (const fileArray of Object.values(data.files)) {
     const files = Array.isArray(fileArray) ? fileArray : [fileArray];
     for (const file of files) {
-      const filePath = path.relative('.', file.filepath);
-      const fileBuffer = fs.readFileSync(file.filepath);
-      const sanitizedFilename = sanitizeFilename(file.originalFilename);
-      const filename = `uploads/${sanitizedFilename}`;
+      const safeFilename = file.originalFilename
+        .normalize('NFC')
+        .replace(/[^a-zA-Z0-9_.-]/g, '_').toLowerCase();
+      // Préfixe horodaté : jamais de collision ni d'écrasement.
+      const key = `uploads/${Date.now()}_${safeFilename}`;
 
-      const { data: existingFiles, error: listError } = await supabase
-        .storage
-        .from('ademe')
-        .list('uploads', {
-          search: sanitizedFilename
-        });
-
-      if (listError) {
-        console.error('Erreur lors de la vérification de l\'existence du fichier sur Supabase:', listError);
-        continue;
+      try {
+        const url = await uploadPublic(key, fs.readFileSync(file.filepath), file.mimetype);
+        urlsPDF.push({ nom: file.originalFilename, url });
+      } catch (error) {
+        console.error("Erreur lors de l'envoi du fichier vers le stockage :", error);
       }
-
-      let uploadFilename = filename;
-      if (existingFiles && existingFiles.length > 0) {
-        const timestamp = Date.now();
-        uploadFilename = `uploads/${timestamp}_${sanitizedFilename}`;
-      }
-
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('ademe')
-        .upload(uploadFilename, fileBuffer, {
-          contentType: file.mimetype,
-        });
-
-      if (uploadError) {
-        console.error('Erreur lors de l\'upload sur Supabase:', uploadError);
-        continue;
-      }
-
-      const { data: publicURL, error: urlError } = await supabase.storage
-        .from('ademe')
-        .getPublicUrl(uploadFilename);
-
-      if (urlError) {
-        console.error('Erreur lors de la récupération de l\'URL publique sur Supabase:', urlError);
-        continue;
-      }
-
-      urlsPDF.push({
-        nom: file.originalFilename,
-        url: publicURL.publicUrl
-      });
     }
   }
 
