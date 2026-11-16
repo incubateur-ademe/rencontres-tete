@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "prisma": "5.9.1",
-    "vitest": "5.1.0"
+    "vite": "7.3.8",
+    "vitest": "4.1.12"
   }
 }
