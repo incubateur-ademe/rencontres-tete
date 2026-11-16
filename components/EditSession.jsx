@@ -212,12 +212,10 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
       
         const result = await response.json();
       
-        if (result?.urlsPDF) {
-          return result.urlsPDF;
-        } else {
-          console.error("Erreur upload aval:", result);
-          return [];
+        if (!response.ok || !result?.urlsPDF) {
+          throw new Error(result?.error || 'Erreur upload aval');
         }
+        return result.urlsPDF;
       };
       
       
@@ -374,8 +372,18 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
             status: datas.status
         };
 
-        const uploadedUrlsPDF = await uploadFiles();
-        const uploadedUrlsPDFAval = await uploadFilesAval();
+        let uploadedUrlsPDF, uploadedUrlsPDFAval;
+        try {
+            uploadedUrlsPDF = await uploadFiles();
+            uploadedUrlsPDFAval = await uploadFilesAval();
+        } catch (error) {
+            console.error(error);
+            setNotif({
+                text: "L'envoi des fichiers a échoué, la session n'a pas été enregistrée.",
+                icon: 'close'
+            });
+            return;
+        }
 
         console.log("uploadedUrlsPDFAval =>", uploadedUrlsPDFAval);
 
@@ -513,8 +521,7 @@ export default function EditSession({setOpen, id, nom, moduleId, page}){
             }));
             return urlsPDF; // Retournez les URLs pour utilisation directe
         } else {
-            console.error('Erreur lors de l\'upload des fichiers');
-            return []; // Retournez un tableau vide en cas d'erreur
+            throw new Error('Erreur lors de l\'upload des fichiers');
         }
     }
 

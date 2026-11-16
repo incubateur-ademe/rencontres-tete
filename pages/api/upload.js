@@ -1,4 +1,5 @@
 import { IncomingForm } from 'formidable';
+import { randomUUID } from 'crypto';
 import fs from 'fs';
 import path from 'path';
 import { uploadPublic } from '@/lib/storage';
@@ -36,25 +37,25 @@ export default async function handler(req, res) {
 
   if (!data) return;
 
+  const files = Object.values(data.files).flat();
   const urlsPDF = [];
 
-  for (const fileArray of Object.values(data.files)) {
-    const files = Array.isArray(fileArray) ? fileArray : [fileArray];
+  try {
     for (const file of files) {
-      const safeFilename = file.originalFilename
-        .normalize('NFC')
-        .replace(/[^a-zA-Z0-9_.-]/g, '_');
-      // Préfixe horodaté : jamais de collision ni d'écrasement.
-      const key = `uploads/${Date.now()}_${safeFilename}`;
-
-      try {
-        const url = await uploadPublic(key, fs.readFileSync(file.filepath), file.mimetype);
-        urlsPDF.push({ nom: file.originalFilename, url });
-      } catch (error) {
-        console.error("Erreur lors de l'envoi du fichier vers le stockage :", error);
-      }
+      const nom = file.originalFilename || 'fichier';
+      const safeFilename = nom.normalize('NFC').replace(/[^a-zA-Z0-9_.-]/g, '_');
+      // UUID : pas de collision, donc pas d'écrasement (PutObject remplace sans prévenir).
+      const key = `uploads/${randomUUID()}_${safeFilename}`;
+      // ponytail: fichier lu en mémoire, passer à un stream si les PDF deviennent lourds.
+      const url = await uploadPublic(key, await fs.promises.readFile(file.filepath), file.mimetype);
+      urlsPDF.push({ nom, url });
     }
+    res.status(200).json({ urlsPDF });
+  } catch (error) {
+    // Un seul échec fait échouer la requête : sinon la session est enregistrée sans ses fichiers.
+    console.error("Erreur lors de l'envoi du fichier vers le stockage :", error);
+    res.status(502).json({ error: "Erreur lors de l'envoi du fichier vers le stockage" });
+  } finally {
+    await Promise.all(files.map(file => fs.promises.unlink(file.filepath).catch(() => {})));
   }
-
-  res.status(200).json({ urlsPDF });
 }

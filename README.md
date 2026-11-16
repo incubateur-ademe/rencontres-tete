@@ -4,7 +4,7 @@ Création d'une plateforme d'inscriptions à des rencontres de l'ADEME partout e
 
 ## Stockage des fichiers
 
-Les PDF des sessions et les visuels des modules sont envoyés par l'administration vers un bucket Object Storage Scaleway (`lib/storage.js`, région `fr-par`), sous le préfixe `uploads/`.
+Les PDF des sessions sont envoyés par l'administration vers un bucket Object Storage Scaleway (`lib/storage.js`, région `fr-par`), sous le préfixe `uploads/`. Les visuels des modules restent sur le disque du conteneur (`public/uploads`, via `pages/api/modules/add.js` et `update.js`).
 
 | Variable | Rôle |
 |---|---|
