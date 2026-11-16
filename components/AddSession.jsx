@@ -403,7 +403,9 @@ export default function AddSession({setOpen, id, nom}){
                 ...prev,
                 metasSession: {
                     ...prev.metasSession,
-                    urlsPDF: [...prev.metasSession.urlsPDF, ...urlsPDF]
+                    urlsPDF: [...prev.metasSession.urlsPDF, ...urlsPDF],
+                    // Fichiers envoyés : une nouvelle tentative ne les renvoie pas.
+                    selectedFiles: []
                 }
             }));
             return urlsPDF;

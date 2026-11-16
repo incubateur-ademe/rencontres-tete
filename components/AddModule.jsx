@@ -275,6 +275,8 @@ export default function AddModule({setOpen}){
 
     const [selectedImage, setSelectedImage] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
+    // Libère l'aperçu précédent quand il est remplacé, retiré ou au démontage.
+    useEffect(() => () => previewUrl && URL.revokeObjectURL(previewUrl), [previewUrl]);
 
     const handleImageChange = (event) => {
         const file = event.target.files?.[0];
