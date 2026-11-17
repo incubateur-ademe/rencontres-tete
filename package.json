@@ -6,7 +6,8 @@
     "dev": "node server.js",
     "build": "prisma generate && next build",
     "start": "NODE_ENV=production node server.js",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "vitest run"
   },
   "dependencies": {
     "@emotion/react": "11.11.3",
@@ -40,6 +41,8 @@
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
-    "prisma": "5.9.1"
+    "prisma": "5.9.1",
+    "vite": "7.3.8",
+    "vitest": "4.1.12"
   }
 }
