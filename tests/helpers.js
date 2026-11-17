@@ -7,6 +7,7 @@ const models = {};
 export const prisma = new Proxy({}, {
   get(_, model) {
     if (typeof model === 'symbol' || model === 'then') return undefined;
+    if (model === '$transaction') return (ops) => Promise.all(ops);
     if (model === 'reset') return () => { for (const k in models) delete models[k]; };
     if (model === 'calls') return () => Object.values(models).flatMap((m) => Object.values(m)).reduce((n, fn) => n + fn.mock.calls.length, 0);
     models[model] ??= new Proxy({}, {
