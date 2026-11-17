@@ -31,11 +31,14 @@ export default async function handle(req, res) {
 
     const newPassword = generatePassword();
     const hashedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);
-    if (payload.account) {
-        await prisma.account.update({ where: { id: record.id }, data: { password: hashedPassword } });
-    } else {
-        await prisma.user.update({ where: { id: record.id }, data: { motDePasse: hashedPassword } });
-    }
+    // Un admin/DR peut aussi avoir un compte participant au même email : les
+    // deux reçoivent le nouveau mot de passe, sinon il ne marche qu'avec ou
+    // sans la case « Je suis administrateur ou DR ».
+    const email = payload.account ? record.email : record.mail;
+    await prisma.$transaction([
+        prisma.account.updateMany({ where: { email }, data: { password: hashedPassword } }),
+        prisma.user.updateMany({ where: { mail: email }, data: { motDePasse: hashedPassword } }),
+    ]);
 
     await fetch(`${process.env.WEBSITE_URL}/api/emails/newPassword`, {
         method: 'POST',
@@ -44,7 +47,7 @@ export default async function handle(req, res) {
             ...internalHeaders(),
         },
         body: JSON.stringify({
-            email: payload.account ? record.email : record.mail,
+            email,
             password: newPassword,
         })
     });

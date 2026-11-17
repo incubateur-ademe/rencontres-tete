@@ -85,7 +85,7 @@ describe('mot de passe oublié', () => {
   it('le lien ne sert qu’une fois', async () => {
     const user = { id: 7, mail: 'a@b.fr', motDePasse: hash };
     prisma.user.findUnique.mockImplementation(async () => user);
-    prisma.user.update.mockImplementation(async ({ data }) => Object.assign(user, data));
+    prisma.user.updateMany.mockImplementation(async ({ data }) => Object.assign(user, data));
     const token = signResetToken({ id: 7, account: false, hash });
 
     const first = await call(resetPassword, { query: { token } });
@@ -101,7 +101,20 @@ describe('mot de passe oublié', () => {
     prisma.user.findUnique.mockResolvedValue({ id: 7, motDePasse: hash });
     const res = await call(resetPassword, { query: { token: as.user(7).auth } });
     expect(res.location).toBe('/connexion?reset=invalide');
-    expect(prisma.user.update).not.toHaveBeenCalled();
+    expect(prisma.user.updateMany).not.toHaveBeenCalled();
+  });
+
+  it('change aussi le compte admin/DR au même email', async () => {
+    prisma.user.findUnique.mockResolvedValue({ id: 7, mail: 'dr@b.fr', motDePasse: hash });
+    const token = signResetToken({ id: 7, account: false, hash });
+
+    await call(resetPassword, { query: { token } });
+
+    const [{ password }] = sentEmails();
+    const [[{ where, data }]] = prisma.account.updateMany.mock.calls;
+    expect(where).toEqual({ email: 'dr@b.fr' });
+    expect(await bcrypt.compare(password, data.password)).toBe(true);
+    expect(prisma.user.updateMany).toHaveBeenCalledWith({ where: { mail: 'dr@b.fr' }, data: { motDePasse: data.password } });
   });
 });
 
