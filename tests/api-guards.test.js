@@ -38,7 +38,6 @@ const ADMIN_ONLY = [
   ['sessions/delete', 'DELETE'],
   ['sessions/publish', 'POST'],
   ['upload', 'POST'],
-  ['uploadVisuel', 'POST'],
   ['users/[id]', 'GET'],
   ['users/findUser', 'GET'],
 ];
