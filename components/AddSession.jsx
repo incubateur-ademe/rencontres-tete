@@ -405,7 +405,8 @@ export default function AddSession({setOpen, id, nom}){
                     ...prev.metasSession,
                     urlsPDF: [...prev.metasSession.urlsPDF, ...urlsPDF],
                     // Fichiers envoyés : une nouvelle tentative ne les renvoie pas.
-                    selectedFiles: []
+                    // Ceux choisis pendant l'envoi restent dans la sélection.
+                    selectedFiles: prev.metasSession.selectedFiles.filter(f => !files.includes(f))
                 }
             }));
             return urlsPDF;
