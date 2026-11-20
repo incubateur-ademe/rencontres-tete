@@ -499,11 +499,13 @@ export default function Session({ data, user }){
                                 
                                 {/* <p>Code rencontre : #{data.module.code} - Dernière mise à jour : {formatDate(data.lastUpdate)}</p> */}
                                 <div className={styles.additional}>
-                                    {data.metasSession.explications && (
+                                    {(data.metasSession.explications || data.metasSession.urlsPDF?.length > 0) && (
                                         <>
                                         <h3 style={{ fontWeight: '500' }}>Ressources en amont de la Rencontre</h3>
-                                        <div dangerouslySetInnerHTML={{ __html: transformedHTML }}>
-                                        </div>
+                                        {data.metasSession.explications && (
+                                            <div dangerouslySetInnerHTML={{ __html: transformedHTML }}>
+                                            </div>
+                                        )}
                                         {data.metasSession?.urlsPDF?.length > 0 && (
                                             <>
                                                 {data.metasSession.urlsPDF.map((doc) => {
