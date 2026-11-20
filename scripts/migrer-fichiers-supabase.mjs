@@ -12,7 +12,7 @@ import { PrismaClient } from '@prisma/client';
 import { uploadPublic } from '../lib/storage.js';
 
 const PREFIXE = 'https://eazuwwpllqueujyivlce.supabase.co/storage/v1/object/public/ademe/';
-const URL_SUPABASE = new RegExp(PREFIXE.replace(/[.\/]/g, '\\$&') + '[^"\\\\]+', 'g');
+const URL_SUPABASE = new RegExp(PREFIXE.replace(/[.*+?^${}()|[\]\\\/]/g, '\\$&') + '[^"\\\\]+', 'g');
 const COLONNES = ['urlsPDF', 'urlsPDFAval'];
 
 const apply = process.argv.includes('--apply');
@@ -29,7 +29,8 @@ async function copier(ancienne) {
     const reponse = await fetch(ancienne, { method: apply ? 'GET' : 'HEAD' });
     if (!reponse.ok) throw new Error(`HTTP ${reponse.status}`);
     nouvelle = apply
-      ? encodeURI(await uploadPublic(key, Buffer.from(await reponse.arrayBuffer()), reponse.headers.get('content-type')))
+      // encodeURI laisse # et ? tels quels : ils couperaient l'URL avant la fin de la clé.
+      ? encodeURI(await uploadPublic(key, Buffer.from(await reponse.arrayBuffer()), reponse.headers.get('content-type'))).replace(/[#?]/g, encodeURIComponent)
       : `(simulation) ${key}`;
     console.log(`ok     ${ancienne}`);
   } catch (erreur) {
@@ -47,12 +48,10 @@ for (const ligne of lignes) {
   for (const colonne of COLONNES) {
     // Réécriture sur le JSON sérialisé : indifférente à la forme des entrées.
     const avant = JSON.stringify(ligne[colonne] ?? null);
-    let apres = avant;
-    for (const ancienne of new Set(avant.match(URL_SUPABASE))) {
-      const nouvelle = await copier(ancienne);
-      // Copie échouée : l'URL Supabase reste en base, à reprendre au prochain passage.
-      if (nouvelle && apply) apres = apres.replaceAll(ancienne, nouvelle);
-    }
+    for (const ancienne of new Set(avant.match(URL_SUPABASE))) await copier(ancienne);
+    // Une seule passe sur les URL entières : une URL préfixe d'une autre ne la touche pas.
+    // Copie échouée : l'URL Supabase reste en base, à reprendre au prochain passage.
+    const apres = apply ? avant.replace(URL_SUPABASE, url => copies.get(url) || url) : avant;
     if (apres !== avant) data[colonne] = JSON.parse(apres);
   }
   if (Object.keys(data).length) {

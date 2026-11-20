@@ -25,6 +25,8 @@ node scripts/migrer-fichiers-supabase.mjs          # simulation, n'écrit rien
 node scripts/migrer-fichiers-supabase.mjs --apply  # copie et réécrit
 ```
 
+Le script réécrit chaque colonne à partir de sa lecture initiale : le lancer quand personne ne modifie de session, sinon une modification faite pendant la copie est écrasée.
+
 ## Tests
 
 `npm test` (Vitest) appelle les handlers des routes API avec une base, un SMTP et un réseau simulés (`tests/setup.js`) : pas de base ni de variable d'environnement à fournir. `tests/api-guards.test.js` tient la matrice d'accès de toutes les routes protégées : une nouvelle route protégée s'y ajoute en une ligne.
