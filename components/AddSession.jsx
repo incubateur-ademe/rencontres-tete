@@ -275,8 +275,18 @@ export default function AddSession({setOpen, id, nom}){
           status: 'brouillon'
         };
 
-        const uploadedUrlsPDF = await uploadFiles();
-        const uploadedUrlsPDFAval = await uploadFilesAval();
+        let uploadedUrlsPDF, uploadedUrlsPDFAval;
+        try {
+            uploadedUrlsPDF = await uploadFiles();
+            uploadedUrlsPDFAval = await uploadFilesAval();
+        } catch (error) {
+            console.error(error);
+            setNotif({
+                text: "L'envoi des fichiers a échoué, la session n'a pas été enregistrée.",
+                icon: 'close'
+            });
+            return;
+        }
 
         const metasSessionData = {
             dateHoraires: datas.metasSession.dateHoraires,
@@ -393,13 +403,15 @@ export default function AddSession({setOpen, id, nom}){
                 ...prev,
                 metasSession: {
                     ...prev.metasSession,
-                    urlsPDF: [...prev.metasSession.urlsPDF, ...urlsPDF]
+                    urlsPDF: [...prev.metasSession.urlsPDF, ...urlsPDF],
+                    // Fichiers envoyés : une nouvelle tentative ne les renvoie pas.
+                    // Ceux choisis pendant l'envoi restent dans la sélection.
+                    selectedFiles: prev.metasSession.selectedFiles.filter(f => !files.includes(f))
                 }
             }));
             return urlsPDF;
         } else {
-            console.error('Erreur lors de l\'upload des fichiers');
-            return [];
+            throw new Error('Erreur lors de l\'upload des fichiers');
         }
     }   
 
@@ -477,12 +489,10 @@ export default function AddSession({setOpen, id, nom}){
       
         const result = await response.json();
       
-        if (result?.urlsPDF) {
-          return result.urlsPDF;
-        } else {
-          console.error("Erreur upload aval:", result);
-          return [];
+        if (!response.ok || !result?.urlsPDF) {
+          throw new Error(result?.error || 'Erreur upload aval');
         }
+        return result.urlsPDF;
       };
       
 

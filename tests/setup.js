@@ -4,7 +4,6 @@ import { prisma } from './helpers';
 // Aucun test ne touche une vraie base, un vrai SMTP ou le réseau.
 process.env.JWT_SECRET = 'test-secret';
 process.env.WEBSITE_URL = 'http://localhost:3000';
-process.env.SUPABASE_KEY = 'test';
 
 vi.mock('@/prisma', async () => ({ default: (await import('./helpers')).prisma }));
 vi.mock('@/lib/prisma', async () => ({ default: (await import('./helpers')).prisma }));

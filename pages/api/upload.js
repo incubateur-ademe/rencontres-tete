@@ -1,7 +1,8 @@
 import { IncomingForm } from 'formidable';
+import { randomUUID } from 'crypto';
 import fs from 'fs';
 import path from 'path';
-import { createClient } from '@supabase/supabase-js';
+import { uploadPublic } from '@/lib/storage';
 import { requireAdmin } from '@/utils/auth';
 
 export const config = {
@@ -9,12 +10,6 @@ export const config = {
     bodyParser: false,
   },
 };
-
-// URL publique du projet Supabase (Storage), pas un secret : en dur, comme
-// la base qu'elle accompagne. Une NEXT_PUBLIC_* serait figée au build.
-const supabaseUrl = "https://eazuwwpllqueujyivlce.supabase.co";
-const supabaseKey = process.env.SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default async function handler(req, res) {
   if (!requireAdmin(req, res)) return;
@@ -42,71 +37,25 @@ export default async function handler(req, res) {
 
   if (!data) return;
 
+  const files = Object.values(data.files).flat();
   const urlsPDF = [];
 
-  for (const fileArray of Object.values(data.files)) {
-    const files = Array.isArray(fileArray) ? fileArray : [fileArray];
+  try {
     for (const file of files) {
-      // Normalisation et sécurisation du nom de fichier
-      const safeFilename = file.originalFilename
-        .normalize('NFC') // Normalisation UTF-8
-        .replace(/[^a-zA-Z0-9_.-]/g, '_'); // Remplace les caractères spéciaux
-      const uploadFilename = `uploads/${safeFilename}`;
-
-      try {
-        // Vérification si le fichier existe déjà dans Supabase
-        const { data: existingFiles, error: listError } = await supabase
-          .storage
-          .from('ademe')
-          .list('uploads', {
-            search: safeFilename,
-          });
-
-        if (listError) {
-          console.error('Erreur lors de la vérification de l\'existence du fichier sur Supabase:', listError);
-          continue;
-        }
-
-        let finalFilename = uploadFilename;
-        if (existingFiles && existingFiles.length > 0) {
-          const timestamp = Date.now();
-          finalFilename = `uploads/${timestamp}_${safeFilename}`;
-        }
-
-        // Lecture et upload du fichier
-        const fileBuffer = fs.readFileSync(file.filepath);
-        const { data: uploadData, error: uploadError } = await supabase.storage
-          .from('ademe')
-          .upload(finalFilename, fileBuffer, {
-            contentType: file.mimetype,
-          });
-
-        if (uploadError) {
-          console.error('Erreur lors de l\'upload sur Supabase:', uploadError);
-          continue;
-        }
-
-        // Récupération de l'URL publique
-        const { data: publicURL, error: urlError } = await supabase.storage
-          .from('ademe')
-          .getPublicUrl(finalFilename);
-
-        if (urlError) {
-          console.error('Erreur lors de la récupération de l\'URL publique sur Supabase:', urlError);
-          continue;
-        }
-
-        console.log('Public URL:', publicURL);
-
-        urlsPDF.push({
-          nom: file.originalFilename,
-          url: publicURL.publicUrl,
-        });
-      } catch (error) {
-        console.error('Erreur générale lors du traitement du fichier:', error);
-      }
+      const nom = file.originalFilename || 'fichier';
+      const safeFilename = nom.normalize('NFC').replace(/[^a-zA-Z0-9_.-]/g, '_');
+      // UUID : pas de collision, donc pas d'écrasement (PutObject remplace sans prévenir).
+      const key = `uploads/${randomUUID()}_${safeFilename}`;
+      // ponytail: fichier lu en mémoire, passer à un stream si les PDF deviennent lourds.
+      const url = await uploadPublic(key, await fs.promises.readFile(file.filepath), file.mimetype);
+      urlsPDF.push({ nom, url });
     }
+    res.status(200).json({ urlsPDF });
+  } catch (error) {
+    // Un seul échec fait échouer la requête : sinon la session est enregistrée sans ses fichiers.
+    console.error("Erreur lors de l'envoi du fichier vers le stockage :", error);
+    res.status(502).json({ error: "Erreur lors de l'envoi du fichier vers le stockage" });
+  } finally {
+    await Promise.all(files.map(file => fs.promises.unlink(file.filepath).catch(() => {})));
   }
-
-  res.status(200).json({ urlsPDF, env1: supabaseUrl });
 }
